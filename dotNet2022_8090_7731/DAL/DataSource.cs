@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DAL.DO;
 namespace DalObject
 {
+    
     class DataSource
     {
         static internal Drone[] DroneArr = new Drone[10];
