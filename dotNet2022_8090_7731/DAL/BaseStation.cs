@@ -8,7 +8,7 @@ namespace DAL
 {
     namespace DO
     {
-         public struct BasicStation
+         public struct BaseStation
          {
             public string Id { get; set; }
             public string NameStation { get; set; }
