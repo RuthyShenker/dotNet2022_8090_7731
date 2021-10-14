@@ -11,8 +11,8 @@ namespace DAL
         public struct Parcel
         {
             public string ParcelId { get; set; }
-            public int SenderId { get; set; }
-            public int GetterId { get; set; }
+            public string SenderId { get; set; }
+            public string GetterId { get; set; }
             public WeightCategories Weight { get; set; }
             public UrgencyStatuses Status { get; set; }
             public int DroneId { get; set; }
