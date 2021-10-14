@@ -1,9 +1,10 @@
 ﻿using System;
-
+using DAL.DO;
 namespace ConsoleUI
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             Console.WriteLine
@@ -13,17 +14,10 @@ namespace ConsoleUI
                 $"3 - Display\n" +
                 $"4 - List view options\n" +
                 $"5 - Exit");
-            bool check;
-            int choice;
-            check = int.TryParse(Console.ReadLine(), out choice);
-          
-            while (!check|| choice>5||choice<1)
-            {
-                Console.WriteLine("Invalid input!, please enter again");
-                check = int.TryParse(Console.ReadLine(), out choice);
-            }
+            DalObject.DalObject dalObject = new DalObject.DalObject();
+            CheckValids.CheckValid(1, 5);
 
-            switch (choice)
+            switch (CheckValids.input)
             {
                 case 1:
                     Console.WriteLine(
@@ -31,32 +25,28 @@ namespace ConsoleUI
                         $"2 - ● Add a drone to the list of existing drones.\n" +
                         $"3 - ● Admission of a new customer to the customer list.\n" +
                         $"4 - ● Receipt of package for shipment.");
-                    check = int.TryParse(Console.ReadLine(), out choice);
-                    while (!check||choice<1||choice>4)
-                    {
-                        Console.WriteLine("Invalid input!, please enter again");
-                        check = int.TryParse(Console.ReadLine(), out choice);
-                    } 
-
-                    switch (choice)
+                    CheckValids.CheckValid(1, 4);
+                    switch (CheckValids.input)
                     {
                         case 1:
-                            AddingNewBaseStation();
+                            dalObject.AddingBaseStation();
                             break;
                         case 2:
-                            AddingNewDrone();
+                            dalObject.AddingDrone();
                             break;
                         case 3:
-                            AddingNewCustomer();
+                            dalObject.AddingCustomer();
                             break;
                         case 4:
-                            AddingNewParcel();
+
+                            dalObject.GettingParcelForDelivery();
                             break;
                         default:
                             break;
 
                     }
                     break;
+
 
                 case 2:
                     Console.WriteLine(
@@ -65,24 +55,25 @@ namespace ConsoleUI
                         $"3 - ● Delivery of a package to the destination\n" +
                         $"4 - ● Sending a skimmer for charging at a base station\n" +
                         $"5 - ● Release skimmer from charging at base station\n");
-                    check = int.TryParse(Console.ReadLine(), out choice);
-                    while (!check || choice < 1 || choice > 5)
-                    {
-                        Console.WriteLine("Invalid input!, please enter again");
-                        check = int.TryParse(Console.ReadLine(), out choice);
-                    }
+                    CheckValids.CheckValid(1, 5);
 
-                    switch (choice)
+                    switch (CheckValids.input)
                     {
                         case 1:
+                            dalObject.AssigningParcelToDrone();
                             break;
                         case 2:
+                            dalObject.CollectingParcelByDrone();
                             break;
                         case 3:
+                            dalObject.DeliveryParcelTodestination();
                             break;
                         case 4:
+                            dalObject.SendingDroneforChargingAtBaseStation();
                             break;
                         case 5:
+                            dalObject.ReleasingDroneFromChargingAtBaseStation();
+
                             break;
                         default:
                             break;
@@ -94,14 +85,9 @@ namespace ConsoleUI
                         $"2 - ● Skimmer display\n" +
                         $"3 - ● Customer view\n" +
                         $"4 - ● Package view\n");
-                    check = int.TryParse(Console.ReadLine(), out choice);
-                    while (!check || choice < 1 || choice > 4)
-                    {
-                        Console.WriteLine("Invalid input!, please enter again");
-                        check = int.TryParse(Console.ReadLine(), out choice);
-                    }
+                    CheckValids.CheckValid(1, 4);
 
-                    switch (choice)
+                    switch (CheckValids.input)
                     {
                         case 1:
                             break;
@@ -124,14 +110,9 @@ namespace ConsoleUI
                         $"4 - ● Displays the list of packages\n" +
                         $"5 - ● Displays a list of packages that have not yet been assigned to the glider\n" +
                         $"6 - ● Display base stations with available charging stations\n");
-                    check = int.TryParse(Console.ReadLine(), out choice);
-                    while (!check || choice < 1 || choice > 6)
-                    {
-                        Console.WriteLine("Invalid input!, please enter again");
-                        check = int.TryParse(Console.ReadLine(), out choice);
-                    }
+                    CheckValids.CheckValid(1, 6);
 
-                    switch (choice)
+                    switch (CheckValids.input)
                     {
                         case 1:
                             break;
@@ -160,5 +141,7 @@ namespace ConsoleUI
             }
 
         }
+
+
     }
 }
