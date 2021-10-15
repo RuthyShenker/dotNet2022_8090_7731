@@ -4,7 +4,6 @@ namespace ConsoleUI
 {
     class Program
     {
-
         static void Main(string[] args)
         {
             Console.WriteLine
@@ -29,7 +28,16 @@ namespace ConsoleUI
                     switch (CheckValids.input)
                     {
                         case 1:
-                            dalObject.AddingBaseStation();
+
+                            try
+                            {
+                                BaseStation baseStation = GetBaseStation();
+                                dalObject.AddingBaseStation(baseStation);
+                            }
+                            catch (ArgumentException ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
                         case 2:
                             dalObject.AddingDrone();
@@ -90,12 +98,17 @@ namespace ConsoleUI
                     switch (CheckValids.input)
                     {
                         case 1:
+
+                            dalObject.BaseStationDisplay();
                             break;
                         case 2:
+                            dalObject.DroneDisplay();
                             break;
                         case 3:
+                            dalObject.CustomerDisplay();
                             break;
                         case 4:
+                            dalObject.ParcelDisplay();
                             break;
                         default:
                             break;
@@ -115,16 +128,22 @@ namespace ConsoleUI
                     switch (CheckValids.input)
                     {
                         case 1:
+                            dalObject.DisplayingListOfBaseStations();
                             break;
                         case 2:
+                            dalObject.DisplayingListOfDrones();
                             break;
                         case 3:
+                            dalObject.DisplayingListOfCustomers();
                             break;
                         case 4:
+                            dalObject.DisplayingListOfParcels();
                             break;
                         case 5:
+                            dalObject.DisplayingListOfParcelsNotYetAssociatedToDrone();
                             break;
                         case 6:
+                            dalObject.DisplayingListOfBaseStationsWithAvailableChargingStation();
                             break;
                         default:
                             break;
@@ -132,7 +151,7 @@ namespace ConsoleUI
                     }
                     break;
                 case 5:
-                    
+
                     break;
 
                 default:
@@ -142,6 +161,19 @@ namespace ConsoleUI
 
         }
 
-
+        private static BaseStation GetBaseStation()
+        {
+            Console.WriteLine("Enter The Id Of The Station:");
+            string id = Console.ReadLine();
+            Console.WriteLine("Enter The Name Of The Station:");
+            string nameStation = Console.ReadLine();
+            Console.WriteLine("Enter The Number Of The Charging Stations:");
+            int numberOfChargingStations = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter The Longitude:");
+            double longitude = double.Parse(Console.ReadLine());
+            Console.WriteLine("Enter the Latitude:");
+            double latitude = double.Parse(Console.ReadLine()); ;
+            return new BaseStation(id, nameStation, numberOfChargingStations, longitude, latitude);
+        }
     }
 }

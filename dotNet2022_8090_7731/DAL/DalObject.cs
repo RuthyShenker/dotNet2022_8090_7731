@@ -14,20 +14,14 @@ namespace DalObject
         {
             DataSource.Initialize();
         }
-        public void AddingBaseStation()
+        public void AddingBaseStation(BaseStation baseStation)
         {
-
-            Console.WriteLine("Enter The Id Of The Station:");
-            CheckValids.CheckValid(9);
-            DataSource.BaseStationArr[DataSource.indexBaseStationArr].Id = CheckValids.strInput;
-            Console.WriteLine("Enter The Name Of The Station:");
-            Console.WriteLine();
-            Console.WriteLine("Enter The Number Of The Charging Stations:");
-
-            Console.WriteLine("Enter The Longitude:");
-
-            Console.WriteLine("Enter the Latitude:");
-
+            CheckValids.CheckValid(baseStation.Id);
+            baseStation.Latitude;
+            baseStation.Longitude;
+            baseStation.NameStation;
+            baseStation.NumberOfChargingStations;
+            throw new ArgumentException("iukjythgrhyuik");
         }
         public void  AddingDrone()
         {
@@ -55,6 +49,67 @@ namespace DalObject
             Console.WriteLine("Enter The Status Of The Parcel:");
             Console.WriteLine("Enter The DroneId Of The Parcel:");
             ///i didnt finish!
+        }
+        public void AssigningParcelToDrone()
+        {
+
+        }
+        public void CollectingParcelByDrone()
+        {
+
+        }
+        public void DeliveryParcelTodestination()
+        {
+
+        }
+        public void SendingDroneforChargingAtBaseStation()
+        {
+
+        }
+        public void ReleasingDroneFromChargingAtBaseStation()
+        {
+
+        }
+        public void BaseStationDisplay()
+        {
+
+        }
+        public void DroneDisplay()
+        {
+
+        }
+        public void CustomerDisplay()
+        {
+
+        }
+        public void ParcelDisplay()
+        {
+
+        }
+
+        public void DisplayingListOfBaseStations()
+        {
+
+        }
+        public void DisplayingListOfDrones()
+        {
+
+        }
+        public void DisplayingListOfCustomers()
+        {
+
+        }
+        public void DisplayingListOfParcels()
+        {
+
+        }
+        public void DisplayingListOfParcelsNotYetAssociatedToDrone()
+        {
+
+        }
+        public void DisplayingListOfBaseStationsWithAvailableChargingStation()
+        {
+
         }
 
     }
