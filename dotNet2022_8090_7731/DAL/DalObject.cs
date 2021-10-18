@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.DO;
+using static DalObject.DataSource;
 
 namespace DalObject
 {
     public class DalObject
     {
-        
+
         public DalObject()
         {
             DataSource.Initialize();
@@ -23,7 +24,10 @@ namespace DalObject
             baseStation.NumberOfChargingStations;
             throw new ArgumentException("iukjythgrhyuik");
         }
-        public void  AddingDrone()
+
+
+
+        public void AddingDrone()
         {
             Console.WriteLine("Enter The Id Of The Drone:");
             Console.WriteLine("Enter The Model Of The Drone:");
@@ -50,22 +54,33 @@ namespace DalObject
             Console.WriteLine("Enter The DroneId Of The Parcel:");
             ///i didnt finish!
         }
-        public void AssigningParcelToDrone()
+        public void AffiliationParcel(string pId)
         {
-
+            for (int i = 0; i < Config.IndexParcelArr; i++)
+            {
+                if (pId == ParcelArr[i].ParcelId)
+                {
+                    ParcelArr[i].DroneId = DroneArr[ rand.Next(0, Config.IndexDroneArr)].Id;
+                    return;
+                }
+            }
+            //  throw ("Id isnt exist ");
         }
-        public void CollectingParcelByDrone()
+
+        public void ChangeDroneStatus(string dId,int newStatus)
         {
-
+            for (int i = 0; i < Config.IndexDroneArr; i++)
+            {
+                if (dId == DroneArr[i].Id)
+                {
+                    DroneArr[i].Status = (DroneStatuses)newStatus;
+                    return;
+                }
+            }
+            //  throw ("Id isnt exist ");
         }
-        public void DeliveryParcelTodestination()
-        {
-
-        }
-        public void SendingDroneforChargingAtBaseStation()
-        {
-
-        }
+       
+       
         public void ReleasingDroneFromChargingAtBaseStation()
         {
 

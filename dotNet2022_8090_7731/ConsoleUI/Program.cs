@@ -68,20 +68,29 @@ namespace ConsoleUI
                     switch (CheckValids.input)
                     {
                         case 1:
-                            dalObject.AssigningParcelToDrone();
+                            Console.WriteLine("Enter The Id Of The parcel:");
+                            string PId = Console.ReadLine();
+                            dalObject.AffiliationParcel(PId);
                             break;
                         case 2:
-                            dalObject.CollectingParcelByDrone();
+                            Console.WriteLine("Enter The Id Of The drone:");
+                            string dId = Console.ReadLine();
+                            dalObject.ChangeDroneStatus(dId,3);
                             break;
                         case 3:
-                            dalObject.DeliveryParcelTodestination();
+                            Console.WriteLine("Enter The Id Of The drone:");
+                            dId = Console.ReadLine();
+                            dalObject.ChangeDroneStatus(dId, 3);
                             break;
                         case 4:
-                            dalObject.SendingDroneforChargingAtBaseStation();
+                            Console.WriteLine("Enter The Id Of The drone:");
+                            dId = Console.ReadLine();
+                            dalObject.ChangeDroneStatus(dId, 2);
                             break;
                         case 5:
-                            dalObject.ReleasingDroneFromChargingAtBaseStation();
-
+                            Console.WriteLine("Enter The Id Of The drone:");
+                            dId = Console.ReadLine();
+                            dalObject.ChangeDroneStatus(dId, 1);
                             break;
                         default:
                             break;
