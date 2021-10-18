@@ -17,7 +17,32 @@ namespace DalObject
         static internal BaseStation[] BaseStationArr = new BaseStation[5];
         static internal Customer[] CustomerArr = new Customer[100];
         static internal Parcel[] ParcelArr = new Parcel[1000];
+        public BaseStation this[string Id]
+        {
+            get
+            {
 
+                foreach (BaseStation Station in BaseStationArr)
+                {
+                    if (Station.Id == Id)
+                    {
+                        return Station;
+                    }
+                }
+                throw new Exception();
+            }
+            set
+            {
+                foreach (BaseStation Station in BaseStationArr)
+                {
+                    if (Station.Id == Id)
+                    {
+                         Station=value as BaseStation;
+                    }
+                }
+                throw new Exception();
+            }
+        }
 
         internal class Config
         {
