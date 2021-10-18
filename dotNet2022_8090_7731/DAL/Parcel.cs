@@ -15,7 +15,7 @@ namespace DAL
             public string GetterId { get; set; }
             public WeightCategories Weight { get; set; }
             public UrgencyStatuses Status { get; set; }
-            public int DroneId { get; set; }
+            public string DroneId { get; set; }
             public DateTime MakingParcel { get; set; }
             public DateTime PickingUp { get; set; }
             public DateTime Arrival { get; set; }
