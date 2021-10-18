@@ -15,7 +15,14 @@ namespace DAL
             public string Phone { get; set; }
             public double Longitude { get; set; }
             public double Latitude { get; set; }
-
+            public Customer(string id, string name, string phone, double longitude, double latitude)
+            {
+                Id = id;
+                Name = name;
+                Phone = phone;
+                Longitude = longitude;
+                Latitude = latitude;
+            }
         }
     }
 }

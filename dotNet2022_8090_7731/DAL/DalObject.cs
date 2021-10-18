@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.DO;
-
+using static DalObject.DataSource;
+using static DalObject.DataSource.Config;
 namespace DalObject
 {
     public class DalObject
@@ -12,43 +13,23 @@ namespace DalObject
         
         public DalObject()
         {
-            DataSource.Initialize();
+            Initialize();
         }
         public void AddingBaseStation(BaseStation baseStation)
         {
-            CheckValids.CheckValid(baseStation.Id);
-            baseStation.Latitude;
-            baseStation.Longitude;
-            baseStation.NameStation;
-            baseStation.NumberOfChargingStations;
-            throw new ArgumentException("iukjythgrhyuik");
+            BaseStationArr[IndexBaseStationArr] = baseStation;
         }
-        public void  AddingDrone()
+        public void  AddingDrone(Drone drone)
         {
-            Console.WriteLine("Enter The Id Of The Drone:");
-            Console.WriteLine("Enter The Model Of The Drone:");
-            Console.WriteLine("Enter The MaxWeight of the Drone:");
-            Console.WriteLine("Enter The BatteryStatus Of The Drone:");
-            Console.WriteLine("Enter The Status Of The Drone:");
-
+            DroneArr[IndexDroneArr] = drone;
         }
-        public void AddingCustomer()
+        public void AddingCustomer(Customer customer)
         {
-            Console.WriteLine("Enter The Id Of The Customer:");
-            Console.WriteLine("Enter The Name Of The Customer:");
-            Console.WriteLine("Enter The Phone Of The Customer:");
-            Console.WriteLine("Enter The Longitude:");
-            Console.WriteLine("Enter the Latitude:");
+            CustomerArr[IndexCustomerArr] = customer;
         }
-        public void GettingParcelForDelivery()
+        public void GettingParcelForDelivery(Parcel parcel)
         {
-            Console.WriteLine("Enter The Id Of The Parcel:");
-            Console.WriteLine("Enter The Id Of The Sender:");
-            Console.WriteLine("Enter The Id Of The Getter:");
-            Console.WriteLine("Enter The Weight Of The Parcel:");
-            Console.WriteLine("Enter The Status Of The Parcel:");
-            Console.WriteLine("Enter The DroneId Of The Parcel:");
-            ///i didnt finish!
+            ParcelArr[IndexParcelArr] = parcel;
         }
         public void AssigningParcelToDrone()
         {
@@ -70,19 +51,19 @@ namespace DalObject
         {
 
         }
-        public void BaseStationDisplay()
+        public void BaseStationDisplay(int Id)
+        {
+            Console.WriteLine(BaseStationArr[Id]);
+        }
+        public void DroneDisplay(int Id)
         {
 
         }
-        public void DroneDisplay()
+        public void CustomerDisplay(int Id)
         {
 
         }
-        public void CustomerDisplay()
-        {
-
-        }
-        public void ParcelDisplay()
+        public void ParcelDisplay(int Id)
         {
 
         }

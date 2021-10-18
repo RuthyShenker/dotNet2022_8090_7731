@@ -8,8 +8,8 @@ namespace DAL
 {
     namespace DO
     {
-        public enum WeightCategories { light, medium, heavy };
-        public enum UrgencyStatuses { normal, fast, emergency };
-        public enum DroneStatuses { available, maintenance, delivery };
+        public enum WeightCategories { Light, Medium, Heavy};
+        public enum UrgencyStatuses { Normal, Fast, Emergency };
+        public enum DroneStatuses { Available, Maintenance, Delivery };
     };
 }

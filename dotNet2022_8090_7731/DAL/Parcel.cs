@@ -20,6 +20,19 @@ namespace DAL
             public DateTime PickingUp { get; set; }
             public DateTime Arrival { get; set; }
             public DateTime MatchingParcel { get; set; }
+            public Parcel(string parcelId, string senderId, string getterId, WeightCategories weight, UrgencyStatuses status, int droneId, DateTime makingParcel, DateTime pickingUp, DateTime arrival, DateTime matchingParcel)
+            {
+                ParcelId = parcelId;
+                SenderId = senderId;
+                GetterId = getterId;
+                Weight = weight;
+                Status = status;
+                DroneId = droneId;
+                MakingParcel = makingParcel;
+                PickingUp = pickingUp;
+                Arrival = arrival;
+                MatchingParcel=matchingParcel;
+            }
         }
     }
 }
