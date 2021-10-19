@@ -69,7 +69,7 @@ namespace ConsoleUI
                         case 1:
                             Console.WriteLine("Enter The Id Of The parcel:");
                             string PId = Console.ReadLine();
-                            dalObject.AffiliationParcel(PId);
+                            dalObject.BelongParcel(PId);
                             break;
                         case 2:
                             Console.WriteLine("Enter The Id Of The drone:");
@@ -131,26 +131,26 @@ namespace ConsoleUI
                         $"5 - ● Displays a list of packages that have not yet been assigned to the glider\n" +
                         $"6 - ● Display base stations with available charging stations\n");
                     CheckValids.CheckValid(1, 6);
-
+                    
                     switch (CheckValids.input)
                     {
                         case 1:
-                            dalObject.DisplayingListOfBaseStations();
+                            dalObject.DisplayingBaseStations();
                             break;
                         case 2:
-                            dalObject.DisplayingListOfDrones();
+                            dalObject.DisplayingDrones();
                             break;
                         case 3:
-                            dalObject.DisplayingListOfCustomers();
+                            dalObject.DisplayingCustomers();
                             break;
                         case 4:
-                            dalObject.DisplayingListOfParcels();
+                            dalObject.DisplayingParcels();
                             break;
                         case 5:
-                            dalObject.DisplayingListOfParcelsNotYetAssociatedToDrone();
+                            dalObject.DisplayingUnbelongParcels();
                             break;
                         case 6:
-                            dalObject.DisplayingListOfBaseStationsWithAvailableChargingStation();
+                            dalObject.DisplayingStationsWithAvailablePositions();
                             break;
                         default:
                             break;
