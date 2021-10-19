@@ -23,6 +23,11 @@ namespace DAL
                 Longitude = longitude;
                 Latitude = latitude;
             }
+            public override string ToString()
+            {
+                return $"Id: {Id} Name: {Name} Phone: {Phone}" +
+                    $" Longitude: {Longitude} Latitude: {Latitude}";
+            }
         }
     }
 }

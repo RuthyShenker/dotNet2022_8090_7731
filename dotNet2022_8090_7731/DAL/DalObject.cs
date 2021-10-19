@@ -62,21 +62,46 @@ namespace DalObject
         {
 
         }
-        public void BaseStationDisplay(int Id)
+        public void BaseStationDisplay(string Id)
         {
-            Console.WriteLine(BaseStationArr[Id]);
+            foreach (var baseStation in BaseStationArr)
+            {
+                if(baseStation.Id==Id)
+                {
+                    Console.WriteLine(baseStation);
+                }
+            }
         }
-        public void DroneDisplay(int Id)
+        public void DroneDisplay(string Id)
         {
+            foreach (var drone in DroneArr)
+            {
+                if (drone.Id == Id)
+                {
+                    Console.WriteLine(drone);
+                }
+            }
 
         }
-        public void CustomerDisplay(int Id)
+        public void CustomerDisplay(string Id)
         {
-
+            foreach (var customer in CustomerArr)
+            {
+                if (customer.Id == Id)
+                {
+                    Console.WriteLine(customer);
+                }
+            }
         }
-        public void ParcelDisplay(int Id)
+        public void ParcelDisplay(string Id)
         {
-
+            foreach (var parcel in ParcelArr)
+            {
+                if (parcel.ParcelId == Id)
+                {
+                    Console.WriteLine(parcel);
+                }
+            }
         }
 
         public void DisplayingListOfBaseStations()

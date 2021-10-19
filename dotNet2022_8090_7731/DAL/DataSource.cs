@@ -5,44 +5,67 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.DO;
 
-
 namespace DalObject
 {
-
     class DataSource
     {
         public static Random rand = new Random();
+
 
         static internal Drone[] DroneArr = new Drone[10];
         static internal BaseStation[] BaseStationArr = new BaseStation[5];
         static internal Customer[] CustomerArr = new Customer[100];
         static internal Parcel[] ParcelArr = new Parcel[1000];
-        public BaseStation this[string Id]
-        {
-            get
-            {
+ 
+        //public BaseStation this[string Id]
+        //{
+        //    get
+        //    {
+        //        foreach (BaseStation baseStation in BaseStationArr)
+        //        {
+        //            if (baseStation.Id == Id)
+        //            {
+        //                return baseStation;
+        //            }
+        //        }
+        //        throw new Exception("There isn't baseStation with this Id");
+        //    }
+        //    set
+        //    {
+        //        for (int i = 0; i < BaseStationArr.Length; i++)
+        //        {
+        //            if(BaseStationArr[i].Id==Id)
+        //            {
+        //                BaseStationArr[i] = value;
+        //            }
+        //        }
+        //    }
+        //}
+        //public Drone this[string Id]
+        //{
+        //    get
+        //    {
+        //        foreach (Drone drone in DroneArr)
+        //        {
+        //            if (drone.Id == Id)
+        //            {
+        //                return drone;
+        //            }
+        //        }
+        //        throw new Exception("There isn't Drone with this Id");
+        //    }
+        //    set
+        //    {
+        //        for (int i = 0; i <DroneArr.Length; i++)
+        //        {
+        //            if (DroneArr[i].Id == Id)
+        //            {
+        //                DroneArr[i] = value;
+        //            }
+        //        }
+        //    }
+        //}
 
-                foreach (BaseStation Station in BaseStationArr)
-                {
-                    if (Station.Id == Id)
-                    {
-                        return Station;
-                    }
-                }
-                throw new Exception();
-            }
-            set
-            {
-                foreach (BaseStation Station in BaseStationArr)
-                {
-                    if (Station.Id == Id)
-                    {
-                         Station=value as BaseStation;
-                    }
-                }
-                throw new Exception();
-            }
-        }
 
         internal class Config
         {
@@ -110,7 +133,7 @@ namespace DalObject
                 fillParcel.GetterId = CustomerArr[rand.Next(0, Config.IndexCustomerArr)].Id;
                 fillParcel.Weight = (WeightCategories)rand.Next(0, Enum.GetNames(typeof(DAL.DO.WeightCategories)).Length);
                 fillParcel.Status = (UrgencyStatuses)rand.Next(0, Enum.GetNames(typeof(DAL.DO.UrgencyStatuses)).Length);
-                fillParcel.DroneId = rand.Next(0, Config.IndexDroneArr);
+                fillParcel.DroneId = DroneArr[rand.Next(0, Config.IndexDroneArr)].Id;
                 //     fillParcel.MakingParcel = 
                 //    fillParcel.PickingUp = 
                 //   fillParcel.Arrival =
