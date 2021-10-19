@@ -31,7 +31,7 @@ namespace DalObject
         {
             ParcelArr[IndexParcelArr] = parcel;
         }
-        public void AffiliationParcel(string pId)
+        public void BelongParcel(string pId)
         {
             for (int i = 0; i < Config.IndexParcelArr; i++)
             {
@@ -58,10 +58,7 @@ namespace DalObject
         }
        
        
-        public void ReleasingDroneFromChargingAtBaseStation()
-        {
-
-        }
+       
         public void BaseStationDisplay(int Id)
         {
             Console.WriteLine(BaseStationArr[Id]);
@@ -78,30 +75,65 @@ namespace DalObject
         {
 
         }
+        //----------------------------------------------------לאחד לפונ אחת
 
-        public void DisplayingListOfBaseStations()
+        public void DisplayingBaseStations()
         {
-
+            foreach (BaseStation item in BaseStationArr)
+            {
+                item.ToString();
+            }
         }
-        public void DisplayingListOfDrones()
-        {
-
+        public void DisplayingDrones()
+         {
+            foreach (Drone item in DroneArr)
+            {
+                item.ToString();
+            }
         }
-        public void DisplayingListOfCustomers()
+        public void DisplayingCustomers()
         {
-
+            foreach (Customer item in CustomerArr)
+            {
+                item.ToString();
+            }
         }
-        public void DisplayingListOfParcels()
+        public void DisplayingParcels()
         {
-
+            foreach (Parcel item in ParcelArr)
+            {
+                item.ToString();
+            }
         }
-        public void DisplayingListOfParcelsNotYetAssociatedToDrone()
+        //-------------------------------------------------------------------------
+        public void DisplayingUnbelongParcels()
         {
-
+            foreach (Parcel item in ParcelArr)
+            {
+                
+                if (int.Parse( item.DroneId)!=0)
+                {
+                    item.ToString();
+                }
+            }
         }
-        public void DisplayingListOfBaseStationsWithAvailableChargingStation()
+        public void DisplayingStationsWithAvailablePositions()
         {
+            foreach (BaseStation item in BaseStationArr)
+            {
+                for (int i = 0; i < item.NumChargingStations; i++)
+                {
+                    if (true)
+                    {
 
+                    } item.
+                }
+                if (item.NumChargingStations)
+                {
+
+                }
+                item.ToString();
+            }
         }
 
     }
