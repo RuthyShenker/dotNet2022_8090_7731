@@ -9,14 +9,16 @@ using DAL.DO;
 namespace DalObject
 {
 
-    class DataSource
+    static class DataSource
     {
         public static Random rand = new Random();
 
-        static internal Drone[] DroneArr = new Drone[10];
-        static internal BaseStation[] BaseStationArr = new BaseStation[5];
-        static internal Customer[] CustomerArr = new Customer[100];
-        static internal Parcel[] ParcelArr = new Parcel[1000];
+        static internal List<Drone> DroneArr = new List<Drone>();
+        static internal List<BaseStation> BaseStationArr = new List<BaseStation>();
+        static internal List<Customer> CustomerArr = new List<Customer>();
+        static internal List<Parcel> ParcelArr = new List<Parcel>();
+
+
         public BaseStation this[string Id]
         {
             get
@@ -37,7 +39,7 @@ namespace DalObject
                 {
                     if (Station.Id == Id)
                     {
-                         Station=value as BaseStation;
+                        Station = value as BaseStation;
                     }
                 }
                 throw new Exception();
@@ -46,6 +48,7 @@ namespace DalObject
 
         internal class Config
         {
+            //לא צריךך
             internal static int IndexDroneArr;
             internal static int IndexBaseStationArr;
             internal static int IndexCustomerArr;
@@ -54,67 +57,67 @@ namespace DalObject
         }
         public static void Initialize()
         {
-            const int INITIALIZE_DRONE = 5;
-            Drone fillDrone;
-            for (int i = 0; i < INITIALIZE_DRONE; i++)
+
+            const int INITIALIZE_DRONE = 5, INITIALIZE_CUSTOMER = 10, INITIALIZE_BASE_STATION = 2, INITIALIZE_PARCEL = 11;
+           
+            Drone fillDrone = new Drone();
+            for (int i = 0; i < INITIALIZE_DRONE; ++i)
             {
-                fillDrone = DroneArr[Config.IndexDroneArr++];
-                fillDrone.Id = rand.Next(100000000, 1000000000).ToString();
-                fillDrone.Model = rand.Next(1000, 9999).ToString();
-                fillDrone.MaxWeight = (WeightCategories)(rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length));
-                fillDrone.BatteryStatus = rand.Next(0, 100);
+                fillDrone.Id = rand.Next(10 ^ 8, 10 ^ 9).ToString();
+                fillDrone.Model = rand.Next(10 ^ 3, 10 ^ 4).ToString();
+                fillDrone.MaxWeight = (WeightCategories)rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
+                fillDrone.BatteryStatus = rand.Next(0, 101);
                 fillDrone.Status = (DroneStatuses)rand.Next(0, Enum.GetNames(typeof(DroneStatuses)).Length);
+                DroneArr.Add(fillDrone);
             }
 
 
-            const int INITIALIZE_CUSTOMER = 10;
+            Customer fillCustomer = new Customer();
             string[] initNames = { "UriA", "Aviad", "Odel", "Natan", "Or", "Keren" };
             string[] InitDigitsPhone = { "0556", "0548", "0583", "0533", "0527", "0522", "0505", "0584" };
 
-            Customer fillCustomer;
             for (int i = 0; i < INITIALIZE_CUSTOMER; i++)
             {
-                fillCustomer = CustomerArr[Config.IndexCustomerArr++];
-                fillCustomer.Id = rand.Next(100000000, 1000000000).ToString();
+                fillCustomer.Id = rand.Next(10 ^ 8, 10 ^ 9).ToString();
                 fillCustomer.Name = initNames[rand.Next(0, initNames.Length)];
-                fillCustomer.Phone = InitDigitsPhone[rand.Next(0, InitDigitsPhone.Length)] + rand.Next(100000, 1000000).ToString();
-                //  fillCustomer.Longitude = /////////////////////////////////
-                // fillCustomer.Latitude =///////////////////////////////////
+                fillCustomer.Phone = InitDigitsPhone[rand.Next(0, InitDigitsPhone.Length)] + rand.Next(10 ^ 5, 10 ^ 6).ToString();
+                fillCustomer.Longitude = rand.Next(0, 90) + rand.NextDouble();
+                fillCustomer.Latitude = rand.Next(0, 180) + rand.NextDouble();
+                CustomerArr.Add(fillCustomer);
             }
 
 
-            BaseStation fillBaseStation;
-            const int INITIALIZE_BASE_STATION = 2;
+            BaseStation fillBaseStation = new BaseStation();
             string[] initNameStation = { "Tel-Tzion", "Tel-Aviv", "Ranana", "Eilat", "Jerusalem" };
 
             for (int i = 0; i < INITIALIZE_BASE_STATION; i++)
             {
-                fillBaseStation = BaseStationArr[Config.IndexBaseStationArr++];
-                fillBaseStation.Id = rand.Next(100000, 1000000).ToString();
+                fillBaseStation.Id = rand.Next(10 ^ 5, 10 ^ 6).ToString();
                 fillBaseStation.NameStation = initNameStation[rand.Next(0, initNameStation.Length)];
-                fillBaseStation.NumberOfChargingStations = rand.Next(2, BaseStationArr.Length);
-                fillBaseStation.Longitude = rand.Next(2, BaseStationArr.Length);
-                fillBaseStation.Latitude = rand.Next(2, BaseStationArr.Length);
-
+                fillBaseStation.NumChargingStations = rand.Next(3, 10);
+                fillBaseStation.Longitude = rand.Next(rand.Next(0, 90)) + rand.NextDouble();
+                fillBaseStation.Latitude = rand.Next(rand.Next(0, 180)) + rand.NextDouble();
+                BaseStationArr.Add(fillBaseStation);
             }
 
 
-            Parcel fillParcel;
-            const int INITIALIZE_PARCEL = 11;
-
+            Parcel fillParcel = new Parcel();
             for (int i = 0; i < INITIALIZE_PARCEL; i++)
             {
-                fillParcel = ParcelArr[Config.IndexParcelArr++];
-                fillParcel.ParcelId = rand.Next(100000, 1000000).ToString();
-                fillParcel.SenderId = CustomerArr[rand.Next(0, Config.IndexCustomerArr)].Id;
-                fillParcel.GetterId = CustomerArr[rand.Next(0, Config.IndexCustomerArr)].Id;
+                fillParcel.ParcelId = rand.Next(10 ^ 6, 10 ^ 7).ToString();
+                fillParcel.SenderId = CustomerArr[rand.Next(0, CustomerArr.Count)].Id;
+                do
+                {
+                    fillParcel.GetterId = CustomerArr[rand.Next(0, CustomerArr.Count)].Id;
+                } while (fillParcel.GetterId == fillParcel.SenderId);
                 fillParcel.Weight = (WeightCategories)rand.Next(0, Enum.GetNames(typeof(DAL.DO.WeightCategories)).Length);
                 fillParcel.Status = (UrgencyStatuses)rand.Next(0, Enum.GetNames(typeof(DAL.DO.UrgencyStatuses)).Length);
-                fillParcel.DroneId = rand.Next(0, Config.IndexDroneArr);
-                //     fillParcel.MakingParcel = 
-                //    fillParcel.PickingUp = 
-                //   fillParcel.Arrival =
-                //   fillParcel.MatchingParcel =
+                fillParcel.DroneId = DroneArr[rand.Next(0, DroneArr.Count)].Id;
+                fillParcel.MakingParcel = DateTime.Now;
+                fillParcel.BelongParcel = fillParcel.MakingParcel.AddDays(rand.Next(0, 3));
+                fillParcel.PickingUp = fillParcel.BelongParcel.AddDays(rand.Next(0, 10));
+                fillParcel.Arrival = fillParcel.PickingUp.AddDays(rand.Next(0, 10));
+                ParcelArr.Add(fillParcel);
             }
         }
     }
