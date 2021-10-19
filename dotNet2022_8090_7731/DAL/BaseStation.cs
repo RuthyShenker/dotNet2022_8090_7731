@@ -15,13 +15,13 @@ namespace DAL
             {
                 Id = id;
                 NameStation = nameStation;
-                NumberOfChargingStations = numberOfChargingStations;
+                NumChargingStations = numberOfChargingStations;
                 Longitude = longitude;
                 Latitude = latitude;
             }
             public string Id { get; set; }
             public string NameStation { get; set; }
-            public int NumberOfChargingStations { get; set; }
+            public int NumChargingStations { get; set; }
             public double Longitude { get; set; }
             public double Latitude { get; set; }
             

@@ -19,7 +19,7 @@ namespace DAL
             public DateTime MakingParcel { get; set; }
             public DateTime PickingUp { get; set; }
             public DateTime Arrival { get; set; }
-            public DateTime MatchingParcel { get; set; }
+            public DateTime BelongParcel { get; set; }
             public Parcel(string parcelId, string senderId, string getterId, WeightCategories weight, UrgencyStatuses status, int droneId, DateTime makingParcel, DateTime pickingUp, DateTime arrival, DateTime matchingParcel)
             {
                 ParcelId = parcelId;
