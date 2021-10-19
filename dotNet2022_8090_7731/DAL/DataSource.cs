@@ -17,14 +17,6 @@ namespace DalObject
         static internal List<Customer> CustomerArr = new List<Customer>();
         static internal List<Parcel> ParcelArr = new List<Parcel>();
 
-
-        public BaseStation this[string Id]
-        {
-            get
-            {
-
-       
- 
         //public BaseStation this[string Id]
         //{
         //    get
@@ -73,31 +65,31 @@ namespace DalObject
         //        }
         //    }
         //}
-        {
-            get
-            {
+        //{
+        //    get
+        //    {
 
-                foreach (BaseStation Station in BaseStationArr)
-                {
-                    if (Station.Id == Id)
-                    {
-                        return Station;
-                    }
-                }
-                throw new Exception();
-            }
-            set
-            {
-                foreach (BaseStation Station in BaseStationArr)
-                {
-                    if (Station.Id == Id)
-                    {
-                         Station=value as BaseStation;
-                    }
-                }
-                throw new Exception();
-            }
-        }
+        //        foreach (BaseStation Station in BaseStationArr)
+        //        {
+        //            if (Station.Id == Id)
+        //            {
+        //                return Station;
+        //            }
+        //        }
+        //        throw new Exception();
+        //    }
+        //    set
+        //    {
+        //        foreach (BaseStation Station in BaseStationArr)
+        //        {
+        //            if (Station.Id == Id)
+        //            {
+        //                 Station=value as BaseStation;
+        //            }
+        //        }
+        //        throw new Exception();
+        //    }
+        //}
 
         internal class Config
         {
@@ -163,8 +155,8 @@ namespace DalObject
                 {
                     fillParcel.GetterId = CustomerArr[rand.Next(0, CustomerArr.Count)].Id;
                 } while (fillParcel.GetterId == fillParcel.SenderId);
-                fillParcel.Weight = (WeightCategories)rand.Next(0, Enum.GetNames(typeof(DAL.DO.WeightCategories)).Length);
-                fillParcel.Status = (UrgencyStatuses)rand.Next(0, Enum.GetNames(typeof(DAL.DO.UrgencyStatuses)).Length);
+                fillParcel.Weight = (WeightCategories)rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
+                fillParcel.Status = (UrgencyStatuses)rand.Next(0, Enum.GetNames(typeof(UrgencyStatuses)).Length);
                 fillParcel.DroneId = rand.Next(0, Config.IndexDroneArr);
                 //     fillParcel.MakingParcel = 
                 //    fillParcel.PickingUp = 
