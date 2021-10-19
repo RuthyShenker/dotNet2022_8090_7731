@@ -24,7 +24,11 @@ namespace DAL
             public int NumChargingStations { get; set; }
             public double Longitude { get; set; }
             public double Latitude { get; set; }
-            
+            public override string ToString()
+            {
+                return $"Id: {Id} Name Station: {NameStation} Number Of Charging Stations:" +
+                    $" {NumberOfChargingStations} Longitude: {Longitude} Latitude: {Latitude}";
+            }
         }
     }
 }

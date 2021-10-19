@@ -33,6 +33,13 @@ namespace DAL
                 Arrival = arrival;
                 MatchingParcel=matchingParcel;
             }
+            public override string ToString()
+            {
+                return $"ParcelId: {ParcelId} SenderId: {SenderId} GetterId:" +
+                    $" {GetterId} Weight: {Weight} Status: {Status} DroneId: {DroneId}" +
+                    $" MakingParcel: {MakingParcel} PickingUp:{PickingUp} Arrival:{Arrival}" +
+                    $" MatchingParcel:{MatchingParcel} ";
+            }
         }
     }
 }

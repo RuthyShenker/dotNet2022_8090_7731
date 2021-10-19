@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.DO;
 
-
 namespace DalObject
 {
 
@@ -20,6 +19,60 @@ namespace DalObject
 
 
         public BaseStation this[string Id]
+        {
+            get
+            {
+
+       
+ 
+        //public BaseStation this[string Id]
+        //{
+        //    get
+        //    {
+        //        foreach (BaseStation baseStation in BaseStationArr)
+        //        {
+        //            if (baseStation.Id == Id)
+        //            {
+        //                return baseStation;
+        //            }
+        //        }
+        //        throw new Exception("There isn't baseStation with this Id");
+        //    }
+        //    set
+        //    {
+        //        for (int i = 0; i < BaseStationArr.Length; i++)
+        //        {
+        //            if(BaseStationArr[i].Id==Id)
+        //            {
+        //                BaseStationArr[i] = value;
+        //            }
+        //        }
+        //    }
+        //}
+        //public Drone this[string Id]
+        //{
+        //    get
+        //    {
+        //        foreach (Drone drone in DroneArr)
+        //        {
+        //            if (drone.Id == Id)
+        //            {
+        //                return drone;
+        //            }
+        //        }
+        //        throw new Exception("There isn't Drone with this Id");
+        //    }
+        //    set
+        //    {
+        //        for (int i = 0; i <DroneArr.Length; i++)
+        //        {
+        //            if (DroneArr[i].Id == Id)
+        //            {
+        //                DroneArr[i] = value;
+        //            }
+        //        }
+        //    }
+        //}
         {
             get
             {
@@ -39,7 +92,7 @@ namespace DalObject
                 {
                     if (Station.Id == Id)
                     {
-                        Station = value as BaseStation;
+                         Station=value as BaseStation;
                     }
                 }
                 throw new Exception();
@@ -112,12 +165,11 @@ namespace DalObject
                 } while (fillParcel.GetterId == fillParcel.SenderId);
                 fillParcel.Weight = (WeightCategories)rand.Next(0, Enum.GetNames(typeof(DAL.DO.WeightCategories)).Length);
                 fillParcel.Status = (UrgencyStatuses)rand.Next(0, Enum.GetNames(typeof(DAL.DO.UrgencyStatuses)).Length);
-                fillParcel.DroneId = DroneArr[rand.Next(0, DroneArr.Count)].Id;
-                fillParcel.MakingParcel = DateTime.Now;
-                fillParcel.BelongParcel = fillParcel.MakingParcel.AddDays(rand.Next(0, 3));
-                fillParcel.PickingUp = fillParcel.BelongParcel.AddDays(rand.Next(0, 10));
-                fillParcel.Arrival = fillParcel.PickingUp.AddDays(rand.Next(0, 10));
-                ParcelArr.Add(fillParcel);
+                fillParcel.DroneId = rand.Next(0, Config.IndexDroneArr);
+                //     fillParcel.MakingParcel = 
+                //    fillParcel.PickingUp = 
+                //   fillParcel.Arrival =
+                //   fillParcel.MatchingParcel =
             }
         }
     }

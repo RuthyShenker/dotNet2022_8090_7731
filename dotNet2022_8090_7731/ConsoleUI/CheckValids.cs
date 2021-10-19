@@ -10,13 +10,13 @@ namespace DAL
     {
         public class CheckValids
         {
-            static public  bool check = false;
-            static public int input;
-            static public string strInput;
-            public static void CheckValid(int num1, int num2)
+            //static public  bool check = false;
+            //static public int input;
+            //static public string strInput;
+            public static void CheckValid(int min, int max,out int input)
             {
-                check = int.TryParse(Console.ReadLine(), out input);
-                while (!check || input < num1 || input > num2)
+               bool check = int.TryParse(Console.ReadLine(), out input);
+                while (!check || input < min || input > max)
                 {
                     Console.WriteLine("Invalid input!, please enter again");
                     check = int.TryParse(Console.ReadLine(), out input);

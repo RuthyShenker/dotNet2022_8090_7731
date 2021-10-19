@@ -23,6 +23,12 @@ namespace DAL
                 BatteryStatus = batteryStatus;
                 Status = status;
             }
+            public override string ToString()
+            {
+                return $"Id: {Id} Model: {Model} MaxWeight: {MaxWeight}" +
+                    $" BatteryStatus: {BatteryStatus} Status: {Status}";
+            }
+
         }
     }
 }

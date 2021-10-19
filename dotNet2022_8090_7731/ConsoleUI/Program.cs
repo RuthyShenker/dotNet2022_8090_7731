@@ -1,5 +1,6 @@
 ﻿using System;
 using DAL.DO;
+
 namespace ConsoleUI
 {
     class Program
@@ -18,9 +19,10 @@ namespace ConsoleUI
             Drone drone;
             Customer customer;
             Parcel parcel;
-            CheckValids.CheckValid(1, 5);
+            int input;
+            CheckValids.CheckValid(1, 5,out input);
 
-            switch (CheckValids.input)
+            switch (input)
             {
                 case 1:
                     Console.WriteLine(
@@ -28,8 +30,8 @@ namespace ConsoleUI
                         $"2 - ● Add a drone to the list of existing drones.\n" +
                         $"3 - ● Admission of a new customer to the customer list.\n" +
                         $"4 - ● Receipt of package for shipment.");
-                    CheckValids.CheckValid(1, 4);
-                    switch (CheckValids.input)
+                    CheckValids.CheckValid(1, 4,out input);
+                    switch (input)
                     {
                         case 1:
                             baseStation = GetBaseStation();
@@ -62,34 +64,25 @@ namespace ConsoleUI
                         $"3 - ● Delivery of a package to the destination\n" +
                         $"4 - ● Sending a skimmer for charging at a base station\n" +
                         $"5 - ● Release skimmer from charging at base station\n");
-                    CheckValids.CheckValid(1, 5);
+                    CheckValids.CheckValid(1, 5,out input);
 
-                    switch (CheckValids.input)
+                    switch (input)
                     {
                         case 1:
-                            Console.WriteLine("Enter The Id Of The parcel:");
-                            string PId = Console.ReadLine();
-                            dalObject.BelongParcel(PId);
+                            dalObject.BelongParcel(GettingId("Parcel"));
                             break;
                         case 2:
-                            Console.WriteLine("Enter The Id Of The drone:");
-                            string dId = Console.ReadLine();
-                            dalObject.ChangeDroneStatus(dId,3);
+                            dalObject.ChangeDroneStatus(GettingId("Drone"),DroneStatuses.Delivery);
                             break;
                         case 3:
-                            Console.WriteLine("Enter The Id Of The drone:");
-                            dId = Console.ReadLine();
-                            dalObject.ChangeDroneStatus(dId, 3);
+                            dalObject.ChangeDroneStatus(GettingId("Drone"),DroneStatuses.Available);
                             break;
                         case 4:
-                            Console.WriteLine("Enter The Id Of The drone:");
-                            dId = Console.ReadLine();
-                            dalObject.ChangeDroneStatus(dId, 2);
+                            ///לא עשינו לא ידענו מה לעשות?
+                            dalObject.ChangeDroneStatus();
                             break;
                         case 5:
-                            Console.WriteLine("Enter The Id Of The drone:");
-                            dId = Console.ReadLine();
-                            dalObject.ChangeDroneStatus(dId, 1);
+                            dalObject.ChangeDroneStatus(GettingId("Drone"), DroneStatuses.Available);
                             break;
                         default:
                             break;
@@ -101,21 +94,21 @@ namespace ConsoleUI
                         $"2 - ● Skimmer display\n" +
                         $"3 - ● Customer view\n" +
                         $"4 - ● Package view\n");
-                    CheckValids.CheckValid(1, 4);
+                    CheckValids.CheckValid(1, 4,out input);
 
-                    switch (CheckValids.input)
+                    switch (input)
                     {
                         case 1:
-                            dalObject.BaseStationDisplay(GetIdToDisplay());
+                            dalObject.BaseStationDisplay(GettingId("Base Station"));
                             break;
                         case 2:
-                            dalObject.DroneDisplay(GetIdToDisplay());
+                            dalObject.DroneDisplay(GettingId("Drone"));
                             break;
                         case 3:
-                            dalObject.CustomerDisplay(GetIdToDisplay());
+                            dalObject.CustomerDisplay(GettingId("Customer"));
                             break;
                         case 4:
-                            dalObject.ParcelDisplay(GetIdToDisplay());
+                            dalObject.ParcelDisplay(GettingId("Parcel"));
                             break;
                         default:
                             break;
@@ -131,11 +124,11 @@ namespace ConsoleUI
                         $"5 - ● Displays a list of packages that have not yet been assigned to the glider\n" +
                         $"6 - ● Display base stations with available charging stations\n");
                     CheckValids.CheckValid(1, 6);
-                    
+
                     switch (CheckValids.input)
                     {
                         case 1:
-                            dalObject.DisplayingBaseStations();
+                            dalObject.DisplayingListOfBaseStations();
                             break;
                         case 2:
                             dalObject.DisplayingDrones();
@@ -168,33 +161,34 @@ namespace ConsoleUI
 
         }
 
-        private static int GetIdToDisplay()
+        private static string GettingId(string obj)
         {
-            Console.WriteLine("Enter Id To Display:");
-            return int.Parse(Console.ReadLine());
+            Console.WriteLine($"Enter The Id Of The {obj}:");
+            return Console.ReadLine();
         }
 
         private static Parcel GetParcel()
         {
-            Console.WriteLine("Enter The Id Of The Parcel:");
+            Console.WriteLine("Enter The Id Of The Parcel: ");
             string parcelId = Console.ReadLine();
-            Console.WriteLine("Enter The Id Of The Sender:");
+            Console.WriteLine("Enter The Id Of The Sender: ");
             string senderId= Console.ReadLine();
-            Console.WriteLine("Enter The Id Of The Getter:");
+            Console.WriteLine("Enter The Id Of The Getter: ");
             string getterId = Console.ReadLine();
-            Console.WriteLine("Enter The Weight Of The Parcel:");
+            Console.WriteLine("Enter The Weight Of The Parcel: ");
             WeightCategories weight = (WeightCategories)int.Parse(Console.ReadLine());
             Console.WriteLine("Enter The Status Of The Parcel:");
             UrgencyStatuses status = (UrgencyStatuses)int.Parse(Console.ReadLine());
-            Console.WriteLine("Enter The DroneId Of The Parcel:");
-            int droneId = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter The DroneId Of The Parcel: ");
+            string droneId = Console.ReadLine();
             DateTime makingParcel = DateTime.Now;
-            DateTime pickingUp;
-            DateTime arrival;
-            DateTime matchingParcel;
+            /////מה צריך להיות במשתנים הללו?
+            DateTime pickingUp = DateTime.Now;
+            DateTime arrival = DateTime.Now;
+            DateTime matchingParcel = DateTime.Now;
             //i didnt finish!
             return new Parcel(parcelId, senderId, getterId, weight, status, droneId, makingParcel, pickingUp, arrival, matchingParcel);
-            
+
         }
 
         private static Customer GetCustomer()

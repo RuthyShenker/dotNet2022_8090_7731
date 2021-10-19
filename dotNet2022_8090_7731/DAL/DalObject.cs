@@ -33,24 +33,48 @@ namespace DalObject
         }
         public void BelongParcel(string pId)
         {
-            for (int i = 0; i < Config.IndexParcelArr; i++)
+            if (AvailableDrones())
             {
-                if (pId == ParcelArr[i].ParcelId)
+                for (int i = 0; i < IndexParcelArr; i++)
                 {
-                    ParcelArr[i].DroneId = DroneArr[ rand.Next(0, Config.IndexDroneArr)].Id;
-                    return;
+                    if (pId == ParcelArr[i].ParcelId)
+                    { 
+                        do
+                        {
+                            ParcelArr[i].DroneId = DroneArr[rand.Next(0, IndexDroneArr)].Id;
+                        } while (DroneArr[rand.Next(0, IndexDroneArr)].Status != DroneStatuses.Available);
+                        return;
+                    }
                 }
             }
-            //  throw ("Id isnt exist ");
+            //Console.WriteLine("There isn't available Drone!");
+            //  throw ("There isn't available Drone!");
         }
-
-        public void ChangeDroneStatus(string dId,int newStatus)
+        /// <summary>
+        /// A function that checks if exists drone that his statusDrone is available.
+        /// </summary>
+        /// <returns>if exists available drone return true else false</returns>
+        public bool AvailableDrones()
         {
-            for (int i = 0; i < Config.IndexDroneArr; i++)
+            for (int i = 0; i < DroneArr.Length; i++)
+                if(DroneArr[i].Status == DroneStatuses.Available)
+                    return true;
+            return false;
+        }
+        /// <summary>
+        ///A function that gets an integer that means a new status and Id of drone and 
+        ///changes the drone that his Id was given to the new status
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="newStatus"></param>
+        public void ChangeDroneStatus(string Id,DroneStatuses newStatus)
+        {
+            
+            for (int i = 0; i < IndexDroneArr; i++)
             {
-                if (dId == DroneArr[i].Id)
+                if (Id == DroneArr[i].Id)
                 {
-                    DroneArr[i].Status = (DroneStatuses)newStatus;
+                    DroneArr[i].Status = newStatus;
                     return;
                 }
             }
@@ -62,18 +86,55 @@ namespace DalObject
         public void BaseStationDisplay(int Id)
         {
             Console.WriteLine(BaseStationArr[Id]);
-        }
-        public void DroneDisplay(int Id)
+        public void ReleasingDroneFromChargingAtBaseStation()
         {
 
         }
-        public void CustomerDisplay(int Id)
+        public void BaseStationDisplay(string Id)
         {
+            foreach (var baseStation in BaseStationArr)
+            {
+                if(baseStation.Id==Id)
+                {
+                    Console.WriteLine(baseStation);
+                }
+            }
+        }
+        public void DroneDisplay(string Id)
+        {
+            foreach (var drone in DroneArr)
+            {
+                if (drone.Id == Id)
+                {
+                    Console.WriteLine(drone);
+                }
+            }
 
         }
-        public void ParcelDisplay(int Id)
+        public void CustomerDisplay(string Id)
         {
+            foreach (var customer in CustomerArr)
+            {
+                if (customer.Id == Id)
+                {
+                    Console.WriteLine(customer);
+                }
+            }
+        }
+        public void ParcelDisplay(string Id)
+        {
+            foreach (var parcel in ParcelArr)
+            {
+                if (parcel.ParcelId == Id)
+                {
+                    Console.WriteLine(parcel);
+                }
+            }
+        }
 
+        public void AffiliationParcel(object getId)
+        {
+            throw new NotImplementedException();
         }
         //----------------------------------------------------לאחד לפונ אחת
 
