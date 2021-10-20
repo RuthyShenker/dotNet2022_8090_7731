@@ -30,29 +30,40 @@ namespace DalObject
             ParceList.Add(parcel);
         }
         //שיוך חבילה לרחפן
-        public void BelongParcel(string pId)
+        public void BelongingParcel(string pId)
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == pId);
-            if (tempParcel == null) throw new Exception("NOT EXIST PARCEL WITH THIS ID");
-            Drone tempDrone=DroneList.First(drone => drone.Status == DroneStatuses.Available && drone.MaxWeight>=tempParcel.Weight);
-            if (tempDrone == null) tempParcel.DroneId = "0";
-            tempParcel.DroneId = tempDrone.Id;
-            tempDrone.Status = DroneStatuses.Delivery;
-            tempParcel.BelongParcel = DateTime.Now;
+            foreach (Drone drone in DroneList)
+            {
+                if (drone.Status == DroneStatuses.Available && drone.MaxWeight >= tempParcel.Weight)
+                {
+                    tempParcel.DroneId = drone.Id;
+                    tempParcel.BelongParcel = DateTime.Now;
+                }
+
+                else
+                {
+                    tempParcel.DroneId = "0";
+                }
+            }
         }
-        //אסיפת חבילה ע"י רחפן
-        public void PickingUpParcelByDrone(string Id)
+            //אסיפת חבילה ע"י רחפן
+        public void PickingUpParcel(string Id)
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
-            if (tempParcel == null) throw new Exception("NOT EXIST PARCEL WITH THIS ID");
             ParceList.Remove(ParceList.First(parcel => parcel.ParcelId == Id));
             tempParcel.PickingUp = DateTime.Now;
+            ChangeDroneStatus(tempParcel.DroneId, DroneStatuses.Delivery);
             ParceList.Add(tempParcel);
         }
-        public void DeliveryPackageToDestination(string Id)
+        //אספקת חבילה ליעד
+        public void DeliveryPackage(string Id)
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
+            ParceList.Remove(ParceList.First(parcel => parcel.ParcelId == Id));
             tempParcel.Arrival = DateTime.Now;
+            ChangeDroneStatus(tempParcel.DroneId, DroneStatuses.Available);
+            ParceList.Add(tempParcel);
         }
         /// <summary>
         ///A function that gets an integer that means a new status and Id of drone and 
@@ -66,74 +77,77 @@ namespace DalObject
             {
                 if (Id == DroneList[i].Id)
                 {
-                    if (newStatus == DroneStatuses.Maintenance)
-                    {
-                        ChargingDrone(Id);
-                    }
                     Drone changeDrone = DroneList[i];
                     changeDrone.Status = newStatus;
                     DroneList[i] = changeDrone;
                     return;
                 }
             }
-            throw new Exception("Id isnt exist");
+            throw new Exception("Not Exist Drone With This Id");
         }
         public void ChargingDrone(string IdDrone)
         {
-            ChargingDrone newChargingEntity = new ChargingDrone();
-            foreach (BaseStation item in BaseStationList)
+            foreach (BaseStation baseStation in BaseStationList)
             {
-                if (item.NumAvailablePositions != 0)
+                if (baseStation.NumAvailablePositions != 0)
                 {
-                    newChargingEntity.StationId = item.Id;
+                    ChangeDroneStatus(IdDrone, DroneStatuses.Maintenance);
+                    ChargingDrone newChargingEntity = new ChargingDrone();
+                    newChargingEntity.StationId = baseStation.Id;
                     newChargingEntity.DroneId = IdDrone;
                     ChargingDroneList.Add(newChargingEntity);
                     return;
                 }
             }
-            throw new Exception("There are no available positions");
+            throw new Exception("There Are No Available Positions");
         }
-
-        public void BaseStationDisplay(string Id)
+        public void ReleasingDrone(string dId)
         {
-            foreach (BaseStation item in BaseStationList)
+            ChangeDroneStatus(dId, DroneStatuses.Available);
+            ChargingDroneList.Remove(ChargingDroneList.First(chargingDrone=>chargingDrone.DroneId==dId));
+        }
+        //----------------------------------------------------לאחד לפונ אחת
+        public void BaseStationDisplay(string id)
+        {
+            foreach (BaseStation baseStation in BaseStationList)
             {
-                if (item.Id == Id)
+                if (baseStation.Id == id)
                 {
-                    item.ToString();
+                    baseStation.ToString();
                 }
             }
         }
         public void DroneDisplay(string Id)
         {
-            foreach (Drone item in DroneList)
+            foreach (Drone drone in DroneList)
             {
-                if (item.Id == Id)
+                if (drone.Id == Id)
                 {
-                    Console.WriteLine(item);
+                    Console.WriteLine(drone);
                 }
             }
         }
         public void CustomerDisplay(string Id)
         {
-            foreach (Customer item in CustomerList)
+            foreach (Customer customer in CustomerList)
             {
-                if (item.Id == Id)
+                if (customer.Id == Id)
                 {
-                    Console.WriteLine(item);
+                    Console.WriteLine(customer);
                 }
             }
         }
         public void ParcelDisplay(string Id)
         {
-            foreach (Parcel item in ParceList)
+            foreach (Parcel parcel in ParceList)
             {
-                if (item.ParcelId == Id)
+                if (parcel.ParcelId == Id)
                 {
-                    Console.WriteLine(item);
+                    Console.WriteLine(parcel);
                 }
             }
         }
+        //---------------------------------------------------------------------------------
 
         //----------------------------------------------------לאחד לפונ אחת
 

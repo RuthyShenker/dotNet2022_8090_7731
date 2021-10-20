@@ -24,10 +24,10 @@ namespace ConsoleUI
             UrgencyStatuses status = (UrgencyStatuses)int.Parse(Console.ReadLine());
             Console.WriteLine("Enter The DroneId Of The Parcel: ");
             string droneId = Console.ReadLine();
-            DateTime makingParcel = DateTime.Now;  
-            DateTime belongParcel =makingParcel.AddDays(rand.Next(0, 4));
-            DateTime pickingUp = belongParcel.AddDays(rand.Next(0, 11));
-            DateTime arrival = pickingUp.AddDays(rand.Next(0, 11));
+            DateTime makingParcel = DateTime.Now;
+            DateTime belongParcel = new DateTime();
+            DateTime pickingUp = new DateTime();
+            DateTime arrival = new DateTime();
             return new Parcel(parcelId, senderId, getterId, weight, status, droneId, makingParcel,belongParcel ,pickingUp, arrival);
 
         }

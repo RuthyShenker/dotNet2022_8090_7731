@@ -8,11 +8,7 @@ namespace ConsoleUI
         {
 
             DalObject.DalObject dalObject = new DalObject.DalObject();
-            BaseStation baseStation;
-            Drone drone;
-            Customer customer;
-            Parcel parcel;
-            int input;
+            int input; 
 
             Console.WriteLine
                 ($"Options:\n" +
@@ -35,20 +31,16 @@ namespace ConsoleUI
                     switch (input)
                     {
                         case 1:
-                            baseStation = InputObj.GettingBaseStation();
-                            dalObject.AddingBaseStation(baseStation);
+                            dalObject.AddingBaseStation(InputObj.GettingBaseStation());
                             break;
                         case 2:
-                            drone = InputObj.GettingDrone();
-                            dalObject.AddingDrone(drone);
+                            dalObject.AddingDrone(InputObj.GettingDrone());
                             break;
                         case 3:
-                            customer = InputObj.GettingCustomer();
-                            dalObject.AddingCustomer(customer);
+                            dalObject.AddingCustomer( InputObj.GettingCustomer());
                             break;
                         case 4:
-                            parcel = InputObj.GettingParcel();
-                            dalObject.GettingParcelForDelivery(parcel);
+                            dalObject.GettingParcelForDelivery(InputObj.GettingParcel());
                             break;
                         default:
                             break;
@@ -69,19 +61,19 @@ namespace ConsoleUI
                     switch (input)
                     {
                         case 1:
-                            dalObject.BelongParcel(GettingId("Parcel"));
+                            dalObject.BelongingParcel(GettingId("Parcel"));
                             break;
                         case 2:
-                            dalObject.PickingUpParcelByDrone(GettingId("Parcel"));
+                            dalObject.PickingUpParcel(GettingId("Parcel"));
                             break;
                         case 3:
-                            dalObject.DeliveryPackageToDestination(GettingId("Parcel"));
+                            dalObject.DeliveryPackage(GettingId("Parcel"));
                             break;
                         case 4:
-                            dalObject.ChangeDroneStatus(GettingId("Drone"), DroneStatuses.Maintenance);
+                            dalObject.ChargingDrone(GettingId("Drone"));
                             break;
                         case 5:
-                            dalObject.ChangeDroneStatus(GettingId("Drone"), DroneStatuses.Available);
+                            dalObject.ReleasingDrone(GettingId("Drone"));
                             break;
                         default:
                             break;
@@ -122,7 +114,7 @@ namespace ConsoleUI
                         $"4 - ● Displays the list of packages\n" +
                         $"5 - ● Displays a list of packages that have not yet been assigned to the glider\n" +
                         $"6 - ● Display base stations with available charging stations\n");
-                    CheckValids.CheckValid(1, 6, out input);
+                    CheckValids.CheckValid(1, 6,out input);
 
                     switch (input)
                     {
