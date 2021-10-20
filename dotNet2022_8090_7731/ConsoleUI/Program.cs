@@ -78,8 +78,7 @@ namespace ConsoleUI
                             dalObject.DeliveryPackageToDestination(GettingId("Parcel"));
                             break;
                         case 4:
-                            ///לא עשינו לא ידענו מה לעשות?
-                            dalObject.ChangeDroneStatus();
+                            dalObject.ChangeDroneStatus(GettingId("Drone"), DroneStatuses.Maintenance);
                             break;
                         case 5:
                             dalObject.ChangeDroneStatus(GettingId("Drone"), DroneStatuses.Available);
