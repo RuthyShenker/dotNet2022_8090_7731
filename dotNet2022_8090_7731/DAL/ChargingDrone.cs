@@ -6,8 +6,8 @@ namespace DAL
     {
         public struct ChargingDrone
         {
-            public int StationId{ get; set; }
-            public int DroneId{ get; set; }
+            public string StationId{ get; set; }
+            public string DroneId{ get; set; }
         }
     }
 }

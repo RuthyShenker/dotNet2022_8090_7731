@@ -17,7 +17,7 @@ namespace DalObject
         {
             BaseStationList.Add(baseStation);
         }
-        public void  AddingDrone(Drone drone)
+        public void AddingDrone(Drone drone)
         {
             DroneList.Add(drone);
         }
@@ -57,7 +57,7 @@ namespace DalObject
         public bool AvailableDrones()
         {
             for (int i = 0; i < DroneList.Count; i++)
-                if(DroneList[i].Status == DroneStatuses.Available)
+                if (DroneList[i].Status == DroneStatuses.Available)
                     return true;
             return false;
         }
@@ -67,33 +67,47 @@ namespace DalObject
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="newStatus"></param>
-        public void ChangeDroneStatus(string Id,DroneStatuses newStatus)
+        public void ChangeDroneStatus(string Id, DroneStatuses newStatus)
         {
             for (int i = 0; i < DroneList.Count; i++)
             {
                 if (Id == DroneList[i].Id)
                 {
+                    if (newStatus == DroneStatuses.Maintenance)
+                    {
+                        ChargingDrone(Id);
+                    }
                     Drone changeDrone = DroneList[i];
                     changeDrone.Status = newStatus;
                     DroneList[i] = changeDrone;
                     return;
                 }
             }
-            //  throw ("Id isnt exist ");
+            throw new Exception("Id isnt exist");
+        }
+        public void ChargingDrone(string IdDrone)
+        {
+            ChargingDrone newChargingEntity = new ChargingDrone();
+            foreach (BaseStation item in BaseStationList)
+            {
+                if (item.NumAvailablePositions != 0)
+                {
+                    newChargingEntity.StationId = item.Id;
+                    newChargingEntity.DroneId = IdDrone;
+                    ChargingDroneList.Add(newChargingEntity);
+                    return;
+                }
+            }
+            throw new Exception("There are no available positions");
         }
 
-        public void BaseStationDisplay(int Id)
-        {
-            BaseStationList[Id].ToString();
-        }
-      
         public void BaseStationDisplay(string Id)
         {
-            foreach (var baseStation in BaseStationList)
+            foreach (BaseStation item in BaseStationList)
             {
-                if(baseStation.Id==Id)
+                if (item.Id == Id)
                 {
-                    baseStation.ToString(); 
+                    item.ToString();
                 }
             }
         }
@@ -138,7 +152,7 @@ namespace DalObject
             }
         }
         public void DisplayingDrones()
-         {
+        {
             foreach (Drone item in DroneList)
             {
                 item.ToString();
@@ -163,7 +177,7 @@ namespace DalObject
         {
             foreach (Parcel item in ParceList)
             {
-                if (int.Parse( item.DroneId)!=0)
+                if (int.Parse(item.DroneId) == 0)
                 {
                     item.ToString();
                 }
@@ -173,15 +187,10 @@ namespace DalObject
         {
             foreach (BaseStation item in BaseStationList)
             {
-                for (int i = 0; i < item.NumChargingStations; i++)
+                if (item.NumAvailablePositions > 0)
                 {
-                    if (true)
-                    {
-
-                    } item.
+                    item.ToString();
                 }
-                
-                item.ToString();
             }
         }
     }

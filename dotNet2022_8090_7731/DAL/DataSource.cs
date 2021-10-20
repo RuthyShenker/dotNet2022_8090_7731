@@ -16,6 +16,7 @@ namespace DalObject
         static internal List<BaseStation> BaseStationList = new List<BaseStation>();
         static internal List<Customer> CustomerList = new List<Customer>();
         static internal List<Parcel> ParceList = new List<Parcel>();
+        static internal List<ChargingDrone> ChargingDroneList = new List<ChargingDrone>();
 
 
         //public BaseStation this[string Id]
@@ -142,7 +143,7 @@ namespace DalObject
             {
                 fillBaseStation.Id = rand.Next(10 ^ 5, 10 ^ 6).ToString();
                 fillBaseStation.NameStation = initNameStation[rand.Next(0, initNameStation.Length)];
-                fillBaseStation.NumChargingStations = rand.Next(3, 10);
+                fillBaseStation.NumAvailablePositions = rand.Next(3, 10);
                 fillBaseStation.Longitude = rand.Next(rand.Next(0, 90)) + rand.NextDouble();
                 fillBaseStation.Latitude = rand.Next(rand.Next(0, 180)) + rand.NextDouble();
                 BaseStationList.Add(fillBaseStation);
