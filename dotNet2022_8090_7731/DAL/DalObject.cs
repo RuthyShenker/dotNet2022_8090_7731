@@ -137,54 +137,31 @@ namespace DalObject
 
         //----------------------------------------------------לאחד לפונ אחת
 
-        public void DisplayingBaseStations()
+        public BaseStation[] DisplayingBaseStations()
         {
-            foreach (BaseStation item in BaseStationList)
-            {
-                item.ToString();
-            }
+            return BaseStationList.ToArray();
         }
-        public void DisplayingDrones()
+        public Drone[] DisplayingDrones()
         {
-            foreach (Drone item in DroneList)
-            {
-                item.ToString();
-            }
+            return DroneList.ToArray();
         }
-        public void DisplayingCustomers()
+        public Customer[] DisplayingCustomers()
         {
-            foreach (Customer item in CustomerList)
-            {
-                item.ToString();
-            }
+            return CustomerList.ToArray();
         }
-        public void DisplayingParcels()
+        public Parcel[] DisplayingParcels()
         {
-            foreach (Parcel item in ParceList)
-            {
-                item.ToString();
-            }
+            return ParceList.ToArray();
         }
         //-------------------------------------------------------------------------
-        public void DisplayingUnbelongParcels()
+        public Parcel[] DisplayingUnbelongParcels()
         {
-            foreach (Parcel item in ParceList)
-            {
-                if (int.Parse(item.DroneId) == 0)
-                {
-                    item.ToString();
-                }
-            }
+            return ParceList.Where(parcel => int.Parse(parcel.DroneId) == 0).ToArray();
         }
-        public void DisplayingStationsWithAvailablePositions()
+
+        public BaseStation[] AvailableSlots()
         {
-            foreach (BaseStation item in BaseStationList)
-            {
-                if (item.NumAvailablePositions > 0)
-                {
-                    item.ToString();
-                }
-            }
+            return BaseStationList.Where(BaseStation => BaseStation.NumAvailablePositions > 0).ToArray();
         }
     }
 }

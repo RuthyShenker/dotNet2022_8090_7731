@@ -6,13 +6,13 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-           
+
             DalObject.DalObject dalObject = new DalObject.DalObject();
             BaseStation baseStation;
             Drone drone;
             Customer customer;
             Parcel parcel;
-            int input; 
+            int input;
 
             Console.WriteLine
                 ($"Options:\n" +
@@ -21,7 +21,7 @@ namespace ConsoleUI
                 $"3 - Display\n" +
                 $"4 - List view options\n" +
                 $"5 - Exit");
-            CheckValids.CheckValid(1, 5,out input);
+            CheckValids.CheckValid(1, 5, out input);
 
             switch (input)
             {
@@ -31,7 +31,7 @@ namespace ConsoleUI
                         $"2 - Add a drone to the list of existing drones.\n" +
                         $"3 - Admission of a new customer to the customer list.\n" +
                         $"4 - Receipt of package for shipment.");
-                    CheckValids.CheckValid(1, 4,out input);
+                    CheckValids.CheckValid(1, 4, out input);
                     switch (input)
                     {
                         case 1:
@@ -64,7 +64,7 @@ namespace ConsoleUI
                         $"3 - ● Delivery of a package to the destination\n" +
                         $"4 - ● Sending a skimmer for charging at a base station\n" +
                         $"5 - ● Release skimmer from charging at base station\n");
-                    CheckValids.CheckValid(1, 5,out input);
+                    CheckValids.CheckValid(1, 5, out input);
 
                     switch (input)
                     {
@@ -93,7 +93,7 @@ namespace ConsoleUI
                         $"2 - ● Skimmer display\n" +
                         $"3 - ● Customer view\n" +
                         $"4 - ● Package view\n");
-                    CheckValids.CheckValid(1, 4,out input);
+                    CheckValids.CheckValid(1, 4, out input);
 
                     switch (input)
                     {
@@ -122,27 +122,33 @@ namespace ConsoleUI
                         $"4 - ● Displays the list of packages\n" +
                         $"5 - ● Displays a list of packages that have not yet been assigned to the glider\n" +
                         $"6 - ● Display base stations with available charging stations\n");
-                    CheckValids.CheckValid(1, 6);
+                    CheckValids.CheckValid(1, 6, out input);
 
-                    switch (CheckValids.input)
+                    switch (input)
                     {
                         case 1:
-                            dalObject.DisplayingListOfBaseStations();
+                            BaseStation[] StationArr = dalObject.DisplayingBaseStations();
+                            StationArr.ToString();
                             break;
                         case 2:
-                            dalObject.DisplayingDrones();
+                            Drone[] DroneArr = dalObject.DisplayingDrones();
+                            DroneArr.ToString();
                             break;
                         case 3:
-                            dalObject.DisplayingCustomers();
+                            Customer[] CustomerArr = dalObject.DisplayingCustomers();
+                            CustomerArr.ToString();
                             break;
                         case 4:
-                            dalObject.DisplayingParcels();
+                            Parcel[] ParcelArr = dalObject.DisplayingParcels();
+                            ParcelArr.ToString();
                             break;
                         case 5:
-                            dalObject.DisplayingUnbelongParcels();
+                            Parcel[] UnbelongParcelsArr=dalObject.DisplayingUnbelongParcels();
+                            UnbelongParcelsArr.ToString();
                             break;
                         case 6:
-                            dalObject.DisplayingStationsWithAvailablePositions();
+                            BaseStation[] AvailableSlotsArr = dalObject.AvailableSlots();
+                            AvailableSlotsArr.ToString();
                             break;
                         default:
                             break;
@@ -166,6 +172,6 @@ namespace ConsoleUI
             return Console.ReadLine();
         }
 
-        
+
     }
 }
