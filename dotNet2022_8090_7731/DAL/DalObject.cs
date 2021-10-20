@@ -80,22 +80,22 @@ namespace DalObject
                     return;
                 }
             }
-            throw new Exception("Id isnt exist");
+            throw new Exception("NOT EXIST DRONE WITH THIS ID");
         }
         public void ChargingDrone(string IdDrone)
         {
-            foreach (BaseStation item in BaseStationList)
+            foreach (BaseStation baseStation in BaseStationList)
             {
-                if (item.NumAvailablePositions != 0)
+                if (baseStation.NumAvailablePositions != 0)
                 {
                     ChargingDrone newChargingEntity = new ChargingDrone();
-                    newChargingEntity.StationId = item.Id;
+                    newChargingEntity.StationId = baseStation.Id;
                     newChargingEntity.DroneId = IdDrone;
                     ChargingDroneList.Add(newChargingEntity);
                     return;
                 }
             }
-            throw new Exception("There are no available positions");
+            throw new Exception("THERE ARE NO AVAILABLE POSITIONS");
         }
 
         public void BaseStationDisplay(string Id)
