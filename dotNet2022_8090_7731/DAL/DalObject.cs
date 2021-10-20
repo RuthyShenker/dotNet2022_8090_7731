@@ -5,44 +5,44 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.DO;
 using static DalObject.DataSource;
-using static DalObject.DataSource.Config;
 namespace DalObject
 {
     public class DalObject
     {
-
         public DalObject()
         {
             Initialize();
         }
         public void AddingBaseStation(BaseStation baseStation)
         {
-            BaseStationArr[IndexBaseStationArr] = baseStation;
+            BaseStationList.Add(baseStation);
         }
         public void  AddingDrone(Drone drone)
         {
-            DroneArr[IndexDroneArr] = drone;
+            DroneList.Add(drone);
         }
         public void AddingCustomer(Customer customer)
         {
-            CustomerArr[IndexCustomerArr] = customer;
+            CustomerList.Add(customer);
         }
         public void GettingParcelForDelivery(Parcel parcel)
         {
-            ParcelArr[IndexParcelArr] = parcel;
+            ParceList.Add(parcel);
         }
         public void BelongParcel(string pId)
         {
             if (AvailableDrones())
             {
-                for (int i = 0; i < IndexParcelArr; i++)
+                for (int i = 0; i < DroneList.Count; i++)
                 {
-                    if (pId == ParcelArr[i].ParcelId)
-                    { 
+                    if (pId == ParceList[i].ParcelId)
+                    {
+                        Parcel changeParcel = ParceList[i];
                         do
                         {
-                            ParcelArr[i].DroneId = DroneArr[rand.Next(0, IndexDroneArr)].Id;
-                        } while (DroneArr[rand.Next(0, IndexDroneArr)].Status != DroneStatuses.Available);
+                            changeParcel.DroneId = DroneList[rand.Next(0, DroneList.Count)].Id;
+                            ParceList[i] = changeParcel;
+                        } while (DroneList[rand.Next(0, DroneList.Count)].Status != DroneStatuses.Available);
                         return;
                     }
                 }
@@ -56,8 +56,8 @@ namespace DalObject
         /// <returns>if exists available drone return true else false</returns>
         public bool AvailableDrones()
         {
-            for (int i = 0; i < DroneArr.Length; i++)
-                if(DroneArr[i].Status == DroneStatuses.Available)
+            for (int i = 0; i < DroneList.Count; i++)
+                if(DroneList[i].Status == DroneStatuses.Available)
                     return true;
             return false;
         }
@@ -69,99 +69,91 @@ namespace DalObject
         /// <param name="newStatus"></param>
         public void ChangeDroneStatus(string Id,DroneStatuses newStatus)
         {
-            
-            for (int i = 0; i < IndexDroneArr; i++)
+            for (int i = 0; i < DroneList.Count; i++)
             {
-                if (Id == DroneArr[i].Id)
+                if (Id == DroneList[i].Id)
                 {
-                    DroneArr[i].Status = newStatus;
+                    Drone changeDrone = DroneList[i];
+                    changeDrone.Status = newStatus;
+                    DroneList[i] = changeDrone;
                     return;
                 }
             }
             //  throw ("Id isnt exist ");
         }
-       
-       
-       
+
         public void BaseStationDisplay(int Id)
         {
-            Console.WriteLine(BaseStationArr[Id]);
-        public void ReleasingDroneFromChargingAtBaseStation()
-        {
-
+            BaseStationList[Id].ToString();
         }
+      
         public void BaseStationDisplay(string Id)
         {
-            foreach (var baseStation in BaseStationArr)
+            foreach (var baseStation in BaseStationList)
             {
                 if(baseStation.Id==Id)
                 {
-                    Console.WriteLine(baseStation);
+                    baseStation.ToString(); 
                 }
             }
         }
         public void DroneDisplay(string Id)
         {
-            foreach (var drone in DroneArr)
+            foreach (Drone item in DroneList)
             {
-                if (drone.Id == Id)
+                if (item.Id == Id)
                 {
-                    Console.WriteLine(drone);
+                    Console.WriteLine(item);
                 }
             }
-
         }
         public void CustomerDisplay(string Id)
         {
-            foreach (var customer in CustomerArr)
+            foreach (Customer item in CustomerList)
             {
-                if (customer.Id == Id)
+                if (item.Id == Id)
                 {
-                    Console.WriteLine(customer);
+                    Console.WriteLine(item);
                 }
             }
         }
         public void ParcelDisplay(string Id)
         {
-            foreach (var parcel in ParcelArr)
+            foreach (Parcel item in ParceList)
             {
-                if (parcel.ParcelId == Id)
+                if (item.ParcelId == Id)
                 {
-                    Console.WriteLine(parcel);
+                    Console.WriteLine(item);
                 }
             }
         }
 
-        public void AffiliationParcel(object getId)
-        {
-            throw new NotImplementedException();
-        }
         //----------------------------------------------------לאחד לפונ אחת
 
         public void DisplayingBaseStations()
         {
-            foreach (BaseStation item in BaseStationArr)
+            foreach (BaseStation item in BaseStationList)
             {
                 item.ToString();
             }
         }
         public void DisplayingDrones()
          {
-            foreach (Drone item in DroneArr)
+            foreach (Drone item in DroneList)
             {
                 item.ToString();
             }
         }
         public void DisplayingCustomers()
         {
-            foreach (Customer item in CustomerArr)
+            foreach (Customer item in CustomerList)
             {
                 item.ToString();
             }
         }
         public void DisplayingParcels()
         {
-            foreach (Parcel item in ParcelArr)
+            foreach (Parcel item in ParceList)
             {
                 item.ToString();
             }
@@ -169,9 +161,8 @@ namespace DalObject
         //-------------------------------------------------------------------------
         public void DisplayingUnbelongParcels()
         {
-            foreach (Parcel item in ParcelArr)
+            foreach (Parcel item in ParceList)
             {
-                
                 if (int.Parse( item.DroneId)!=0)
                 {
                     item.ToString();
@@ -180,7 +171,7 @@ namespace DalObject
         }
         public void DisplayingStationsWithAvailablePositions()
         {
-            foreach (BaseStation item in BaseStationArr)
+            foreach (BaseStation item in BaseStationList)
             {
                 for (int i = 0; i < item.NumChargingStations; i++)
                 {
@@ -189,14 +180,9 @@ namespace DalObject
 
                     } item.
                 }
-                if (item.NumChargingStations)
-                {
-
-                }
+                
                 item.ToString();
             }
         }
-
     }
-
 }
