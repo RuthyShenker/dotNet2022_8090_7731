@@ -120,27 +120,47 @@ namespace ConsoleUI
                     {
                         case 1:
                             BaseStation[] StationArr = dalObject.DisplayingBaseStations();
-                            StationArr.ToString();
+                            foreach (BaseStation baseStation in StationArr)
+                            {
+                                baseStation.ToString();
+                            }
                             break;
                         case 2:
                             Drone[] DroneArr = dalObject.DisplayingDrones();
-                            DroneArr.ToString();
+                            foreach (Drone drone in DroneArr)
+                            {
+                                drone.ToString();
+                            }
                             break;
                         case 3:
                             Customer[] CustomerArr = dalObject.DisplayingCustomers();
-                            CustomerArr.ToString();
+                            foreach (Customer customer in CustomerArr)
+                            {
+                                customer.ToString();
+                            }
                             break;
                         case 4:
                             Parcel[] ParcelArr = dalObject.DisplayingParcels();
-                            ParcelArr.ToString();
+                            foreach (Parcel parcel in ParcelArr)
+                            {
+                                parcel.ToString();
+                            }
                             break;
                         case 5:
                             Parcel[] UnbelongParcelsArr=dalObject.DisplayingUnbelongParcels();
-                            UnbelongParcelsArr.ToString();
+                            foreach (Parcel parcel in UnbelongParcelsArr)
+                            {
+                                parcel.ToString();
+                            }
+
                             break;
                         case 6:
                             BaseStation[] AvailableSlotsArr = dalObject.AvailableSlots();
-                            AvailableSlotsArr.ToString();
+                            foreach (BaseStation baseStation in AvailableSlotsArr)
+                            {
+                                baseStation.ToString();
+                            }
+
                             break;
                         default:
                             break;
