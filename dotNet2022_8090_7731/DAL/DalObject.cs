@@ -34,7 +34,7 @@ namespace DalObject
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == pId);
             if (tempParcel == null) throw new Exception("NOT EXIST PARCEL WITH THIS ID");
-            Drone tempDrone=DroneList.First(drone => drone.Status == DroneStatuses.Available && drone.MaxWeight>=tempParcel.Weight);
+            Drone tempDrone = DroneList.First(drone => drone.Status == DroneStatuses.Available && drone.MaxWeight >= tempParcel.Weight);
             if (tempDrone == null) tempParcel.DroneId = "0";
             tempParcel.DroneId = tempDrone.Id;
             tempDrone.Status = DroneStatuses.Delivery;
@@ -49,10 +49,14 @@ namespace DalObject
             tempParcel.PickingUp = DateTime.Now;
             ParceList.Add(tempParcel);
         }
+        //אספקת חבילה ליעד
         public void DeliveryPackageToDestination(string Id)
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
+            if (tempParcel == null) throw new Exception("NOT EXIST PARCEL WITH THIS ID");
+            ParceList.Remove(ParceList.First(parcel => parcel.ParcelId == Id));
             tempParcel.Arrival = DateTime.Now;
+            ParceList.Add(tempParcel);
         }
         /// <summary>
         ///A function that gets an integer that means a new status and Id of drone and 
@@ -80,11 +84,11 @@ namespace DalObject
         }
         public void ChargingDrone(string IdDrone)
         {
-            ChargingDrone newChargingEntity = new ChargingDrone();
             foreach (BaseStation item in BaseStationList)
             {
                 if (item.NumAvailablePositions != 0)
                 {
+                    ChargingDrone newChargingEntity = new ChargingDrone();
                     newChargingEntity.StationId = item.Id;
                     newChargingEntity.DroneId = IdDrone;
                     ChargingDroneList.Add(newChargingEntity);
