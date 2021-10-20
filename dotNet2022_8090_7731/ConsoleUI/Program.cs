@@ -122,35 +122,35 @@ namespace ConsoleUI
                             BaseStation[] StationArr = dalObject.DisplayingBaseStations();
                             foreach (BaseStation baseStation in StationArr)
                             {
-                                baseStation.ToString();
+                                Console.WriteLine(baseStation);
                             }
                             break;
                         case 2:
                             Drone[] DroneArr = dalObject.DisplayingDrones();
                             foreach (Drone drone in DroneArr)
                             {
-                                drone.ToString();
+                                Console.WriteLine(drone); 
                             }
                             break;
                         case 3:
                             Customer[] CustomerArr = dalObject.DisplayingCustomers();
                             foreach (Customer customer in CustomerArr)
                             {
-                                customer.ToString();
+                                Console.WriteLine( customer);
                             }
                             break;
                         case 4:
                             Parcel[] ParcelArr = dalObject.DisplayingParcels();
                             foreach (Parcel parcel in ParcelArr)
                             {
-                                parcel.ToString();
+                                Console.WriteLine( parcel);
                             }
                             break;
                         case 5:
                             Parcel[] UnbelongParcelsArr=dalObject.DisplayingUnbelongParcels();
                             foreach (Parcel parcel in UnbelongParcelsArr)
                             {
-                                parcel.ToString();
+                                Console.WriteLine( parcel);
                             }
 
                             break;
