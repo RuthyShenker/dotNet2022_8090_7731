@@ -107,45 +107,21 @@ namespace DalObject
             ChargingDroneList.Remove(ChargingDroneList.First(chargingDrone=>chargingDrone.DroneId==dId));
         }
         //----------------------------------------------------לאחד לפונ אחת
-        public void BaseStationDisplay(string id)
+        public BaseStation BaseStationDisplay(string id)
         {
-            foreach (BaseStation baseStation in BaseStationList)
-            {
-                if (baseStation.Id == id)
-                {
-                    baseStation.ToString();
-                }
-            }
+            return BaseStationList.First(baseStation => baseStation.Id == id);
         }
-        public void DroneDisplay(string Id)
+        public Drone DroneDisplay(string Id)
         {
-            foreach (Drone drone in DroneList)
-            {
-                if (drone.Id == Id)
-                {
-                    Console.WriteLine(drone);
-                }
-            }
+            return DroneList.First(drone => drone.Id == Id);
         }
-        public void CustomerDisplay(string Id)
+        public Customer CustomerDisplay(string Id)
         {
-            foreach (Customer customer in CustomerList)
-            {
-                if (customer.Id == Id)
-                {
-                    Console.WriteLine(customer);
-                }
-            }
+            return CustomerList.First(customer => customer.Id == Id);
         }
-        public void ParcelDisplay(string Id)
+        public Parcel ParcelDisplay(string Id)
         {
-            foreach (Parcel parcel in ParceList)
-            {
-                if (parcel.ParcelId == Id)
-                {
-                    Console.WriteLine(parcel);
-                }
-            }
+            return ParceList.First(parcel => parcel.ParcelId == Id);
         }
         //---------------------------------------------------------------------------------
 
