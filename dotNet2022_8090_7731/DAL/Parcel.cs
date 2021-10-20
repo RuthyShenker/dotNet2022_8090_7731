@@ -29,7 +29,7 @@ namespace DAL
             //זמן הגעת החבילה למקבל
             public DateTime Arrival { get; set; }
            
-            public Parcel(string parcelId, string senderId, string getterId, WeightCategories weight, UrgencyStatuses status, string droneId, DateTime makingParcel,DateTime belongParcel,DateTime pickingUp,DateTime arrival)
+            public Parcel(string parcelId, string senderId, string getterId, WeightCategories weight, UrgencyStatuses status, string droneId, DateTime makingParcel,DateTime belongParcel, DateTime pickingUp, DateTime arrival)
             {
                 ParcelId = parcelId;
                 SenderId = senderId;
@@ -37,18 +37,17 @@ namespace DAL
                 Weight = weight;
                 Status = status;
                 DroneId = droneId;
-                MakingParcel = makingParcel; 
-                BelongParcel= BelongParcel;
+                MakingParcel = makingParcel;
+                BelongParcel = belongParcel;
                 PickingUp = pickingUp;
                 Arrival = arrival;
-
             }
             public override string ToString()
             {
                 return $"ParcelId: {ParcelId} SenderId: {SenderId} GetterId:" +
                     $" {GetterId} Weight: {Weight} Status: {Status} DroneId: {DroneId}" +
-                    $" MakingParcel: {MakingParcel} PickingUp:{PickingUp} Arrival:{Arrival}" +
-                    $" MatchingParcel:{MatchingParcel} ";
+                    $" MakingParcel: {MakingParcel}  BelongParcel:{BelongParcel} " +
+                    $"PickingUp:{PickingUp} Arrival:{Arrival}";
             }
         }
     }

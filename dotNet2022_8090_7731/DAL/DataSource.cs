@@ -103,10 +103,10 @@ namespace DalObject
         internal class Config
         {
             //לא צריךך
-            internal static int IndexDroneArr;
-            internal static int IndexBaseStationArr;
-            internal static int IndexCustomerArr;
-            internal static int IndexParcelArr;
+            //internal static int IndexDroneArr;
+            //internal static int IndexBaseStationArr;
+            //internal static int IndexCustomerArr;
+            //internal static int IndexParcelArr;
             //there is another field!!
         }
         public static void Initialize()
@@ -116,8 +116,8 @@ namespace DalObject
             Drone fillDrone = new Drone();
             for (int i = 0; i < INITIALIZE_DRONE; ++i)
             {
-                fillDrone.Id = rand.Next(10 ^ 8, 10 ^ 9).ToString();
-                fillDrone.Model = rand.Next(10 ^ 3, 10 ^ 4).ToString();
+                fillDrone.Id = rand.Next(100000000, 1000000000).ToString();
+                fillDrone.Model = rand.Next(1000, 10000).ToString();
                 fillDrone.MaxWeight = (WeightCategories)rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
                 fillDrone.BatteryStatus = rand.Next(0, 101);
                 fillDrone.Status = (DroneStatuses)rand.Next(0, Enum.GetNames(typeof(DroneStatuses)).Length);
@@ -129,9 +129,10 @@ namespace DalObject
             string[] InitDigitsPhone = { "0556", "0548", "0583", "0533", "0527", "0522", "0505", "0584" };
             for (int i = 0; i < INITIALIZE_CUSTOMER; i++)
             {
-                fillCustomer.Id = rand.Next(10 ^ 8, 10 ^ 9).ToString();
+                fillCustomer.Id = rand.Next(100000000, 1000000000).ToString();
                 fillCustomer.Name = initNames[rand.Next(0, initNames.Length)];
-                fillCustomer.Phone = InitDigitsPhone[rand.Next(0, InitDigitsPhone.Length)] + rand.Next(10 ^ 5, 10 ^ 6).ToString();
+                fillCustomer.Phone = InitDigitsPhone[rand.Next(0, InitDigitsPhone.Length)];
+                fillCustomer.Phone += rand.Next(100000, 1000000).ToString();
                 fillCustomer.Longitude = rand.Next(0, 90) + rand.NextDouble();
                 fillCustomer.Latitude = rand.Next(0, 180) + rand.NextDouble();
                 CustomerList.Add(fillCustomer);
@@ -141,7 +142,7 @@ namespace DalObject
             string[] initNameStation = { "Tel-Tzion", "Tel-Aviv", "Ranana", "Eilat", "Jerusalem" };
             for (int i = 0; i < INITIALIZE_BASE_STATION; ++i)
             {
-                fillBaseStation.Id = rand.Next(10 ^ 5, 10 ^ 6).ToString();
+                fillBaseStation.Id = rand.Next(100000000, 1000000000).ToString();
                 fillBaseStation.NameStation = initNameStation[rand.Next(0, initNameStation.Length)];
                 fillBaseStation.NumAvailablePositions = rand.Next(3, 10);
                 fillBaseStation.Longitude = rand.Next(rand.Next(0, 90)) + rand.NextDouble();
@@ -152,7 +153,7 @@ namespace DalObject
             Parcel fillParcel = new Parcel();
             for (int i = 0; i < INITIALIZE_PARCEL; ++i)
             {
-                fillParcel.ParcelId = rand.Next(10 ^ 6, 10 ^ 7).ToString();
+                fillParcel.ParcelId = rand.Next(1000, 10000).ToString();
                 fillParcel.SenderId = CustomerList[rand.Next(0, CustomerList.Count)].Id;
                 do
                 {
