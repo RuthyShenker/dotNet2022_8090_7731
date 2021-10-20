@@ -29,37 +29,30 @@ namespace DalObject
         {
             ParceList.Add(parcel);
         }
+        //שיוך חבילה לרחפן
         public void BelongParcel(string pId)
         {
-            if (AvailableDrones())
-            {
-                for (int i = 0; i < DroneList.Count; i++)
-                {
-                    if (pId == ParceList[i].ParcelId)
-                    {
-                        Parcel changeParcel = ParceList[i];
-                        do
-                        {
-                            changeParcel.DroneId = DroneList[rand.Next(0, DroneList.Count)].Id;
-                            ParceList[i] = changeParcel;
-                        } while (DroneList[rand.Next(0, DroneList.Count)].Status != DroneStatuses.Available);
-                        return;
-                    }
-                }
-            }
-            //Console.WriteLine("There isn't available Drone!");
-            //  throw ("There isn't available Drone!");
+            Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == pId);
+            if (tempParcel == null) throw new Exception("NOT EXIST PARCEL WITH THIS ID");
+            Drone tempDrone=DroneList.First(drone => drone.Status == DroneStatuses.Available && drone.MaxWeight>=tempParcel.Weight);
+            if (tempDrone == null) tempParcel.DroneId = "0";
+            tempParcel.DroneId = tempDrone.Id;
+            tempDrone.Status = DroneStatuses.Delivery;
+            tempParcel.BelongParcel = DateTime.Now;
         }
-        /// <summary>
-        /// A function that checks if exists drone that his statusDrone is available.
-        /// </summary>
-        /// <returns>if exists available drone return true else false</returns>
-        public bool AvailableDrones()
+        //אסיפת חבילה ע"י רחפן
+        public void PickingUpParcelByDrone(string Id)
         {
-            for (int i = 0; i < DroneList.Count; i++)
-                if(DroneList[i].Status == DroneStatuses.Available)
-                    return true;
-            return false;
+            Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
+            if (tempParcel == null) throw new Exception("NOT EXIST PARCEL WITH THIS ID");
+            ParceList.Remove(ParceList.First(parcel => parcel.ParcelId == Id));
+            tempParcel.PickingUp = DateTime.Now;
+            ParceList.Add(tempParcel);
+        }
+        public void DeliveryPackageToDestination(string Id)
+        {
+            Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
+            tempParcel.Arrival = DateTime.Now;
         }
         /// <summary>
         ///A function that gets an integer that means a new status and Id of drone and 

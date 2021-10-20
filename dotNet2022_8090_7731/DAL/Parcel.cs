@@ -16,11 +16,20 @@ namespace DAL
             public WeightCategories Weight { get; set; }
             public UrgencyStatuses Status { get; set; }
             public string DroneId { get; set; }
+
+            //זמן יצירת חבילה למשלוח
             public DateTime MakingParcel { get; set; }
-            public DateTime PickingUp { get; set; }
-            public DateTime Arrival { get; set; }
+
+            //זמן שיוך חבילה לרחפן
             public DateTime BelongParcel { get; set; }
-            public Parcel(string parcelId, string senderId, string getterId, WeightCategories weight, UrgencyStatuses status, int droneId, DateTime makingParcel, DateTime pickingUp, DateTime arrival, DateTime BelongParcel)
+
+            //זמן איסוף חבילה מהשולח
+            public DateTime PickingUp { get; set; }
+
+            //זמן הגעת החבילה למקבל
+            public DateTime Arrival { get; set; }
+           
+            public Parcel(string parcelId, string senderId, string getterId, WeightCategories weight, UrgencyStatuses status, string droneId, DateTime makingParcel,DateTime belongParcel,DateTime pickingUp,DateTime arrival)
             {
                 ParcelId = parcelId;
                 SenderId = senderId;
@@ -28,10 +37,11 @@ namespace DAL
                 Weight = weight;
                 Status = status;
                 DroneId = droneId;
-                MakingParcel = makingParcel;
+                MakingParcel = makingParcel; 
+                BelongParcel= BelongParcel;
                 PickingUp = pickingUp;
                 Arrival = arrival;
-                BelongParcel= BelongParcel;
+
             }
             public override string ToString()
             {

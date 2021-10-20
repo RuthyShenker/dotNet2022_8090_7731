@@ -8,7 +8,7 @@ using DAL.DO;
 namespace DalObject
 {
 
-    static class DataSource
+    class DataSource
     {
         public static Random rand = new Random();
 
