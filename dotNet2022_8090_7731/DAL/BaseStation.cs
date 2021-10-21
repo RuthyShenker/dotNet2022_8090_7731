@@ -26,8 +26,8 @@ namespace DAL
             public double Latitude { get; set; }
             public override string ToString()
             {
-                return $"Id: {Id} Name Station: {NameStation} Number Of Available Charging Stations:" +
-                    $" {NumAvailablePositions} Longitude: {Longitude} Latitude: {Latitude}";
+                return $"Station name: {NameStation}     Id: {Id}   Longitude: {Longitude}  Latitude: {Latitude}    " +
+                    $"Number of available charging positions: {NumAvailablePositions}";
             }
         }
     }

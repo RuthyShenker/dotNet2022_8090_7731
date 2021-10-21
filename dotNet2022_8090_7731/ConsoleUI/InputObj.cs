@@ -18,10 +18,21 @@ namespace ConsoleUI
             string senderId= Console.ReadLine();
             Console.WriteLine("Enter The Id Of The Getter: ");
             string getterId = Console.ReadLine();
+
             Console.WriteLine("Enter The Weight Of The Parcel: ");
-            WeightCategories weight = (WeightCategories)int.Parse(Console.ReadLine());
+            int input;
+            CheckValids.InputValidWeightCategories(out input);
+            WeightCategories weight = (WeightCategories)input;
+
             Console.WriteLine("Enter The Status Of The Parcel:");
-            UrgencyStatuses status = (UrgencyStatuses)int.Parse(Console.ReadLine());
+            bool check = int.TryParse(Console.ReadLine(), out input);
+            while (!check || input < 0 || input > Enum.GetNames(typeof(UrgencyStatuses)).Length)
+            {
+                Console.WriteLine("Invalid input!, please enter again");
+                check = int.TryParse(Console.ReadLine(), out input);
+            }
+            UrgencyStatuses status = (UrgencyStatuses)input;
+
             Console.WriteLine("Enter The DroneId Of The Parcel: ");
             string droneId = Console.ReadLine();
             DateTime makingParcel = DateTime.Now;
@@ -29,7 +40,6 @@ namespace ConsoleUI
             DateTime pickingUp = new DateTime();
             DateTime arrival = new DateTime();
             return new Parcel(parcelId, senderId, getterId, weight, status, droneId, makingParcel,belongParcel ,pickingUp, arrival);
-
         }
 
         public static Customer GettingCustomer()
@@ -49,16 +59,28 @@ namespace ConsoleUI
 
         public static Drone GettingDrone()
         {
+            int input;
             Console.WriteLine("Enter The Id Of The Drone:");
             string id = Console.ReadLine();
             Console.WriteLine("Enter The Model Of The Drone:");
             string model=Console.ReadLine();
+
             Console.WriteLine("Enter The MaxWeight of the Drone:");
-            WeightCategories maxHeight = (WeightCategories)int.Parse(Console.ReadLine());
+            CheckValids.InputValidWeightCategories(out input);
+            WeightCategories maxHeight = (WeightCategories)input;
+
             Console.WriteLine("Enter The BatteryStatus Of The Drone:");
             double batteryStatus = double.Parse(Console.ReadLine());
+
             Console.WriteLine("Enter The Status Of The Drone:");
-            DroneStatuses status = (DroneStatuses)int.Parse(Console.ReadLine());
+            bool check = int.TryParse(Console.ReadLine(), out input);
+            while (!check || input < 0 || input > Enum.GetNames(typeof(UrgencyStatuses)).Length)
+            {
+                Console.WriteLine("Invalid input!, please enter again");
+                check = int.TryParse(Console.ReadLine(), out input);
+            }
+            DroneStatuses status = (DroneStatuses)input;
+
             return new Drone(id, model, maxHeight, batteryStatus, status);
         }
 

@@ -25,8 +25,8 @@ namespace DAL
             }
             public override string ToString()
             {
-                return $"Id: {Id} Name: {Name} Phone: {Phone}" +
-                    $" Longitude: {Longitude} Latitude: {Latitude}";
+                return $"Name: {Name}   Id: {Id}    Phone: {Phone}  " +
+                    $"Longitude: {Longitude}    Latitude: {Latitude}";
             }
         }
     }

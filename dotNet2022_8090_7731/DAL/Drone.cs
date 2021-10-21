@@ -25,8 +25,8 @@ namespace DAL
             }
             public override string ToString()
             {
-                return $"Id: {Id} Model: {Model} MaxWeight: {MaxWeight}" +
-                    $" BatteryStatus: {BatteryStatus} Status: {Status}";
+                return $"Id: {Id}   Model: {Model}    MaxWeight: {MaxWeight}    " +
+                    $"BatteryStatus: {BatteryStatus}    Status: {Status}";
             }
 
         }

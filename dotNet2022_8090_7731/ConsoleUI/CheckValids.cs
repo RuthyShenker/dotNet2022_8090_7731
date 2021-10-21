@@ -10,10 +10,20 @@ namespace DAL
     {
         public class CheckValids
         {
-            public static void CheckValid(int min, int max,out int input)
+            public static void CheckValid(int min, int max, out int input)
             {
-               bool check = int.TryParse(Console.ReadLine(), out input);
+                bool check = int.TryParse(Console.ReadLine(), out input);
                 while (!check || input < min || input > max)
+                {
+                    Console.WriteLine("Invalid input!, please enter again");
+                    check = int.TryParse(Console.ReadLine(), out input);
+                }
+            }
+
+            public static void InputValidWeightCategories(out int input)
+            {
+                bool check = int.TryParse(Console.ReadLine(), out input);
+                while (!check || input < 0 || input > Enum.GetNames(typeof(WeightCategories)).Length)
                 {
                     Console.WriteLine("Invalid input!, please enter again");
                     check = int.TryParse(Console.ReadLine(), out input);

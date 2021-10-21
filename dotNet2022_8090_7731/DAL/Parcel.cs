@@ -44,10 +44,10 @@ namespace DAL
             }
             public override string ToString()
             {
-                return $"ParcelId: {ParcelId} SenderId: {SenderId} GetterId:" +
-                    $" {GetterId} Weight: {Weight} Status: {Status} DroneId: {DroneId}" +
-                    $" MakingParcel: {MakingParcel}  BelongParcel:{BelongParcel} " +
-                    $"PickingUp:{PickingUp} Arrival:{Arrival}";
+                return $"Parcel Id: {ParcelId}    SenderId: {SenderId}    GetterId: {GetterId}    " +
+                    $"Parcel weight: {Weight}    Priority: {Status}    DroneId: {DroneId}    " +
+                    $"Making parcel: {MakingParcel}    Arrival: {Arrival}";
+                //    Belong parcel:{BelongParcel}    $"Picking up: {PickingUp}" +
             }
         }
     }
