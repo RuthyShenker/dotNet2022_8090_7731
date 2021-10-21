@@ -44,58 +44,75 @@ namespace ConsoleUI
 
         public static Customer GettingCustomer()
         {
+            double dInput;
             Console.WriteLine("Enter The Id Of The Customer:");
             string id = Console.ReadLine();
             Console.WriteLine("Enter The Name Of The Customer:");
             string name = Console.ReadLine();
             Console.WriteLine("Enter The Phone Of The Customer:");
             string phone = Console.ReadLine();
+
             Console.WriteLine("Enter The Longitude:");
-            double longitude = double.Parse(Console.ReadLine());
+            CheckValids.InputValiDoubleNum(out dInput, 90);
+            double longitude = (double)dInput;
+
             Console.WriteLine("Enter the Latitude:");
-            double latitude= double.Parse(Console.ReadLine());
+            CheckValids.InputValiDoubleNum(out dInput, 180);
+            double latitude = (double)dInput;
+
             return new Customer(id, name, phone, longitude, latitude);
         }
 
         public static Drone GettingDrone()
         {
-            int input;
+            int iInput;
+            double dInput;
             Console.WriteLine("Enter The Id Of The Drone:");
             string id = Console.ReadLine();
             Console.WriteLine("Enter The Model Of The Drone:");
             string model=Console.ReadLine();
 
             Console.WriteLine("Enter The MaxWeight of the Drone:");
-            CheckValids.InputValidWeightCategories(out input);
-            WeightCategories maxHeight = (WeightCategories)input;
+            CheckValids.InputValidWeightCategories(out iInput);
+            WeightCategories maxHeight = (WeightCategories)iInput;
 
             Console.WriteLine("Enter The BatteryStatus Of The Drone:");
-            double batteryStatus = double.Parse(Console.ReadLine());
+            CheckValids.InputValiDoubleNum(out dInput,100);
+            double batteryStatus = (double)dInput;
 
             Console.WriteLine("Enter The Status Of The Drone:");
-            bool check = int.TryParse(Console.ReadLine(), out input);
-            while (!check || input < 0 || input > Enum.GetNames(typeof(UrgencyStatuses)).Length)
+            bool check = int.TryParse(Console.ReadLine(), out iInput);
+            while (!check || iInput < 0 || iInput > Enum.GetNames(typeof(UrgencyStatuses)).Length)
             {
                 Console.WriteLine("Invalid input!, please enter again");
-                check = int.TryParse(Console.ReadLine(), out input);
+                check = int.TryParse(Console.ReadLine(), out iInput);
             }
-            DroneStatuses status = (DroneStatuses)input;
+            DroneStatuses status = (DroneStatuses)iInput;
 
             return new Drone(id, model, maxHeight, batteryStatus, status);
         }
 
         public static BaseStation GettingBaseStation()
         {
+            int iInput;
+            double dInput;
             Console.WriteLine("Enter The Id Of The Station:");
             string id = Console.ReadLine();
             Console.WriteLine("Enter The Name Of The Station:");
             string nameStation = Console.ReadLine();
+
             Console.WriteLine("Enter The Number Of The Charging Stations:");
-            int numberOfChargingStations = int.Parse(Console.ReadLine());
+            CheckValids.CheckValid(1, 50, out iInput);
+            int numberOfChargingStations = iInput;
+
             Console.WriteLine("Enter The Longitude:");
-            double longitude = double.Parse(Console.ReadLine());
+            CheckValids.InputValiDoubleNum(out dInput, 90);
+            double longitude = (double)dInput;
+
             Console.WriteLine("Enter the Latitude:");
-            double latitude = double.Parse(Console.ReadLine()); ;
+            CheckValids.InputValiDoubleNum(out dInput, 180);
+            double latitude = (double)dInput;
+
             return new BaseStation(id, nameStation, numberOfChargingStations, longitude, latitude);
         }
     }

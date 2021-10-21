@@ -144,7 +144,7 @@ namespace DalObject
             {
                 fillBaseStation.Id = rand.Next(100000000, 1000000000).ToString();
                 fillBaseStation.NameStation = initNameStation[rand.Next(0, initNameStation.Length)];
-                fillBaseStation.NumAvailablePositions = rand.Next(3, 10);
+                fillBaseStation.NumAvailablePositions = rand.Next(0, 50);
                 fillBaseStation.Longitude = rand.Next(rand.Next(0, 90)) + rand.NextDouble();
                 fillBaseStation.Latitude = rand.Next(rand.Next(0, 180)) + rand.NextDouble();
                 BaseStationList.Add(fillBaseStation);

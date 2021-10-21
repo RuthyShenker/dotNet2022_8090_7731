@@ -29,6 +29,16 @@ namespace DAL
                     check = int.TryParse(Console.ReadLine(), out input);
                 }
             }
+            public static void InputValiDoubleNum(out double input,int max)
+            {
+                bool check = double.TryParse(Console.ReadLine(), out input);
+                while (!check || input < 0 || input > max)
+                {
+                    Console.WriteLine("Invalid input!, please enter again");
+                    check = double.TryParse(Console.ReadLine(), out input);
+                }
+            }
+            
         }
     }
 }
