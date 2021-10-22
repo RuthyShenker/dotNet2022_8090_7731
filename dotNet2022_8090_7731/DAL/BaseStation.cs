@@ -37,6 +37,17 @@ namespace DAL
                 return $"Station name: {NameStation}     Id: {Id}   Longitude: {Longitude}  Latitude: {Latitude}    " +
                     $"Number of available charging positions: {NumAvailablePositions}";
             }
+            public BaseStation Clone()
+            {
+                return new BaseStation()
+                {
+                    Id = Id,
+                    NameStation = NameStation,
+                    NumAvailablePositions = NumAvailablePositions,
+                    Longitude = Longitude,
+                    Latitude = Latitude,
+                };
+            }
         }
     }
 }

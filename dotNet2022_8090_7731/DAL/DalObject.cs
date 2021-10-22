@@ -47,7 +47,10 @@ namespace DalObject
                 }
             }
         }
-            //אסיפת חבילה ע"י רחפן
+        /// <summary>
+        /// A function that drone picking up a drone
+        /// </summary>
+        /// <param name="Id"></param>
         public void PickingUpParcel(int Id)
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
@@ -56,7 +59,10 @@ namespace DalObject
             ChangeDroneStatus(tempParcel.DroneId, DroneStatuses.Delivery);
             ParceList.Add(tempParcel);
         }
-        //אספקת חבילה ליעד
+        /// <summary>
+        /// A function that the drone brings the parcel to the destination
+        /// </summary>
+        /// <param name="Id"></param>
         public void DeliveryPackage(int Id)
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
@@ -85,6 +91,10 @@ namespace DalObject
             }
             throw new Exception("Not Exist Drone With This Id");
         }
+        /// <summary>
+        /// A function that charges a drone
+        /// </summary>
+        /// <param name="IdDrone"></param>
         public void ChargingDrone(int IdDrone)
         {
             foreach (BaseStation baseStation in BaseStationList)
@@ -101,15 +111,23 @@ namespace DalObject
             }
             throw new Exception("There Are No Available Positions");
         }
+        /// <summary>
+        /// A function that Releasing drone from charging 
+        /// </summary>
+        /// <param name="dId"></param>
         public void ReleasingDrone(int dId)
         {
             ChangeDroneStatus(dId, DroneStatuses.Available);
             ChargingDroneList.Remove(ChargingDroneList.First(chargingDrone=>chargingDrone.DroneId==dId));
         }
-        //----------------------------------------------------לאחד לפונ אחת
+        /// <summary>
+        /// A function that returns 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public BaseStation BaseStationDisplay(int id)
         {
-            return BaseStationList.First(baseStation => baseStation.Id == id);
+            return BaseStationList.First(baseStation => baseStation.Id == id).Clone();
         }
         public Drone DroneDisplay(int Id)
         {
