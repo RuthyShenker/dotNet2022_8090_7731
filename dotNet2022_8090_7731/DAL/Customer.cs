@@ -10,11 +10,6 @@ namespace DAL
     {
         public struct Customer
         {
-            public string Id { get; set; }
-            public string Name { get; set; }
-            public string Phone { get; set; }
-            public double Longitude { get; set; }
-            public double Latitude { get; set; }
             public Customer(string id, string name, string phone, double longitude, double latitude)
             {
                 Id = id;
@@ -23,6 +18,20 @@ namespace DAL
                 Longitude = longitude;
                 Latitude = latitude;
             }
+            public Customer(Customer customer)
+            {
+                Id = customer.Id;
+                Name = customer.Name;
+                Phone = customer.Phone;
+                Longitude = customer.Longitude;
+                Latitude = customer.Latitude;
+            }
+            public string Id { get; init; }
+            public string Name { get; set; }
+            public string Phone { get; set; }
+            public double Longitude { get; set; }
+            public double Latitude { get; set; }
+
             public override string ToString()
             {
                 return $"Name: {Name}   Id: {Id}    Phone: {Phone}  " +

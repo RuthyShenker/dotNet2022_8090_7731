@@ -10,12 +10,7 @@ namespace DAL
     {
         public struct Drone
         {
-            public string Id { get; set; }
-            public string Model { get; set; }
-            public WeightCategories MaxWeight { get; set; }
-            public double BatteryStatus { get; set; }
-            public DroneStatuses Status { get; set; }
-            public Drone(string id, string model, WeightCategories maxWeight, double batteryStatus, DroneStatuses status)
+            public Drone(int id, string model, WeightCategories maxWeight, double batteryStatus, DroneStatuses status)
             {
                 Id = id;
                 Model = model;
@@ -23,6 +18,20 @@ namespace DAL
                 BatteryStatus = batteryStatus;
                 Status = status;
             }
+            public Drone(Drone drone)
+            {
+                Id = drone.Id;
+                Model = drone.Model;
+                MaxWeight = drone.MaxWeight;
+                BatteryStatus = drone.BatteryStatus;
+                Status = drone.Status;
+            }
+            public int Id { get; init; }
+            public string Model { get; set; }
+            public WeightCategories MaxWeight { get; set; }
+            public double BatteryStatus { get; set; }
+            public DroneStatuses Status { get; set; }
+           
             public override string ToString()
             {
                 return $"Id: {Id}   Model: {Model}    MaxWeight: {MaxWeight}    " +

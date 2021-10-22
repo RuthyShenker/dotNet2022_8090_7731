@@ -11,9 +11,7 @@ namespace ConsoleUI
     class InputObj
     {
         public static Parcel GettingParcel()
-        {
-            Console.WriteLine("Enter The Id Of The Parcel: ");
-            string parcelId = Console.ReadLine();
+        {           
             Console.WriteLine("Enter The Id Of The Sender: ");
             string senderId= Console.ReadLine();
             Console.WriteLine("Enter The Id Of The Getter: ");
@@ -25,21 +23,14 @@ namespace ConsoleUI
             WeightCategories weight = (WeightCategories)input;
 
             Console.WriteLine("Enter The Status Of The Parcel:");
-            bool check = int.TryParse(Console.ReadLine(), out input);
-            while (!check || input < 0 || input > Enum.GetNames(typeof(UrgencyStatuses)).Length)
-            {
-                Console.WriteLine("Invalid input!, please enter again");
-                check = int.TryParse(Console.ReadLine(), out input);
-            }
+            CheckValids.InputValidUrgencyStatuses(out input);
             UrgencyStatuses status = (UrgencyStatuses)input;
 
-            Console.WriteLine("Enter The DroneId Of The Parcel: ");
-            string droneId = Console.ReadLine();
             DateTime makingParcel = DateTime.Now;
             DateTime belongParcel = new DateTime();
             DateTime pickingUp = new DateTime();
             DateTime arrival = new DateTime();
-            return new Parcel(parcelId, senderId, getterId, weight, status, droneId, makingParcel,belongParcel ,pickingUp, arrival);
+            return new Parcel(senderId, getterId, weight, status, makingParcel,belongParcel ,pickingUp, arrival);
         }
 
         public static Customer GettingCustomer()
@@ -68,7 +59,7 @@ namespace ConsoleUI
             int iInput;
             double dInput;
             Console.WriteLine("Enter The Id Of The Drone:");
-            string id = Console.ReadLine();
+            int id =int.Parse( Console.ReadLine());
             Console.WriteLine("Enter The Model Of The Drone:");
             string model=Console.ReadLine();
 
@@ -97,7 +88,7 @@ namespace ConsoleUI
             int iInput;
             double dInput;
             Console.WriteLine("Enter The Id Of The Station:");
-            string id = Console.ReadLine();
+            int id = int.Parse(Console.ReadLine());
             Console.WriteLine("Enter The Name Of The Station:");
             string nameStation = Console.ReadLine();
 

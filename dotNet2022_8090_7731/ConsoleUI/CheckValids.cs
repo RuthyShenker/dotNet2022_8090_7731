@@ -29,6 +29,15 @@ namespace DAL
                     check = int.TryParse(Console.ReadLine(), out input);
                 }
             }
+            public static void InputValidUrgencyStatuses(out int input)
+            {
+                bool check = int.TryParse(Console.ReadLine(), out input);
+                while (!check || input < 0 || input > Enum.GetNames(typeof(WeightCategories)).Length)
+                {
+                    Console.WriteLine("Invalid input!, please enter again");
+                    check = int.TryParse(Console.ReadLine(), out input);
+                }
+            }
             public static void InputValiDoubleNum(out double input,int max)
             {
                 bool check = double.TryParse(Console.ReadLine(), out input);
@@ -38,6 +47,7 @@ namespace DAL
                     check = double.TryParse(Console.ReadLine(), out input);
                 }
             }
+
             
         }
     }

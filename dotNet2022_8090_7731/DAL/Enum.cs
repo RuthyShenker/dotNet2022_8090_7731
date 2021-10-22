@@ -11,5 +11,7 @@ namespace DAL
         public enum WeightCategories { Light, Medium, Heavy};
         public enum UrgencyStatuses { Normal, Fast, Emergency };
         public enum DroneStatuses { Available, Maintenance, Delivery };
+        public enum ProgramOptions {Add=1,Update,DisplaySpecific, DisplayList,Exit };
+
     };
 }

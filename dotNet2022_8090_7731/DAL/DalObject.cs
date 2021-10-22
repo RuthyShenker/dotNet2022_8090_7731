@@ -13,24 +13,24 @@ namespace DalObject
         {
             Initialize();
         }
-        public void AddingBaseStation(BaseStation baseStation)
+        public void Add(BaseStation baseStation)
         {
             BaseStationList.Add(baseStation);
         }
-        public void AddingDrone(Drone drone)
+        public void Add(Drone drone)
         {
             DroneList.Add(drone);
         }
-        public void AddingCustomer(Customer customer)
+        public void Add(Customer customer)
         {
             CustomerList.Add(customer);
         }
-        public void GettingParcelForDelivery(Parcel parcel)
+        public void Add(Parcel parcel)
         {
             ParceList.Add(parcel);
         }
         //שיוך חבילה לרחפן
-        public void BelongingParcel(string pId)
+        public void BelongingParcel(int pId)
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == pId);
             foreach (Drone drone in DroneList)
@@ -39,16 +39,17 @@ namespace DalObject
                 {
                     tempParcel.DroneId = drone.Id;
                     tempParcel.BelongParcel = DateTime.Now;
+                    int x;
                 }
 
                 else
                 {
-                    tempParcel.DroneId = "0";
+                    tempParcel.DroneId = 0;
                 }
             }
         }
             //אסיפת חבילה ע"י רחפן
-        public void PickingUpParcel(string Id)
+        public void PickingUpParcel(int Id)
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
             ParceList.Remove(ParceList.First(parcel => parcel.ParcelId == Id));
@@ -57,7 +58,7 @@ namespace DalObject
             ParceList.Add(tempParcel);
         }
         //אספקת חבילה ליעד
-        public void DeliveryPackage(string Id)
+        public void DeliveryPackage(int Id)
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
             ParceList.Remove(ParceList.First(parcel => parcel.ParcelId == Id));
@@ -71,7 +72,7 @@ namespace DalObject
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="newStatus"></param>
-        public void ChangeDroneStatus(string Id, DroneStatuses newStatus)
+        public void ChangeDroneStatus(int Id, DroneStatuses newStatus)
         {
             for (int i = 0; i < DroneList.Count; i++)
             {
@@ -85,7 +86,7 @@ namespace DalObject
             }
             throw new Exception("Not Exist Drone With This Id");
         }
-        public void ChargingDrone(string IdDrone)
+        public void ChargingDrone(int IdDrone)
         {
             foreach (BaseStation baseStation in BaseStationList)
             {
@@ -101,17 +102,17 @@ namespace DalObject
             }
             throw new Exception("There Are No Available Positions");
         }
-        public void ReleasingDrone(string dId)
+        public void ReleasingDrone(int dId)
         {
             ChangeDroneStatus(dId, DroneStatuses.Available);
             ChargingDroneList.Remove(ChargingDroneList.First(chargingDrone=>chargingDrone.DroneId==dId));
         }
         //----------------------------------------------------לאחד לפונ אחת
-        public BaseStation BaseStationDisplay(string id)
+        public BaseStation BaseStationDisplay(int id)
         {
             return BaseStationList.First(baseStation => baseStation.Id == id);
         }
-        public Drone DroneDisplay(string Id)
+        public Drone DroneDisplay(int Id)
         {
             return DroneList.First(drone => drone.Id == Id);
         }
@@ -119,7 +120,7 @@ namespace DalObject
         {
             return CustomerList.First(customer => customer.Id == Id);
         }
-        public Parcel ParcelDisplay(string Id)
+        public Parcel ParcelDisplay(int Id)
         {
             return ParceList.First(parcel => parcel.ParcelId == Id);
         }
@@ -127,26 +128,27 @@ namespace DalObject
 
         //----------------------------------------------------לאחד לפונ אחת
 
-        public BaseStation[] DisplayingBaseStations()
+        public List<BaseStation> DisplayingBaseStations()
         {
-            return BaseStationList.ToArray();
+            return BaseStationList.Select(station => new BaseStation(station)).ToList();
         }
-        public Drone[] DisplayingDrones()
+        public List<Drone> DisplayingDrones()
         {
-            return DroneList.ToArray();
+            return DroneList.Select(drone => new Drone(drone)).ToList();
+
         }
-        public Customer[] DisplayingCustomers()
+        public List<Customer> DisplayingCustomers()
         {
-            return CustomerList.ToArray();
+            return CustomerList.Select(customer => new Customer(customer)).ToList();
         }
-        public Parcel[] DisplayingParcels()
+        public List<Parcel> DisplayingParcels()
         {
-            return ParceList.ToArray();
+            return ParceList.Select(parcel => new Parcel(parcel)).ToList();
         }
         //-------------------------------------------------------------------------
         public Parcel[] DisplayingUnbelongParcels()
         {
-            return ParceList.Where(parcel => int.Parse(parcel.DroneId) == 0).ToArray();
+            return ParceList.Where(parcel => parcel.DroneId== 0).ToArray();
         }
 
         public BaseStation[] AvailableSlots()

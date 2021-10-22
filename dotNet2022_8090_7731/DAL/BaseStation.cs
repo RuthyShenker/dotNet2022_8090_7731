@@ -10,7 +10,7 @@ namespace DAL
     {
          public struct BaseStation
          {
-            public BaseStation(string id, string nameStation, int numberOfChargingStations, 
+            public BaseStation(int id, string nameStation, int numberOfChargingStations, 
                 double longitude, double latitude)
             {
                 Id = id;
@@ -19,7 +19,15 @@ namespace DAL
                 Longitude = longitude;
                 Latitude = latitude;
             }
-            public string Id { get; set; }
+            public BaseStation(BaseStation baseStation)
+            {
+                Id = baseStation.Id;
+                NameStation = baseStation.NameStation;
+                NumAvailablePositions = baseStation.NumAvailablePositions;
+                Longitude = baseStation.Longitude;
+                Latitude = baseStation.Latitude;
+            }
+            public int Id { get; init; }
             public string NameStation { get; set; }
             public int NumAvailablePositions { get; set; }
             public double Longitude { get; set; }
