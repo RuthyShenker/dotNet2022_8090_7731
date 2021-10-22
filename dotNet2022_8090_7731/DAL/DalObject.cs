@@ -39,7 +39,6 @@ namespace DalObject
                 {
                     tempParcel.DroneId = drone.Id;
                     tempParcel.BelongParcel = DateTime.Now;
-                    int x;
                 }
 
                 else
