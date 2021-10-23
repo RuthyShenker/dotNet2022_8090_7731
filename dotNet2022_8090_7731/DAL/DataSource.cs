@@ -8,105 +8,59 @@ using DAL.DO;
 namespace DalObject
 {
 
+    /// <summary>
+    /// A class that contains:
+    /// rand, DroneList, BaseStationList, CustomerList, ParceList, 
+    /// ChargingDroneList, class Config and function-Initialize
+    /// </summary>
     class DataSource
     {
+        /// <summary>
+        /// an object of Random .
+        /// </summary>
         public static Random rand = new Random();
 
+        /// <summary>
+        /// A list of Drones.
+        /// </summary>
         static internal List<Drone> DroneList = new List<Drone>();
+
+        /// <summary>
+        /// A list of Base Stations.
+        /// </summary>
         static internal List<BaseStation> BaseStationList = new List<BaseStation>();
+
+        /// <summary>
+        /// A list of Customers.
+        /// </summary>
         static internal List<Customer> CustomerList = new List<Customer>();
+
+        /// <summary>
+        /// A list of Parcels.
+        /// </summary>
         static internal List<Parcel> ParceList = new List<Parcel>();
+
+        /// <summary>
+        /// A list of Charging Drones.
+        /// </summary>
         static internal List<ChargingDrone> ChargingDroneList = new List<ChargingDrone>();
 
-
-        //public BaseStation this[string Id]
-        //{
-        //    get
-        //    {
-
-
-
-        //        public BaseStation this[string Id]
-        //{
-        //    get
-        //    {
-        //        foreach (BaseStation baseStation in BaseStationArr)
-        //        {
-        //            if (baseStation.Id == Id)
-        //            {
-        //                return baseStation;
-        //            }
-        //        }
-        //        throw new Exception("There isn't baseStation with this Id");
-        //    }
-        //    set
-        //    {
-        //        for (int i = 0; i < BaseStationArr.Length; i++)
-        //        {
-        //            if (BaseStationArr[i].Id == Id)
-        //            {
-        //                BaseStationArr[i] = value;
-        //            }
-        //        }
-        //    }
-        //}
-        //public Drone this[string Id]
-        //{
-        //    get
-        //    {
-        //        foreach (Drone drone in DroneArr)
-        //        {
-        //            if (drone.Id == Id)
-        //            {
-        //                return drone;
-        //            }
-        //        }
-        //        throw new Exception("There isn't Drone with this Id");
-        //    }
-        //    set
-        //    {
-        //        for (int i = 0; i < DroneArr.Length; i++)
-        //        {
-        //            if (DroneArr[i].Id == Id)
-        //            {
-        //                DroneArr[i] = value;
-        //            }
-        //        }
-        //    }
-        //}
-        //        {
-        //            get
-        //            {
-
-        //                foreach (BaseStation Station in BaseStationArr)
-        //                {
-        //                    if (Station.Id == Id)
-        //                    {
-        //                        return Station;
-        //                    }
-        //                }
-        //                throw new Exception();
-        //            }
-        //            set
-        //            {
-        //                foreach (BaseStation Station in BaseStationArr)
-        //                {
-        //                    if (Station.Id == Id)
-        //                    {
-        //                        Station = value as BaseStation;
-        //                    }
-        //                }
-        //                throw new Exception();
-        //            }
-        //        }
-
+        /// <summary>
+        /// A class Config that contains :
+        /// IndexParcel
+        /// </summary>
         internal class Config
         {
             internal static int IndexParcel = 0;
         }
+        /// <summary>
+        /// A function that Initializes the program with
+        ///  5 drones, 10 customer, 2 base stations , 11 parcels.
+        /// </summary>
         public static void Initialize()
         {
-            const int INITIALIZE_DRONE = 5, INITIALIZE_CUSTOMER = 10, INITIALIZE_BASE_STATION = 2, INITIALIZE_PARCEL = 11;
+            const int INITIALIZE_DRONE = 5, INITIALIZE_CUSTOMER = 10,
+                INITIALIZE_BASE_STATION = 2, INITIALIZE_PARCEL = 2;
 
             Drone fillDrone;
             for (int i = 0; i < INITIALIZE_DRONE; ++i)
@@ -115,12 +69,12 @@ namespace DalObject
                 fillDrone.Model = rand.Next(1000, 10000).ToString();
                 fillDrone.MaxWeight = (WeightCategories)rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
                 fillDrone.BatteryStatus = rand.Next(0, 101);
-                fillDrone.Status = (DroneStatuses)rand.Next(0, Enum.GetNames(typeof(DroneStatuses)).Length);
+                fillDrone.Status = (DroneStatuses)rand.Next(0, Enum.GetNames(typeof(DroneStatuses)).Length-1);
                 DroneList.Add(fillDrone);
             }
 
             Customer fillCustomer;
-            string[] initNames = { "UriA", "Aviad", "Odel", "Natan", "Or", "Keren" };
+            string[] initNames = { "Uria", "Aviad", "Odel", "Natan", "Or", "Keren" };
             string[] InitDigitsPhone = { "0556", "0548", "0583", "0533", "0527", "0522", "0505", "0584" };
             for (int i = 0; i < INITIALIZE_CUSTOMER; i++)
             {
@@ -156,14 +110,12 @@ namespace DalObject
                 } while (fillParcel.GetterId == fillParcel.SenderId);
                 fillParcel.Weight = (WeightCategories)rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
                 fillParcel.Status = (UrgencyStatuses)rand.Next(0, Enum.GetNames(typeof(UrgencyStatuses)).Length);
-                fillParcel.DroneId = DroneList[rand.Next(0, DroneList.Count)].Id;
+                fillParcel.DroneId = ;
                 fillParcel.MakingParcel = DateTime.Now;
                 fillParcel.BelongParcel = fillParcel.MakingParcel.AddDays(rand.Next(0, 4));
                 fillParcel.PickingUp = fillParcel.BelongParcel.AddDays(rand.Next(0, 11));
                 fillParcel.Arrival = fillParcel.PickingUp.AddDays(rand.Next(0, 11));
-                
                 ParceList.Add(fillParcel);
-
             }
         }
     }

@@ -152,16 +152,15 @@ namespace ConsoleUI
                                 }
                                 break;
                             case 5:
-                                Parcel[] UnbelongParcelsArr = dalObject.DisplayingUnbelongParcels();
-                                foreach (Parcel parcel in UnbelongParcelsArr)
+                                List<Parcel> UnbelongParcelsList = dalObject.DisplayingUnbelongParcels();
+                                foreach (Parcel parcel in UnbelongParcelsList)
                                 {
                                     Console.WriteLine(parcel);
                                 }
-                                input = 0;
                                 break;
                             case 6:
-                                BaseStation[] AvailableSlotsArr = dalObject.AvailableSlots();
-                                foreach (BaseStation baseStation in AvailableSlotsArr)
+                                List<BaseStation> AvailableSlotsList = dalObject.AvailableSlots();
+                                foreach (BaseStation baseStation in AvailableSlotsList)
                                 {
                                     Console.WriteLine(baseStation);
                                 }
@@ -183,10 +182,10 @@ namespace ConsoleUI
             }
         }
         /// <summary>
-        /// A function that gets from the user Id as string
+        /// A function that gets from the user Id and returns it as string
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <param name="obj">a name of object</param>
+        /// <returns>an id as string</returns>
         private static string GettingIdAsString(string obj)
         {
             Console.WriteLine($"Enter The Id Of The {obj}:");
@@ -194,10 +193,10 @@ namespace ConsoleUI
         }
 
         /// <summary>
-        /// A function that gets from the user Id as string
+        /// A function that gets from the user Id and returns it as int
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <param name="obj">a name of object</param>
+        /// <returns>an id as int</returns>
         private static int GettingId(string obj)
         {
             Console.WriteLine($"Enter The Id Of The {obj}:");

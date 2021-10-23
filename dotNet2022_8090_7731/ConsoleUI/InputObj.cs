@@ -8,8 +8,19 @@ using DalObject;
 
 namespace ConsoleUI
 {
+    /// <summary>
+    /// A class contains:
+    /// GettingParcel
+    ///GettingCustomer
+    ///GettingDrone
+    ///GettingBaseStation
+    /// </summary>
     class InputObj
     {
+        /// <summary>
+        /// A function that gets from the user details of new Parcel
+        /// </summary>
+        /// <returns>The new parcel</returns>
         public static Parcel GettingParcel()
         {           
             Console.WriteLine("Enter The Id Of The Sender: ");
@@ -32,7 +43,10 @@ namespace ConsoleUI
             DateTime arrival = new DateTime();
             return new Parcel(senderId, getterId, weight, status, makingParcel,belongParcel ,pickingUp, arrival);
         }
-
+        /// <summary>
+        /// A function that gets from the user details of new customer
+        /// </summary>
+        /// <returns>The new customer</returns>
         public static Customer GettingCustomer()
         {
             double dInput;
@@ -53,7 +67,10 @@ namespace ConsoleUI
 
             return new Customer(id, name, phone, longitude, latitude);
         }
-
+        /// <summary>
+        /// A function that  gets from the user details of new drone
+        /// </summary>
+        /// <returns>The new drone</returns>
         public static Drone GettingDrone()
         {
             int iInput;
@@ -82,7 +99,10 @@ namespace ConsoleUI
 
             return new Drone(id, model, maxHeight, batteryStatus, status);
         }
-
+        /// <summary>
+        /// A function that gets details from the user of new base station 
+        /// </summary>
+        /// <returns>The new base station</returns>
         public static BaseStation GettingBaseStation()
         {
             int iInput;
