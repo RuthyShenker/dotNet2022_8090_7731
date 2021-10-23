@@ -110,13 +110,27 @@ namespace DalObject
                 } while (fillParcel.GetterId == fillParcel.SenderId);
                 fillParcel.Weight = (WeightCategories)rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
                 fillParcel.Status = (UrgencyStatuses)rand.Next(0, Enum.GetNames(typeof(UrgencyStatuses)).Length);
-                fillParcel.DroneId = ;
+                fillParcel.DroneId = availableDrone(); 
                 fillParcel.MakingParcel = DateTime.Now;
-                fillParcel.BelongParcel = fillParcel.MakingParcel.AddDays(rand.Next(0, 4));
-                fillParcel.PickingUp = fillParcel.BelongParcel.AddDays(rand.Next(0, 11));
-                fillParcel.Arrival = fillParcel.PickingUp.AddDays(rand.Next(0, 11));
+                fillParcel.BelongParcel = fillParcel.DroneId == 0 ? new DateTime():DateTime.Now;
+                fillParcel.PickingUp = fillParcel.DroneId == 0 ?new DateTime(): fillParcel.BelongParcel.AddDays(rand.Next(0, 11));
+                fillParcel.Arrival = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.PickingUp.AddDays(rand.Next(0, 11));
                 ParceList.Add(fillParcel);
             }
+        }
+
+        private static int availableDrone()
+        {
+            foreach (Drone drone in DroneList)
+            {
+                if(drone.Status==DroneStatuses.Available)
+                {
+                    return drone.Id;
+                    DalObject dalObject = new DalObject();
+                    dalObject.ChangeDroneStatus(drone.Id, DroneStatuses.Delivery);
+                }
+            }
+            return 0;
         }
     }
 }

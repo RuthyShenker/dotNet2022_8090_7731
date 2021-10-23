@@ -8,7 +8,7 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             DalObject.DalObject dalObject = new DalObject.DalObject();
-            int input=0;
+            int input = 0;
             while ((ProgramOptions)input != ProgramOptions.Exit)
             {
                 Console.WriteLine
@@ -138,7 +138,7 @@ namespace ConsoleUI
                                 }
                                 break;
                             case 3:
-                                List<Customer> CustomerList= dalObject.DisplayingCustomers();
+                                List<Customer> CustomerList = dalObject.DisplayingCustomers();
                                 foreach (Customer customer in CustomerList)
                                 {
                                     Console.WriteLine(customer);
@@ -171,10 +171,10 @@ namespace ConsoleUI
                         }
                         break;
                     case ProgramOptions.Exit:
-                    {
-                        Console.WriteLine("good bye!");
+                        {
+                            Console.WriteLine("good bye!");
                             break;
-                    }
+                        }
                     default:
                         break;
                 }

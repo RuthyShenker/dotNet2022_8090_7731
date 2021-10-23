@@ -199,7 +199,9 @@ namespace DalObject
         /// <returns></returns>
         public Customer CustomerDisplay(string Id)
         {
+
             return CustomerList.First(customer => customer.Id == Id).Clone();
+
         }
 
         /// <summary>
@@ -211,7 +213,6 @@ namespace DalObject
         {
             return ParceList.First(parcel => parcel.ParcelId == Id).Clone();
         }
-        //---------------------------------------------------------------------------------
 
         //----------------------------------------------------Connect to one function?
 
