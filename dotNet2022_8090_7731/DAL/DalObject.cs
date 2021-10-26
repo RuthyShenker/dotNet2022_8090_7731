@@ -7,29 +7,30 @@ using DAL.DO;
 using static DalObject.DataSource;
 namespace DalObject
 {
-    public class DalObject
+    public class DalObject : IDal.IDal
     {
         public DalObject()
         {
             Initialize();
         }
-        public void AddingBaseStation(BaseStation baseStation)
+        public void AddingBaseStation(object baseStation)
         {
-            BaseStationList.Add(baseStation);
+            BaseStationList.Add((BaseStation)baseStation);
         }
-        public void AddingDrone(Drone drone)
+        public void AddingDrone(object drone)
         {
-            DroneList.Add(drone);
+            DroneList.Add((Drone)drone);
         }
-        public void AddingCustomer(Customer customer)
+        public void AddingCustomer(object customer)
         {
-            CustomerList.Add(customer);
+            CustomerList.Add((Customer)customer);
         }
-        public void GettingParcelForDelivery(Parcel parcel)
+
+        public void GettingParcelForDelivery(object parcel)
         {
-            ParceList.Add(parcel);
+            ParceList.Add((Parcel)parcel);
         }
-        //שיוך חבילה לרחפן
+
         public void BelongingParcel(string pId)
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == pId);
@@ -47,7 +48,7 @@ namespace DalObject
                 }
             }
         }
-            //אסיפת חבילה ע"י רחפן
+
         public void PickingUpParcel(string Id)
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
@@ -56,7 +57,7 @@ namespace DalObject
             ChangeDroneStatus(tempParcel.DroneId, DroneStatuses.Delivery);
             ParceList.Add(tempParcel);
         }
-        //אספקת חבילה ליעד
+
         public void DeliveryPackage(string Id)
         {
             Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
@@ -65,26 +66,29 @@ namespace DalObject
             ChangeDroneStatus(tempParcel.DroneId, DroneStatuses.Available);
             ParceList.Add(tempParcel);
         }
+
         /// <summary>
         ///A function that gets an integer that means a new status and Id of drone and 
         ///changes the drone that his Id was given to the new status
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="newStatus"></param>
-        public void ChangeDroneStatus(string Id, DroneStatuses newStatus)
+        public void ChangeDroneStatus(string Id, object newStatus)
         {
             for (int i = 0; i < DroneList.Count; i++)
             {
                 if (Id == DroneList[i].Id)
                 {
                     Drone changeDrone = DroneList[i];
-                    changeDrone.Status = newStatus;
+                    changeDrone.Status = (DroneStatuses)newStatus;
                     DroneList[i] = changeDrone;
                     return;
                 }
             }
             throw new Exception("Not Exist Drone With This Id");
         }
+
+
         public void ChargingDrone(string IdDrone)
         {
             foreach (BaseStation baseStation in BaseStationList)
@@ -101,57 +105,71 @@ namespace DalObject
             }
             throw new Exception("There Are No Available Positions");
         }
+
         public void ReleasingDrone(string dId)
         {
             ChangeDroneStatus(dId, DroneStatuses.Available);
-            ChargingDroneList.Remove(ChargingDroneList.First(chargingDrone=>chargingDrone.DroneId==dId));
+            ChargingDroneList.Remove(ChargingDroneList.First(chargingDrone => chargingDrone.DroneId == dId));
+
         }
         //----------------------------------------------------לאחד לפונ אחת
-        public BaseStation BaseStationDisplay(string id)
+
+        public object BaseStationDisplay(string id)
         {
             return BaseStationList.First(baseStation => baseStation.Id == id);
         }
-        public Drone DroneDisplay(string Id)
+        public object DroneDisplay(string Id)
         {
             return DroneList.First(drone => drone.Id == Id);
         }
-        public Customer CustomerDisplay(string Id)
+        public object CustomerDisplay(string Id)
         {
             return CustomerList.First(customer => customer.Id == Id);
         }
-        public Parcel ParcelDisplay(string Id)
+        public object ParcelDisplay(string Id)
         {
             return ParceList.First(parcel => parcel.ParcelId == Id);
+
         }
         //---------------------------------------------------------------------------------
 
         //----------------------------------------------------לאחד לפונ אחת
-
-        public BaseStation[] DisplayingBaseStations()
+        public IEnumerable<BaseStation> DisplayingBaseStations()
         {
-            return BaseStationList.ToArray();
+            return new List<BaseStation>(BaseStationList.Select(baseStation=> new BaseStation(baseStation)).ToList());
         }
-        public Drone[] DisplayingDrones()
+
+        public object[] DisplayingDrones()
         {
             return DroneList.ToArray();
+
         }
-        public Customer[] DisplayingCustomers()
+
+        public object[] DisplayingCustomers()
         {
             return CustomerList.ToArray();
+
         }
-        public Parcel[] DisplayingParcels()
+
+        public object[] DisplayingParcels()
         {
             return ParceList.ToArray();
         }
         //-------------------------------------------------------------------------
-        public Parcel[] DisplayingUnbelongParcels()
+
+        public object[] DisplayingUnbelongParcels()
         {
             return ParceList.Where(parcel => int.Parse(parcel.DroneId) == 0).ToArray();
         }
 
-        public BaseStation[] AvailableSlots()
+        public object[] AvailableSlots()
         {
             return BaseStationList.Where(BaseStation => BaseStation.NumAvailablePositions > 0).ToArray();
+
         }
     }
+
+
+
+
 }
