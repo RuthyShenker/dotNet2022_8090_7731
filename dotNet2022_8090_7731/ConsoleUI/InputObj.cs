@@ -8,12 +8,21 @@ using DalObject;
 
 namespace ConsoleUI
 {
+    /// <summary>
+    /// A class contains:
+    /// GettingParcel
+    ///GettingCustomer
+    ///GettingDrone
+    ///GettingBaseStation
+    /// </summary>
     class InputObj
     {
+        /// <summary>
+        /// A function that gets from the user details of new Parcel
+        /// </summary>
+        /// <returns>The new parcel</returns>
         public static Parcel GettingParcel()
-        {
-            Console.WriteLine("Enter The Id Of The Parcel: ");
-            string parcelId = Console.ReadLine();
+        {           
             Console.WriteLine("Enter The Id Of The Sender: ");
             string senderId= Console.ReadLine();
             Console.WriteLine("Enter The Id Of The Getter: ");
@@ -25,23 +34,19 @@ namespace ConsoleUI
             WeightCategories weight = (WeightCategories)input;
 
             Console.WriteLine("Enter The Status Of The Parcel:");
-            bool check = int.TryParse(Console.ReadLine(), out input);
-            while (!check || input < 0 || input > Enum.GetNames(typeof(UrgencyStatuses)).Length)
-            {
-                Console.WriteLine("Invalid input!, please enter again");
-                check = int.TryParse(Console.ReadLine(), out input);
-            }
+            CheckValids.InputValidUrgencyStatuses(out input);
             UrgencyStatuses status = (UrgencyStatuses)input;
 
-            Console.WriteLine("Enter The DroneId Of The Parcel: ");
-            string droneId = Console.ReadLine();
             DateTime makingParcel = DateTime.Now;
             DateTime belongParcel = new DateTime();
             DateTime pickingUp = new DateTime();
             DateTime arrival = new DateTime();
-            return new Parcel(parcelId, senderId, getterId, weight, status, droneId, makingParcel,belongParcel ,pickingUp, arrival);
+            return new Parcel(senderId, getterId, weight, status, makingParcel,belongParcel ,pickingUp, arrival);
         }
-
+        /// <summary>
+        /// A function that gets from the user details of new customer
+        /// </summary>
+        /// <returns>The new customer</returns>
         public static Customer GettingCustomer()
         {
             double dInput;
@@ -62,13 +67,16 @@ namespace ConsoleUI
 
             return new Customer(id, name, phone, longitude, latitude);
         }
-
+        /// <summary>
+        /// A function that  gets from the user details of new drone
+        /// </summary>
+        /// <returns>The new drone</returns>
         public static Drone GettingDrone()
         {
             int iInput;
             double dInput;
             Console.WriteLine("Enter The Id Of The Drone:");
-            string id = Console.ReadLine();
+            int id =int.Parse( Console.ReadLine());
             Console.WriteLine("Enter The Model Of The Drone:");
             string model=Console.ReadLine();
 
@@ -91,13 +99,16 @@ namespace ConsoleUI
 
             return new Drone(id, model, maxHeight, batteryStatus, status);
         }
-
+        /// <summary>
+        /// A function that gets details from the user of new base station 
+        /// </summary>
+        /// <returns>The new base station</returns>
         public static BaseStation GettingBaseStation()
         {
             int iInput;
             double dInput;
             Console.WriteLine("Enter The Id Of The Station:");
-            string id = Console.ReadLine();
+            int id = int.Parse(Console.ReadLine());
             Console.WriteLine("Enter The Name Of The Station:");
             string nameStation = Console.ReadLine();
 

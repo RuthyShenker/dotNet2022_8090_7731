@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL
+namespace IBL.BO
 {
-    namespace DO
+    class Enum
     {
         /// <summary>
         /// An Enum of WeightCategories contains:
@@ -32,5 +32,5 @@ namespace DAL
         /// </summary>
         public enum ProgramOptions { Add = 1, Update, DisplaySpecific, DisplayList, Exit };
 
-    };
+    }
 }

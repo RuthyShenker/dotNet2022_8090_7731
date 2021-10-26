@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DAL.DO;
 namespace ConsoleUI
 {
@@ -6,9 +7,9 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            DalObject.DalObject dalObject = new DalObject.DalObject();
+            IDal dalObject = new DalObject.DalObject();
             int input = 0;
-            while (input != 5)
+            while ((ProgramOptions)input != ProgramOptions.Exit)
             {
                 Console.WriteLine
                   ($"\nTap the desired option:\n" +
@@ -18,9 +19,9 @@ namespace ConsoleUI
                   $"4 - Displaying a specific List\n" +
                   $"5 - Exit");
                 CheckValids.CheckValid(1, 5, out input);
-                switch (input)
+                switch ((ProgramOptions)input)
                 {
-                    case 1:
+                    case ProgramOptions.Add:
                         Console.WriteLine(
                             $"1 - Adding a base station to the stations list.\n" +
                             $"2 - Adding a drone to the drones list.\n" +
@@ -30,16 +31,16 @@ namespace ConsoleUI
                         switch (input)
                         {
                             case 1:
-                                dalObject.AddingBaseStation(InputObj.GettingBaseStation());
+                                dalObject.Add(InputObj.GettingBaseStation());
                                 break;
                             case 2:
-                                dalObject.AddingDrone(InputObj.GettingDrone());
+                                dalObject.Add(InputObj.GettingDrone());
                                 break;
                             case 3:
-                                dalObject.AddingCustomer(InputObj.GettingCustomer());
+                                dalObject.Add(InputObj.GettingCustomer());
                                 break;
                             case 4:
-                                dalObject.GettingParcelForDelivery(InputObj.GettingParcel());
+                                dalObject.Add(InputObj.GettingParcel());
                                 break;
                             default:
                                 break;
@@ -48,7 +49,7 @@ namespace ConsoleUI
                         break;
 
 
-                    case 2:
+                    case ProgramOptions.Update:
                         Console.WriteLine(
                             $"1 - Belong a package to a drone\n" +
                             $"2 - Raising package by drone\n" +
@@ -79,7 +80,7 @@ namespace ConsoleUI
                                 break;
                         }
                         break;
-                    case 3:
+                    case ProgramOptions.DisplaySpecific:
                         Console.WriteLine(
                             $"1 - Base station view\n" +
                             $"2 - Drone view\n" +
@@ -98,7 +99,7 @@ namespace ConsoleUI
                                 Console.WriteLine(drone);
                                 break;
                             case 3:
-                                Customer customer = dalObject.CustomerDisplay(GettingId("Customer"));
+                                Customer customer = dalObject.CustomerDisplay(GettingIdAsString("Customer"));
                                 Console.WriteLine(customer);
                                 break;
                             case 4:
@@ -110,7 +111,7 @@ namespace ConsoleUI
 
                         }
                         break;
-                    case 4:
+                    case ProgramOptions.DisplayList:
                         Console.WriteLine(
                             $"1 - View base stations list\n" +
                             $"2 - View drones list\n" +
@@ -123,44 +124,43 @@ namespace ConsoleUI
                         switch (input)
                         {
                             case 1:
-                                BaseStation[] StationArr = dalObject.DisplayingBaseStations();
-                                foreach (BaseStation baseStation in StationArr)
+                                IEnumerable<BaseStation> StationList = dalObject.DisplayingBaseStations();
+                                foreach (BaseStation baseStation in StationList)
                                 {
                                     Console.WriteLine(baseStation);
                                 }
                                 break;
                             case 2:
-                                Drone[] DroneArr = dalObject.DisplayingDrones();
-                                foreach (Drone drone in DroneArr)
+                                IEnumerable<Drone> DroneList = dalObject.DisplayingDrones();
+                                foreach (Drone drone in DroneList)
                                 {
                                     Console.WriteLine(drone);
                                 }
                                 break;
                             case 3:
-                                Customer[] CustomerArr = dalObject.DisplayingCustomers();
-                                foreach (Customer customer in CustomerArr)
+                                IEnumerable<Customer> CustomerList = dalObject.DisplayingCustomers();
+                                foreach (Customer customer in CustomerList)
                                 {
                                     Console.WriteLine(customer);
                                 }
                                 break;
                             case 4:
-                                Parcel[] ParcelArr = dalObject.DisplayingParcels();
-                                foreach (Parcel parcel in ParcelArr)
+                                IEnumerable<Parcel> ParcelList = dalObject.DisplayingParcels();
+                                foreach (Parcel parcel in ParcelList)
                                 {
                                     Console.WriteLine(parcel);
                                 }
                                 break;
                             case 5:
-                                Parcel[] UnbelongParcelsArr = dalObject.DisplayingUnbelongParcels();
-                                foreach (Parcel parcel in UnbelongParcelsArr)
+                                IEnumerable<Parcel> UnbelongParcelsList = dalObject.DisplayingUnbelongParcels();
+                                foreach (Parcel parcel in UnbelongParcelsList)
                                 {
                                     Console.WriteLine(parcel);
                                 }
-                                input = 0;
                                 break;
                             case 6:
-                                BaseStation[] AvailableSlotsArr = dalObject.AvailableSlots();
-                                foreach (BaseStation baseStation in AvailableSlotsArr)
+                                IEnumerable<BaseStation> AvailableSlotsList = dalObject.AvailableSlots();
+                                foreach (BaseStation baseStation in AvailableSlotsList)
                                 {
                                     Console.WriteLine(baseStation);
                                 }
@@ -170,17 +170,37 @@ namespace ConsoleUI
 
                         }
                         break;
+                    case ProgramOptions.Exit:
+                        {
+                            Console.WriteLine("good bye!");
+                            break;
+                        }
                     default:
                         break;
                 }
 
             }
-            Console.WriteLine("good bye!");
         }
-        private static string GettingId(string obj)
+        /// <summary>
+        /// A function that gets from the user Id and returns it as string
+        /// </summary>
+        /// <param name="obj">a name of object</param>
+        /// <returns>an id as string</returns>
+        private static string GettingIdAsString(string obj)
         {
             Console.WriteLine($"Enter The Id Of The {obj}:");
             return Console.ReadLine();
+        }
+
+        /// <summary>
+        /// A function that gets from the user Id and returns it as int
+        /// </summary>
+        /// <param name="obj">a name of object</param>
+        /// <returns>an id as int</returns>
+        private static int GettingId(string obj)
+        {
+            Console.WriteLine($"Enter The Id Of The {obj}:");
+            return int.Parse(Console.ReadLine());
         }
 
 

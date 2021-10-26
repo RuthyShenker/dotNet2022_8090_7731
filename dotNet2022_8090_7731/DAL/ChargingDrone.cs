@@ -4,10 +4,14 @@ namespace DAL
 {
     namespace DO
     {
+        /// <summary>
+        /// A struct of ChargingDrone, contains:
+        /// Id of Station,Id of Drone.
+        /// </summary>
         public struct ChargingDrone
         {
-            public string StationId{ get; set; }
-            public string DroneId{ get; set; }
+            public int StationId{ get; set; }
+            public int DroneId{ get; set; }
         }
     }
 }
