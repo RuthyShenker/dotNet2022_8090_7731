@@ -7,7 +7,7 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            DalObject.DalObject dalObject = new DalObject.DalObject();
+            IDal dalObject = new DalObject.DalObject();
             int input = 0;
             while ((ProgramOptions)input != ProgramOptions.Exit)
             {
@@ -124,42 +124,42 @@ namespace ConsoleUI
                         switch (input)
                         {
                             case 1:
-                                List<BaseStation> StationList = dalObject.DisplayingBaseStations();
+                                IEnumerable<BaseStation> StationList = dalObject.DisplayingBaseStations();
                                 foreach (BaseStation baseStation in StationList)
                                 {
                                     Console.WriteLine(baseStation);
                                 }
                                 break;
                             case 2:
-                                List<Drone> DroneList = dalObject.DisplayingDrones();
+                                IEnumerable<Drone> DroneList = dalObject.DisplayingDrones();
                                 foreach (Drone drone in DroneList)
                                 {
                                     Console.WriteLine(drone);
                                 }
                                 break;
                             case 3:
-                                List<Customer> CustomerList = dalObject.DisplayingCustomers();
+                                IEnumerable<Customer> CustomerList = dalObject.DisplayingCustomers();
                                 foreach (Customer customer in CustomerList)
                                 {
                                     Console.WriteLine(customer);
                                 }
                                 break;
                             case 4:
-                                List<Parcel> ParcelList = dalObject.DisplayingParcels();
+                                IEnumerable<Parcel> ParcelList = dalObject.DisplayingParcels();
                                 foreach (Parcel parcel in ParcelList)
                                 {
                                     Console.WriteLine(parcel);
                                 }
                                 break;
                             case 5:
-                                List<Parcel> UnbelongParcelsList = dalObject.DisplayingUnbelongParcels();
+                                IEnumerable<Parcel> UnbelongParcelsList = dalObject.DisplayingUnbelongParcels();
                                 foreach (Parcel parcel in UnbelongParcelsList)
                                 {
                                     Console.WriteLine(parcel);
                                 }
                                 break;
                             case 6:
-                                List<BaseStation> AvailableSlotsList = dalObject.AvailableSlots();
+                                IEnumerable<BaseStation> AvailableSlotsList = dalObject.AvailableSlots();
                                 foreach (BaseStation baseStation in AvailableSlotsList)
                                 {
                                     Console.WriteLine(baseStation);

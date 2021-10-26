@@ -101,11 +101,18 @@ namespace DalObject
         /// <param name="Id"></param>
         public void PickingUpParcel(int Id)
         {
-            Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
-            ParceList.Remove(ParceList.First(parcel => parcel.ParcelId == Id));
-            tempParcel.PickingUp = DateTime.Now;
-            ChangeDroneStatus(tempParcel.DroneId, DroneStatuses.Delivery);
-            ParceList.Add(tempParcel);
+            for (int i = 0; i < ParceList.Count; i++)
+            {
+                if(ParceList[i].ParcelId == Id)
+                {
+                    Parcel tempParcel = ParceList[i];
+                    tempParcel.PickingUp = DateTime.Now;
+                    ChangeDroneStatus(tempParcel.DroneId, DroneStatuses.Delivery);
+                    ParceList[i] = tempParcel;
+                    break;
+                }
+            }
+            throw new Exception("Id doesn't exist");
         }
 
         /// <summary>
@@ -115,11 +122,18 @@ namespace DalObject
         /// <param name="Id"></param>
         public void DeliveryPackage(int Id)
         {
-            Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == Id);
-            ParceList.Remove(ParceList.First(parcel => parcel.ParcelId == Id));
-            tempParcel.Arrival = DateTime.Now;
-            ChangeDroneStatus(tempParcel.DroneId, DroneStatuses.Available);
-            ParceList.Add(tempParcel);
+            for (int i = 0; i < ParceList.Count; i++)
+            {
+                if(ParceList[i].ParcelId == Id)
+                {
+                    Parcel tempParcel = ParceList[i];
+                    tempParcel.Arrival = DateTime.Now;
+                    ChangeDroneStatus(tempParcel.DroneId, DroneStatuses.Available);
+                    ParceList[i] = tempParcel;
+                    break;
+                }
+            }
+            throw new Exception("Id doesn't exist");
         }
 
         /// <summary>
@@ -137,7 +151,7 @@ namespace DalObject
                     Drone changeDrone = DroneList[i];
                     changeDrone.Status = newStatus;
                     DroneList[i] = changeDrone;
-                    return;
+                    break;
                 }
             }
             throw new Exception("Not Exist Drone With This Id");
@@ -170,7 +184,15 @@ namespace DalObject
         public void ReleasingDrone(int dId)
         {
             ChangeDroneStatus(dId, DroneStatuses.Available);
-            ChargingDroneList.Remove(ChargingDroneList.First(chargingDrone=>chargingDrone.DroneId==dId));
+            for (int i = 0; i < ChargingDroneList.Count; i++)
+            {
+                if (ChargingDroneList[i].DroneId==dId)
+                {
+                    ChargingDroneList.RemoveAt(i);
+                    break;
+                }
+            }
+            throw new Exception("Id doesnt exist");
         }
 
         /// <summary>
@@ -180,7 +202,14 @@ namespace DalObject
         /// <returns>a base station </returns>
         public BaseStation BaseStationDisplay(int id)
         {
-            return BaseStationList.First(baseStation => baseStation.Id == id).Clone();
+            for (int i = 0; i < BaseStationList.Count; i++)
+            {
+                if (BaseStationList[i].Id == id)
+                {
+                    return BaseStationList[i].Clone();
+                }
+            }
+            throw new Exception("id doesnt exist");
         }
 
         /// <summary>
@@ -190,7 +219,15 @@ namespace DalObject
         /// <returns></returns>
         public Drone DroneDisplay(int Id)
         {
-            return DroneList.First(drone => drone.Id == Id).Clone();
+            for (int i = 0; i < DroneList.Count; i++)
+            {
+                if (DroneList[i].Id == Id)
+                {
+                    return DroneList[i].Clone();
+                }
+            }
+            throw new Exception("id doesnt exist");
+            //return DroneList.First(drone => drone.Id == Id).Clone();
         }
         /// <summary>
         /// A function that gets an id of customer and returns this customer-copied.
@@ -199,8 +236,15 @@ namespace DalObject
         /// <returns></returns>
         public Customer CustomerDisplay(string Id)
         {
-
-            return CustomerList.First(customer => customer.Id == Id).Clone();
+            for (int i = 0; i < CustomerList.Count; i++)
+            {
+                if (CustomerList[i].Id == Id)
+                {
+                    return CustomerList[i].Clone();
+                }
+            }
+            throw new Exception("id doesnt exist");
+            //return CustomerList.First(customer => customer.Id == Id).Clone();
 
         }
 
@@ -211,7 +255,15 @@ namespace DalObject
         /// <returns></returns>
         public Parcel ParcelDisplay(int Id)
         {
-            return ParceList.First(parcel => parcel.ParcelId == Id).Clone();
+            for (int i = 0; i < ParceList.Count; i++)
+            {
+                if (ParceList[i].ParcelId == Id)
+                {
+                    return ParceList[i].Clone();
+                }
+            }
+            throw new Exception("id doesnt exist");
+            //return ParceList.First(parcel => parcel.ParcelId == Id).Clone();
         }
 
         //----------------------------------------------------Connect to one function?
@@ -220,17 +272,17 @@ namespace DalObject
         /// A function that returns the list of the base stations 
         /// </summary>
         /// <returns> base station list</returns>
-        public List<BaseStation> DisplayingBaseStations()
+        public IEnumerable<BaseStation> DisplayingBaseStations()
         {
-            return BaseStationList.Select(station => new BaseStation(station)).ToList();
+            return new List<BaseStation>(BaseStationList.Select(station => new BaseStation(station)).ToList());
         }
         /// <summary>
         /// A function that returns the list of the drones
         /// </summary>
         /// <returns> drone list</returns>
-        public List<Drone> DisplayingDrones()
+        public IEnumerable<Drone> DisplayingDrones()
         {
-            return DroneList.Select(drone => new Drone(drone)).ToList();
+            return new List<Drone>(DroneList.Select(drone => new Drone(drone)).ToList());
 
         }
 
@@ -238,36 +290,36 @@ namespace DalObject
         /// A function that returns the list of the customers
         /// </summary>
         /// <returns> customer list</returns>
-        public List<Customer> DisplayingCustomers()
+        public IEnumerable<Customer> DisplayingCustomers()
         {
-            return CustomerList.Select(customer => new Customer(customer)).ToList();
+            return new List<Customer>(CustomerList.Select(customer => new Customer(customer)).ToList());
         }
 
         /// <summary>
         /// A function that returns the list of the parcels
         /// </summary>
         /// <returns> parcle list</returns>
-        public List<Parcel> DisplayingParcels()
+        public IEnumerable<Parcel> DisplayingParcels()
         {
-            return ParceList.Select(parcel => new Parcel(parcel)).ToList();
+            return new List<Parcel>(ParceList.Select(parcel => new Parcel(parcel)).ToList());
         }
         
         /// <summary>
         /// A function that returns parcels that aren't belonged to any drone.
         /// </summary>
         /// <returns></returns>
-        public List<Parcel> DisplayingUnbelongParcels()
+        public IEnumerable<Parcel> DisplayingUnbelongParcels()
         {
-            return ParceList.Where(parcel => parcel.DroneId== 0).ToList();
+            return new List<Parcel>(ParceList.Where(parcel => parcel.DroneId== 0).ToList());
         }
 
         /// <summary>
         /// A function that returns base stations that they have available charging positions.
         /// </summary>
         /// <returns>list of base stations that they have available charging positions</returns>
-        public List<BaseStation> AvailableSlots()
+        public IEnumerable<BaseStation> AvailableSlots()
         {
-            return BaseStationList.Where(BaseStation => BaseStation.NumAvailablePositions > 0).ToList();
+            return new List<BaseStation>(BaseStationList.Where(BaseStation => BaseStation.NumAvailablePositions > 0).ToList());
         }
     }
 }
