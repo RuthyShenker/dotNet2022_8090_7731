@@ -18,13 +18,13 @@ namespace IBL.BO
         /// An Enum of UrgencyStatuses contains:
         /// Normal, Fast, Emergency.
         /// </summary>
-        public enum UrgencyStatuses { Normal, Fast, Emergency };
+        public enum Priority { Normal, Fast, Emergency };
 
         /// <summary>
         /// An Enum of DroneStatuses contains:
         /// Available, Maintenance, Delivery.
         /// </summary>
-        public enum DroneStatuses { Available, Maintenance, Delivery };
+        public enum DroneStatus { Available, Maintenance, Delivery };
 
         /// <summary>
         /// An Enum of ProgramOptions contains:
@@ -32,5 +32,8 @@ namespace IBL.BO
         /// </summary>
         public enum ProgramOptions { Add = 1, Update, DisplaySpecific, DisplayList, Exit };
 
+
+
+        public enum ParcelStatus { made,belonged,collected,InDestination}
     }
 }

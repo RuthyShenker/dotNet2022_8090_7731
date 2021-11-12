@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.DO;
+using IDal.DO;
 
 namespace DalObject
 {
@@ -13,7 +13,7 @@ namespace DalObject
     /// rand, DroneList, BaseStationList, CustomerList, ParceList, 
     /// ChargingDroneList, class Config and function-Initialize
     /// </summary>
-    class DataSource
+    public class DataSource
     {
         /// <summary>
         /// an object of Random .
@@ -51,6 +51,13 @@ namespace DalObject
         /// </summary>
         internal class Config
         {
+            static public double available;
+            static public double lightWeight;
+            static public double mediumWeight;
+            static public double heavyWeight;
+
+            static public double chargingRate;
+
             internal static int IndexParcel = 0;
         }
         /// <summary>
@@ -68,8 +75,6 @@ namespace DalObject
                 fillDrone = new Drone() { Id = rand.Next(100000000, 1000000000) };
                 fillDrone.Model = rand.Next(1000, 10000).ToString();
                 fillDrone.MaxWeight = (WeightCategories)rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
-                fillDrone.BatteryStatus = rand.Next(0, 101);
-                fillDrone.Status = (DroneStatuses)rand.Next(0, Enum.GetNames(typeof(DroneStatuses)).Length-1);
                 DroneList.Add(fillDrone);
             }
 
@@ -114,7 +119,7 @@ namespace DalObject
                 fillParcel.MakingParcel = DateTime.Now;
                 fillParcel.BelongParcel = fillParcel.DroneId == 0 ? new DateTime():DateTime.Now;
                 fillParcel.PickingUp = fillParcel.DroneId == 0 ?new DateTime(): fillParcel.BelongParcel.AddDays(rand.Next(0, 11));
-                fillParcel.Arrival = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.PickingUp.AddDays(rand.Next(0, 11));
+                //fillParcel.Arrival = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.PickingUp.AddDays(rand.Next(0, 11));
                 ParceList.Add(fillParcel);
             }
         }

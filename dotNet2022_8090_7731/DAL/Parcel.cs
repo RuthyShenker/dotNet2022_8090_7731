@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL
+namespace IDal
 {
     namespace DO
     {
@@ -15,7 +15,7 @@ namespace DAL
         /// </summary>
         public struct Parcel
         {
-
+            
             /// <summary>
             /// A constructor of Parcel that gets parameters 
             /// and initalizes the new instance with this 
@@ -98,7 +98,7 @@ namespace DAL
             /// <summary>
             /// Time of arriving the package to the getter
             /// </summary>
-            public DateTime Arrival { get; set; }
+            public DateTime? Arrival { get; set; }
 
            /// <summary>
            /// A function that returns the details of the Parcel

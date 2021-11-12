@@ -116,11 +116,11 @@ namespace ConsoleUI
             CheckValids.CheckValid(1, 50, out iInput);
             int numberOfChargingStations = iInput;
 
-            Console.WriteLine("Enter The Longitude:");
+            Console.WriteLine("Enter The Location. Longitude:");
             CheckValids.InputValiDoubleNum(out dInput, 90);
             double longitude = (double)dInput;
 
-            Console.WriteLine("Enter the Latitude:");
+            Console.WriteLine("Latitude:");
             CheckValids.InputValiDoubleNum(out dInput, 180);
             double latitude = (double)dInput;
 

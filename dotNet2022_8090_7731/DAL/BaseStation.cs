@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL
+namespace IDal
 {
     namespace DO
     {
@@ -13,7 +13,7 @@ namespace DAL
         /// Id,Name of Station,Number of Available Positions,Longitude,Latitude.
         /// </summary>
         public struct BaseStation
-         {
+        {
             /// <summary>
             /// A constructor of base station that gets parameters 
             /// and initalizes the new instance with this 
@@ -24,8 +24,7 @@ namespace DAL
             /// <param name="numberOfChargingStations"></param>
             /// <param name="longitude"></param>
             /// <param name="latitude"></param>
-            public BaseStation(int id, string nameStation,
-                int numberOfChargingStations, 
+            public BaseStation(int id, string nameStation, int numberOfChargingStations,
                 double longitude, double latitude)
             {
                 Id = id;

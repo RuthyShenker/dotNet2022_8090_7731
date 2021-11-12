@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IDal.DO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,28 +7,44 @@ using System.Threading.Tasks;
 
 namespace IDal
 {
-    interface IDal
+    public interface IDal
     {
-        public void AddingBaseStation();
-        public void AddingBaseStation(object baseStation);
-        public void AddingDrone(object drone);
-        public void AddingCustomer(object customer);
-        public void GettingParcelForDelivery(object parcel);
-        public void BelongingParcel(string pId);
-        public void PickingUpParcel(string Id);
-        public void DeliveryPackage(string Id);
-        public void ChangeDroneStatus(string Id, object newStatus);
-        public void ChargingDrone(string IdDrone);
-        public void ReleasingDrone(string dId);
-        public object BaseStationDisplay(string id);
-        public object DroneDisplay(string Id);
-        public object CustomerDisplay(string Id);
-        public object ParcelDisplay(string Id);
-        public IEnumerable<object> DisplayingBaseStations();
-        public IEnumerable<object> DisplayingDrones();
-        public IEnumerable<object> DisplayingCustomers();
-        public IEnumerable<object> DisplayingParcels();
-        public IEnumerable<object> DisplayingUnbelongParcels();
-        public IEnumerable<object> AvailableSlots();
+        void AddingBaseStation(BaseStation baseStation);
+        void AddingDrone(Drone drone);
+        void AddingCustomer(Customer customer);
+        void GettingParcelForDelivery(Parcel parcel);
+        void BelongingParcel(int pId);
+        void PickingUpParcel(int Id);
+        void DeliveryPackage(int Id);
+        void ChangeDroneStatus(int Id, DroneStatuses newStatus);
+        void ChargingDrone(int IdDrone);
+        void ReleasingDrone(int dId);
+        BaseStation BaseStationDisplay(int id);
+        Drone DroneDisplay(int Id);
+        Customer CustomerDisplay(string Id);
+        Parcel ParcelDisplay(int Id);
+        IEnumerable<BaseStation> DisplayingBaseStations();
+        IEnumerable<Drone> GetDrones();
+        IEnumerable<Customer> DisplayingCustomers();
+        IEnumerable<Parcel> DisplayingParcels();
+        IEnumerable<Parcel> GetUnbelongParcels();
+        IEnumerable<BaseStation> AvailableSlots();
+
+        double[] PowerConsumptionRequest();
     }
+    //public abstract class IDalGeneric<T>
+    //{
+    //    List<T> _list;
+    //    public IDalGeneric()
+    //    {
+    //        _list = new List<T>();
+    //    }
+
+    //    public abstract void Add {
+    //        }
+    //    IEnumerable<T> GetList()
+    //    {
+    //        return _list.Select( item=>new T(item)).ToList();
+    //    }
+    //}
 }
