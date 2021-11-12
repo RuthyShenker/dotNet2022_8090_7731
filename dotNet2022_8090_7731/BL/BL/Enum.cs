@@ -26,11 +26,7 @@ namespace IBL.BO
         /// </summary>
         public enum DroneStatus { Available, Maintenance, Delivery };
 
-        /// <summary>
-        /// An Enum of ProgramOptions contains:
-        /// Add, Update, DisplaySpecific, DisplayList, Exit.
-        /// </summary>
-        public enum ProgramOptions { Add = 1, Update, DisplaySpecific, DisplayList, Exit };
+       
 
 
 
