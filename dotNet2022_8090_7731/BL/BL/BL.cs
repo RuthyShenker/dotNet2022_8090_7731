@@ -52,7 +52,7 @@ namespace BL
                 if (parcel.DroneId != 0 && !parcel.Arrival.HasValue)
                 {
                     Drone drone = droneList.FirstOrDefault(drone => drone.Id == parcel.DroneId);
-                    droneToList.Add 
+                    droneToList.Add;
                 }
             }
             //BL_Drone bL_Drone;
@@ -106,7 +106,7 @@ namespace BL
         {
            if(dal.ExistsInCustomerList(bLCustomer.Id))
            {
-                throw new Exception("The id is already exists in the Customer List!")
+                throw new Exception("The id is already exists in the Customer List!");
            }
             Customer newCustomer = new Customer() { Id = bLCustomer.Id, Name = bLCustomer.Name, Phone = bLCustomer.Phone, Latitude = bLCustomer.CLocation.Latitude, Longitude = bLCustomer.CLocation.Longitude };
             dal.AddingCustomer(newCustomer);
@@ -149,10 +149,7 @@ namespace BL
 
         public void ChargingDrone(int IdDrone)
         {
-            if()
-            {
-
-            }
+          
         }
 
         public void ReleasingDrone(int dId, double timeInCharging)

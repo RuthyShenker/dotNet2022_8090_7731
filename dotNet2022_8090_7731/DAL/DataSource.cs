@@ -83,7 +83,7 @@ namespace DalObject
             for (int i = 0; i < INITIALIZE_DRONE; ++i)
             {
                 fillDrone = new Drone() { Id = Rand.Next(100000000, 1000000000) };
-                fillDrone.Model = Rand.Next(1000, 10000).ToString();
+                fillDrone.Model = Rand.Next(1000, 10000);
                 fillDrone.MaxWeight = (WeightCategories)Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
                 DroneList.Add(fillDrone);
             }
