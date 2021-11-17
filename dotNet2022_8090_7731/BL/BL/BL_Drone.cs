@@ -15,6 +15,6 @@ namespace IBL.BO
         float BatteryStatus { get; set; }
         DroneStatus DStatus { get; set; }
         ParcelInTransfer PInTransfer { get; set; }
-        Location CurrLocation { get; set; }
+        Location CurrLocation { get; set; } 
     }
 }
