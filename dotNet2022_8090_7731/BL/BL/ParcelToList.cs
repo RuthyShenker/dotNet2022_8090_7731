@@ -7,7 +7,7 @@ using static IBL.BO.Enum;
 
 namespace IBL.BO
 {
-    public class ParcelToList
+    class ParcelToList
     {
         public int Id { get; set; }
         public string SenderName { get; set; }
@@ -15,6 +15,5 @@ namespace IBL.BO
         public WeightCategories Weight { get; set; }
         public Priority MyPriority { get; set; }
         public ParcelStatus Status { get; set; }
-        public ParcelStatus Status1 { get; init; }
     }
 }

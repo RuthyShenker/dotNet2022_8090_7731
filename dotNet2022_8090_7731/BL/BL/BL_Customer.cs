@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,9 @@ namespace IBL.BO
         public string Id { get; init; }
         public string Name { get; set; }
         public string Phone { get; set; }
-        public Location CLocation{ get; set; }
+        public Location CLocation { get; set; }
         // שתי רשימות
-        public List<ParcelInCustomer> lFromCustomer;
-        public List<ParcelInCustomer> lForCustomer;
+        public List<ParcelInCustomer> lFromCustomer { get; set; }
+        public List<ParcelInCustomer> lForCustomer { get; set; }
     }
 }
