@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IDal.DO;
+using System;
+using static DalObject.DataSource;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,9 +44,9 @@ namespace DalObject
         /// A function that returns the list of the customers
         /// </summary>
         /// <returns> customer list</returns>
-        public IEnumerable<Customer> DisplayingCustomers()
+        public IEnumerable<Customer> GetCustomers()
         {
-            return new List<Customer>(CustomerList.Select(customer => new Customer(customer)).ToList());
+            return CustomerList.Select(customer => new Customer(customer)).ToList();
         }
 
 

@@ -7,7 +7,7 @@ using static IBL.BO.Enum;
 
 namespace IBL.BO
 {
-    class BL_Drone
+    class Drone
     {
         int Id { get; init; }
         string Model { get; set; }

@@ -24,7 +24,7 @@ namespace IBL.BO
         /// An Enum of DroneStatuses contains:
         /// Available, Maintenance, Delivery.
         /// </summary>
-        public enum DroneStatus { Available, Maintenance, Delivery };
+        public enum DroneStatus { Free, Maintenance, Delivery };
 
        
 

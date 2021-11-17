@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using IDal.DO;
+using static DalObject.DataSource;
 namespace DalObject
 {
     public partial class DalObject
@@ -114,9 +115,9 @@ namespace DalObject
         /// A function that returns the list of the parcels
         /// </summary>
         /// <returns> parcle list</returns>
-        public IEnumerable<Parcel> DisplayingParcels()
+        public IEnumerable<Parcel> GetParcels()
         {
-            return new List<Parcel>(ParceList.Select(parcel => new Parcel(parcel)).ToList());
+            return ParceList.Select(parcel => new Parcel(parcel)).ToList();
         }
     }
 }

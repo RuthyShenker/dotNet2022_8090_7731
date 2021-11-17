@@ -11,7 +11,7 @@ namespace IBL.BO
     {
         public int PId { get; set; }
         public bool IsInWay { get; set; }
-        public priority MPriority { get; set; }
+        public Priority MPriority { get; set; }
         public WeightCategories Weight { get; set; }
         public CustomerInParcel Sender { get; set; }
         public CustomerInParcel Getter { get; set; }

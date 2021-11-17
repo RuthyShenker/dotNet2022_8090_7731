@@ -22,8 +22,8 @@ namespace IDal
             /// <param name="id"></param>
             /// <param name="model"></param>
             /// <param name="maxWeight"></param>
-           
-            public Drone(int id, string model, WeightCategories maxWeight)
+
+            public Drone(int id, int model, WeightCategories maxWeight)
             {
                 Id = id;
                 Model = model;
@@ -47,7 +47,7 @@ namespace IDal
             /// </summary>
             public int Id { get; init; }
 
-            public string Model { get; set; }
+            public int Model { get; set; }
 
             public WeightCategories MaxWeight { get; set; }
 
@@ -69,8 +69,8 @@ namespace IDal
                 return new Drone()
                 {
                     Id = Id,
-                    Model= Model,
-                    MaxWeight= MaxWeight,
+                    Model = Model,
+                    MaxWeight = MaxWeight,
                 };
             }
 

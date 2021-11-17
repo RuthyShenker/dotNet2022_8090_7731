@@ -15,7 +15,7 @@ namespace IDal
         /// </summary>
         public struct Parcel
         {
-            
+
             /// <summary>
             /// A constructor of Parcel that gets parameters 
             /// and initalizes the new instance with this 
@@ -29,8 +29,8 @@ namespace IDal
             /// <param name="belongParcel"></param>
             /// <param name="pickingUp"></param>
             /// <param name="arrival"></param>
-            public Parcel(string senderId, string getterId, WeightCategories weight, UrgencyStatuses status, 
-                DateTime makingParcel,DateTime belongParcel, DateTime pickingUp, DateTime arrival)
+            public Parcel(string senderId, string getterId, WeightCategories weight, UrgencyStatuses status,
+                DateTime makingParcel, DateTime belongParcel, DateTime pickingUp, DateTime arrival)
             {
                 ParcelId = ++DataSource.Config.IndexParcel;
                 SenderId = senderId;
@@ -63,7 +63,7 @@ namespace IDal
                 PickingUp = parcel.PickingUp;
                 Arrival = parcel.Arrival;
             }
-          
+
             /// <summary>
             /// this field is init
             /// </summary>
@@ -87,23 +87,22 @@ namespace IDal
             /// <summary>
             /// Time of belonging A package to drone
             /// </summary>
-            public DateTime BelongParcel { get; set; }
+            public DateTime? BelongParcel { get; set; }
 
             /// <summary>
             /// Time of collecting the parcel frome the sender
             /// </summary>
-            public DateTime PickingUp { get; set; }
-
+            public DateTime? PickingUp { get; set; }
 
             /// <summary>
             /// Time of arriving the package to the getter
             /// </summary>
             public DateTime? Arrival { get; set; }
 
-           /// <summary>
-           /// A function that returns the details of the Parcel
-           /// </summary>
-           /// <returns>The details</returns>
+            /// <summary>
+            /// A function that returns the details of the Parcel
+            /// </summary>
+            /// <returns>The details</returns>
             public override string ToString()
             {
                 return $"Parcel Id: {ParcelId}    SenderId: {SenderId}   " +
@@ -121,16 +120,16 @@ namespace IDal
             {
                 return new Parcel()
                 {
-                    ParcelId=ParcelId,
-                    SenderId=SenderId,
-                    GetterId=GetterId,
-                    Weight=Weight,
-                    Status=Status,
-                    DroneId=DroneId,
-                    MakingParcel=MakingParcel,
-                    BelongParcel=BelongParcel,
-                    PickingUp=PickingUp,
-                    Arrival=Arrival
+                    ParcelId = ParcelId,
+                    SenderId = SenderId,
+                    GetterId = GetterId,
+                    Weight = Weight,
+                    Status = Status,
+                    DroneId = DroneId,
+                    MakingParcel = MakingParcel,
+                    BelongParcel = BelongParcel,
+                    PickingUp = PickingUp,
+                    Arrival = Arrival
 
                 };
             }

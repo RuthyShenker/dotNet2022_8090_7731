@@ -3,11 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using static DalObject.DataSource.Config;
+using IDal.DO;
+using static DalObject.DataSource;
 namespace DalObject
 {
     public partial class DalObject
     {
+        public Drone this[int id]
+        {
+            //set
+            //{
+            //   Drone drone= DroneList.First(drone => drone.Id == id);
+            //   drone
+            //}
+            get
+            {
+                return DroneList.First(drone => drone.Id == id);
+            }
+        }
         /// <summary>
         /// A function that gets a Drone and adds it to the list of Drones.
         /// </summary>
@@ -101,9 +115,9 @@ namespace DalObject
         /// A function that returns the list of the drones
         /// </summary>
         /// <returns> drone list</returns>
-        public IEnumerable<Drone> DisplayingDrones()
+        public IEnumerable<Drone> GetDrones()
         {
-            return new List<Drone>(DroneList.Select(drone => new Drone(drone)).ToList());
+            return DroneList.Select(drone => new Drone(drone)).ToList();
 
         }
 

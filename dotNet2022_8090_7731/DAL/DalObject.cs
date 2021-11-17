@@ -70,11 +70,11 @@ namespace DalObject
         /// A function that returns the list of the base stations 
         /// </summary>
         /// <returns> base station list</returns>
-        public IEnumerable<BaseStation> DisplayingBaseStations()
+        public IEnumerable<BaseStation> GetStations()
         {
-            return new List<BaseStation>(BaseStationList.Select(station => new BaseStation(station)).ToList());
+            return BaseStationList.Select(station => new BaseStation(station)).ToList();
         }
-        
+
         /// <summary>
         /// A function that returns base stations that they have available charging positions.
         /// </summary>
@@ -83,6 +83,6 @@ namespace DalObject
         {
             return new List<BaseStation>(BaseStationList.Where(BaseStation => BaseStation.NumAvailablePositions > 0).ToList());
         }
-        
+
     }
 }

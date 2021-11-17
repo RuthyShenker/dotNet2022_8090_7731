@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using static IBL.BO.Enum;
 namespace IBL.BO
 {
-    class BL_Parcel
+    class Parcel
     {
         public int ParcelId { get; init; }
         public string SenderId { get; set; }
         public string GetterId { get; set; }
         public WeightCategories Weight { get; set; }
-        public priority MPriority { get; set; }
+        public Priority MPriority { get; set; }
         public DroneInParcel DInParcel { get; set; }
         public DateTime MakingParcel { get; set; }
         public DateTime? BelongParcel { get; set; }

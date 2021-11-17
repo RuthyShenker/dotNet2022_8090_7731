@@ -1,5 +1,7 @@
-﻿using IDal.DO;
+﻿using DalObject;
+using IDal.DO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +11,28 @@ namespace IDal
 {
     public interface IDal
     {
+        IEnumerable GetSpecificItem(Type type, object Id)
+        {
+            return DataSource.data[type].Cast<IIdentifiable>().Where(item => item.Id == Id);
+        }
+
+
+        IEnumerable GetList(Type type)
+        {
+            return DataSource.data[type];
+        }
+
+        public object DisplayItem<T>(List<T> list, object Id)
+        {
+
+            return list[Id].Clone();
+        }
+
+        public object DisplayItem<T>(List<T> list)
+        {
+
+            return list.Clone();
+        }
         void AddingBaseStation(BaseStation baseStation);
         void AddingDrone(Drone drone);
         void AddingCustomer(Customer customer);
@@ -23,10 +47,10 @@ namespace IDal
         Drone DroneDisplay(int Id);
         Customer CustomerDisplay(string Id);
         Parcel ParcelDisplay(int Id);
-        IEnumerable<BaseStation> DisplayingBaseStations();
+        IEnumerable<BaseStation> GetStations();
         IEnumerable<Drone> GetDrones();
-        IEnumerable<Customer> DisplayingCustomers();
-        IEnumerable<Parcel> DisplayingParcels();
+        IEnumerable<Customer> GetCustomers();
+        IEnumerable<Parcel> GetParcels();
         IEnumerable<Parcel> GetUnbelongParcels();
         IEnumerable<BaseStation> AvailableSlots();
 
