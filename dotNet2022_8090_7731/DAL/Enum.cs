@@ -15,17 +15,14 @@ namespace IDal
         ///// </summary>
         public enum WeightCategories { Light, Medium, Heavy };
 
-        ///// <summary>
-        ///// An Enum of UrgencyStatuses contains:
-        ///// Normal, Fast, Emergency.
-        ///// </summary>
-        //public enum UrgencyStatuses { Normal, Fast, Emergency };
 
-        ///// <summary>
-        ///// An Enum of ProgramOptions contains:
-        ///// Add, Update, DisplaySpecific, DisplayList, Exit.
-        ///// </summary>
-        //public enum ProgramOptions { Add = 1, Update, DisplaySpecific, DisplayList, Exit };
+        /// <summary>
+        /// An Enum of UrgencyStatuses contains:
+        /// Normal, Fast, Emergency.
+        /// </summary>
+        public enum UrgencyStatuses { Normal, Fast, Emergency };
 
+        public enum DroneStatus { Available, Maintenance, Delivery };
+        public enum WeightCategories { Light, Medium, Heavy };
     };
 }

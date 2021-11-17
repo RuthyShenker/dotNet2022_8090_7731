@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dal
+namespace ConsoleUI_BL
 {
     partial class Program
     {
-        void DisplayingSPecificObjOption()
+        private static void DisplayingSpecificObjOption()
         {
             Console.WriteLine(
                          $"1 - Base station view\n" +
@@ -21,20 +21,16 @@ namespace dal
             switch (input)
             {
                 case 1:
-                    BaseStation baseStation = BL.BaseStationDisplay(GettingId("Base Station"));
-                    Console.WriteLine(baseStation);
+                    Console.WriteLine(bL.BaseStationDisplay(GettingId("Base Station")));
                     break;
                 case 2:
-                    Drone drone = dalObject.DroneDisplay(GettingId("Drone"));
-                    Console.WriteLine(drone);
+                    Console.WriteLine(bL.DroneDisplay(GettingId("Drone")));
                     break;
                 case 3:
-                    Customer customer = dalObject.CustomerDisplay(GettingIdAsString("Customer"));
-                    Console.WriteLine(customer);
+                    Console.WriteLine(bL.CustomerDisplay(GettingIdAsString("Customer")));
                     break;
                 case 4:
-                    Parcel parcel = dalObject.ParcelDisplay(GettingId("Parcel"));
-                    Console.WriteLine(parcel);
+                    Console.WriteLine(bL.ParcelDisplay(GettingId("Parcel")));
                     break;
                 default:
                     break;

@@ -43,17 +43,24 @@ namespace IDal
         void ChangeDroneStatus(int Id, DroneStatuses newStatus);
         void ChargingDrone(int IdDrone);
         void ReleasingDrone(int dId);
-        BaseStation BaseStationDisplay(int id);
-        Drone DroneDisplay(int Id);
-        Customer CustomerDisplay(string Id);
-        Parcel ParcelDisplay(int Id);
-        IEnumerable<BaseStation> GetStations();
+        BaseStation GetBaseStation(int id);
+        Drone GetDrone(int Id);
+        Customer GetCustomer(string Id);
+        Parcel GetParcel(int Id);
+        IEnumerable<BaseStation> GetBaseStations();
         IEnumerable<Drone> GetDrones();
         IEnumerable<Customer> GetCustomers();
         IEnumerable<Parcel> GetParcels();
         IEnumerable<Parcel> GetUnbelongParcels();
         IEnumerable<BaseStation> AvailableSlots();
-
+        void UpdateDrone(int dId, Drone drone);
+        void UpdateBaseStation(int bId, BaseStation baseStation);
+        void UpdateCustomer(string cId, Customer customer);
+        bool ExistsInBaseStation(int id);
+        bool ExistsInDroneList(int id);
+        bool ThereAreFreePositions(int sId);
+        int SumOfDronesInSpecificStation(int sId);
+        bool ExistsInCustomerList(string cId);
         double[] PowerConsumptionRequest();
     }
     //public abstract class IDalGeneric<T>

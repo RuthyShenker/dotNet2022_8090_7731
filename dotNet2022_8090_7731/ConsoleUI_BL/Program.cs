@@ -2,14 +2,15 @@
 
 namespace ConsoleUI_BL
 {
-    class Program:IBL
+    partial class Program
     {
+       static IBL.IBL bL = new BL.BL();
         static void Main(string[] args)
         {
-            IBL BL = new BL();
-
+            
             int input = 0;
-            while ((ProgramOptions)input != ProgramOptions.Exit)
+            
+            while ((Enum.ProgramOptions)input != Enum.ProgramOptions.Exit)
             {
                 Console.WriteLine
                   ($"\nTap the desired option:\n" +
@@ -19,25 +20,25 @@ namespace ConsoleUI_BL
                   $"4 - Displaying a specific List\n" +
                   $"5 - Exit");
                 CheckValids.CheckValid(1, 5, out input);
-                switch ((ProgramOptions)input)
+                switch ((Enum.ProgramOptions)input)
                 {
-                    case ProgramOptions.Add:
+                    case Enum.ProgramOptions.Add:
                         AddingOption();
                         break;
 
-                    case ProgramOptions.Update:
+                    case Enum.ProgramOptions.Update:
                         UpdatingOption();
                         break;
 
-                    case ProgramOptions.DisplaySpecific:
+                    case Enum.ProgramOptions.DisplaySpecific:
                         DisplayingSpecificObjOption();
                         break;
 
-                    case ProgramOptions.DisplayList:
+                    case Enum.ProgramOptions.DisplayList:
                         DisplayingListOption();
                         break;
 
-                    case ProgramOptions.Exit:
+                    case Enum.ProgramOptions.Exit:
                         {
                             Console.WriteLine("good bye!");
                             break;
@@ -46,33 +47,7 @@ namespace ConsoleUI_BL
                     default:
                         break;
                 }
-
             }
         }
-        /// <summary>
-        /// A function that gets from the user Id and returns it as string
-        /// </summary>
-        /// <param name="obj">a name of object</param>
-        /// <returns>an id as string</returns>
-        private static string GettingIdAsString(string obj)
-        {
-            Console.WriteLine($"Enter The Id Of The {obj}:");
-            return Console.ReadLine();
-        }
-
-        /// <summary>
-        /// A function that gets from the user Id and returns it as int
-        /// </summary>
-        /// <param name="obj">a name of object</param>
-        /// <returns>an id as int</returns>
-        private static int GettingId(string obj)
-        {
-            Console.WriteLine($"Enter The Id Of The {obj}:");
-            return int.Parse(Console.ReadLine());
-        }
-
-
     }
-}
-    
 }

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using IBL.BO;
 namespace IBL
 {
-    interface IBL
+   public interface IBL
     {
         //Adding
-        void AddingBaseStation(Station baseStation);
-        void AddingDrone(Drone drone);
-        void AddingCustomer(Customer customer);
-        void GettingParcelForDelivery(Parcel parcel);
+        void AddingBaseStation(BL_Station baseStation);
+        void AddingDrone(BL_Drone drone,int numberStation);
+        void AddingCustomer(BL_Customer customer);
+        void GettingParcelForDelivery(BL_Parcel parcel);
         void BelongingParcel(int pId);
         void PickingUpParcel(int Id);
         void DeliveryPackage(int Id);
@@ -31,5 +31,23 @@ namespace IBL
         IEnumerable<Parcel> GetUnbelongParcels();
         IEnumerable<Station> AvailableSlots();
 
+        void ReleasingDrone(int dId,double timeInCharging);
+        BL_Station BaseStationDisplay(int id);
+        BL_Drone DroneDisplay(int Id);
+        BL_Customer CustomerDisplay(string Id);
+        BL_Parcel ParcelDisplay(int Id);
+        IEnumerable<StationToList> GetBaseStations();
+        IEnumerable<DroneToList> GetDrones();
+        IEnumerable<CustomerToList> GetCustomers();
+        IEnumerable<ParcelToList> GetParcels();
+        IEnumerable<ParcelToList> GetUnbelongParcels();
+        IEnumerable<StationToList> AvailableSlots();
+        //צריך להיות בממשק או רק
+        //BLב
+        void UpdatingDroneName(int droneId, string newModel);
+        void UpdatingStationDetails(int stationId,string stationName,int amountOfPositions);
+      
+        void  UpdatingCustomerDetails(string customerId,string newName,string newPhone);
+       
     }
 }

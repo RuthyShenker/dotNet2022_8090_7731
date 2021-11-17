@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
-    class Enum
-    {
+    
+    
         /// <summary>
         /// An Enum of WeightCategories contains:
         /// Light, Medium, Heavy.
@@ -26,10 +26,6 @@ namespace IBL.BO
         /// </summary>
         public enum DroneStatus { Free, Maintenance, Delivery };
 
-       
-
-
-
         public enum ParcelStatus { made,belonged,collected,InDestination}
-    }
+    
 }

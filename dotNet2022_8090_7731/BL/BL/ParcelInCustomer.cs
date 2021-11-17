@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using static IBL.BO.Enum;
 namespace IBL.BO
 {
-    class ParcelInCustomer
+    public class ParcelInCustomer
     {
         public int Id { get; set; }
         public WeightCategories weight { get; set; }

@@ -7,8 +7,15 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
-    class Customer
+    public class BL_Customer
     {
+        public BL_Customer(string id, string name, string phone, Location cLocation)
+        {
+            Id = id;
+            Name = name;
+            Phone = phone;
+            CLocation = cLocation;
+        }
         public string Id { get; init; }
         public string Name { get; set; }
         public string Phone { get; set; }

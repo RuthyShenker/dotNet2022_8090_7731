@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
-namespace DalObject
+using IBL.BO;
+namespace ConsoleUI_BL
 {
     partial class Program
     {
-        void DisplayingListOption()
+        private static void DisplayingListOption()
         {
+            int input = 0;
             Console.WriteLine(
                                 $"1 - View base stations list\n" +
                                 $"2 - View drones list\n" +
@@ -22,43 +23,43 @@ namespace DalObject
             switch (input)
             {
                 case 1:
-                    IEnumerable<BaseStation> StationList = dalObject.DisplayingBaseStations();
-                    foreach (BaseStation baseStation in StationList)
+                    IEnumerable<StationToList> StationList = bL.GetBaseStations();
+                    foreach (StationToList baseStation in StationList)
                     {
                         Console.WriteLine(baseStation);
                     }
                     break;
                 case 2:
-                    IEnumerable<Drone> DroneList = dalObject.DisplayingDrones();
-                    foreach (Drone drone in DroneList)
+                    IEnumerable<DroneToList> DroneList = bL.GetDrones();
+                    foreach (DroneToList drone in DroneList)
                     {
                         Console.WriteLine(drone);
                     }
                     break;
                 case 3:
-                    IEnumerable<Customer> CustomerList = dalObject.DisplayingCustomers();
-                    foreach (Customer customer in CustomerList)
+                    IEnumerable<CustomerToList> CustomerList = bL.GetCustomers();
+                    foreach (CustomerToList customer in CustomerList)
                     {
                         Console.WriteLine(customer);
                     }
                     break;
                 case 4:
-                    IEnumerable<Parcel> ParcelList = dalObject.DisplayingParcels();
-                    foreach (Parcel parcel in ParcelList)
+                    IEnumerable<ParcelToList> ParcelList = bL.GetParcels();
+                    foreach (ParcelToList parcel in ParcelList)
                     {
                         Console.WriteLine(parcel);
                     }
                     break;
                 case 5:
-                    IEnumerable<Parcel> UnbelongParcelsList = dalObject.DisplayingUnbelongParcels();
-                    foreach (Parcel parcel in UnbelongParcelsList)
+                    IEnumerable<ParcelToList> UnbelongParcelsList = bL.GetUnbelongParcels();
+                    foreach (ParcelToList parcel in UnbelongParcelsList)
                     {
                         Console.WriteLine(parcel);
                     }
                     break;
                 case 6:
-                    IEnumerable<BaseStation> AvailableSlotsList = dalObject.AvailableSlots();
-                    foreach (BaseStation baseStation in AvailableSlotsList)
+                    IEnumerable<StationToList> AvailableSlotsList = bL.AvailableSlots();
+                    foreach (StationToList baseStation in AvailableSlotsList)
                     {
                         Console.WriteLine(baseStation);
                     }

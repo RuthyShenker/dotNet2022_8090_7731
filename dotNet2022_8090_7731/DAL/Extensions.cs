@@ -9,23 +9,24 @@ namespace IBL.BO
 {
     static class Extensions
     {
-        static object FindInList(List<IIdentity> list, object Id)
-        {
-            try
-            {
-                return list.First(item => item.Id == Id);
-            }
-            catch (InvalidOperationException ex)
-            {
+        //static object FindInList(List<IIdentity> list, object Id)
+        //{
+        //    try
+        //    {
+        //        return list.First(item => item.Id == Id);
+        //    }
+        //    catch (InvalidOperationException ex)
+        //    {
 
-                throw new InvalidOperationException(Id,list.GetType());
-            }
-            catch (ArgumentNullException ex)
-            {
+        //        throw new InvalidOperationException(Id,list.GetType());
+        //    }
+        //    catch (ArgumentNullException ex)
+        //    {
 
-                throw new ArgumentNullException(Id, list.GetType());
-            }
-        }
+        //        throw new ArgumentNullException(Id, list.GetType());
+        //    }
+        //}
+       
 
         public object DisplayItem<T>(List<T> list, object Id)
         {

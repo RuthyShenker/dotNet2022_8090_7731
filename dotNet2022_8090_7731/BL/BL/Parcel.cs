@@ -3,11 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static IBL.BO.Enum;
+
 namespace IBL.BO
 {
-    class Parcel
+    public class BL_Parcel
     {
+
+        public BL_Parcel(string senderId, string getterId, WeightCategories weight, Priority mPriority, DroneInParcel dInParcel, DateTime makingParcel, DateTime? belongParcel, DateTime? pickingUp, DateTime? arrival)
+        {
+            SenderId = senderId;
+            GetterId = getterId;
+            Weight = weight;
+            MPriority = mPriority;
+            DInParcel = dInParcel;
+            MakingParcel = makingParcel;
+            BelongParcel = belongParcel;
+            PickingUp = pickingUp;
+            Arrival = arrival;
+        }
+
         public int ParcelId { get; init; }
         public string SenderId { get; set; }
         public string GetterId { get; set; }

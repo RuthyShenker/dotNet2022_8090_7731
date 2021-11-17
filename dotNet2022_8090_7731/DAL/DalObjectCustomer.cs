@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using static DalObject.DataSource;
 namespace DalObject
 {
-    public partial class DalObject
+    public partial class DalObjectBaseStation
     {
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace DalObject
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public Customer CustomerDisplay(string Id)
+        public Customer GetCustomer(string Id)
         {
             for (int i = 0; i < CustomerList.Count; i++)
             {
@@ -49,6 +49,17 @@ namespace DalObject
             return CustomerList.Select(customer => new Customer(customer)).ToList();
         }
 
+        public bool ExistsInCustomerList(int cId)
+        {
+            foreach (var customer in CustomerList)
+            {
 
+            }
+        }
+        void UpdateCustomer(string cId, Customer customer)
+        {
+            CustomerList.Remove(CustomerList.Find(customer => customer.Id== cId));
+            DroneList.Add(customer);
+        }
     }
 }

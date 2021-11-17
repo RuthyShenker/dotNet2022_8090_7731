@@ -65,9 +65,9 @@ namespace DalObject
             static public double lightWeight;
             static public double mediumWeight;
             static public double heavyWeight;
-
+            
             static public double chargingRate;
-
+            
             internal static int IndexParcel = 0;
         }
         /// <summary>
@@ -106,11 +106,11 @@ namespace DalObject
             string[] initNameStation = { "Tel-Tzion", "Tel-Aviv", "Ranana", "Eilat", "Jerusalem" };
             for (int i = 0; i < INITIALIZE_BASE_STATION; ++i)
             {
-                fillBaseStation=new BaseStation() { Id = Rand.Next(100000000, 1000000000) };
-                fillBaseStation.NameStation = initNameStation[Rand.Next(0, initNameStation.Length)];
-                fillBaseStation.NumAvailablePositions = Rand.Next(0, 50);
-                fillBaseStation.Longitude = Rand.Next(Rand.Next(0, 90)) + Rand.NextDouble();
-                fillBaseStation.Latitude = Rand.Next(Rand.Next(0, 180)) + Rand.NextDouble();
+                fillBaseStation=new BaseStation() { Id = rand.Next(100000000, 1000000000) };
+                fillBaseStation.NameStation = initNameStation[rand.Next(0, initNameStation.Length)];
+                fillBaseStation.NumberOfChargingPositions = rand.Next(0, 50);
+                fillBaseStation.Longitude = rand.Next(rand.Next(0, 90)) + rand.NextDouble();
+                fillBaseStation.Latitude = rand.Next(rand.Next(0, 180)) + rand.NextDouble();
                 BaseStationList.Add(fillBaseStation);
             }
 
@@ -141,7 +141,7 @@ namespace DalObject
                 if(drone.Status==DroneStatuses.Available)
                 {
                     return drone.Id;
-                    DalObject dalObject = new DalObject();
+                    DalObjectBaseStation dalObject = new DalObjectBaseStation();
                     dalObject.ChangeDroneStatus(drone.Id, DroneStatuses.Delivery);
                 }
             }

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using IDal.DO;
-namespace ConsoleUI
+﻿namespace ConsoleUI
 {
     class Program
     {
         static void Main(string[] args)
         {
-            IDal.IDal dalObject = new DalObject.DalObject();
+            IDal.IDal dalObject = new DalObject.DalObjectBaseStation();
         }
     }
 }

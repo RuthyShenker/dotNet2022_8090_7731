@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static IBL.BO.Enum;
+
 
 namespace IBL.BO
 {
-    class ParcelInTransfer
+    public class ParcelInTransfer
     {
         public int PId { get; set; }
         public bool IsInWay { get; set; }

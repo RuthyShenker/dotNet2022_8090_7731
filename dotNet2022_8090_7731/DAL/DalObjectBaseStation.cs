@@ -9,7 +9,7 @@ using static DalObject.DataSource.Config;
 
 namespace DalObject
 {
-    public partial class DalObject : IDal.IDal
+    public partial class DalObjectBaseStation : IDal.IDal
     /// <summary>
     /// A class that contains:
     /// Add
@@ -19,8 +19,8 @@ namespace DalObject
     /// ChangeDroneStatus
     /// ChargingDrone
     /// ReleasingDrone
-    /// BaseStationDisplay
-    /// DroneDisplay
+    /// GetBaseStation
+    /// GetDrone
     /// CustomerDisplay
     /// ParcelDisplay
     /// GetBaseStations
@@ -34,7 +34,7 @@ namespace DalObject
         /// <summary>
         /// A constructor of DalObject that activates the function Initialize
         /// </summary>
-        public DalObject()
+        public DalObjectBaseStation()
         {
             Initialize();
         }
@@ -54,7 +54,7 @@ namespace DalObject
         /// <param name="id"></param>
         /// <returns>a base station </returns>
         /// 
-        public BaseStation BaseStationDisplay(int id)
+        public BaseStation GetBaseStation(int id)
         {
             for (int i = 0; i < BaseStationList.Count; i++)
             {
@@ -72,7 +72,7 @@ namespace DalObject
         /// <returns> base station list</returns>
         public IEnumerable<BaseStation> GetBaseStations()
         {
-            return BaseStationList.Select(station => new BaseStation(station)).ToList();
+            return new List<BaseStation>(BaseStationList.Select(station => new BaseStation(station)).ToList());
         }
 
         /// <summary>
@@ -84,20 +84,6 @@ namespace DalObject
             return new List<BaseStation>(BaseStationList.Where(BaseStation => BaseStation.NumberOfChargingPositions > 0).ToList());
         }
 
-        public void AddingCustomer(Customer customer)
-        {
-            throw new NotImplementedException();
-        }
-
-        Customer IDal.IDal.CustomerDisplay(string Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Customer> IDal.IDal.DisplayingCustomers()
-        {
-            throw new NotImplementedException();
-        }
 
         public bool ExistsInBaseStation(int id)
         {
@@ -109,14 +95,18 @@ namespace DalObject
             return false;
         }
 
-        public bool ExistsInDroneList(int id)
+        
+        public bool ThereAreFreePositions(int sId)
         {
-            for (int i = 0; i < DroneList.Count; i++)
-            {
-                if (DroneList[i].Id==id)
-                    return true;
-            }
-            return false;
+            return (BaseStationList.Find(baseStation => baseStation.Id == sId).NumberOfChargingPositions - SumOfDronesInSpecificStation(sId)) > 0;
         }
+
+        void UpdateBaseStation(int bId, BaseStation baseStation)
+        {
+            BaseStationList.Remove(BaseStationList.Find(baseStation => baseStation.Id == bId));
+            BaseStationList.Add(baseStation);
+        }
+
+
     }
 }

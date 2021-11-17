@@ -29,7 +29,7 @@ namespace IDal
             {
                 Id = id;
                 NameStation = nameStation;
-                NumAvailablePositions = numberOfChargingStations;
+                NumberOfChargingPositions = numberOfChargingStations;
                 Longitude = longitude;
                 Latitude = latitude;
             }
@@ -43,7 +43,7 @@ namespace IDal
             {
                 Id = baseStation.Id;
                 NameStation = baseStation.NameStation;
-                NumAvailablePositions = baseStation.NumAvailablePositions;
+                NumberOfChargingPositions = baseStation.NumberOfChargingPositions;
                 Longitude = baseStation.Longitude;
                 Latitude = baseStation.Latitude;
             }
@@ -53,7 +53,7 @@ namespace IDal
             /// </summary>
             public int Id { get; init; }
             public string NameStation { get; set; }
-            public int NumAvailablePositions { get; set; }
+            public int NumberOfChargingPositions { get; set; }
             public double Longitude { get; set; }
             public double Latitude { get; set; }
             /// <summary>
@@ -63,7 +63,7 @@ namespace IDal
             public override string ToString()
             {
                 return $"Station name: {NameStation}     Id: {Id}   Longitude: {Longitude}  Latitude: {Latitude}    " +
-                    $"Number of available charging positions: {NumAvailablePositions}";
+                    $"Number of charging positions: {NumberOfChargingPositions}";
             }
             /// <summary>
             /// A function that returns a new instance
@@ -77,7 +77,7 @@ namespace IDal
                 {
                     Id = Id,
                     NameStation = NameStation,
-                    NumAvailablePositions = NumAvailablePositions,
+                    NumberOfChargingPositions = NumberOfChargingPositions,
                     Longitude = Longitude,
                     Latitude = Latitude,
                 };

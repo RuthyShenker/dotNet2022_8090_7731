@@ -8,7 +8,7 @@ using IDal.DO;
 using static DalObject.DataSource;
 namespace DalObject
 {
-    public partial class DalObject
+    public partial class DalObjectBaseStation
     {
         public Drone this[int id]
         {
@@ -37,7 +37,7 @@ namespace DalObject
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="newStatus"></param>
-        public void ChangeDroneStatus(int Id, DroneStatuses newStatus)
+        public void ChangeDroneStatus(int Id, DroneStatus newStatus)
         /// <param name="newStatus">from the DroneStatuses-integer </param>
         {
             for (int i = 0; i < DroneList.Count; i++)
@@ -62,9 +62,9 @@ namespace DalObject
         {
             foreach (BaseStation baseStation in BaseStationList)
             {
-                if (baseStation.NumAvailablePositions != 0)
+                if (baseStation.NumberOfChargingPositions != 0)
                 {
-                    ChangeDroneStatus(IdDrone, DroneStatuses.Maintenance);
+                    ChangeDroneStatus(IdDrone, DroneStatus.Maintenance);
                     ChargingDrone newChargingEntity = new ChargingDrone();
                     newChargingEntity.StationId = baseStation.Id;
                     newChargingEntity.DroneId = IdDrone;
@@ -81,7 +81,7 @@ namespace DalObject
         /// <param name="dId"></param>
         public void ReleasingDrone(int dId)
         {
-            ChangeDroneStatus(dId, DroneStatuses.Available);
+            ChangeDroneStatus(dId, DroneStatus.Available);
             for (int i = 0; i < ChargingDroneList.Count; i++)
             {
                 if (ChargingDroneList[i].DroneId == dId)
@@ -98,7 +98,7 @@ namespace DalObject
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public Drone DroneDisplay(int Id)
+        public Drone GetDrone(int Id)
         {
             for (int i = 0; i < DroneList.Count; i++)
             {
@@ -122,6 +122,28 @@ namespace DalObject
         }
 
         public double[] PowerConsumptionRequest() => new double[5] { available, lightWeight, mediumWeight, heavyWeight, chargingRate };
-
+        public bool ExistsInDroneList(int id)
+        {
+            for (int i = 0; i < DroneList.Count; i++)
+            {
+                if (DroneList[i].Id == id)
+                    return true;
+            }
+            return false;
+        }
+        public int SumOfDronesInSpecificStation(int sId)
+        {
+            int count = 0;
+            for (int i = 0; i < ChargingDroneList.Count; i++)
+            {
+                if (ChargingDroneList[i].StationId == sId) count++;
+            }
+            return count;
+        }
+        void UpdateDrone(int dId, Drone drone)
+        {
+            DroneList.Remove(DroneList.Find(drone => drone.Id == dId));
+            DroneList.Add(drone);
+        }
     }
 }

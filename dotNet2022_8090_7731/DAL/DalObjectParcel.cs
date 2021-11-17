@@ -7,7 +7,7 @@ using IDal.DO;
 using static DalObject.DataSource;
 namespace DalObject
 {
-    public partial class DalObject
+    public partial class DalObjectBaseStation
     {
         /// <summary>
         /// A function that gets a Parcel and adds it to the list of Parcels.
@@ -15,71 +15,72 @@ namespace DalObject
         /// <param name="parcel"></param>
         public void GettingParcelForDelivery(Parcel parcel)
         {
+            parcel.ParcelId=
             ParceList.Add(parcel);
         }
 
-        /// <summary>
-        /// A function that gets a id of parcel and belonging that parcel to a drone.
-        /// </summary>
-        /// <param name="pId"></param>
-        public void BelongingParcel(int pId)
-        {
-            Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == pId);
-            foreach (Drone drone in DroneList)
-            {
-                if (drone.Status == DroneStatuses.Available && drone.MaxWeight >= tempParcel.Weight)
-                {
-                    tempParcel.DroneId = drone.Id;
-                    tempParcel.BelongParcel = DateTime.Now;
-                }
+        ///// <summary>
+        ///// A function that gets a id of parcel and belonging that parcel to a drone.
+        ///// </summary>
+        ///// <param name="pId"></param>
+        //public void BelongingParcel(int pId)
+        //{
+        //    Parcel tempParcel = ParceList.First(parcel => parcel.ParcelId == pId);
+        //    foreach (Drone drone in DroneList)
+        //    {
+        //        if (drone.Status == DroneStatus.Available && drone.MaxWeight >= tempParcel.Weight)
+        //        {
+        //            tempParcel.DroneId = drone.Id;
+        //            tempParcel.BelongParcel = DateTime.Now;
+        //        }
 
-                else
-                {
-                    tempParcel.DroneId = 0;
-                }
-            }
-        }
+        //        else
+        //        {
+        //            tempParcel.DroneId = 0;
+        //        }
+        //    }
+        //}
 
-        /// <summary>
-        /// A function that gets an id of parcel and Picking Up this parcel to the drone.
-        /// </summary>
-        /// <param name="Id"></param>
-        public void PickingUpParcel(int Id)
-        {
-            for (int i = 0; i < ParceList.Count; i++)
-            {
-                if (ParceList[i].ParcelId == Id)
-                {
-                    Parcel tempParcel = ParceList[i];
-                    tempParcel.PickingUp = DateTime.Now;
-                    ChangeDroneStatus(tempParcel.DroneId, DroneStatuses.Delivery);
-                    ParceList[i] = tempParcel;
-                    break;
-                }
-            }
-            throw new Exception("Id doesn't exist");
-        }
+        ///// <summary>
+        ///// A function that gets an id of parcel and Picking Up this parcel to the drone.
+        ///// </summary>
+        ///// <param name="Id"></param>
+        //public void PickingUpParcel(int Id)
+        //{
+        //    for (int i = 0; i < ParceList.Count; i++)
+        //    {
+        //        if (ParceList[i].ParcelId == Id)
+        //        {
+        //            Parcel tempParcel = ParceList[i];
+        //            tempParcel.PickingUp = DateTime.Now;
+        //            ChangeDroneStatus(tempParcel.DroneId, DroneStatus.Delivery);
+        //            ParceList[i] = tempParcel;
+        //            break;
+        //        }
+        //    }
+        //    throw new Exception("Id doesn't exist");
+        //}
 
-        /// <summary>
-        /// A function that gets an id of parcel and the drone that takes this parcel 
-        /// brings the parcel to the destination.
-        /// </summary>
-        /// <param name="Id"></param>
-        public void DeliveryPackage(int Id)
-        {
-            for (int i = 0; i < ParceList.Count; i++)
-            {
-                if (ParceList[i].ParcelId == Id)
-                {
-                    Parcel tempParcel = ParceList[i];
-                    tempParcel.Arrival = DateTime.Now;
-                    ChangeDroneStatus(tempParcel.DroneId, DroneStatuses.Available);
-                    ParceList[i] = tempParcel;
-                    break;
-                }
-            }
-            throw new Exception("Id doesn't exist");
-        }
+        ///// <summary>
+        ///// A function that gets an id of parcel and the drone that takes this parcel 
+        ///// brings the parcel to the destination.
+        ///// </summary>
+        ///// <param name="Id"></param>
+        //public void DeliveryPackage(int Id)
+        //{
+        //    for (int i = 0; i < ParceList.Count; i++)
+        //    {
+        //        if (ParceList[i].ParcelId == Id)
+        //        {
+        //            Parcel tempParcel = ParceList[i];
+        //            tempParcel.Arrival = DateTime.Now;
+        //            ChangeDroneStatus(tempParcel.DroneId, DroneStatus.Available);
+        //            ParceList[i] = tempParcel;
+        //            break;
+        //        }
+        //    }
+        //    throw new Exception("Id doesn't exist");
+        //}
 
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace DalObject
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public Parcel ParcelDisplay(int Id)
+        public Parcel GetParcel(int Id)
         {
             for (int i = 0; i < ParceList.Count; i++)
             {
