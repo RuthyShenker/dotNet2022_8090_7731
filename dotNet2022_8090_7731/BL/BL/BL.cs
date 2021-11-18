@@ -24,6 +24,7 @@ namespace BL
         static double pConsumMedium;
         static double pConsumHeavy;
         static double chargingRate;
+
         public BL()
         {
             dal = new DalObject.DalObject();
