@@ -87,7 +87,7 @@ namespace BL
 
         private void newUndeliveringDroneToList(IEnumerable<BaseStation> stationDalList, DroneToList droneToList)
         {
-            droneToList.DStatus = (DroneStatus)DataSource.Rand.Next((int)Free, (int)Maintenance);+
+            droneToList.DStatus = (DroneStatus)DataSource.Rand.Next((int)Free, (int)Maintenance);
             if (droneToList.DStatus == Maintenance)
             {
                 BaseStation station = stationDalList.ElementAt(DataSource.Rand.Next(0, stationDalList.Count()));

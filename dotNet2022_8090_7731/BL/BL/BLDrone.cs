@@ -24,15 +24,15 @@ namespace BL
         }
 
         // weight=0 ערך ברירת מחדל לפונקציה
-        private double MinButtery(double distance, IDal.DO.WeightCategories weight = 0)
+        private double MinButtery(double distance,  WeightCategories weight = 0)
         {
             switch (weight)
             {
-                case IDal.DO.WeightCategories.Light:
+                case WeightCategories.Light:
                     return pConsumLight * distance;
-                case IDal.DO.WeightCategories.Medium:
+                case WeightCategories.Medium:
                     return pConsumMedium * distance;
-                case IDal.DO.WeightCategories.Heavy:
+                case WeightCategories.Heavy:
                     return pConsumHeavy * distance;
                 default:
                     return pConsumFree * distance;
