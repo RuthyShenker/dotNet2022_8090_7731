@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
-    public class BL_Customer
+    public class Customer
     {
-        public BL_Customer(string id, string name, string phone, Location cLocation)
+        public Customer(string id, string name, string phone, Location cLocation)
         {
             Id = id;
             Name = name;

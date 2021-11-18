@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
-    public class BL_Drone
+    public class Drone
     {
         int Id { get; init; }
         string Model { get; set; }
@@ -16,7 +16,7 @@ namespace IBL.BO
         DroneStatus DStatus { get; set; }
         ParcelInTransfer PInTransfer { get; set; }
         Location CurrLocation { get; set; } 
-        public BL_Drone(int id, int model,WeightCategories weight, float batteryStatus, DroneStatus droneStatus, ParcelInTransfer pInTransfer, Location currLocation)
+        public Drone(int id, int model,WeightCategories weight, float batteryStatus, DroneStatus droneStatus, ParcelInTransfer pInTransfer, Location currLocation)
         {
             Id = id;
             Model = model;

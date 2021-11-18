@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
-    public class BL_Parcel
+    public class Parcel
     {
 
-        public BL_Parcel(string senderId, string getterId, WeightCategories weight, Priority mPriority, DroneInParcel dInParcel, DateTime makingParcel, DateTime? belongParcel, DateTime? pickingUp, DateTime? arrival)
+        public Parcel(string senderId, string getterId, WeightCategories weight, Priority mPriority, DroneInParcel dInParcel, DateTime makingParcel, DateTime? belongParcel, DateTime? pickingUp, DateTime? arrival)
         {
             SenderId = senderId;
             GetterId = getterId;

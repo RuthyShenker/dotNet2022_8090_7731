@@ -40,7 +40,7 @@ namespace ConsoleUI_BL
             }
         }
 
-        private static BL_Parcel GettingNewParcel()
+        private static Parcel GettingNewParcel()
         {
             Console.WriteLine("Enter the id of the sender of the new parcel: ");
             string senderId = Console.ReadLine();
@@ -55,10 +55,10 @@ namespace ConsoleUI_BL
             DateTime? BelongParcel = null;
             DateTime? PickingUp = null;
             DateTime? Arrival = null;
-            return new BL_Parcel(senderId, getterId, weight, mPriority, DInParcel, MakingParcel, BelongParcel, PickingUp, Arrival);
+            return new Parcel(senderId, getterId, weight, mPriority, DInParcel, MakingParcel, BelongParcel, PickingUp, Arrival);
         }
 
-        private static BL_Customer GettingNewCustomer()
+        private static Customer GettingNewCustomer()
         {
             Console.WriteLine("Enter the id of the new customer: ");
             string id = Console.ReadLine();
@@ -71,7 +71,7 @@ namespace ConsoleUI_BL
             double longitude = double.Parse(Console.ReadLine());
             double latitude = double.Parse(Console.ReadLine());
             Location cLocation =new Location() {Latitude=latitude,Longitude=longitude };
-            return new BL_Customer(id, name, phone, cLocation);
+            return new Customer(id, name, phone, cLocation);
         }
     
 
@@ -95,7 +95,7 @@ namespace ConsoleUI_BL
             return new BL_Station(id, nameStation, sLocation, numAvailablePositions, lBL_ChargingDrone);
         }
 
-        private static BL_Drone GettingNewDrone(out int stationId)
+        private static Drone GettingNewDrone(out int stationId)
         {
             Console.WriteLine("Enter the serial number of the manufacturer of the new drone: ");
             int id = int.Parse(Console.ReadLine());
@@ -109,7 +109,7 @@ namespace ConsoleUI_BL
             DroneStatus droneStatus = DroneStatus.Maintenance;
             ParcelInTransfer pInTransfer = null;
             Location currLocation = null;
-            return new BL_Drone(id, model, weight, batteryStatus, droneStatus, pInTransfer, currLocation);
+            return new Drone(id, model, weight, batteryStatus, droneStatus, pInTransfer, currLocation);
         }
 
         //public static BaseStation GettingBaseStation()

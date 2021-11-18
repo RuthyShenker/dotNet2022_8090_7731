@@ -21,16 +21,16 @@ namespace ConsoleUI_BL
             switch (input)
             {
                 case 1:
-                    Console.WriteLine(bL.BaseStationDisplay(GettingId("Base Station")));
+                    Console.WriteLine(bL.GetStation(GettingId("Base Station")));
                     break;
                 case 2:
-                    Console.WriteLine(bL.DroneDisplay(GettingId("Drone")));
+                    Console.WriteLine(bL.GetDrone(GettingId("Drone")));
                     break;
                 case 3:
-                    Console.WriteLine(bL.CustomerDisplay(GettingIdAsString("Customer")));
+                    Console.WriteLine(bL.GetCustomer(GettingIdAsString("Customer")));
                     break;
                 case 4:
-                    Console.WriteLine(bL.ParcelDisplay(GettingId("Parcel")));
+                    Console.WriteLine(bL.GetParcel(GettingId("Parcel")));
                     break;
                 default:
                     break;
