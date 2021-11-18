@@ -25,6 +25,7 @@ namespace BL
         static public double pConsumMedium;
         static public double pConsumHeavy;
         static public double chargingRate;
+
         public BL()
         {
             dal = new DalObject.DalObject();
@@ -42,7 +43,7 @@ namespace BL
                 droneToList = copyCommon(drone);
                 // מה קורה אם יש יותר מחבילה אחת לרחפן
                 var parcel = parcelList.FirstOrDefault(p => p.DroneId == drone.Id && !p.Arrival.HasValue);
-                if (parcel)
+                if (parcel==null)
                 {
                     droneToList.DStatus = Delivery;
 

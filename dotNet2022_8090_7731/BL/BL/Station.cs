@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
-    public class BL_Station
+    public class Station
     {
         public BL_Station(int id, string nameStation, Location sLocation, int numAvailablePositions, List<BL_ChargingDrone> lBL_ChargingDrone)
         {
