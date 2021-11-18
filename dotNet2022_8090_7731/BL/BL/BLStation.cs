@@ -56,9 +56,10 @@ namespace BL
             return location.Longitude == station.Longitude && location.Latitude == station.Latitude;
         }
 
-        private Location closestStation(IDal.DO.Customer customer, IEnumerable<BaseStation> stationDalList)
+        private IDal.DO.BaseStation closestStation(Location location)
         {
-            var cCoord = new GeoCoordinate(customer.Latitude, customer.Longitude);
+            IEnumerable<IDal.DO.BaseStation> stationDalList = dal.GetBaseStation();
+            var cCoord = new GeoCoordinate(location.Latitude, location.Longitude);
             var sCoord = new GeoCoordinate(stationDalList.ElementAt(0).Latitude, stationDalList.ElementAt(0).Longitude);
             double currDistance, distance = sCoord.GetDistanceTo(cCoord);
             int index = 0;
@@ -72,8 +73,18 @@ namespace BL
                     index = i;
                 }
             }
-            return new Location(stationDalList.ElementAt(index).Latitude, stationDalList.ElementAt(index).Longitude);
+            return stationDalList.ElementAt(index);
         }
 
+        public void AddingBaseStation(IDal.DO.BaseStation bLStation)
+        {
+            if (dal.ExistsInBaseStation(bLStation.Id))
+            {
+                throw new Exception("The id is already exists in the base station list!");
+            }
+
+            IDal.DO.BaseStation station = new IDal.DO.BaseStation() { Id = bLStation.Id, Latitude = bLStation.SLocation.Latitude, Longitude = bLStation.SLocation.Longitude, NameStation = bLStation.NameStation, NumberOfChargingPositions = bLStation.NumAvailablePositions };
+            dal.AddingBaseStation(station);
+        }
     }
 }

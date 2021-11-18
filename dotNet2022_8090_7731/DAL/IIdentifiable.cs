@@ -1,7 +1,10 @@
 ﻿namespace IDal
 {
-    internal interface IIdentifiable
+    namespace DO
     {
-        object Id { get; set; }
+        internal interface IIdentifiable
+        {
+            object Id { get; set; }
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DalObject;
+using IDal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -27,9 +29,9 @@ namespace IBL.BO
             }
         }
 
-        static T GetById<T>(object Id) where T : IIdentifiable
+        static IIdentifiable GetById<T>(object Id) where T : IIdentifiable
         {
-            return DataSource.data[T].Cast<IIdentifiable>().Where(item => item.Id == Id);
+            return (IIdentifiable)DataSource.data[typeof(T)].Cast<IIdentifiable>().Where(item => item.Id == Id);
         }
         static List<T> GetDList<T>()
         {
