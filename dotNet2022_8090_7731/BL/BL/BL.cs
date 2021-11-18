@@ -1,4 +1,4 @@
-﻿using DalObject;
+﻿using DalObject
 using IBL.BO;
 using IDal.DO;
 using static IBL.BO.Enum.DroneStatus;
@@ -6,7 +6,6 @@ using static IBL.BO.Enum;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,12 +19,11 @@ namespace BL
         IDal.IDal dal;
         List<DroneToList> lDroneToList;
         private Random rand;
-        static public double pConsumFree;
-        static public double pConsumLight;
-        static public double pConsumMedium;
-        static public double pConsumHeavy;
-        static public double chargingRate;
-
+        static double pConsumFree;
+        static double pConsumLight;
+        static double pConsumMedium;
+        static double pConsumHeavy;
+        static double chargingRate;
         public BL()
         {
             dal = new DalObject.DalObject();
@@ -36,13 +34,13 @@ namespace BL
             IEnumerable<IDal.DO.Drone> droneList = dal.GetDrones();
             IEnumerable<IDal.DO.Parcel> parcelList = dal.GetParcels();
             IEnumerable<IDal.DO.Customer> customerDalList = dal.GetCustomers();
-            IEnumerable<BaseStation> stationDalList = dal.GetStations();
+            IEnumerable<BaseStation> stationDalList = dal.GetBaseStations();
             DroneToList droneToList;
-            foreach (var drone in dal.GetDrones())
+            foreach (var drone in droneList)
             {
                 droneToList = copyCommon(drone);
                 // מה קורה אם יש יותר מחבילה אחת לרחפן
-                var parcel = parcelList.FirstOrDefault(p => p.DroneId == drone.Id && !p.Arrival.HasValue);
+                var parcel = parcelList.FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
                 if (parcel==null)
                 {
                     droneToList.DStatus = Delivery;
