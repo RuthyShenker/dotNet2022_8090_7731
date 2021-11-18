@@ -4,7 +4,7 @@
     {
         internal interface IIdentifiable
         {
-            object Id { get; set; }
+            int Id { get; set; }
         }
     }
 }
