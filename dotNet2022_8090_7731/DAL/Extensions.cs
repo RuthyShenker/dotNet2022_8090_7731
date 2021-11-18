@@ -6,62 +6,37 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using IDal.DO;
+using System.Collections;
 
-namespace IBL.BO
+namespace IDal.DO
 {
-    static class Extensions
+    public static class Extensions
     {
-        static object FindInList(List<IIdentity> list, object Id)
-        {
-            try
-            {
-                return list.First(item => item.Id == Id);
-            }
-            catch (InvalidOperationException ex)
-            {
 
-                throw new InvalidOperationException(Id, list.GetType());
-            }
-            catch (ArgumentNullException ex)
-            {
-
-                throw new ArgumentNullException(Id, list.GetType());
-            }
-        }
-
-        static IIdentifiable GetById<T>(object Id) where T : IIdentifiable
+        public static IIdentifiable GetFromDalById<T>(int Id) where T : IIdentifiable
         {
             return (IIdentifiable)DataSource.data[typeof(T)].Cast<IIdentifiable>().Where(item => item.Id == Id);
         }
-        static List<T> GetDList<T>()
-        {
-            return DataSource.data[T];
-        }
 
-        static IEnumerable<BLEntity> GetBList<BLEntity, DLEntity>()
-        {
-            IEnumerable<BLEntity> bList = new List<BLEntity>();
-            List<DLEntity> dList = GetDList<DLEntity>();
 
-            foreach (DLEntity item in dList)
-            {
-                bList.Add(Map(item));
-            }
-            return bList;
+        public static IEnumerable GetListFromDal<T>() where T : IIdentifiable
+        {
+            return DataSource.data[typeof(T)];
         }
 
 
-        public object DisplayItem<T>(List<T> list, object Id)
-        {
-
-            return list[Id].Clone();
-        }
-
-        public object DisplayItem<T>(List<T> list)
-        {
-
-            return list.Clone();
-        }
+        //static IEnumerable GetListFromDal(Type type)
+        //{
+        //    return type switch
+        //    {
+        //        var x when x == typeof(Customer) => DataSource.data[type],
+        //        var x when x == typeof(BaseStation) => DataSource.data[type],
+        //        var x when x == typeof(Parcel) => DataSource.data[type],
+        //        var x when x == typeof(Drone) => DataSource.data[type],
+        //        _ => throw new Exception()
+        //    };
+        //}
 
     }
 }

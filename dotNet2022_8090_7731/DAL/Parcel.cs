@@ -13,7 +13,7 @@ namespace IDal
         /// A struct of Parcel contains:
         /// Id of Parcel, Id of Sender, Id of Getter, Weight, Status, Id of Drone.
         /// </summary>
-        public struct Parcel
+        public struct Parcel:IIdentifiable
         {
 
             /// <summary>
@@ -32,7 +32,7 @@ namespace IDal
             public Parcel(string senderId, string getterId, WeightCategories weight, UrgencyStatuses status,
                 DateTime makingParcel, DateTime belongParcel, DateTime pickingUp, DateTime arrival)
             {
-                ParcelId = ++DataSource.Config.IndexParcel;
+                Id = ++DataSource.Config.IndexParcel;
                 SenderId = senderId;
                 GetterId = getterId;
                 Weight = weight;
@@ -52,7 +52,7 @@ namespace IDal
             /// <param name="parcel">an object</param>
             public Parcel(Parcel parcel)
             {
-                ParcelId = parcel.ParcelId;
+                Id = parcel.Id;
                 SenderId = parcel.SenderId;
                 GetterId = parcel.GetterId;
                 Weight = parcel.Weight;
@@ -67,7 +67,7 @@ namespace IDal
             /// <summary>
             /// this field is init
             /// </summary>
-            public int ParcelId { get; init; }
+            public int Id { get; init; }
 
             public string SenderId { get; set; }
 
@@ -105,7 +105,7 @@ namespace IDal
             /// <returns>The details</returns>
             public override string ToString()
             {
-                return $"Parcel Id: {ParcelId}    SenderId: {SenderId}   " +
+                return $"Parcel Id: {Id}    SenderId: {SenderId}   " +
                     $" GetterId: {GetterId}  Parcel weight: {Weight} " +
                     $"Priority: {Status}    DroneId: {DroneId} " +
                     $"Making parcel: {MakingParcel}  Belong parcel:{BelongParcel}   " +
@@ -120,7 +120,7 @@ namespace IDal
             {
                 return new Parcel()
                 {
-                    ParcelId = ParcelId,
+                    Id = Id,
                     SenderId = SenderId,
                     GetterId = GetterId,
                     Weight = Weight,

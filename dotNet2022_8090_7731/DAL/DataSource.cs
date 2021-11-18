@@ -117,7 +117,7 @@ namespace DalObject
             Parcel fillParcel ;
             for (int i = 0; i < INITIALIZE_PARCEL; ++i)
             {
-                fillParcel = new Parcel() { ParcelId = ++Config.IndexParcel };
+                fillParcel = new Parcel() { Id = ++Config.IndexParcel };
                 fillParcel.SenderId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
                 do
                 {

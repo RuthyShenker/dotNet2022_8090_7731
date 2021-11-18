@@ -11,28 +11,7 @@ namespace IDal
 {
     public interface IDal
     {
-        IEnumerable GetSpecificItem(Type type, object Id)
-        {
-            return DataSource.data[type].Cast<IIdentifiable>().Where(item => item.Id == Id);
-        }
-
-
-        IEnumerable GetList(Type type)
-        {
-            return DataSource.data[type];
-        }
-
-        public object DisplayItem<T>(List<T> list, object Id)
-        {
-
-            return list[Id].Clone();
-        }
-
-        public object DisplayItem<T>(List<T> list)
-        {
-
-            return list.Clone();
-        }
+        
         void AddingBaseStation(BaseStation baseStation);
         void AddingDrone(Drone drone);
         void AddingCustomer(Customer customer);
@@ -43,16 +22,23 @@ namespace IDal
         void ChangeDroneStatus(int Id, DroneStatuses newStatus);
         void ChargingDrone(int IdDrone);
         void ReleasingDrone(int dId);
-        BaseStation GetBaseStation(int id);
-        Drone GetDrone(int Id);
-        Customer GetCustomer(string Id);
-        Parcel GetParcel(int Id);
-        IEnumerable<BaseStation> GetBaseStations();
-        IEnumerable<Drone> GetDrones();
-        IEnumerable<Customer> GetCustomers();
-        IEnumerable<Parcel> GetParcels();
+
+        // GetFromDalById
+        //BaseStation GetBaseStation(int id);
+        //Drone GetDrone(int Id);
+        //Customer GetCustomer(string Id);
+        //Parcel GetParcel(int Id);
+
+
+        // GetListFromDal
+        //IEnumerable<BaseStation> GetBaseStations();
+        //IEnumerable<Drone> GetDrones();
+        //IEnumerable<Customer> GetCustomers();
+        //IEnumerable<Parcel> GetParcels();
+
         IEnumerable<Parcel> GetUnbelongParcels();
         IEnumerable<BaseStation> AvailableSlots();
+
         void UpdateDrone(int dId, Drone drone);
         void UpdateBaseStation(int bId, BaseStation baseStation);
         void UpdateCustomer(string cId, Customer customer);

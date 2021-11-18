@@ -1,13 +1,16 @@
 ﻿using DalObject;
+using static System.Type;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IBL.BO;
+using System.Collections;
+
 namespace IBL
 {
-   public interface IBL
+    public interface IBL
     {
         void GettingParcelForDelivery(IDal.DO.Parcel parcel);
         void BelongingParcel(int pId);
@@ -20,9 +23,13 @@ namespace IBL
 
         //Adding
         void AddingBaseStation(IDal.DO.BaseStation baseStation);
-        void AddingDrone(IDal.DO.Drone drone,int numberStation);
+        void AddingDrone(IDal.DO.Drone drone, int numberStation);
         void AddingCustomer(IDal.DO.Customer customer);
+
+
+
        
+
 
         // get lists
         IEnumerable<StationToList> GetStations();
@@ -45,9 +52,9 @@ namespace IBL
         //צריך להיות בממשק או רק
         //BLב
         void UpdatingDroneName(int droneId, string newModel);
-        void UpdatingStationDetails(int stationId,string stationName,int amountOfPositions);
-      
-        void  UpdatingCustomerDetails(string customerId,string newName,string newPhone);
-       
+        void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions);
+
+        void UpdatingCustomerDetails(string customerId, string newName, string newPhone);
+
     }
 }

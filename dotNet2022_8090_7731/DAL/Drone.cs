@@ -12,7 +12,7 @@ namespace IDal
         ///// A struct that of Drone constains:
         ///// Id, Model, MaxWeight, BatteryStatus, Status.
         ///// </summary>
-        public struct Drone
+        public struct Drone:IIdentifiable
         {
             /// <summary>
             /// A constructor of Drone that gets parameters 

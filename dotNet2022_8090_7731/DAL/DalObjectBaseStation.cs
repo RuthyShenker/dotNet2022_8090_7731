@@ -72,18 +72,18 @@ namespace DalObject
         /// <returns> base station list</returns>
         public IEnumerable<BaseStation> GetBaseStations()
         {
-            return new List<BaseStation>(BaseStationList.Select(station => new BaseStation(station)).ToList());
+            return BaseStationList.Select(station => new BaseStation(station)).ToList();
         }
 
         /// <summary>
-        /// A function that returns base stations that they have available charging positions.
+        /// A function that returns copy base stations that they have available charging positions.
         /// </summary>
         /// <returns>list of base stations that they have available charging positions</returns>
         public IEnumerable<BaseStation> AvailableSlots()
         {
-            return new List<BaseStation>(BaseStationList.Where(BaseStation => BaseStation.NumberOfChargingPositions > 0).ToList());
+            return BaseStationList.Where(BaseStation => BaseStation.NumberOfChargingPositions > 0).ToList();
         }
-
+     
 
         public bool ExistsInBaseStation(int id)
         {

@@ -12,7 +12,7 @@ namespace IDal
         /// A struct of base station,contains:
         /// Id,Name of Station,Number of Available Positions,Longitude,Latitude.
         /// </summary>
-        public struct BaseStation
+        public struct BaseStation:IIdentifiable
         {
             /// <summary>
             /// A constructor of base station that gets parameters 

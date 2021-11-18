@@ -88,6 +88,7 @@ namespace BL
 
         private void newUndeliveringDroneToList(IEnumerable<BaseStation> stationDalList, DroneToList droneToList)
         {
+           
             droneToList.DStatus = (DroneStatus)DataSource.Rand.Next((int)Free, (int)Maintenance);
             if (droneToList.DStatus == Maintenance)
             {
@@ -252,6 +253,21 @@ namespace BL
                 customer.Phone = newPhone;
             }
             dal.UpdateCustomer(customerId, customer);
+        }
+
+
+        public IEnumerable<BL> GetBList<BL, DL>(Converter<DL, BL> func)
+        {
+            IEnumerable<BL> bList = new List<BL>();
+            IEnumerable dList = Extensions.GetListFromDal<DL>();
+
+                .GetListFromDal<DL>(typeof(DL));
+
+            foreach (DL item in dList)
+            {
+                bList.ToList().Add(func(item));
+            }
+            return bList;
         }
     }
 }

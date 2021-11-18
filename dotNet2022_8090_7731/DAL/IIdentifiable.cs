@@ -2,9 +2,9 @@
 {
     namespace DO
     {
-        internal interface IIdentifiable
+        public interface IIdentifiable
         {
-            int Id { get; set; }
+            public int Id { get; init; }
         }
     }
 }

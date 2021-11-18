@@ -24,7 +24,7 @@ namespace IDal
             /// <param name="phone"></param>
             /// <param name="longitude"></param>
             /// <param name="latitude"></param>
-            public Customer(string id, string name, string phone, double longitude, double latitude)
+            public Customer(int id, string name, string phone, double longitude, double latitude)
             {
                 Id = id;
                 Name = name;
@@ -46,7 +46,7 @@ namespace IDal
                 Longitude = customer.Longitude;
                 Latitude = customer.Latitude;
             }
-            public string Id { get; set; }
+            public int Id { get; init; }
             public string Name { get; set; }
             public string Phone { get; set; }
             public double Longitude { get; set; }
