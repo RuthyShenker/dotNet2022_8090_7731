@@ -88,9 +88,21 @@ namespace BL
             drone.BatteryStatus += timeInCharging * chargingRate;
             dal.ReleasingDrone(drone.Id);
         }
-        void BelongingParcel(int pId)
+        void BelongingParcel(int dId)
         {
+            if(!dal.ExistsInDroneList(dId))
+            {
+                throw new Exception("this drone doesnt exist in drone list!");
+            }
+            DroneToList drone = lDroneToList.Find(drone => drone.Id == dId);
+            if(drone.DStatus!=DroneStatus.Free)
+            {
+                if (drone.DStatus == DroneStatus.Maintenance) throw new Exception("this drone in maintance state and cant be belonging to a parcel!");
+                else throw new Exception("this drone in delivery state and cant be belonging to a parcel!!");
+            }
 
+            IEnumerable<Parcel> ParcelList = dal.GetParcels();
+                new List<Parcel>().OrderBy(p => p.MPriority).ThenBy(p => p.Weight).t
         }
     }
 }

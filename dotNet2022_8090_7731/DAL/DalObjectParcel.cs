@@ -120,5 +120,13 @@ namespace DalObject
         {
             return ParceList.Select(parcel => new Parcel(parcel)).ToList();
         }
+        public bool ExistsInParcelList(int pId)
+        {
+            for (int i = 0; i < ParceList.Count; i++)
+            {
+                if (ParceList[i].ParcelId == pId) return true;
+            }
+            return false;
+        }
     }
 }

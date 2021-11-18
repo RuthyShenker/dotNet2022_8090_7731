@@ -57,6 +57,7 @@ namespace IDal
         void UpdateCustomer(string cId, Customer customer);
         bool ExistsInBaseStation(int id);
         bool ExistsInDroneList(int id);
+        bool ExistsInParcelList(int pId);
         bool ThereAreFreePositions(int sId);
         int SumOfDronesInSpecificStation(int sId);
         bool ExistsInCustomerList(string cId);
