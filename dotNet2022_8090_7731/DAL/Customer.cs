@@ -12,7 +12,7 @@ namespace IDal
         /// A struct of Customer contains:
         /// Id,Name,Phone,Longitude,Latitude
         /// </summary>
-        public struct Customer
+        public struct Customer:IIdentifiable
         {
             /// <summary>
             /// A constructor of Customer that gets parameters 
@@ -46,7 +46,7 @@ namespace IDal
                 Longitude = customer.Longitude;
                 Latitude = customer.Latitude;
             }
-            public string Id { get; init; }
+            public string Id { get; set; }
             public string Name { get; set; }
             public string Phone { get; set; }
             public double Longitude { get; set; }

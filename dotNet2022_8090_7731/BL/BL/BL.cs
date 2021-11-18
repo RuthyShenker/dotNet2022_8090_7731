@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static IBL.BO.Enum.WeightCategories;
+using static DalObject.DataSource;
 using System.Device.Location;
 
 namespace BL
@@ -18,7 +19,6 @@ namespace BL
     {
         IDal.IDal dal;
         List<DroneToList> lDroneToList;
-        private Random rand;
         static double pConsumFree;
         static double pConsumLight;
         static double pConsumMedium;
@@ -28,7 +28,6 @@ namespace BL
         {
             dal = new DalObject.DalObject();
             lDroneToList = new List<DroneToList>();
-            rand = new Random();
             UpdatePConsumption();
 
             IEnumerable<IDal.DO.Drone> droneList = dal.GetDrones();
@@ -36,12 +35,13 @@ namespace BL
             IEnumerable<IDal.DO.Customer> customerDalList = dal.GetCustomers();
             IEnumerable<BaseStation> stationDalList = dal.GetBaseStations();
             DroneToList droneToList;
-            foreach (var drone in droneList)
+
+            foreach (var drone in dal.GetDrones())
             {
                 droneToList = copyCommon(drone);
                 // מה קורה אם יש יותר מחבילה אחת לרחפן
-                var parcel = parcelList.FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
-                if (parcel==null)
+                IDal.DO.Parcel parcel = parcelList.FirstOrDefault(p => p.DroneId == drone.Id && !p.Arrival.HasValue);
+                if (!parcel.Equals(default(IDal.DO.Parcel)))
                 {
                     droneToList.DStatus = Delivery;
 
@@ -49,7 +49,8 @@ namespace BL
                     IDal.DO.Customer sender = customerDalList.First(customer => customer.Id == parcel.SenderId);
                     if (parcel.BelongParcel.HasValue && !parcel.PickingUp.HasValue)
                     {
-                        droneToList.CurrLocation = closestStation(sender, stationDalList);
+                        IDal.DO.BaseStation baseStation = closestStation(new Location(sender.Longitude, sender.Latitude));
+                        droneToList.CurrLocation = new Location(baseStation.Longitude, baseStation.Latitude);
                     }
                     else
                     {
@@ -62,7 +63,7 @@ namespace BL
                     IDal.DO.Customer destination = customerDalList.First(customer => customer.Id == parcel.GetterId);
                     Location closetStation = closestStation(destination, stationDalList);
                     double distance = calDistance(closetStation, droneToList.CurrLocation, destination);
-                    droneToList.BatteryStatus = rand.Next(MinButtery(distance, parcel.Weight), 100);
+                    droneToList.BatteryStatus = Rand.Next(MinButtery(distance, parcel.Weight), 100);
 
                     droneToList.NumOfParcel = 1;
 
@@ -87,7 +88,7 @@ namespace BL
 
         private void newUndeliveringDroneToList(IEnumerable<BaseStation> stationDalList, DroneToList droneToList)
         {
-            droneToList.DStatus = (DroneStatus)DataSource.Rand.Next((int)Free, (int)Maintenance);
+            droneToList.DStatus = (DroneStatus)DataSource.Rand.Next((int)Free, (int)Maintenance);+
             if (droneToList.DStatus == Maintenance)
             {
                 BaseStation station = stationDalList.ElementAt(DataSource.Rand.Next(0, stationDalList.Count()));
@@ -146,16 +147,7 @@ namespace BL
             return droneToList.CurrLocation = optionalLocation[DataSource.Rand.Next(optionalLocation.Count)];
         }
 
-        public void AddingBaseStation(BL_Station bLStation)
-        {
-            if (dal.ExistsInBaseStation(bLStation.Id))
-            {
-                throw new Exception("The id is already exists in the base station list!");
-            }
 
-            BaseStation station = new BaseStation() { Id = bLStation.Id, Latitude = bLStation.SLocation.Latitude, Longitude = bLStation.SLocation.Longitude, NameStation = bLStation.NameStation, NumberOfChargingPositions = bLStation.NumAvailablePositions };
-            dal.AddingBaseStation(station);
-        }
 
         public void AddingDrone(IBL.BO.Drone bLDrone, int StationId)
         {
