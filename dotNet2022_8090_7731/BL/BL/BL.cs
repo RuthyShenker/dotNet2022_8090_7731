@@ -82,6 +82,7 @@ namespace BL
             pConsumLight = arrPCRequest[1];
             pConsumMedium = arrPCRequest[2];
             pConsumHeavy = arrPCRequest[3];
+            
             chargingRate = arrPCRequest[4];
         }
        

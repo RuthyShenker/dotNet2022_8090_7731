@@ -19,7 +19,6 @@ namespace IDal
         void BelongingParcel(int pId);
         void PickingUpParcel(int Id);
         void DeliveryPackage(int Id);
-        void ChangeDroneStatus(int Id, DroneStatuses newStatus);
         void ChargingDrone(int IdDrone);
         void ReleasingDrone(int dId);
 
@@ -44,10 +43,12 @@ namespace IDal
         void UpdateCustomer(string cId, Customer customer);
         bool ExistsInBaseStation(int id);
         bool ExistsInDroneList(int id);
+        bool ExistsInParcelList(int pId);
         bool ThereAreFreePositions(int sId);
         int SumOfDronesInSpecificStation(int sId);
         bool ExistsInCustomerList(string cId);
         double[] PowerConsumptionRequest();
+        void AddDroneToCharge(int dId, int sId);
     }
     //public abstract class IDalGeneric<T>
     //{

@@ -109,6 +109,7 @@ namespace DalObject
         //    throw new Exception("id doesnt exist");
         //    //return ParceList.First(parcel => parcel.ParcelId == Id).Clone();
 
+<<<<<<< HEAD
         //}
 
         ///// <summary>
@@ -119,5 +120,23 @@ namespace DalObject
         //{
         //    return ParceList.Select(parcel => new Parcel(parcel)).ToList();
         //}
+=======
+        /// <summary>
+        /// A function that returns the list of the parcels
+        /// </summary>
+        /// <returns> parcle list</returns>
+        public IEnumerable<Parcel> GetParcels()
+        {
+            return ParceList.Select(parcel => new Parcel(parcel)).ToList();
+        }
+        public bool ExistsInParcelList(int pId)
+        {
+            for (int i = 0; i < ParceList.Count; i++)
+            {
+                if (ParceList[i].ParcelId == pId) return true;
+            }
+            return false;
+        }
+>>>>>>> b0b8e234a79098bf1379a2a177505eff6cf6f12b
     }
 }
