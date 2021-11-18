@@ -36,14 +36,16 @@ namespace BL
             IEnumerable<IDal.DO.Drone> droneList = dal.GetDrones();
             IEnumerable<IDal.DO.Parcel> parcelList = dal.GetParcels();
             IEnumerable<IDal.DO.Customer> customerDalList = dal.GetCustomers();
-            IEnumerable<BaseStation> stationDalList = dal.GetStations();
+            IEnumerable<BaseStation> stationDalList = dal.GetBaseStations();
             DroneToList droneToList;
+
+
             foreach (var drone in dal.GetDrones())
             {
                 droneToList = copyCommon(drone);
                 // מה קורה אם יש יותר מחבילה אחת לרחפן
-                var parcel = parcelList.FirstOrDefault(p => p.DroneId == drone.Id && !p.Arrival.HasValue);
-                if (parcel==null)
+                IDal.DO.Parcel parcel = parcelList.FirstOrDefault(p => p.DroneId == drone.Id && !p.Arrival.HasValue);
+                if (!parcel.Equals(default(IDal.DO.Parcel)))
                 {
                     droneToList.DStatus = Delivery;
 
