@@ -23,6 +23,9 @@ namespace BL
         static double pConsumLight;
         static double pConsumMedium;
         static double pConsumHeavy;
+        /// <summary>
+        /// קצב טעינה
+        /// </summary>
         static double chargingRate;
         public BL()
         {
@@ -82,6 +85,7 @@ namespace BL
             pConsumLight = arrPCRequest[1];
             pConsumMedium = arrPCRequest[2];
             pConsumHeavy = arrPCRequest[3];
+            
             chargingRate = arrPCRequest[4];
         }
        

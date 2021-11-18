@@ -51,14 +51,13 @@ namespace BL
                     throw new Exception("this drone in maintenance,it cant go to charge");
                 throw new Exception("this drone in delivery ,it cant go to charge");
             }
-            BaseStation closetBaseStation=closestStation(drone.CurrLocation);
-            if (closetBaseStation.ThereAreFreePositions)
+            Station closetBaseStation=closestStation(drone.CurrLocation);
+            if (closetBaseStation.NumAvailablePositions==0)
             {
-                //public bool ThereAreFreePositions(int sId)
-                //{
-                //    return (BaseStationList.Find(baseStation => baseStation.Id == sId).NumberOfChargingPositions - SumOfDronesInSpecificStation(sId)) > 0;
-                //}
+                throw new Exception("The closet Station doesnt have available positions!");
             }
+           double distanceFromDroneToStation= calDistance( closetBaseStation.SLocation,drone.CurrLocation);
+           MinButtery(distanceFromDroneToStation, drone.Weight);
         }
        
 
