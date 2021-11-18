@@ -118,5 +118,9 @@ namespace DalObject
             }
             return false;
         }
+       public void AddDroneToCharge(int dId, int sId)
+       {
+            ChargingDroneList.Add(new ChargingDrone(dId,sId));
+       }
     }
 }

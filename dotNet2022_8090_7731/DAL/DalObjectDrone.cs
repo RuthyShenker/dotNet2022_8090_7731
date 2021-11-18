@@ -37,43 +37,42 @@ namespace DalObject
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="newStatus"></param>
-        public void ChangeDroneStatus(int Id, DroneStatus newStatus)
-        /// <param name="newStatus">from the DroneStatuses-integer </param>
-        {
-            for (int i = 0; i < DroneList.Count; i++)
-            {
-                if (Id == DroneList[i].Id)
-                {
-                    Drone changeDrone = DroneList[i];
-                    changeDrone.Status = newStatus;
-                    DroneList[i] = changeDrone;
-                    break;
-                }
-            }
-            throw new Exception("Not Exist Drone With This Id");
-        }
+        //public void ChangeDroneStatus(int Id, DroneStatus newStatus)
+        ///// <param name="newStatus">from the DroneStatuses-integer </param>
+        //{
+        //    for (int i = 0; i < DroneList.Count; i++)
+        //    {
+        //        if (Id == DroneList[i].Id)
+        //        {
+        //            Drone changeDrone = DroneList[i];
+        //            changeDrone.Status = newStatus;
+        //            DroneList[i] = changeDrone;
+        //            break;
+        //        }
+        //    }
+        //    throw new Exception("Not Exist Drone With This Id");
+        //}
 
 
         /// <summary>
         /// A function that gets an id of drone and Sends this drone for charging.
         /// </summary>
         /// <param name="IdDrone"></param>
-        public void ChargingDrone(int IdDrone)
-        {
-            foreach (BaseStation baseStation in BaseStationList)
-            {
-                if (baseStation.NumberOfChargingPositions != 0)
-                {
-                    ChangeDroneStatus(IdDrone, DroneStatus.Maintenance);
-                    ChargingDrone newChargingEntity = new ChargingDrone();
-                    newChargingEntity.StationId = baseStation.Id;
-                    newChargingEntity.DroneId = IdDrone;
-                    ChargingDroneList.Add(newChargingEntity);
-                    return;
-                }
-            }
-            throw new Exception("There Are No Available Positions");
-        }
+        //public void ChargingDrone(int IdDrone)
+        //{
+        //    foreach (BaseStation baseStation in BaseStationList)
+        //    {
+        //        if (baseStation.NumberOfChargingPositions != 0)
+        //        {
+        //            ChargingDrone newChargingEntity = new ChargingDrone();
+        //            newChargingEntity.StationId = baseStation.Id;
+        //            newChargingEntity.DroneId = IdDrone;
+        //            ChargingDroneList.Add(newChargingEntity);
+        //            return;
+        //        }
+        //    }
+        //    throw new Exception("There Are No Available Positions");
+        //}
 
         /// <summary>
         /// A function that gets an id of droneand releasing this drone from charging.
@@ -81,7 +80,6 @@ namespace DalObject
         /// <param name="dId"></param>
         public void ReleasingDrone(int dId)
         {
-            ChangeDroneStatus(dId, DroneStatus.Available);
             for (int i = 0; i < ChargingDroneList.Count; i++)
             {
                 if (ChargingDroneList[i].DroneId == dId)

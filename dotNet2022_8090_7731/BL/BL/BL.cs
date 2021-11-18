@@ -24,7 +24,7 @@ namespace BL
         static double pConsumMedium;
         static double pConsumHeavy;
         /// <summary>
-        /// קצב טעינה
+        /// לשעה קצב טעינה
         /// </summary>
         static double chargingRate;
         public BL()
@@ -104,7 +104,7 @@ namespace BL
                 droneToList.CurrLocation = locaProvidedParcels(parcelList, customerDalList, droneToList);
                 Location closetStation = closestStation(droneToList.CurrLocation, stationDalList);
                 double distance = calDistance(closetStation, droneToList.CurrLocation);
-                droneToList.BatteryStatus = rand.Next(MinButtery(distance), 100);
+                droneToList.BatteryStatus = rand.Next( MinBattery(distance), 100);
             }
             droneToList.NumOfParcel = 1;
             lDroneToList.Add(droneToList);
