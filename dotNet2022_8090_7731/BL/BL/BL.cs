@@ -84,6 +84,7 @@ namespace BL
             pConsumHeavy = arrPCRequest[3];
             chargingRate = arrPCRequest[4];
         }
+       
 
         private void newUndeliveringDroneToList(IEnumerable<BaseStation> stationDalList, DroneToList droneToList)
         {

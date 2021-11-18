@@ -15,5 +15,6 @@ namespace IBL.BO
         public DroneStatus DStatus { get; set; }
         public Location CurrLocation { get; set; }
         public int? NumOfParcel{ get; set; }
+       
     }
 }
