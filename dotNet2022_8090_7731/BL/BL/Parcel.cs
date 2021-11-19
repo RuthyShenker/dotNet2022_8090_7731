@@ -9,7 +9,7 @@ namespace IBL.BO
     public class Parcel
     {
 
-        public Parcel(string senderId, string getterId, WeightCategories weight, Priority mPriority, DroneInParcel dInParcel, DateTime makingParcel, DateTime? belongParcel, DateTime? pickingUp, DateTime? arrival)
+        public Parcel(int senderId, int getterId, WeightCategories weight, Priority mPriority, DroneInParcel dInParcel, DateTime makingParcel, DateTime? belongParcel, DateTime? pickingUp, DateTime? arrival)
         {
             SenderId = senderId;
             GetterId = getterId;
@@ -23,8 +23,8 @@ namespace IBL.BO
         }
 
         public int ParcelId { get; init; }
-        public string SenderId { get; set; }
-        public string GetterId { get; set; }
+        public int SenderId { get; set; }
+        public int GetterId { get; set; }
         public WeightCategories Weight { get; set; }
         public Priority MPriority { get; set; }
         public DroneInParcel DInParcel { get; set; }

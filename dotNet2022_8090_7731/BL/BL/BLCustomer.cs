@@ -18,12 +18,12 @@ namespace BL
 
             foreach (var customer in dCustomersList)
             {
-                bCustomersList.Add(Map(customer, dParcelsList));
+                bCustomersList.Add(MapToList(customer, dParcelsList));
             }
             return bCustomersList;
         }
 
-        private CustomerToList Map(IDal.DO.Customer customer, List<Parcel> dParcels)
+        private CustomerToList MapToList(IDal.DO.Customer customer, List<Parcel> dParcels)
         {
             CustomerToList nCustomer = new CustomerToList();
             nCustomer.Id = customer.Id;

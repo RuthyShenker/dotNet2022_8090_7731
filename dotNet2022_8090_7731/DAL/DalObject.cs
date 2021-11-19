@@ -123,9 +123,9 @@ namespace DalObject
        {
             ChargingDroneList.Add(new ChargingDrone(dId,sId));
        }
-        IIdentifiable GetFromDalById<T>(int Id) where T : IIdentifiable
+        T GetFromDalById<T>(int Id) where T : IIdentifiable
         {
-            return ((List<IIdentifiable>)DataSource.data[typeof(T)]).FirstOrDefault(item => item.Id == Id);
+            return (T)((List<IIdentifiable>)DataSource.data[typeof(T)]).FirstOrDefault(item => item.Id == Id);
         }
 
 

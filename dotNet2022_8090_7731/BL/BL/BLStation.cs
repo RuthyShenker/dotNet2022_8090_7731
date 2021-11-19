@@ -20,7 +20,7 @@ namespace BL
             ////IEnumerable<IDal.DO.Station> dParcelList = dal.GetStations();
             //foreach (var station in dStationsList)
             //{
-            //    bStationsList.Add(Map(station));
+            //    bStationsList.Add(MapToList(station));
             //}
             //return bStationsList;
         }
@@ -43,7 +43,7 @@ namespace BL
             return stationsList;
         }
 
-        private StationToList Map(IDal.DO.BaseStation station)
+        private StationToList MapToList(IDal.DO.BaseStation station)
         {
             StationToList nStation = new StationToList();
             nStation.Id = station.Id;

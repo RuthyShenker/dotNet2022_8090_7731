@@ -56,7 +56,7 @@ namespace BL
             {
                 throw new Exception("The closet Station doesnt have available positions!");
             }
-           double distanceFromDroneToStation= calDistance( closetBaseStation.SLocation,drone.CurrLocation);
+           double distanceFromDroneToStation= CalculateDistance( closetBaseStation.SLocation,drone.CurrLocation);
            double minBattery = MinBattery(distanceFromDroneToStation, drone.Weight);
             if (drone.BatteryStatus-minBattery<0)
             {
@@ -91,22 +91,41 @@ namespace BL
         }
         void BelongingParcel(int dId)
         {
-            if(!dal.ExistsInDroneList(dId))
+            //if(!dal.ExistsInDroneList(dId))
+            //{
+            //    throw new Exception("this drone doesnt exist in drone list!");
+            //}
+            try
             {
-                throw new Exception("this drone doesnt exist in drone list!");
+                IDal.DO.Drone drone = dal.GetDrone(dId);
+                DroneToList droneToList = lDroneToList.Find(drone => drone.Id == dId);
+                if (droneToList.DStatus != IBL.BO.DroneStatus.Free)
+                {
+                    if (droneToList.DStatus == IBL.BO.DroneStatus.Maintenance) throw new Exception("this drone in maintance state and cant be belonging to a parcel!");
+                    else throw new Exception("this drone in delivery state and cant be belonging to a parcel!!");
+                }
+               // IEnumerable<IBL.BO.Customer> customerList = GetBList<IBL.BO.Customer, IDal.DO.Customer>(MapCustomer);
+                IEnumerable<IBL.BO.Parcel> ParcelList = GetBList<IBL.BO.Parcel, IDal.DO.Parcel>(MapParcel)
+                    .Where(parcel => parcel.Weight <= drone.MaxWeight);
+                var conditionParcel = ParcelList.OrderByDescending(p => p.MPriority)
+                      .ThenByDescending(p => p.Weight)
+                .ThenBy(p => CalculateDistance(dal.GetFromDalById<IDal.DO.Customer>(p.SenderId).mapToBl(), droneToList.CurrLocation));
+                IBL.BO.Parcel resultParcel= conditionParcel.FirstOrDefault();
+                double way = CalculateDistance(droneToList.CurrLocation, resultParcel.SenderId);
+                if ()
+                {
+
+                }
             }
-            DroneToList drone = lDroneToList.Find(drone => drone.Id == dId);
-            if(drone.DStatus!=DroneStatus.Free)
+            catch (DAL.IdNotExistInAListException)
             {
-                if (drone.DStatus == DroneStatus.Maintenance) throw new Exception("this drone in maintance state and cant be belonging to a parcel!");
-                else throw new Exception("this drone in delivery state and cant be belonging to a parcel!!");
+                throw new BelongingParcelException();
             }
-         IEnumerable< IBL.BO.Parcel> ParcelList=GetBList<IBL.BO.Parcel,IDal.DO.Parcel>(MapParcel); 
-         //IEnumerable<IDal.DO.Parcel> ParcelList = dal.GetListFromDal<IDal.DO.Parcel>();
-           // ParcelList.
+        }
 
-
-            //new List<Parcel>().OrderBy(p => p.MPriority).ThenBy(p => p.Weight).t
+        private IBL.BO.Customer MapCustomer(IDal.DO.Customer input)
+        {
+            throw new NotImplementedException();
         }
 
         private IBL.BO.Parcel MapParcel(IDal.DO.Parcel input)

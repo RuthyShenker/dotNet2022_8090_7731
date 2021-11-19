@@ -16,7 +16,7 @@ namespace BL
             //IEnumerable<IDal.DO.Parcel> dParcelList = dal.GetParcels();
             foreach (var parcel in dParcelList)
             {
-                bParcelList.Add(Map(parcel));
+                bParcelList.Add(MapToList(parcel));
             }
             return bParcelList;
         }
@@ -34,13 +34,13 @@ namespace BL
             {
                 if (!parcel.belongParcel.HasValue)
                 {
-                    bParcelList.Add(Map(parcel));
+                    bParcelList.Add(MapToList(parcel));
                 }
             }
             return bParcelList;
         }
 
-        private ParcelToList Map(IDal.DO.Parcel parcel)
+        private ParcelToList MapToList(IDal.DO.Parcel parcel)
         {
             ParcelToList nParcel = new ParcelToList();
             nParcel.Id = parcel.Id;

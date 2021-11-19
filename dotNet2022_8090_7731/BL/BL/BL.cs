@@ -65,7 +65,7 @@ namespace BL
                     // battery Status
                     IDal.DO.Customer destination = customerDalList.First(customer => customer.Id == parcel.GetterId);
                     Location closetStation = closestStation(destination, stationDalList);
-                    double distance = calDistance(closetStation, droneToList.CurrLocation, destination);
+                    double distance = CalculateDistance(closetStation, droneToList.CurrLocation, destination);
                     droneToList.BatteryStatus = Rand.Next(MinButtery(distance, parcel.Weight), 100);
 
                     droneToList.NumOfParcel = 1;
@@ -104,14 +104,14 @@ namespace BL
             {
                 droneToList.CurrLocation = locaProvidedParcels(parcelList, customerDalList, droneToList);
                 Location closetStation = closestStation(droneToList.CurrLocation, stationDalList);
-                double distance = calDistance(closetStation, droneToList.CurrLocation);
+                double distance = CalculateDistance(closetStation, droneToList.CurrLocation);
                 droneToList.BatteryStatus = rand.Next(MinBattery(distance), 100);
             }
             droneToList.NumOfParcel = 1;
             lDroneToList.Add(droneToList);
         }
 
-        private double calDistance(Location closestStation, Location droneLocation, IDal.DO.Customer destination = default(IDal.DO.Customer))
+        private double CalculateDistance(Location closestStation, Location droneLocation, IDal.DO.Customer destination = default(IDal.DO.Customer))
         {
             var droneLocationCoords = geoCoordinate(droneLocation);
             var closetStationCoord = geoCoordinate(closestStation);
