@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IDal.DO;
+
 namespace BL
 {
     partial class BL
@@ -127,6 +128,10 @@ namespace BL
         {
             throw new NotImplementedException();
         }
+
+            IEnumerable<IDal.DO.Parcel> ParcelList = Extensions.GetListFromDal<IDal.DO.Parcel>().Where(parcel=>parcel.Weight<=drone.Weight);
+            ParcelList.OrderBy(p => p.).ThenBy(p => p.Weight).t
+
 
         private IBL.BO.Parcel MapParcel(IDal.DO.Parcel input)
         {
