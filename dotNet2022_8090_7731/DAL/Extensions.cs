@@ -14,16 +14,7 @@ namespace IDal.DO
     public static class Extensions
     {
 
-        public static IIdentifiable GetFromDalById<T>(int Id) where T : IIdentifiable
-        {
-            return (IIdentifiable)DataSource.data[typeof(T)].Cast<IIdentifiable>().Where(item => item.Id == Id);
-        }
-
-
-        public static IEnumerable GetListFromDal<T>() where T : IIdentifiable
-        {
-            return DataSource.data[typeof(T)];
-        }
+       
 
 
         //static IEnumerable GetListFromDal(Type type)

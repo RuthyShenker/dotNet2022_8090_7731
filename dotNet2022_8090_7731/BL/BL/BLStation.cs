@@ -4,22 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IBL.BO;
+using IDal.DO;
+
 namespace BL
 {
     partial class BL
     {
         public IEnumerable<StationToList> GetStations()
         {
-            return GetBList<StationToList, IDal.DO.BaseStation>();
+            //
+            return GetBList<StationToList, IDal.DO.BaseStation>(MapStation);
 
-            IEnumerable<StationToList> bStationsList = new List<StationToList>();
-            List<IDal.DO.Station> dStationsList = GetList<IDal.DO.BaseStation>();
-            //IEnumerable<IDal.DO.Station> dParcelList = dal.GetStations();
-            foreach (var station in dStationsList)
-            {
-                bStationsList.Add(Map(station));
-            }
-            return bStationsList;
+            //IEnumerable<StationToList> bStationsList = new List<StationToList>();
+            //List<IDal.DO.Station> dStationsList = GetList<IDal.DO.BaseStation>();
+            ////IEnumerable<IDal.DO.Station> dParcelList = dal.GetStations();
+            //foreach (var station in dStationsList)
+            //{
+            //    bStationsList.Add(Map(station));
+            //}
+            //return bStationsList;
+        }
+
+        private StationToList MapStation(BaseStation source)
+        {
+            return new StationToList() { Id = source.Id };
         }
 
         public IEnumerable<Station> AvailableSlots()

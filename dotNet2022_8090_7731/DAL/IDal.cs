@@ -38,11 +38,17 @@ namespace IDal
         IEnumerable<Parcel> GetUnbelongParcels();
         IEnumerable<BaseStation> AvailableSlots();
 
+        IIdentifiable GetFromDalById<T>(int Id) where T : IIdentifiable;
+
+        IEnumerable<T> GetListFromDal<T>();
+       
+
         void UpdateDrone(int dId, Drone drone);
         void UpdateBaseStation(int bId, BaseStation baseStation);
         void UpdateCustomer(string cId, Customer customer);
         bool ExistsInBaseStation(int id);
         bool ExistsInDroneList(int id);
+        Drone GetDrone(int id);
         bool ExistsInParcelList(int pId);
         bool ThereAreFreePositions(int sId);
         int SumOfDronesInSpecificStation(int sId);

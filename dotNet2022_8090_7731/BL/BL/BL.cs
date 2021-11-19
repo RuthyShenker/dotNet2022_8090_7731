@@ -85,14 +85,14 @@ namespace BL
             pConsumLight = arrPCRequest[1];
             pConsumMedium = arrPCRequest[2];
             pConsumHeavy = arrPCRequest[3];
-            
+
             chargingRate = arrPCRequest[4];
         }
-       
+
 
         private void newUndeliveringDroneToList(IEnumerable<BaseStation> stationDalList, DroneToList droneToList)
         {
-           
+
             droneToList.DStatus = (DroneStatus)DataSource.Rand.Next((int)Free, (int)Maintenance);
             if (droneToList.DStatus == Maintenance)
             {
@@ -105,7 +105,7 @@ namespace BL
                 droneToList.CurrLocation = locaProvidedParcels(parcelList, customerDalList, droneToList);
                 Location closetStation = closestStation(droneToList.CurrLocation, stationDalList);
                 double distance = calDistance(closetStation, droneToList.CurrLocation);
-                droneToList.BatteryStatus = rand.Next( MinBattery(distance), 100);
+                droneToList.BatteryStatus = rand.Next(MinBattery(distance), 100);
             }
             droneToList.NumOfParcel = 1;
             lDroneToList.Add(droneToList);
@@ -214,13 +214,21 @@ namespace BL
 
         public void UpdatingDroneName(int droneId, string newModel)
         {
-            if (!dal.ExistsInDroneList(droneId))
+            //if (!dal.ExistsInDroneList(droneId))
+            //{
+            //    
+            //}
+            try
             {
+                IDal.DO.Drone drone = dal.GetDrone(droneId);
+                drone.Model = newModel;
+                dal.UpdateDrone(droneId, drone);
+            }
+            catch (DAL.IdNotExistInAListException)
+            {
+                //bl exception-new
                 throw new Exception("this id doesnt exist in drone list!");
             }
-            IDal.DO.Drone drone = dal.GetDrone(droneId);
-            drone.Model = newModel;
-            dal.UpdateDrone(droneId, drone);
         }
 
         public void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions)
@@ -260,18 +268,16 @@ namespace BL
         }
 
 
-        public IEnumerable<BL> GetBList<BL, DL>(Converter<DL, BL> func)
+        public IEnumerable<BL> GetBList<BL, DL>(Converter<DL, BL> map)
         {
-            IEnumerable<BL> bList = new List<BL>();
-            IEnumerable dList = Extensions.GetListFromDal<DL>();
-
-                .GetListFromDal<DL>(typeof(DL));
-
-            foreach (DL item in dList)
+            var bLList = new List<BL>();
+            IEnumerable<DL> dalList = dal.GetListFromDal<DL>();
+            foreach (DL dlItem in dalList)
             {
-                bList.ToList().Add(func(item));
+                var blItem = map(dlItem);
+                bLList.Add(blItem);
             }
-            return bList;
+            return bLList;
         }
     }
 }

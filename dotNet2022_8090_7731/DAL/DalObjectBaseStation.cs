@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL;
 using IDal.DO;
 using static DalObject.DataSource;
 using static DalObject.DataSource.Config;
@@ -63,7 +64,7 @@ namespace DalObject
                     return BaseStationList[i].Clone();
                 }
             }
-            throw new Exception("id doesnt exist");
+            throw new IdNotExistInAListException();
         }
 
         /// <summary>

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using static DalObject.DataSource.Config;
 using IDal.DO;
 using static DalObject.DataSource;
+using DAL;
+
 namespace DalObject
 {
     public partial class DalObjectBaseStation
@@ -88,7 +90,7 @@ namespace DalObject
                     break;
                 }
             }
-            throw new Exception("Id doesnt exist");
+            throw new IdNotExistInAListException();
         }
 
         /// <summary>
@@ -105,7 +107,7 @@ namespace DalObject
                     return DroneList[i].Clone();
                 }
             }
-            throw new Exception("id doesnt exist");
+            throw new IdNotExistInAListException();
             //return DroneList.First(drone => drone.Id == Id).Clone();
         }
 

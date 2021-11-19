@@ -20,10 +20,17 @@ namespace ConsoleUI_BL
             {
                
                 case 1:
-                    
-                    string newModel;
-                    GetDetailsOfDrone(out droneId, out newModel);
-                    bL.UpdatingDroneName(droneId, newModel);
+
+                    try
+                    {
+                        string newModel;
+                        GetDetailsOfDrone(out droneId, out newModel);
+                        bL.UpdatingDroneName(droneId, newModel);
+                    }
+                    catch (Exception ex)//TODO balexception
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
                     break;
                 case 2:
                     int stationId = 0;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using IDal.DO;
 namespace BL
 {
     partial class BL
@@ -24,7 +24,7 @@ namespace BL
         }
 
         // weight=0 ערך ברירת מחדל לפונקציה
-        private double  MinBattery(double distance,  WeightCategories weight = 0)
+        private double MinBattery(double distance,  WeightCategories weight = 0)
         {
             switch (weight)
             {
@@ -74,6 +74,7 @@ namespace BL
         }
         void ReleasingDrone(int dId, double timeInCharging)
         {
+            dal.
             if(!dal.ExistsInDroneList(dId))
             {
                 throw new Exception("this id doesnt exist in the drone list!");
@@ -100,9 +101,17 @@ namespace BL
                 if (drone.DStatus == DroneStatus.Maintenance) throw new Exception("this drone in maintance state and cant be belonging to a parcel!");
                 else throw new Exception("this drone in delivery state and cant be belonging to a parcel!!");
             }
+         IEnumerable< IBL.BO.Parcel> ParcelList=GetBList<IBL.BO.Parcel,IDal.DO.Parcel>(MapParcel); 
+         //IEnumerable<IDal.DO.Parcel> ParcelList = dal.GetListFromDal<IDal.DO.Parcel>();
+           // ParcelList.
 
-            IEnumerable<Parcel> ParcelList = dal.GetParcels();
-                new List<Parcel>().OrderBy(p => p.MPriority).ThenBy(p => p.Weight).t
+
+            //new List<Parcel>().OrderBy(p => p.MPriority).ThenBy(p => p.Weight).t
+        }
+
+        private IBL.BO.Parcel MapParcel(IDal.DO.Parcel input)
+        {
+            throw new NotImplementedException();
         }
     }
 }
