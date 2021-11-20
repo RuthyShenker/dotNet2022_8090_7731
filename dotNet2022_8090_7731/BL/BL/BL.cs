@@ -248,7 +248,113 @@ namespace BL
             }
             dal.UpdateBaseStation(stationId, baseStation);
         }
+            dal = new DalObject.DalObject();
+            lDroneToList = new List<DroneToList>();
+            UpdatePConsumption();
 
+            IEnumerable<IDal.DO.Drone> droneList = dal.GetDrones();
+            IEnumerable<IDal.DO.Parcel> parcelList = dal.GetParcels();
+            IEnumerable<IDal.DO.Customer> customerDalList = dal.GetCustomers();
+            IEnumerable<BaseStation> stationDalList = dal.GetBaseStations();
+            DroneToList droneToList;
+
+            foreach (var drone in dal.GetDrones())
+            {
+                droneToList = copyCommon(drone);
+                // מה קורה אם יש יותר מחבילה אחת לרחפן
+                IDal.DO.Parcel parcel = parcelList.FirstOrDefault(p => p.DroneId == drone.Id && !p.Arrival.HasValue);
+                if (!parcel.Equals(default(IDal.DO.Parcel)))
+                {
+                    droneToList.DStatus = Delivery;
+
+                    //location
+                    IDal.DO.Customer sender = customerDalList.First(customer => customer.Id == parcel.SenderId);
+                    if (parcel.BelongParcel.HasValue && !parcel.PickingUp.HasValue)
+                    {
+                        IDal.DO.BaseStation baseStation = closestStation(new Location(sender.Longitude, sender.Latitude));
+                        droneToList.CurrLocation = new Location(baseStation.Longitude, baseStation.Latitude);
+                    }
+                    else
+                    {
+                        droneToList.CurrLocation = new Location(sender.Longitude, sender.Latitude);
+                        //IEnumerable bL_Customer = dal.GetSpecificItem(typeof(Customer), parcel.SenderId);
+                        //droneToList.CurrLocation = bL_Customer.CLocation;
+                    }
+
+                    // battery Status
+                    IDal.DO.Customer destination = customerDalList.First(customer => customer.Id == parcel.GetterId);
+                    Location closetStation = closestStation(destination, stationDalList);
+                    double distance = CalculateDistance(closetStation, droneToList.CurrLocation, destination);
+                    droneToList.BatteryStatus = Rand.Next(MinButtery(distance, parcel.Weight), 100);
+
+                    droneToList.NumOfParcel = 1;
+
+                    lDroneToList.Add(droneToList);
+                }
+                else
+                {
+                    newUndeliveringDroneToList(stationDalList, droneToList);
+                }
+            }
+        }
+        /// <summary>
+        /// A function that initalizes: pConsumFree
+        ///pConsumLight
+        ///pConsumMedium
+        ///pConsumHeavy
+        ///chargingRate
+        /// </summary>
+        private void UpdatePConsumption()
+        {
+            double[] arrPCRequest = dal.PowerConsumptionRequest();
+            pConsumFree = arrPCRequest[0];
+            pConsumLight = arrPCRequest[1];
+            pConsumMedium = arrPCRequest[2];
+            pConsumHeavy = arrPCRequest[3];
+
+            chargingRate = arrPCRequest[4];
+        }
+
+
+        private void newUndeliveringDroneToList(IEnumerable<BaseStation> stationDalList, DroneToList droneToList)
+        {
+
+            droneToList.DStatus = (DroneStatus)DataSource.Rand.Next((int)Free, (int)Maintenance);
+            if (droneToList.DStatus == Maintenance)
+            {
+                BaseStation station = stationDalList.ElementAt(DataSource.Rand.Next(0, stationDalList.Count()));
+                droneToList.CurrLocation = new Location(station.Longitude, station.Latitude);
+                droneToList.BatteryStatus = DataSource.Rand.Next(21);
+            }
+            else /*if (droneToList.DStatus == Free)*/
+            {
+                droneToList.CurrLocation = locaProvidedParcels(parcelList, customerDalList, droneToList);
+                Location closetStation = closestStation(droneToList.CurrLocation, stationDalList);
+                double distance = CalculateDistance(closetStation, droneToList.CurrLocation);
+                droneToList.BatteryStatus = rand.Next(MinBattery(distance), 100);
+            }
+            droneToList.NumOfParcel = 1;
+            lDroneToList.Add(droneToList);
+        }
+
+        private double CalculateDistance(Location closestStation, Location droneLocation, IDal.DO.Customer destination = default(IDal.DO.Customer))
+        {
+            var droneLocationCoords = geoCoordinate(droneLocation);
+            var closetStationCoord = geoCoordinate(closestStation);
+            if (!destination.Equals(default(IDal.DO.Customer)))
+            {
+                Location ldestination = new Location(destination.Longitude, destination.Latitude);
+                var destinationCoord = geoCoordinate(ldestination);
+                double distance = droneLocationCoords.GetDistanceTo(destinationCoord);
+                return distance += destinationCoord.GetDistanceTo(closetStationCoord);
+            }
+            return droneLocationCoords.GetDistanceTo(closetStationCoord);
+        }
+
+        private GeoCoordinate geoCoordinate(Location location)
+        {
+            return new GeoCoordinate(location.Latitude, location.Longitude);
+        }
         public void UpdatingCustomerDetails(string customerId, string newName, string newPhone)
         {
             if (!dal.ExistsInCustomerList(customerId))
@@ -267,6 +373,27 @@ namespace BL
             dal.UpdateCustomer(customerId, customer);
         }
 
+        /// <summary>
+        /// rand location of customer which his parcel had provided him
+        /// </summary>
+        /// <param name="parcelDalList"></param>
+        /// <param name="customerDalList"></param>
+        /// <param name="droneToList"></param>
+        /// <returns></returns>
+        private Location locaProvidedParcels(IEnumerable<IDal.DO.Parcel> parcelDalList, IEnumerable<IDal.DO.Customer> customerDalList, DroneToList droneToList)
+        {
+            IDal.DO.Customer customer;
+            List<Location> optionalLocation = new List<Location>();
+            foreach (var parcel in parcelDalList)
+            {
+                if (parcel.Arrival.HasValue)
+                {
+                    customer = customerDalList.First(customer => customer.Id == parcel.GetterId);
+                    optionalLocation.Add(new Location(customer.Longitude, customer.Latitude));
+                }
+            }
+            return droneToList.CurrLocation = optionalLocation[DataSource.Rand.Next(optionalLocation.Count)];
+        }
 
         public IEnumerable<BL> GetBList<BL, DL>(Converter<DL, BL> map)
         {

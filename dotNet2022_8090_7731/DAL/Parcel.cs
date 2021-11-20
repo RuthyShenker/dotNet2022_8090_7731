@@ -29,7 +29,7 @@ namespace IDal
             /// <param name="belongParcel"></param>
             /// <param name="pickingUp"></param>
             /// <param name="arrival"></param>
-            public Parcel(string senderId, string getterId, WeightCategories weight, UrgencyStatuses status,
+            public Parcel(int senderId, int getterId, WeightCategories weight, UrgencyStatuses status,
                 DateTime makingParcel, DateTime belongParcel, DateTime pickingUp, DateTime arrival)
             {
                 Id = ++DataSource.Config.IndexParcel;
@@ -69,9 +69,9 @@ namespace IDal
             /// </summary>
             public int Id { get; init; }
 
-            public string SenderId { get; set; }
+            public int SenderId { get; set; }
 
-            public string GetterId { get; set; }
+            public int GetterId { get; set; }
 
             public WeightCategories Weight { get; set; }
 

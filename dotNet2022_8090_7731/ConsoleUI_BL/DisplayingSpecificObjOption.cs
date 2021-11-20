@@ -16,6 +16,7 @@ namespace ConsoleUI_BL
                          $"3 - Customer view\n" +
                          $"4 - Package view");
             int input;
+
             CheckValids.CheckValid(1, 4, out input);
 
             switch (input)

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    public class IdNotExistInAListException : Exception
+    public class IdNotExistInTheListException : Exception
     {
-        public IdNotExistInAListException():base()
+        public IdNotExistInTheListException():base()
         {
 
         }

@@ -5,8 +5,8 @@ namespace ConsoleUI_BL
     partial class Program
     {
        static IBL.IBL bL = new BL.BL();
-        static void Main(string[] args)
-        {
+       static void Main(string[] args)
+       {
             
             int input = 0;
             
@@ -48,6 +48,29 @@ namespace ConsoleUI_BL
                         break;
                 }
             }
+       }
+
+        /// <summary>
+        /// A function that gets from the user Id and returns it as string
+        /// </summary>
+        /// <param name="obj">a name of object</param>
+        /// <returns>an id as string</returns>
+        private static string GettingIdAsString(string obj)
+        {
+            Console.WriteLine($"Enter The Id Of The {obj}:");
+            return Console.ReadLine();
+        }
+
+        /// <summary>
+        /// A function that gets from the user Id and returns it as int
+        /// </summary>
+        /// <param name="obj">a name of object</param>
+        /// <returns>an id as int</returns>
+        private static int GettingId(string obj)
+        {
+            Console.WriteLine($"Enter The Id Of The {obj}:");
+            return int.Parse(Console.ReadLine());
         }
     }
+}
 }

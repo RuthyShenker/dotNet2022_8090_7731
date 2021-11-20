@@ -20,6 +20,23 @@ namespace BL
             }
             return bParcelList;
         }
+        public void AddingParcel(Parcel newParcel)
+        {
+            IDal.DO.Parcel parcel = new IDal.DO.Parcel()
+            {
+                SenderId = newParcel.SenderId,
+                GetterId = newParcel.GetterId,
+                Weight = newParcel.Weight,
+                Status = (IDal.DO.UrgencyStatuses)newParcel.MPriority,
+                DroneId = 0,
+                MakingParcel = DateTime.Now,
+                BelongParcel = null,
+                PickingUp = null,
+                Arrival = null
+            };
+
+            dal.GettingParcelForDelivery(parcel);
+        }
 
         /// <summary>
         /// return a list of unbelong parcels

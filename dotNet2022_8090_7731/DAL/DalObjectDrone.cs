@@ -90,7 +90,7 @@ namespace DalObject
                     break;
                 }
             }
-            throw new IdNotExistInAListException();
+            throw new IdNotExistInTheListException();
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace DalObject
                     return DroneList[i].Clone();
                 }
             }
-            throw new IdNotExistInAListException();
+            throw new IdNotExistInTheListException();
             //return DroneList.First(drone => drone.Id == Id).Clone();
         }
 

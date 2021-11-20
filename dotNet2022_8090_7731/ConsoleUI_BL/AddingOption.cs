@@ -26,13 +26,13 @@ namespace ConsoleUI_BL
                     break;
                 case 2:
                     int stationId;
-                    bL.AddingDrone(GettingNewDrone(out stationId),stationId);
+                    bL.AddingDrone(GettingNewDrone(out stationId), stationId);
                     break;
                 case 3:
                     bL.AddingCustomer(GettingNewCustomer());
                     break;
                 case 4:
-                    bL.GettingParcelForDelivery(GettingNewParcel());
+                    bL.AddingParcel(GettingNewParcel());
                     break;
                 default:
                     break;
@@ -43,41 +43,36 @@ namespace ConsoleUI_BL
         private static Parcel GettingNewParcel()
         {
             Console.WriteLine("Enter the id of the sender of the new parcel: ");
-            string senderId = Console.ReadLine();
+            int senderId = int.Parse(Console.ReadLine());
             Console.WriteLine("Enter the id of the getter of the new parcel: ");
-            string getterId = Console.ReadLine();
+            int getterId = int.Parse(Console.ReadLine());
             Console.WriteLine("Enter the weight of the new parcel: 0-Light, 1-Medium, 2-Heavy ");
             WeightCategories weight = (WeightCategories)int.Parse(Console.ReadLine());
             Console.WriteLine("Enter the priority of the new parcel: 0-Normal, 1-Fast, 2-Emergency");
             Priority mPriority = (Priority)int.Parse(Console.ReadLine());
             DroneInParcel DInParcel = null;
-            DateTime MakingParcel = DateTime.Now;
-            DateTime? BelongParcel = null;
-            DateTime? PickingUp = null;
-            DateTime? Arrival = null;
+
             return new Parcel(senderId, getterId, weight, mPriority, DInParcel, MakingParcel, BelongParcel, PickingUp, Arrival);
         }
 
         private static Customer GettingNewCustomer()
         {
             Console.WriteLine("Enter the id of the new customer: ");
-            string id = Console.ReadLine();
+            int id = int.Parse(Console.ReadLine());
             Console.WriteLine("Enter the name of the new customer: ");
             string name = Console.ReadLine();
             Console.WriteLine("Enter the phone of the new customer: ");
             string phone = Console.ReadLine();
-            Console.WriteLine("Enter the location of new customer: ");
-            Console.WriteLine("longitude: ");
-            double longitude = double.Parse(Console.ReadLine());
-            double latitude = double.Parse(Console.ReadLine());
-            Location cLocation =new Location() {Latitude=latitude,Longitude=longitude };
+            //Console.WriteLine("Enter the location of new customer: ");
+            //Console.WriteLine("longitude: ");
+            //double longitude = double.Parse(Console.ReadLine());
+            //Console.WriteLine("latitude: ");
+            //double latitude = double.Parse(Console.ReadLine());
+            Location cLocation = null;
             return new Customer(id, name, phone, cLocation);
         }
-    
 
-
-
-        private static BL_Station GettingNewBaseStation()
+        private static Station GettingNewBaseStation()
         {
             Console.WriteLine("Enter the id of the new base station: ");
             int id = int.Parse(Console.ReadLine());
@@ -92,15 +87,16 @@ namespace ConsoleUI_BL
             Console.WriteLine("Enter the number of positions of the new base station: ");
             int numAvailablePositions = int.Parse(Console.ReadLine());
             List<BL_ChargingDrone> lBL_ChargingDrone = new List<BL_ChargingDrone>();
-            return new BL_Station(id, nameStation, sLocation, numAvailablePositions, lBL_ChargingDrone);
+            return new Station(id, nameStation, sLocation, numAvailablePositions, lBL_ChargingDrone);
         }
 
         private static Drone GettingNewDrone(out int stationId)
         {
             Console.WriteLine("Enter the serial number of the manufacturer of the new drone: ");
             int id = int.Parse(Console.ReadLine());
-            Console.WriteLine("enter the model of the new drone: ");
-            int model = int.Parse(Console.ReadLine());
+            //Console.WriteLine("enter the model of the new drone: ");
+            //int model = int.Parse(Console.ReadLine());
+            int model = 0;
             Console.WriteLine("enter the weight of the new drone: ");
             WeightCategories weight = (WeightCategories)int.Parse(Console.ReadLine());
             Console.WriteLine("Enter the number of the station to charge the new drone for first charging:  ");
@@ -151,16 +147,7 @@ namespace ConsoleUI_BL
             return Console.ReadLine();
         }
 
-        /// <summary>
-        /// A function that gets from the user Id and returns it as int
-        /// </summary>
-        /// <param name="obj">a name of object</param>
-        /// <returns>an id as int</returns>
-        private static int GettingId(string obj)
-        {
-            Console.WriteLine($"Enter The Id Of The {obj}:");
-            return int.Parse(Console.ReadLine());
-        }
+        return new BL_Station(id, nameStation, location, numberOfChargingStations, lBL_ChargingDrone);
     }
 }
 

@@ -154,6 +154,48 @@ namespace BL
                 throw new BelongingParcelException();
             }
         }
+        public void AddingDrone(IBL.BO.Drone bLDrone, int StationId)
+        {
+            if (dal.ExistsInDroneList(bLDrone.Id))
+            {
+                throw new Exception("The id is already exists in the Drone list!");
+            }
+            if (!dal.ExistsInBaseStation(StationId))
+            {
+                throw new Exception("this base station doesnt exists!");
+            }
+            if (!dal.ThereAreFreePositions(StationId))
+            {
+                throw new Exception("There arent free positions for this base station!");
+            }
+            DroneToList droneToList = new DroneToList()
+            {
+                Id = bLDrone.Id,
+                Model = bLDrone.Model,
+                Weight = bLDrone.Weight,
+                BatteryStatus = bLDrone.BatteryStatus,
+                DStatus = bLDrone.DroneStatus,
+                CurrLocation = new Location(dal.GetBaseStation(StationId).Longitude, dal.GetBaseStation(StationId).Latitude),
+                NumOfParcel = null
+            };
+
+            IDal.DO.Drone drone = new IDal.DO.Drone() { Id = bLDrone.Id, MaxWeight = bLDrone.Weight, Model = bLDrone.Model };
+            dal.AddingDrone(drone);
+        }
+        public void UpdatingDroneName(int droneId, int newModel)
+        {
+            try
+            {
+                IDal.DO.Drone drone = dal.GetDrone(droneId);
+                drone.Model = newModel;
+                dal.UpdateDrone(droneId, drone);
+            }
+            catch (DAL.IdNotExistInTheListException)
+            {
+                //bl exception-new
+                throw new UpdatingFailedIdNotExistsException("this id doesnt exist in drone list!");
+            }
+        }
 
 
         private IBL.BO.Customer MapCustomer(IDal.DO.Customer input)

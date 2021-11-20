@@ -21,9 +21,19 @@ namespace IBL.BO
 
 
 
-        public ArgumentNullException(object Id,object typeList)
+        public ArgumentNullException(object Id, object typeList)
         {
-            Console.WriteLine("{0} isnt exist in {1} list.",Id,typeList);
+            Console.WriteLine("{0} isnt exist in {1} list.", Id, typeList);
         }
     }
+    class UpdatingFailedIdNotExistsException : Exception
+    {
+        public UpdatingFailedIdNotExistsException(string message):base()
+        {
+
+        }
+            
+   
+    }
+
 }

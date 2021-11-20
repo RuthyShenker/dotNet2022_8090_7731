@@ -52,7 +52,7 @@ namespace IDal
         bool ExistsInParcelList(int pId);
         bool ThereAreFreePositions(int sId);
         int SumOfDronesInSpecificStation(int sId);
-        bool ExistsInCustomerList(string cId);
+        bool ExistsInCustomerList(int cId);
         double[] PowerConsumptionRequest();
         void AddDroneToCharge(int dId, int sId);
     }

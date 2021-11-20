@@ -29,12 +29,12 @@ namespace IBL
         void ReleasingDrone(int dId, double timeInCharging);
 
         //Adding
-        void AddingBaseStation(IDal.DO.BaseStation baseStation);
-        void AddingDrone(IDal.DO.Drone drone, int numberStation);
-        void AddingCustomer(IDal.DO.Customer customer);
-        void AddingParce(IDal.DO.Parcel parcel);
+        void AddingBaseStation(Station baseStation);
+        void AddingDrone(Drone drone, int numberStation);
+        void AddingCustomer(Customer customer);
+        void AddingParcel(Parcel parcel);
         //update
-        void UpdatingDroneName(int droneId, string newModel);
+        void UpdatingDroneName(int droneId, int newModel);
         void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions);
         void UpdatingCustomerDetails(string customerId, string newName, string newPhone);
 

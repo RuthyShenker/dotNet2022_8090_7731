@@ -8,7 +8,7 @@ namespace IBL.BO
 {
     public class Station
     {
-        public BL_Station(int id, string nameStation, Location sLocation, int numAvailablePositions, List<BL_ChargingDrone> lBL_ChargingDrone)
+        public Station(int id, string nameStation, Location sLocation, int numAvailablePositions, List<BL_ChargingDrone> lBL_ChargingDrone)
         {
             Id = id;
             NameStation = nameStation;

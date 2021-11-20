@@ -64,7 +64,7 @@ namespace DalObject
                     return BaseStationList[i].Clone();
                 }
             }
-            throw new IdNotExistInAListException();
+            throw new IdNotExistInTheListException();
         }
 
         /// <summary>

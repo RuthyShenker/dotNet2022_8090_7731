@@ -13,6 +13,8 @@ namespace ConsoleUI_BL
         ///// Add, Update, DisplaySpecific, DisplayList, Exit.
         ///// </summary>
         public enum ProgramOptions { Add = 1, Update, DisplaySpecific, DisplayList, Exit };
+
+
         ///// <summary>
         ///// An Enum of WeightCategories contains:
         ///// Light, Medium, Heavy.

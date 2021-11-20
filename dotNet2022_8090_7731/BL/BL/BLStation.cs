@@ -24,6 +24,23 @@ namespace BL
             //}
             //return bStationsList;
         }
+        public void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions)
+        {
+            if (!dal.ExistsInBaseStation(stationId))
+            {
+                throw new Exception("this id doesnt exist in base station list!");
+            }
+            BaseStation baseStation = dal.GetBaseStation(stationId);
+            if (!string.IsNullOrEmpty(stationName))
+            {
+                baseStation.NameStation = stationName;
+            }
+            if (amountOfPositions != default)
+            {
+                baseStation.NumberOfChargingPositions = amountOfPositions;
+            }
+            dal.UpdateBaseStation(stationId, baseStation);
+        }
 
         private StationToList MapStation(BaseStation source)
         {
@@ -84,14 +101,17 @@ namespace BL
             return stationDalList.ElementAt(index);
         }
 
-        public void AddingBaseStation(IDal.DO.BaseStation bLStation)
+        public void AddingBaseStation(Station bLStation)
         {
             if (dal.ExistsInBaseStation(bLStation.Id))
             {
                 throw new Exception("The id is already exists in the base station list!");
             }
 
-            IDal.DO.BaseStation station = new IDal.DO.BaseStation() { Id = bLStation.Id, Latitude = bLStation.SLocation.Latitude, Longitude = bLStation.SLocation.Longitude, NameStation = bLStation.NameStation, NumberOfChargingPositions = bLStation.NumAvailablePositions };
+            BaseStation station = new BaseStation() { Id = bLStation.Id,
+                Latitude = bLStation.SLocation.Latitude, Longitude = bLStation.SLocation.Longitude,
+                NameStation = bLStation.NameStation,
+                NumberOfChargingPositions = bLStation.NumAvailablePositions };
             dal.AddingBaseStation(station);
         }
     }
