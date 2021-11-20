@@ -149,8 +149,6 @@ namespace ConsoleUI_BL
             Console.WriteLine($"Enter The Id Of The {obj}:");
             return Console.ReadLine();
         }
-
-        return new BL_Station(id, nameStation, location, numberOfChargingStations, lBL_ChargingDrone);
     }
 }
 
