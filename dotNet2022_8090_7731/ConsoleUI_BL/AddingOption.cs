@@ -13,6 +13,7 @@ namespace ConsoleUI_BL
     {
         public static void AddingOption()
         {
+
             int input = 0;
             Console.WriteLine($"1 - Adding a base station to the stations list.\n" +
                               $"2 - Adding a drone to the drones list.\n" +
