@@ -8,46 +8,51 @@ namespace BL
 {
     partial class BL
     {
+        //מה הולך פה עם הbl  וdl
         public IEnumerable<CustomerToList> GetCustomers()
         {
-            IEnumerable<CustomerToList> bCustomersList = new List<CustomerToList>();
-            List<IDal.DO.Customer> dCustomersList = GetList<IDal.DO.Customer>();
+            IEnumerable<CustomerToList> bLCustomersList = new List<CustomerToList>();
+            IEnumerable<IDal.DO.Customer> dalCustomersList = dal.GetListFromDal<IDal.DO.Customer>();
 
             //  לשים לב לשורה הזו אם משנים לגנרי
-            List<Parcel> dParcelsList = GetList<Parcel>();
+            IEnumerable< IDal.DO.Parcel> dalParcelsList = dal.GetListFromDal<IDal.DO.Parcel>();
 
-            foreach (var customer in dCustomersList)
+            foreach (var customer in dalCustomersList)
             {
-                bCustomersList.Add(MapToList(customer, dParcelsList));
+                bLCustomersList.Add(MapToList(customer, dalParcelsList));
             }
-            return bCustomersList;
+            return bLCustomersList.;
         }
 
-        private CustomerToList MapToList(IDal.DO.Customer customer, List<Parcel> dParcels)
+        private CustomerToList MapToList(IDal.DO.Customer customer, IEnumerable<Parcel> dParcels)
         {
-            CustomerToList nCustomer = new CustomerToList();
-            nCustomer.Id = customer.Id;
-            nCustomer.Name = customer.Name;
-            nCustomer.Phone = customer.Phone;
+            CustomerToList CustomerToList = new CustomerToList();
+            CustomerToList.Id = customer.Id;
+            CustomerToList.Name = customer.Name;
+            CustomerToList.Phone = customer.Phone;
             foreach (var parcel in dParcels)
             {
-                if (parcel.SenderId == nCustomer.Id)
+                if (parcel.SenderId == CustomerToList.Id)
                 {
                     switch (GetParcelStatus(parcel))
                     {
                         // לסדר אין לי תרגום ל supplied
-                        case InDestination:
-                            ++nCustomer.Got;
-                        case collected:
-                            ++nCustomer.SentSupplied;
-                        case belonged:
-                            ++nCustomer.InWayToCustomer;
-                        case made:
-                            ++nCustomer.SentNotSupplied;
+                        case ParcelStatus.InDestination:
+                            ++CustomerToList.Got;
+                            break;
+                        case ParcelStatus.collected:
+                            ++CustomerToList.SentSupplied;
+                            break;
+                        case ParcelStatus.belonged:
+                            ++CustomerToList.InWayToCustomer;
+                            break;
+                        case ParcelStatus.made:
+                            ++CustomerToList.SentNotSupplied;
+                            break;
                     }
                 }
             }
-            return nCustomer;
+            return CustomerToList;
         }
     }
 }

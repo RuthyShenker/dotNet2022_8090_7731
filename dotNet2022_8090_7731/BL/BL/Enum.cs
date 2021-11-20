@@ -22,10 +22,14 @@ namespace IBL.BO
 
         /// <summary>
         /// An Enum of DroneStatuses contains:
-        /// Available, Maintenance, Delivery.
+        /// Free, Maintenance, Delivery.
         /// </summary>
         public enum DroneStatus { Free, Maintenance, Delivery };
 
+        /// <summary>
+        /// An Enum of ParcelStatus contains:
+        /// made, belonged, collected,InDestination.
+        /// </summary>
         public enum ParcelStatus { made,belonged,collected,InDestination}
     
 }

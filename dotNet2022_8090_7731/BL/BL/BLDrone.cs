@@ -10,11 +10,19 @@ namespace BL
 {
     partial class BL
     {
+        /// <summary>
+        /// ?????????????
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<DroneToList> GetDrones()
         {
             return lDroneToList;
         }
 
+        /// <summary>
+        ///  A function that map from IDal.DO.Drone to DroneToList only the common fields.
+        /// </summary>
+        /// 
         private DroneToList copyCommon(IDal.DO.Drone source)
         {
             DroneToList nDroneToList = new DroneToList();
@@ -24,8 +32,16 @@ namespace BL
             return nDroneToList;
         }
 
+        /// <summary>
+        /// A function that gets weight of drone
+        /// and distance and returns the minimum battery that 
+        /// the drone needs in order to flight.
+        /// </summary>
+        /// <param name="distance"></param>
+        /// <param name="weight"></param>
+        /// <returns>the minimum battery in double</returns>
         // weight=0 ערך ברירת מחדל לפונקציה
-        private double MinBattery(double distance,  WeightCategories weight = 0)
+        private double MinBattery(double distance,  IBL.BO.WeightCategories weight = 0)
         {
             switch (weight)
             {
@@ -39,6 +55,11 @@ namespace BL
                     return pConsumFree * distance;
             }
         }
+
+        /// <summary>
+        /// A function that gets an id od drone and sending it to charging.
+        /// </summary>
+        /// <param name="IdDrone"></param>
         void SendingDroneToCharge(int IdDrone)
         {
             if(!dal.ExistsInDroneList(IdDrone))
@@ -46,9 +67,9 @@ namespace BL
                 throw new Exception("the id of this drone doesnt exist");
             }
             DroneToList drone=lDroneToList.Find(drone => drone.Id == IdDrone);
-            if (drone.DStatus!=DroneStatus.Free)
+            if (drone.DStatus!=IBL.BO.DroneStatus.Free)
             {
-                if (drone.DStatus == DroneStatus.Maintenance)
+                if (drone.DStatus == IBL.BO.DroneStatus.Maintenance)
                     throw new Exception("this drone in maintenance,it cant go to charge");
                 throw new Exception("this drone in delivery ,it cant go to charge");
             }
@@ -66,30 +87,40 @@ namespace BL
             
             drone.BatteryStatus = minBattery;
             drone.CurrLocation = closetBaseStation.SLocation;
-            drone.DStatus = DroneStatus.Maintenance;
+            drone.DStatus = IBL.BO.DroneStatus.Maintenance;
 
             //--closetBaseStation.NumAvailablePositions;
             //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
             dal.AddDroneToCharge(drone.Id,closetBaseStation.Id);
 
         }
+
+        /// <summary>
+        /// A function that gets an id of drone and releasing it from charging.
+        /// </summary>
+        /// <param name="dId"></param>
+        /// <param name="timeInCharging"></param>
         void ReleasingDrone(int dId, double timeInCharging)
         {
-            dal.
             if(!dal.ExistsInDroneList(dId))
             {
                 throw new Exception("this id doesnt exist in the drone list!");
             }
             DroneToList drone=lDroneToList.Find(drone => drone.Id == dId);
-            if(drone.DStatus!=DroneStatus.Maintenance)
+            if(drone.DStatus!= IBL.BO.DroneStatus.Maintenance)
             {
-                if (drone.DStatus == DroneStatus.Free) throw new Exception("this drone in free state, it cant relese from charging!");
+                if (drone.DStatus == IBL.BO.DroneStatus.Free) throw new Exception("this drone in free state, it cant relese from charging!");
                 else throw new Exception("this drone in delivery state,it cant relese from charging!");
             }
-            drone.DStatus = DroneStatus.Free;
+            drone.DStatus = IBL.BO.DroneStatus.Free;
             drone.BatteryStatus += timeInCharging * chargingRate;
             dal.ReleasingDrone(drone.Id);
         }
+
+        /// <summary>
+        /// A function that gets an id of drone and belonging to it a parcel.
+        /// </summary>
+        /// <param name="dId"></param>
         void BelongingParcel(int dId)
         {
             //if(!dal.ExistsInDroneList(dId))
@@ -124,15 +155,11 @@ namespace BL
             }
         }
 
+
         private IBL.BO.Customer MapCustomer(IDal.DO.Customer input)
         {
             throw new NotImplementedException();
         }
-
-            IEnumerable<IDal.DO.Parcel> ParcelList = Extensions.GetListFromDal<IDal.DO.Parcel>().Where(parcel=>parcel.Weight<=drone.Weight);
-            ParcelList.OrderBy(p => p.).ThenBy(p => p.Weight).t
-
-
         private IBL.BO.Parcel MapParcel(IDal.DO.Parcel input)
         {
             throw new NotImplementedException();

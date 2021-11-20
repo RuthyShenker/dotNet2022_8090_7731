@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
+    /// <summary>
+    /// ???????
+    /// </summary>
     [Serializable]
     public class MyExceptions : Exception
     {
@@ -22,10 +25,5 @@ namespace IBL.BO
         {
             Console.WriteLine("{0} isnt exist in {1} list.",Id,typeList);
         }
-    
-    
-    
-    
-    
     }
 }

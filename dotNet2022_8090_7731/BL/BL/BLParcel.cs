@@ -54,21 +54,21 @@ namespace BL
             return nParcel;
         }
 
-        private ParcelStatus GetParcelStatus(IDal.DO.Parcel parcel)
+        private ParcelStatus GetParcelStatus(Parcel parcel)
         {
             if (parcel.Arrival.HasValue)
             {
-                return InDestination;
+                return ParcelStatus.InDestination;
             }
             if (parcel.PickingUp.HasValue)
             {
-                return collected;
+                return ParcelStatus.collected;
             }
             if (parcel.BelongParcel.HasValue)
             {
-                return belonged;
+                return ParcelStatus.belonged;
             }
-            return made;
+            return ParcelStatus.made;
         }
 
 
