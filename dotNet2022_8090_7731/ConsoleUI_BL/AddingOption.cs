@@ -70,7 +70,9 @@ namespace ConsoleUI_BL
             //double latitude = double.Parse(Console.ReadLine());
             Location cLocation = null;
             return new Customer(id, name, phone, cLocation);
+
         }
+
 
         private static Station GettingNewBaseStation()
         {
