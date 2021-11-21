@@ -43,11 +43,6 @@ namespace BL
             dal.UpdateBaseStation(stationId, baseStation);
         }
 
-        private StationToList MapStation(BaseStation source)
-        {
-            return new StationToList() { Id = source.Id };
-        }
-
         public IEnumerable<Station> AvailableSlots()
         {
             IEnumerable<StationToList> stationsList = GetStations();
@@ -61,25 +56,57 @@ namespace BL
             return stationsList;
         }
 
-        private StationToList MapToList(IDal.DO.BaseStation station)
+        private Station ConvertToBL(IDal.DO.BaseStation station)
+        {
+            var nStation= new Station();
+            nStation.Id = station.Id;
+            nStation.NameStation = station.NameStation;
+            nStation.SLocation = new Location(station.longitude, station.latitude);
+            nStation.NumAvailablePositions = station.NumberOfChargingPositions - MountOfFullPositions(nStation.SLocation);
+            nStation.LBL_ChargingDrone = ChargingDroneBLList(); 
+        }
+
+        // returns a new list of charging drone of BL
+        private List<ChargingDrone> ChargingDroneBLList()
+        {
+            var chargingDroneBLList = new List<ChargingDrone>();
+            var chargingDroneDalList = dal.ChargingDroneList();
+            var chargingDrone= new ChargingDrone();
+            foreach (var chargingPosition in chargingDroneDalList)
+	        {
+                chargingDrone.DroneId = chargingPosition.DroneId;
+                chargingDrone.BatteryStatus = lDroneToList.FirstOrDefault(drone=>drone.Id== chargingDrone.DroneId).BatteryStatus;
+	            chargingDroneBLList.Add(chargingDrone);
+            }
+            return chargingDroneBLList;
+        }
+       
+        private StationToList ConvertToList(IDal.DO.BaseStation station)
         {
             StationToList nStation = new StationToList();
             nStation.Id = station.Id;
             nStation.Name = station.NameStation;
-            foreach (var drone in lDroneToList)
-            {
-                if (drone.DStatus == Maintance && equalLocations(drone.CurrLocation, station))
-                {
-                    ++nStation.FullPositions;
-                }
-            }
+            nStation.FullPositions = MountOfFullPositions(new Location(station.logitude, station.latitude));
             nStation.AvailablePositions = station.NumAvailablePositions - nStation.FullPositions;
             return nStation;
         }
 
-        private bool equalLocations(Location location, IDal.DO.BaseStation station)
+        private int MountOfFullPositions(Location stationLocation)
         {
-            return location.Longitude == station.Longitude && location.Latitude == station.Latitude;
+            int sumFullPositions = 0;
+            foreach (var drone in lDroneToList)
+            {
+                if (drone.DStatus == Maintance && equalLocations(drone.CurrLocation, stationLocation))
+                {
+                    ++sumFullPositions;
+                }
+            }
+            return sumFullPositions;
+        }
+
+        private bool equalLocations( Location location1, Location location2 )
+        {
+            return location1.Longitude == location2.Longitude && location1.Latitude == location2.Latitude;
         }
         
         private IDal.DO.BaseStation closestStation(Location location)

@@ -23,42 +23,15 @@ namespace BL
             }
             return bLCustomersList.;
         }
-        public void UpdatingCustomerDetails(string customerId, string newName, string newPhone)
-        {
-            if (!dal.ExistsInCustomerList(customerId))
-            {
-                throw new Exception("this id doesnt exist in customer list!");
-            }
-            IDal.DO.Customer customer = dal.GetCustomer(customerId);
-            if (!string.IsNullOrEmpty(newName))
-            {
-                customer.Name = newName;
-            }
-            if (!string.IsNullOrEmpty(newPhone))
-            {
-                customer.Phone = newPhone;
-            }
-            dal.UpdateCustomer(customerId, customer);
-        }
-        public void AddingCustomer(Customer bLCustomer)
-        {
-            if (dal.ExistsInCustomerList(bLCustomer.Id))
-            {
-                throw new Exception("The id is already exists in the Customer List!");
-            }
-            IDal.DO.Customer newCustomer = new IDal.DO.Customer() { Id = bLCustomer.Id, 
-                Name = bLCustomer.Name, Phone = bLCustomer.Phone, Latitude = bLCustomer.CLocation.Latitude,
-                Longitude = bLCustomer.CLocation.Longitude };
-            dal.AddingCustomer(newCustomer);
-        }
 
-        private CustomerToList MapToList(IDal.DO.Customer customer, IEnumerable<Parcel> dParcels)
+        private CustomerToList ConvertToList(Customer customer)
         {
             CustomerToList CustomerToList = new CustomerToList();
             CustomerToList.Id = customer.Id;
             CustomerToList.Name = customer.Name;
             CustomerToList.Phone = customer.Phone;
-            foreach (var parcel in dParcels)
+            var dParcelslist = dal.GetListFromDal<IDal.DO.Parcel>();
+            foreach (var parcel in dParcelslist)
             {
                 if (parcel.SenderId == CustomerToList.Id)
                 {
@@ -81,6 +54,74 @@ namespace BL
                 }
             }
             return CustomerToList;
+        }
+        
+        private Customer ConvertToBL(IDal.DO.Customer customer)
+        {
+            Customer customer= new Customer();
+            customer.Id = customer.Id;
+            customer.Name = customer.Name;
+            customer.Phone = customer.Phone;
+            var parcelsFromCustomer = new List<ParcelInCustomer>();
+            var parcelsForCustomer = new List<ParcelInCustomer>();
+            ParcelInCustomer parcelInCustomer;
+            var dParcelslist = dal.GetListFromDal<IDal.DO.Parcel>();
+            foreach (var parcel in dParcelslist)
+            {
+                if (parcel.SenderId == customer.Id)
+                {
+                    parcelInCustomer=CopyCommon(parcel,parcel.GetterId);
+                    parcelsFromCustomer.Add(parcelInCustomer);
+                }
+                else if (parcel.GetterId == customer.Id)
+	            {
+                    parcelInCustomer=CopyCommon(parcel,parcel.SenderId);
+                    parcelsForCustomer.Add(parcelInCustomer);
+	            }
+             }   
+            return CustomerToList;
+        }
+
+        /// coppy the commmon feilds from parcel to parcel inCustomer and return it
+        private ParcelInCustomer CoppyCommon(IDal.DO.Parcel parcel,int Id)
+        {
+            var parcelInCustomer = new ParcelInCustomer();
+            parcelInCustomer.Id = parcel.Id;
+            parcelInCustomer.Weight = parcel.Weight;
+            parcelInCustomer.Priority = parcel.MPriority;
+            parcelInCustomer.PStatus = GetParcelStatus(parcel);
+            parcelInCustomer.OnTheOtherHand = NewCustomerInParcel(Id);
+            return parcelInCustomer;
+        }
+
+        public void AddingCustomer(Customer bLCustomer)
+        {
+            if (dal.ExistsInCustomerList(bLCustomer.Id))
+            {
+                throw new Exception("The id is already exists in the Customer List!");
+            }
+            IDal.DO.Customer newCustomer = new IDal.DO.Customer() { Id = bLCustomer.Id, 
+                Name = bLCustomer.Name, Phone = bLCustomer.Phone, Latitude = bLCustomer.CLocation.Latitude,
+                Longitude = bLCustomer.CLocation.Longitude };
+            dal.AddingCustomer(newCustomer);
+        }
+        
+        public void UpdatingCustomerDetails(string customerId, string newName, string newPhone)
+        {
+            if (!dal.ExistsInCustomerList(customerId))
+            {
+                throw new Exception("this id doesnt exist in customer list!");
+            }
+            IDal.DO.Customer customer = dal.GetCustomer(customerId);
+            if (!string.IsNullOrEmpty(newName))
+            {
+                customer.Name = newName;
+            }
+            if (!string.IsNullOrEmpty(newPhone))
+            {
+                customer.Phone = newPhone;
+            }
+            dal.UpdateCustomer(customerId, customer);
         }
     }
 }

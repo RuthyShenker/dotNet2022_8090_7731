@@ -71,6 +71,23 @@ namespace BL
             return nParcel;
         }
 
+
+        private Parcel convertToBL(IDal.DO.Parcel parcel)
+        {
+            Parcel nParcel = new Parcel();
+            nParcel.Id = parcel.Id;
+            nParcel.Sender = NewCustomerInParcel(parcel.SenderId);
+            nParcel.Getter = NewCustomerInParcel(parcel.GetterId);
+            nParcel.Weight = parcel.Weight;
+            nParcel.MPriority = parcel.Status;
+            nParcel.DInParcel = NewDroneInParcel(parcel.DroneId);
+            nParcel.MakingParcel =parcel.MakingParcel;
+            nParcel.BelongParcel = parcel.BelongParcel;
+            nParcel.PickingUp = parcel.PickingUp;
+            nParcel.Arrival = parcel.Arrival ;
+            return nParcel;
+        }
+
         private ParcelStatus GetParcelStatus(Parcel parcel)
         {
             if (parcel.Arrival.HasValue)
@@ -87,7 +104,6 @@ namespace BL
             }
             return ParcelStatus.made;
         }
-
 
     }
 }
