@@ -164,43 +164,10 @@ namespace BL
             return locationsList;
         }
 
-        public void GettingParcelForDelivery(IBL.BO.Parcel newParcel)
-        {
-            IDal.DO.Parcel parcel = new IDal.DO.Parcel()
-            {
-                SenderId = newParcel.SenderId,
-                GetterId = newParcel.GetterId,
-                Weight = (IDal.DO.WeightCategories)newParcel.Weight,
-                Status = (UrgencyStatuses)newParcel.MPriority,
-                DroneId = 0,
-                MakingParcel = newParcel.MakingParcel,
-                BelongParcel = newParcel.BelongParcel,
-                PickingUp = newParcel.PickingUp,
-                Arrival = newParcel.Arrival
-            };
-
-            dal.GettingParcelForDelivery(parcel);
-        }
+       
 
 
-        public void UpdatingDroneName(int droneId, string newModel)
-        {
-            //if (!dal.ExistsInDroneList(droneId))
-            //{
-            //    
-            //}
-            try
-            {
-                IDal.DO.Drone drone = dal.GetDrone(droneId);
-                drone.Model = newModel;
-                dal.UpdateDrone(droneId, drone);
-            }
-            catch (DAL.IdNotExistInAListException)
-            {
-                //bl exception-new
-                throw new Exception("this id doesnt exist in drone list!");
-            }
-        }
+       
 
         /// <summary>
         /// A function that initalizes: pConsumFree
@@ -210,36 +177,20 @@ namespace BL
         ///chargingRate
         /// </summary>
         /// 
-        public void UpdatingCustomerDetails(string customerId, string newName, string newPhone)
-        {
-            if (!dal.ExistsInCustomerList(customerId))
-            {
-                throw new Exception("this id doesnt exist in customer list!");
-            }
-            IDal.DO.Customer customer = dal.GetCustomer(customerId);
-            if (!string.IsNullOrEmpty(newName))
-            {
-                customer.Name = newName;
-            }
-            if (!string.IsNullOrEmpty(newPhone))
-            {
-                customer.Phone = newPhone;
-            }
-            dal.UpdateCustomer(customerId, customer);
-        }
+        
 
-        /// <summary>
+     /*    /// <summary>
         /// rand location of customer which his parcel had provided him
         /// </summary>
         /// <param name="parcelDalList"></param>
         /// <param name="customerDalList"></param>
         /// <param name="droneToList"></param>
         /// <returns></returns>
-        private Location locaProvidedParcels(IEnumerable<IDal.DO.Parcel> parcelDalList, IEnumerable<IDal.DO.Customer> customerDalList, DroneToList droneToList)
-        {
-            IDal.DO.Customer customer;
-            List<Location> optionalLocation = new List<Location>();
-            foreach (var parcel in parcelDalList)
+       // private Location locaProvidedParcels(IEnumerable<IDal.DO.Parcel> parcelDalList, IEnumerable<IDal.DO.Customer> customerDalList, DroneToList droneToList)
+        //{
+          //  IDal.DO.Customer customer;
+            //List<Location> optionalLocation = new List<Location>();
+           foreach (var parcel in parcelDalList)
             {
                 if (parcel.Arrival.HasValue)
                 {
@@ -248,9 +199,20 @@ namespace BL
                 }
             }
             return droneToList.CurrLocation = optionalLocation[DataSource.Rand.Next(optionalLocation.Count)];
+        }*/
+
+         private CustomerInParcel NewCustomerInParcel(int Id)
+        {
+            return new CustomerInParcel(Id, GetFromDalById<Customer>(Id).Name );
         }
 
-        public IEnumerable<BL> GetBList<BL, DL>(Converter<DL, BL> map)
+        private DroneInParcel NewDroneInParcel(int Id)
+        {
+            var drone = lDroneToList.FirstOrDefault(drone=>drone.Id==Id);
+            return new DroneInParcel(Id, drone.BatteryStatus, drone.CurrLocation);
+        }
+
+        public IEnumerable<BL> GetListFromBL<BL, DL>(Converter<DL, BL> map)
         {
             var bLList = new List<BL>();
             IEnumerable<DL> dalList = dal.GetListFromDal<DL>();
@@ -258,6 +220,23 @@ namespace BL
             {
                 var blItem = map(dlItem);
                 bLList.Add(blItem);
+            }
+            return bLList;
+        }
+
+         public IEnumerable<BLToList> GetListToList<BL>(Converter<BLToList, BL> map)
+        {
+            if (BLToList==Drone)
+	        {
+                 return lDroneToList;
+	        }
+            var bLList = GetListFromBL<BL>();
+            var listToList = new List<BLToList>();
+
+            foreach (BL blItem in bLList)
+            {
+                var blItem = map(blItem);
+                listToList.Add(blItem);
             }
             return bLList;
         }
