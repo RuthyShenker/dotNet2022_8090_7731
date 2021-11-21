@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Device.Location;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,17 +81,17 @@ namespace BL
         {
             return location.Longitude == station.Longitude && location.Latitude == station.Latitude;
         }
-
+        
         private IDal.DO.BaseStation closestStation(Location location)
         {
-            IEnumerable<IDal.DO.BaseStation> stationDalList = dal.GetBaseStation();
-            var cCoord = new GeoCoordinate(location.Latitude, location.Longitude);
-            var sCoord = new GeoCoordinate(stationDalList.ElementAt(0).Latitude, stationDalList.ElementAt(0).Longitude);
+            var stationDalList = dal.GetListFromDal<IDal.DO.BaseStation>();
+            var cCoord = new geoCoordinate(location);
+            var sCoord = new geoCoordinate(stationDalList.ElementAt(0).Latitude, stationDalList.ElementAt(0).Longitude);
             double currDistance, distance = sCoord.GetDistanceTo(cCoord);
             int index = 0;
             for (int i = 1; i < stationDalList.Count(); i++)
             {
-                sCoord = new GeoCoordinate(stationDalList.ElementAt(i).Latitude, stationDalList.ElementAt(i).Longitude);
+                sCoord = new geoCoordinate(stationDalList.ElementAt(i).Latitude, stationDalList.ElementAt(i).Longitude);
                 currDistance = sCoord.GetDistanceTo(cCoord);
                 if (currDistance < distance)
                 {

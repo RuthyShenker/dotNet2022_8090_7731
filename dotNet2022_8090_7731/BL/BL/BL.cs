@@ -102,8 +102,9 @@ namespace BL
             }
             else /*if (droneToList.DStatus == Free)*/
             {
-                droneToList.CurrLocation = locaProvidedParcels(parcelList, customerDalList, droneToList);
-                Location closetStation = closestStation(droneToList.CurrLocation, stationDalList);
+                var optionalLocations = locaProvidedParcels();
+                droneToList.CurrLocation = optionalLocations[DataSource.Rand.Next(optionalLocations.Count())];
+               IDal.DO.Location closetStation = closestStation(droneToList.CurrLocation);
                 double distance = CalculateDistance(closetStation, droneToList.CurrLocation);
                 droneToList.BatteryStatus = rand.Next(MinBattery(distance), 100);
             }
@@ -111,86 +112,56 @@ namespace BL
             lDroneToList.Add(droneToList);
         }
 
-        private double CalculateDistance(Location closestStation, Location droneLocation, IDal.DO.Customer destination = default(IDal.DO.Customer))
+        /// <summary>
+        /// the function gets an array of locations and return the sum of the distance between them
+        /// </summary>
+        /// <param name="locations"></param>
+        /// <returns></returns>
+        private double CalculateDistance(params Location[] locations)
         {
-            var droneLocationCoords = geoCoordinate(droneLocation);
-            var closetStationCoord = geoCoordinate(closestStation);
-            if (!destination.Equals(default(IDal.DO.Customer)))
+            var locationCoords1 = geoCoordinate(locations[0]);
+            var locationCoords2 = locationCoords1;
+            double distance = 0;
+            for (int i = 1; i < locations.Length; i++)
             {
-                Location ldestination = new Location(destination.Longitude, destination.Latitude);
-                var destinationCoord = geoCoordinate(ldestination);
-                double distance = droneLocationCoords.GetDistanceTo(destinationCoord);
-                return distance += destinationCoord.GetDistanceTo(closetStationCoord);
+                locationCoords2 = geoCoordinate(locations[i]);
+                distance += locationCoords1.GetDistanceTo(locationCoords2);
+                locationCoords1 = locationCoords2;
             }
-            return droneLocationCoords.GetDistanceTo(closetStationCoord);
+            return distance;
         }
 
+        /// <summary>
+        /// get an object of location and return an object of GeoCoordinate
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         private GeoCoordinate geoCoordinate(Location location)
         {
             return new GeoCoordinate(location.Latitude, location.Longitude);
         }
 
         /// <summary>
-        /// rand location of customer which his parcel had provided him
+        /// returns the locations of people which their parcels had provided them
         /// </summary>
         /// <param name="parcelDalList"></param>
         /// <param name="customerDalList"></param>
         /// <param name="droneToList"></param>
         /// <returns></returns>
-        private Location locaProvidedParcels(IEnumerable<IDal.DO.Parcel> parcelDalList, IEnumerable<IDal.DO.Customer> customerDalList, DroneToList droneToList)
+        private IList<Location> locaProvidedParcels()
         {
             IDal.DO.Customer customer;
-            List<Location> optionalLocation = new List<Location>();
-            foreach (var parcel in parcelDalList)
+            var locationsList = new List<Location>();
+            var customerDalList = dal.GetListFromDal<IDal.DO.Customer>();
+            foreach (var parcel in dal.GetListFromDal<IDal.DO.Parcel>())
             {
                 if (parcel.Arrival.HasValue)
                 {
                     customer = customerDalList.First(customer => customer.Id == parcel.GetterId);
-                    optionalLocation.Add(new Location(customer.Longitude, customer.Latitude));
+                    locationsList.Add(new Location(customer.Longitude, customer.Latitude));
                 }
             }
-            return droneToList.CurrLocation = optionalLocation[DataSource.Rand.Next(optionalLocation.Count)];
-        }
-
-
-
-        public void AddingDrone(IBL.BO.Drone bLDrone, int StationId)
-        {
-            if (dal.ExistsInDroneList(bLDrone.Id))
-            {
-                throw new Exception("The id is already exists in the Drone list!");
-            }
-            if (!dal.ExistsInBaseStation(StationId))
-            {
-                throw new Exception("this base station doesnt exists!");
-            }
-            if (!dal.ThereAreFreePositions(StationId))
-            {
-                throw new Exception("There arent free positions for this base station!");
-            }
-            DroneToList droneToList = new DroneToList()
-            {
-                Id = bLDrone.Id,
-                Model = bLDrone.Model,
-                Weight = bLDrone.Weight,
-                BatteryStatus = bLDrone.BatteryStatus,
-                DStatus = bLDrone.DroneStatus,
-                CurrLocation = new Location(dal.GetBaseStation(StationId).Longitude, dal.GetBaseStation(StationId).Latitude),
-                NumOfParcel = null
-            };
-
-            IDal.DO.Drone drone = new IDal.DO.Drone() { Id = bLDrone.Id, MaxWeight = bLDrone.Weight, Model = bLDrone.Model };
-            dal.AddingDrone(drone);
-        }
-
-        public void AddingCustomer(IBL.BO.Customer bLCustomer)
-        {
-            if (dal.ExistsInCustomerList(bLCustomer.Id))
-            {
-                throw new Exception("The id is already exists in the Customer List!");
-            }
-            IDal.DO.Customer newCustomer = new IDal.DO.Customer() { Id = bLCustomer.Id, Name = bLCustomer.Name, Phone = bLCustomer.Phone, Latitude = bLCustomer.CLocation.Latitude, Longitude = bLCustomer.CLocation.Longitude };
-            dal.AddingCustomer(newCustomer);
+            return locationsList;
         }
 
         public void GettingParcelForDelivery(IBL.BO.Parcel newParcel)
@@ -231,72 +202,6 @@ namespace BL
             }
         }
 
-        public void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions)
-        {
-            if (!dal.ExistsInBaseStation(stationId))
-            {
-                throw new Exception("this id doesnt exist in base station list!");
-            }
-            BaseStation baseStation = dal.GetBaseStation(stationId);
-            if (!string.IsNullOrEmpty(stationName))
-            {
-                baseStation.NameStation = stationName;
-            }
-            if (amountOfPositions != default)
-            {
-                baseStation.NumberOfChargingPositions = amountOfPositions;
-            }
-            dal.UpdateBaseStation(stationId, baseStation);
-        }
-            dal = new DalObject.DalObject();
-            lDroneToList = new List<DroneToList>();
-            UpdatePConsumption();
-
-            IEnumerable<IDal.DO.Drone> droneList = dal.GetDrones();
-            IEnumerable<IDal.DO.Parcel> parcelList = dal.GetParcels();
-            IEnumerable<IDal.DO.Customer> customerDalList = dal.GetCustomers();
-            IEnumerable<BaseStation> stationDalList = dal.GetBaseStations();
-            DroneToList droneToList;
-
-            foreach (var drone in dal.GetDrones())
-            {
-                droneToList = copyCommon(drone);
-                // מה קורה אם יש יותר מחבילה אחת לרחפן
-                IDal.DO.Parcel parcel = parcelList.FirstOrDefault(p => p.DroneId == drone.Id && !p.Arrival.HasValue);
-                if (!parcel.Equals(default(IDal.DO.Parcel)))
-                {
-                    droneToList.DStatus = Delivery;
-
-                    //location
-                    IDal.DO.Customer sender = customerDalList.First(customer => customer.Id == parcel.SenderId);
-                    if (parcel.BelongParcel.HasValue && !parcel.PickingUp.HasValue)
-                    {
-                        IDal.DO.BaseStation baseStation = closestStation(new Location(sender.Longitude, sender.Latitude));
-                        droneToList.CurrLocation = new Location(baseStation.Longitude, baseStation.Latitude);
-                    }
-                    else
-                    {
-                        droneToList.CurrLocation = new Location(sender.Longitude, sender.Latitude);
-                        //IEnumerable bL_Customer = dal.GetSpecificItem(typeof(Customer), parcel.SenderId);
-                        //droneToList.CurrLocation = bL_Customer.CLocation;
-                    }
-
-                    // battery Status
-                    IDal.DO.Customer destination = customerDalList.First(customer => customer.Id == parcel.GetterId);
-                    Location closetStation = closestStation(destination, stationDalList);
-                    double distance = CalculateDistance(closetStation, droneToList.CurrLocation, destination);
-                    droneToList.BatteryStatus = Rand.Next(MinButtery(distance, parcel.Weight), 100);
-
-                    droneToList.NumOfParcel = 1;
-
-                    lDroneToList.Add(droneToList);
-                }
-                else
-                {
-                    newUndeliveringDroneToList(stationDalList, droneToList);
-                }
-            }
-        }
         /// <summary>
         /// A function that initalizes: pConsumFree
         ///pConsumLight
@@ -304,57 +209,7 @@ namespace BL
         ///pConsumHeavy
         ///chargingRate
         /// </summary>
-        private void UpdatePConsumption()
-        {
-            double[] arrPCRequest = dal.PowerConsumptionRequest();
-            pConsumFree = arrPCRequest[0];
-            pConsumLight = arrPCRequest[1];
-            pConsumMedium = arrPCRequest[2];
-            pConsumHeavy = arrPCRequest[3];
-
-            chargingRate = arrPCRequest[4];
-        }
-
-
-        private void newUndeliveringDroneToList(IEnumerable<BaseStation> stationDalList, DroneToList droneToList)
-        {
-
-            droneToList.DStatus = (DroneStatus)DataSource.Rand.Next((int)Free, (int)Maintenance);
-            if (droneToList.DStatus == Maintenance)
-            {
-                BaseStation station = stationDalList.ElementAt(DataSource.Rand.Next(0, stationDalList.Count()));
-                droneToList.CurrLocation = new Location(station.Longitude, station.Latitude);
-                droneToList.BatteryStatus = DataSource.Rand.Next(21);
-            }
-            else /*if (droneToList.DStatus == Free)*/
-            {
-                droneToList.CurrLocation = locaProvidedParcels(parcelList, customerDalList, droneToList);
-                Location closetStation = closestStation(droneToList.CurrLocation, stationDalList);
-                double distance = CalculateDistance(closetStation, droneToList.CurrLocation);
-                droneToList.BatteryStatus = rand.Next(MinBattery(distance), 100);
-            }
-            droneToList.NumOfParcel = 1;
-            lDroneToList.Add(droneToList);
-        }
-
-        private double CalculateDistance(Location closestStation, Location droneLocation, IDal.DO.Customer destination = default(IDal.DO.Customer))
-        {
-            var droneLocationCoords = geoCoordinate(droneLocation);
-            var closetStationCoord = geoCoordinate(closestStation);
-            if (!destination.Equals(default(IDal.DO.Customer)))
-            {
-                Location ldestination = new Location(destination.Longitude, destination.Latitude);
-                var destinationCoord = geoCoordinate(ldestination);
-                double distance = droneLocationCoords.GetDistanceTo(destinationCoord);
-                return distance += destinationCoord.GetDistanceTo(closetStationCoord);
-            }
-            return droneLocationCoords.GetDistanceTo(closetStationCoord);
-        }
-
-        private GeoCoordinate geoCoordinate(Location location)
-        {
-            return new GeoCoordinate(location.Latitude, location.Longitude);
-        }
+        /// 
         public void UpdatingCustomerDetails(string customerId, string newName, string newPhone)
         {
             if (!dal.ExistsInCustomerList(customerId))
