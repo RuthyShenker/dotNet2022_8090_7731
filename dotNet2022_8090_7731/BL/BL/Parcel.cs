@@ -22,9 +22,9 @@ namespace IBL.BO
             Arrival = arrival;
         }
 
-        public int ParcelId { get; init; }
-        public int SenderId { get; set; }
-        public int GetterId { get; set; }
+        public int Id { get; init; }
+        public CustomerInParcel Sender{ get; set; }
+        public CustomerInParcel Getter{ get; set; }
         public WeightCategories Weight { get; set; }
         public Priority MPriority { get; set; }
         public DroneInParcel DInParcel { get; set; }
