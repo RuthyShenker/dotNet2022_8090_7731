@@ -63,7 +63,7 @@ namespace BL
                     IDal.DO.Customer destination = customerDalList.First(customer => customer.Id == parcel.GetterId);
                     Location closetStation = closestStation(destination, stationDalList);
                     double distance = CalculateDistance(closetStation, droneToList.CurrLocation, destination);
-                    droneToList.BatteryStatus = Rand.Next(MinButtery(distance, parcel.Weight), 100);
+                    droneToList.BatteryStatus = Rand.Next(MinBattery(distance, parcel.Weight), 100);
 
                     droneToList.NumOfParcel = 1;
 
@@ -99,8 +99,8 @@ namespace BL
             }
             else /*if (droneToList.DStatus == Free)*/
             {
-                var optionalLocations = locaProvidedParcels();
-                droneToList.CurrLocation = optionalLocations[DataSource.Rand.Next(optionalLocations.Count())];
+                var customersList = CustomersWithProvidedParcels();
+                droneToList.CurrLocation = customersList[DataSource.Rand.Next(customersList.Count())].CLocation;
                 IDal.DO.Location closetStation = closestStation(droneToList.CurrLocation);
                 double distance = CalculateDistance(closetStation, droneToList.CurrLocation);
                 droneToList.BatteryStatus = rand.Next(MinBattery(distance), 100);
@@ -143,29 +143,22 @@ namespace BL
             return new GeoCoordinate(location.Latitude, location.Longitude);
         }
 
-        // לשנות שם פונקציה
-        // פונקציה שמחזירה רשימה של כל המקומים של הלקוחות שיש חבילות שסופקו להם
-        /// <summary>
-        /// returns the locations of people which their parcels had provided them
-        /// </summary>
-        /// <param name="parcelDalList"></param>
-        /// <param name="customerDalList"></param>
-        /// <param name="droneToList"></param>
-        /// <returns></returns>
-        private IList<Location> locaProvidedParcels()
+        // מחזירה את רשימת הלקוחות שיש חבילות שסופקו להם
+        private IList<Customer> CustomersWithProvidedParcels()
         {
             IDal.DO.Customer customer;
-            var locationsList = new List<Location>();
-            var customerDalList = dal.GetListFromDal<IDal.DO.Customer>();
-            foreach (var parcel in dal.GetListFromDal<IDal.DO.Parcel>())
+            var wantedCustomersList = new List<Customer>():
+            var customersDalList = dal.GetListFromDal<IDal.DO.Customer>();
+            var parcelsDalList = dal.GetListFromDal<IDal.DO.Parcel>();
+            foreach (var parcel in parcelsDalList)
             {
                 if (parcel.Arrival.HasValue)
                 {
                     customer = customerDalList.First(customer => customer.Id == parcel.GetterId);
-                    locationsList.Add(new Location(customer.Longitude, customer.Latitude));
+                    wantedCustomersList.Add(customer);
                 }
             }
-            return locationsList;
+            return wantedCustomersList;
         }
 
        
