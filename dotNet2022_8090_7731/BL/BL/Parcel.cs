@@ -9,17 +9,15 @@ namespace IBL.BO
     public class Parcel
     {
 
-        public Parcel(int senderId, int getterId, WeightCategories weight, Priority mPriority, DroneInParcel dInParcel, DateTime makingParcel, DateTime? belongParcel, DateTime? pickingUp, DateTime? arrival)
+        public Parcel(int senderId, int getterId, WeightCategories weight, Priority mPriority, DroneInParcel dInParcel)
         {
-            SenderId = senderId;
-            GetterId = getterId;
+            Sender.Id = senderId;
+            Getter.Id = getterId;
+            ///WHATS ABOUT THEIR NAME
             Weight = weight;
             MPriority = mPriority;
             DInParcel = dInParcel;
-            MakingParcel = makingParcel;
-            BelongParcel = belongParcel;
-            PickingUp = pickingUp;
-            Arrival = arrival;
+           
         }
 
         public int Id { get; init; }

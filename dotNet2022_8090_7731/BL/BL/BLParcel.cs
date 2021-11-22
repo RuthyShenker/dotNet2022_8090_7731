@@ -24,8 +24,8 @@ namespace BL
         {
             IDal.DO.Parcel parcel = new IDal.DO.Parcel()
             {
-                SenderId = newParcel.SenderId,
-                GetterId = newParcel.GetterId,
+                SenderId = newParcel.Sender.Id,
+                GetterId = newParcel.Getter.Id,
                 Weight = newParcel.Weight,
                 Status = (IDal.DO.UrgencyStatuses)newParcel.MPriority,
                 DroneId = 0,

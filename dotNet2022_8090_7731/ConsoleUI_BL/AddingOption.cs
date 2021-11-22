@@ -53,7 +53,7 @@ namespace ConsoleUI_BL
             Priority mPriority = (Priority)int.Parse(Console.ReadLine());
             DroneInParcel DInParcel = null;
 
-            return new Parcel(senderId, getterId, weight, mPriority, DInParcel, MakingParcel, BelongParcel, PickingUp, Arrival);
+            return new Parcel(senderId, getterId, weight, mPriority, DInParcel);
         }
 
         private static Customer GettingNewCustomer()
@@ -89,7 +89,7 @@ namespace ConsoleUI_BL
             Location sLocation = new Location(longitude, latitude);
             Console.WriteLine("Enter the number of positions of the new base station: ");
             int numAvailablePositions = int.Parse(Console.ReadLine());
-            List<BL_ChargingDrone> lBL_ChargingDrone = new List<BL_ChargingDrone>();
+            List<ChargingDrone> lBL_ChargingDrone = new List<ChargingDrone>();
             return new Station(id, nameStation, sLocation, numAvailablePositions, lBL_ChargingDrone);
         }
 
@@ -104,7 +104,7 @@ namespace ConsoleUI_BL
             WeightCategories weight = (WeightCategories)int.Parse(Console.ReadLine());
             Console.WriteLine("Enter the number of the station to charge the new drone for first charging:  ");
             stationId = int.Parse(Console.ReadLine());
-            float batteryStatus = DalObject.DataSource.rand.Next(20, 41);
+            float batteryStatus = DalObject.DataSource.Rand.Next(20, 41);
             DroneStatus droneStatus = DroneStatus.Maintenance;
             ParcelInTransfer pInTransfer = null;
             Location currLocation = null;
@@ -139,16 +139,16 @@ namespace ConsoleUI_BL
         //    return new BL_Station(id, nameStation, location, numberOfChargingStations, lBL_ChargingDrone);
         //}
 
-        /// <summary>
-        /// A function that gets from the user Id and returns it as string
-        /// </summary>
-        /// <param name="obj">a name of object</param>
-        /// <returns>an id as string</returns>
-        private static string GettingIdAsString(string obj)
-        {
-            Console.WriteLine($"Enter The Id Of The {obj}:");
-            return Console.ReadLine();
-        }
+        ///// <summary>
+        ///// A function that gets from the user Id and returns it as string
+        ///// </summary>
+        ///// <param name="obj">a name of object</param>
+        ///// <returns>an id as string</returns>
+        //private static string GettingIdAsString(string obj)
+        //{
+        //    Console.WriteLine($"Enter The Id Of The {obj}:");
+        //    return Console.ReadLine();
+        //}
     }
 }
 

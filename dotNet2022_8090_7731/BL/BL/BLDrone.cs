@@ -45,11 +45,11 @@ namespace BL
         {
             switch (weight)
             {
-                case WeightCategories.Light:
+                case IBL.BO.WeightCategories.Light:
                     return pConsumLight * distance;
-                case WeightCategories.Medium:
+                case IBL.BO.WeightCategories.Medium:
                     return pConsumMedium * distance;
-                case WeightCategories.Heavy:
+                case IBL.BO.WeightCategories.Heavy:
                     return pConsumHeavy * distance;
                 default:
                     return pConsumFree * distance;
