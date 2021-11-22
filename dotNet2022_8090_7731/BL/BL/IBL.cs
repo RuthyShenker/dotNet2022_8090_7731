@@ -24,6 +24,8 @@ namespace IBL
         //ChargingDrone
         void ChargingDrone(int IdDrone);
 
+
+
         //void ReleasingDrone(int dId);
         //ReleasingDrone
         void ReleasingDrone(int dId, double timeInCharging);
