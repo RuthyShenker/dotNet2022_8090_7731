@@ -19,6 +19,11 @@ namespace BL
     {
         IDal.IDal dal;
         List<DroneToList> lDroneToList;
+
+        // לשנות שם לכל השדות האלו המשמעות שלהם:
+        // עצמת הבטריה שרחפן צריך כאשר הוא פנוי
+        // עצמת הבטריה שרחפן צריך כאשר הוא נושא משקל קל וכו
+        // powerConsumptionFree, powerConsumptionLight, powerConsumptionMedium......
         static double pConsumFree;
         static double pConsumLight;
         static double pConsumMedium;
@@ -32,18 +37,13 @@ namespace BL
             dal = new DalObject.DalObject();
             lDroneToList = new List<DroneToList>();
             UpdatePConsumption();
-
-            IEnumerable<IDal.DO.Drone> droneList = dal.GetDrones();
-            IEnumerable<IDal.DO.Parcel> parcelList = dal.GetParcels();
-            IEnumerable<IDal.DO.Customer> customerDalList = dal.GetCustomers();
-            IEnumerable<BaseStation> stationDalList = dal.GetBaseStations();
             DroneToList droneToList;
 
             foreach (var drone in dal.GetDrones())
             {
                 droneToList = copyCommon(drone);
                 // מה קורה אם יש יותר מחבילה אחת לרחפן
-                IDal.DO.Parcel parcel = parcelList.FirstOrDefault(p => p.DroneId == drone.Id && !p.Arrival.HasValue);
+                IDal.DO.Parcel parcel = parcelList.FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
                 if (!parcel.Equals(default(IDal.DO.Parcel)))
                 {
                     droneToList.DStatus = Delivery;
@@ -74,7 +74,7 @@ namespace BL
                 }
                 else
                 {
-                    newUndeliveringDroneToList(stationDalList, droneToList);
+                    newUndeliveringDroneToList(droneToList);
                 }
             }
         }
@@ -85,17 +85,17 @@ namespace BL
             pConsumLight = arrPCRequest[1];
             pConsumMedium = arrPCRequest[2];
             pConsumHeavy = arrPCRequest[3];
-
             chargingRate = arrPCRequest[4];
         }
 
-
-        private void newUndeliveringDroneToList(IEnumerable<BaseStation> stationDalList, DroneToList droneToList)
+        // לשנות שם לפונקציה אם לא ברור
+        // מקבלת רחפן שלא בסטטוס שלייחה ומעדכנת את שאר השדות לפי ההוראות
+        private void newUndeliveringDroneToList(DroneToList droneToList)
         {
-
             droneToList.DStatus = (DroneStatus)DataSource.Rand.Next((int)Free, (int)Maintenance);
             if (droneToList.DStatus == Maintenance)
             {
+                var stationDalList = dal.GetListFromDal<IDal.Do.BaseStation>();
                 BaseStation station = stationDalList.ElementAt(DataSource.Rand.Next(0, stationDalList.Count()));
                 droneToList.CurrLocation = new Location(station.Longitude, station.Latitude);
                 droneToList.BatteryStatus = DataSource.Rand.Next(21);
@@ -104,7 +104,7 @@ namespace BL
             {
                 var optionalLocations = locaProvidedParcels();
                 droneToList.CurrLocation = optionalLocations[DataSource.Rand.Next(optionalLocations.Count())];
-               IDal.DO.Location closetStation = closestStation(droneToList.CurrLocation);
+                IDal.DO.Location closetStation = closestStation(droneToList.CurrLocation);
                 double distance = CalculateDistance(closetStation, droneToList.CurrLocation);
                 droneToList.BatteryStatus = rand.Next(MinBattery(distance), 100);
             }
@@ -112,6 +112,9 @@ namespace BL
             lDroneToList.Add(droneToList);
         }
 
+        // מחשבת מרחק בין כל המקומים במערך 
+        // צריכים לשלוח לפוקציה מקומים לפי סדר הטיסה
+        // זא לדוג מטוס שלוקח חבילה נוסע מלקוח ליעד לעמדת טעינה
         /// <summary>
         /// the function gets an array of locations and return the sum of the distance between them
         /// </summary>
@@ -131,6 +134,8 @@ namespace BL
             return distance;
         }
 
+        // מקבלת אוביקט מסוג Location
+        // מחזירה אוביקט מסוג geoCoordinate
         /// <summary>
         /// get an object of location and return an object of GeoCoordinate
         /// </summary>
@@ -141,6 +146,8 @@ namespace BL
             return new GeoCoordinate(location.Latitude, location.Longitude);
         }
 
+        // לשנות שם פונקציה
+        // פונקציה שמחזירה רשימה של כל המקומים של הלקוחות שיש חבילות שסופקו להם
         /// <summary>
         /// returns the locations of people which their parcels had provided them
         /// </summary>
@@ -165,7 +172,11 @@ namespace BL
         }
 
        
-
+        BLL GetItemFromBLById<DL>(int Id)
+        {
+            var wanted = dal.GetFromDalById<DL>(Id);
+            return convertToBL(wanted);
+        }
 
        
 
@@ -212,33 +223,42 @@ namespace BL
             return new DroneInParcel(Id, drone.BatteryStatus, drone.CurrLocation);
         }
 
-        public IEnumerable<BL> GetListFromBL<BL, DL>(Converter<DL, BL> map)
+        // מחזיר רשימה BL
+        //  BLל DAL משתמש בפונקציה שממירה 
+        public IEnumerable<BLL> GetListFromBL<DL>()
         {
-            var bLList = new List<BL>();
-            IEnumerable<DL> dalList = dal.GetListFromDal<DL>();
+            var bLList = new List<BLL>();
+            var dalList = dal.GetListFromDal<Exstensions.matchBLObject[typeof(DL)]>();
             foreach (DL dlItem in dalList)
             {
-                var blItem = map(dlItem);
+                var blItem = ConvertToBL(dlItem);
                 bLList.Add(blItem);
             }
             return bLList;
         }
 
-         public IEnumerable<BLToList> GetListToList<BL>(Converter<BLToList, BL> map)
+
+        // להחליף את שם הפונקציה למשהו ברור פליז
+        // פונקציה גנרית
+        // מקבל סוג אוביקט DL
+        // מחזיר רשימה מסוג מתאים BLToList
+        // משתמש במילון 
+        // ממיר לכל אוביקט עי פונקציה שממירה - ConvertToList
+        public IEnumerable<BLToList> GetListToList<DL>()
         {
-            if (BLToList==Drone)
+            if (typeof( BLToList)==typeof( Drone))
 	        {
                  return lDroneToList;
 	        }
-            var bLList = GetListFromBL<BL>();
-            var listToList = new List<BLToList>();
-
-            foreach (BL blItem in bLList)
+            var dalList = GetListFromDal<Exstensions.matchBLToListObject[typeof(DL)]>();
+            var listToList = new List<Exstensions.matchBLToListObject[typeof(DL)]>();
+            foreach (DL dalItem in dalList)
             {
-                var blItem = map(blItem);
-                listToList.Add(blItem);
+                var blToListItem = ConvertToList(dalItem);
+                listToList.Add(blToListItem);
             }
-            return bLList;
+            return listToList;
         }
+
     }
 }

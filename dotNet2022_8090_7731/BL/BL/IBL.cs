@@ -24,8 +24,6 @@ namespace IBL
         //ChargingDrone
         void ChargingDrone(int IdDrone);
 
-
-
         //void ReleasingDrone(int dId);
         //ReleasingDrone
         void ReleasingDrone(int dId, double timeInCharging);
@@ -40,21 +38,25 @@ namespace IBL
         void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions);
         void UpdatingCustomerDetails(string customerId, string newName, string newPhone);
 
-
         // get lists
-        IEnumerable<StationToList> GetStations();
-        IEnumerable<DroneToList> GetDrones();
-        IEnumerable<CustomerToList> GetCustomers();
-        IEnumerable<ParcelToList> GetParcels();
-        IEnumerable<ParcelToList> GetUnbelongParcels();
-        IEnumerable<StationToList> AvailableSlots();
+        IEnumerable<BLL> GetListFromBL<DL>()
+        IEnumerable<BLToList> GetListToList<DL>()
+
+        // GetListFromBL יש פונקציה גנרית
+        // IEnumerable<StationToList> GetStations();
+        // IEnumerable<DroneToList> GetDrones();
+        // IEnumerable<CustomerToList> GetCustomers();
+        // IEnumerable<ParcelToList> GetParcels();
+        // IEnumerable<ParcelToList> GetUnbelongParcels();
+        // IEnumerable<StationToList> AvailableSlots();
+
+        //  GetItemFromBLById יש פונקציה גנרית 
+        // Station GetStation(int id);
+        // Drone GetDrone(int Id);
+        // Customer GetCustomer(string Id);
+        // Parcel GetParcel(int Id);
 
         // get specific
-        Station GetStation(int id);
-        Drone GetDrone(int Id);
-        Customer GetCustomer(string Id);
-        Parcel GetParcel(int Id);
-
-
+        T GetItemFromBLById<DL>(int Id);
     }
 }
