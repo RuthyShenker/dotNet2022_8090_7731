@@ -1,15 +1,12 @@
-﻿using DalObject
+﻿using DalObject;
 using IBL.BO;
 using IDal.DO;
-using static IBL.BO.Enum.DroneStatus;
-using static IBL.BO.Enum;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static IBL.BO.Enum.WeightCategories;
 using static DalObject.DataSource;
 using System.Device.Location;
 

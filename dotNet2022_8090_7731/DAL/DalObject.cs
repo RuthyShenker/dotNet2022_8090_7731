@@ -131,7 +131,7 @@ namespace DalObject
 
         IEnumerable<T> GetListFromDal<T>() where T:IIdentifiable
         {
-            return (IEnumerable<T>)DataSource.data[typeof(T)];
+            return (IEnumerable<T>)data[typeof(T)];
         }
     }
 }

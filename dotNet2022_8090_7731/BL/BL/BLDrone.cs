@@ -123,10 +123,6 @@ namespace BL
         /// <param name="dId"></param>
         void BelongingParcel(int dId)
         {
-            //if(!dal.ExistsInDroneList(dId))
-            //{
-            //    throw new Exception("this drone doesnt exist in drone list!");
-            //}
             try
             {
                 IDal.DO.Drone drone = dal.GetDrone(dId);
@@ -136,18 +132,18 @@ namespace BL
                     if (droneToList.DStatus == IBL.BO.DroneStatus.Maintenance) throw new Exception("this drone in maintance state and cant be belonging to a parcel!");
                     else throw new Exception("this drone in delivery state and cant be belonging to a parcel!!");
                 }
-               // IEnumerable<IBL.BO.Customer> customerList = GetBList<IBL.BO.Customer, IDal.DO.Customer>(MapCustomer);
-                IEnumerable<IBL.BO.Parcel> ParcelList = GetBList<IBL.BO.Parcel, IDal.DO.Parcel>(MapParcel)
-                    .Where(parcel => parcel.Weight <= drone.MaxWeight);
-                var conditionParcel = ParcelList.OrderByDescending(p => p.MPriority)
-                      .ThenByDescending(p => p.Weight)
-                .ThenBy(p => CalculateDistance(dal.GetFromDalById<IDal.DO.Customer>(p.SenderId).mapToBl(), droneToList.CurrLocation));
+                // IEnumerable<IBL.BO.Customer> customerList = GetBList<IBL.BO.Customer, IDal.DO.Customer>(MapCustomer);
+                IEnumerable<IDal.DO.Parcel> dalParcelList = dal.GetListFromDal<IDal.DO.Parcel>().Where(parcel => parcel.Weight <= drone.MaxWeight);
+                IEnumerable<IBL.BO.Parcel> blParcelList =;
+                var conditionParcel = blParcelList.OrderByDescending(p => p.MPriority)
+                      .ThenByDescending(p => p.Weight).ThenBy(p => CalculateDistance(new Location((dal.GetFromDalById<IDal.DO.Customer>(p.Sender.Id)).Longitude, (dal.GetFromDalById<IDal.DO.Customer>(p.Sender.Id)).Latitude, droneToList.CurrLocation));
                 IBL.BO.Parcel resultParcel= conditionParcel.FirstOrDefault();
-                double way = CalculateDistance(droneToList.CurrLocation, resultParcel.SenderId);
-                if ()
-                {
-
-                }
+                IDal.DO.Customer getter = dal.GetFromDalById<IDal.DO.Customer>(resultParcel.Getter.Id);
+                IDal.DO.Customer sender = dal.GetFromDalById<IDal.DO.Customer>(resultParcel.Sender.Id);
+                double way = CalculateDistance(droneToList.CurrLocation,
+                    new Location((dal.GetFromDalById<IDal.DO.Customer>(resultParcel.Sender.Id)).Longitude, (dal.GetFromDalById<IDal.DO.Customer>(resultParcel.Sender.Id)).Latitude),
+                    new Location(Getter.Longitude,Getter.Latitude)
+               
             }
             catch (DAL.IdNotExistInAListException)
             {
