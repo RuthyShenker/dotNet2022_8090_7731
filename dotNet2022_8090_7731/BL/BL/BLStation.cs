@@ -56,15 +56,6 @@ namespace BL
             return stationsList;
         }
 
-        private Station ConvertToBL(IDal.DO.BaseStation station)
-        {
-            var nStation= new Station();
-            nStation.Id = station.Id;
-            nStation.NameStation = station.NameStation;
-            nStation.SLocation = new Location(station.longitude, station.latitude);
-            nStation.NumAvailablePositions = station.NumberOfChargingPositions - MountOfFullPositions(nStation.SLocation);
-            nStation.LBL_ChargingDrone = ChargingDroneBLList(); 
-        }
 
         // returns a new list of charging drone of BL
         private List<ChargingDrone> ChargingDroneBLList()
@@ -81,6 +72,17 @@ namespace BL
             return chargingDroneBLList;
         }
        
+        private Station ConvertToBL(IDal.DO.BaseStation station)
+        {
+            var nStation= new Station();
+            nStation.Id = station.Id;
+            nStation.NameStation = station.NameStation;
+            nStation.SLocation = new Location(station.longitude, station.latitude);
+            nStation.NumAvailablePositions = station.NumberOfChargingPositions - MountOfFullPositions(nStation.SLocation);
+            nStation.LBL_ChargingDrone = ChargingDroneBLList(); 
+            return nStation;
+        }
+
         private StationToList ConvertToList(IDal.DO.BaseStation station)
         {
             StationToList nStation = new StationToList();

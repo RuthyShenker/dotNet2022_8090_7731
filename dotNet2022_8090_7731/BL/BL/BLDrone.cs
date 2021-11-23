@@ -10,53 +10,37 @@ namespace BL
 {
     partial class BL
     {
-        /// <summary>
-        /// ?????????????
-        /// </summary>
-        /// <returns></returns>
+
+      /*  // יש גנרי
         IEnumerable<DroneToList> GetDrones()
         {
             return lDroneToList;
-        }
-
-        /// <summary>
-        ///  A function that map from IDal.DO.Drone to DroneToList only the common fields.
-        /// </summary>
-        /// 
-        private DroneToList copyCommon(IDal.DO.Drone source)
+        }*/  
+      
+        private Drone ConvertToBL(IBL.BO.Drone drone)                                       
         {
-            DroneToList nDroneToList = new DroneToList();
-            nDroneToList.Id = source.Id;
-            nDroneToList.Model = source.Model;
-            nDroneToList.Weight = source.MaxWeight;
-            return nDroneToList;
+            ParcelInTransfer parcelInTransfer = CalculateParcelInTransfer(drone.Id);
+            var wantedDrone = lDroneToList.FirstOrDefault(droneToList=>droneToList.Id == drone.Id);
+            if (!wantedDrone.Equals(default(DroneToList))
+	        {
+                return new Drone(wantedDrone.Id, wantedDrone.Model, wantedDrone.Weight, wantedDrone.BatteryStatus, 
+                                 parcelInTransfer, wantedDrone.CurrLocation)
+	        }
         }
 
-        /// <summary>
-        /// A function that gets weight of drone
-        /// and distance and returns the minimum battery that 
-        /// the drone needs in order to flight.
-        /// </summary>
-        /// <param name="distance"></param>
-        /// <param name="weight"></param>
-        /// <returns>the minimum battery in double</returns>
-        // weight=0 ערך ברירת מחדל לפונקציה
-        private double MinBattery(double distance,  IBL.BO.WeightCategories weight = 0)
+        private ParcelInTransfer CalculateParcelInTransfer(int droneId)
         {
-            switch (weight)
-            {
-                case IBL.BO.WeightCategories.Light:
-                    return pConsumLight * distance;
-                case IBL.BO.WeightCategories.Medium:
-                    return pConsumMedium * distance;
-                case IBL.BO.WeightCategories.Heavy:
-                    return pConsumHeavy * distance;
-                default:
-                    return pConsumFree * distance;
-            }
+            var parcelsDalList = dal.GetListFromDal<IDal.DO.Parcel>();
+            var dalParcel = parcelsDalList.First(parcel=> parcel.DroneId == droneId);
+            var parcel = convertToBL(dalParcel);
+            Location senderLocation = GetFromBLById<Customer>(parcel.Sender.Id)().CLocation;
+            Location senderLocation  = GetFromBLById<Customer>(parcel.Getter.Id)().CLocation;
+            double distance = CalculateDistance( parcelInTransfer.CollectionLocation, parcelInTransfer.DeliveryLocation );
+            return new ParcelInTransfer( parcel.Id, parcel.PickingUp.HasValue, //  האם זו הכוונה IsInWay?
+                parcel.MPriority,  parcel.Weight, 
+                parcel.Sender, parcel.Getter, );
         }
-
-        /// <summary>
+         /// <summary>
         /// A function that gets an id od drone and sending it to charging.
         /// </summary>
         /// <param name="IdDrone"></param>
@@ -150,6 +134,7 @@ namespace BL
                 throw new BelongingParcelException();
             }
         }
+
         public void AddingDrone(IBL.BO.Drone bLDrone, int StationId)
         {
             if (dal.ExistsInDroneList(bLDrone.Id))
@@ -178,6 +163,7 @@ namespace BL
             IDal.DO.Drone drone = new IDal.DO.Drone() { Id = bLDrone.Id, MaxWeight = bLDrone.Weight, Model = bLDrone.Model };
             dal.AddingDrone(drone);
         }
+
         public void UpdatingDroneName(int droneId, int newModel)
         {
             try
@@ -191,15 +177,6 @@ namespace BL
                 //bl exception-new
                 throw new UpdatingFailedIdNotExistsException("this id doesnt exist in drone list!");
             }
-        }
-
-        private IBL.BO.Customer MapCustomer(IDal.DO.Customer input)
-        {
-            throw new NotImplementedException();
-        }
-        private IBL.BO.Parcel MapParcel(IDal.DO.Parcel input)
-        {
-            throw new NotImplementedException();
         }
     }
 }

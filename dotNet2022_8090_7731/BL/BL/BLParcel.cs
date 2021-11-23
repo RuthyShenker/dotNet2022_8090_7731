@@ -9,6 +9,8 @@ namespace BL
 {
     partial class BL
     {
+
+       /* //יש גנרי
         public IEnumerable<ParcelToList> GetParcels()
         {
             IEnumerable<ParcelToList> bParcelList = new List<ParcelToList>();
@@ -19,7 +21,8 @@ namespace BL
                 bParcelList.Add(MapToList(parcel));
             }
             return bParcelList;
-        }
+        }*/
+
         public void AddingParcel(Parcel newParcel)
         {
             IDal.DO.Parcel parcel = new IDal.DO.Parcel()
@@ -44,24 +47,20 @@ namespace BL
         /// <returns></returns>
         public IEnumerable<ParcelToList> GetUnbelongParcels()
         {
-            IEnumerable<ParcelToList> bParcelList = new List<ParcelToList>();
-            List<IDal.DO.Parcel> dParcelList = GetList<IDal.DO.Parcel>();
-            //IEnumerable<IDal.DO.Parcel> dParcelList = dal.GetParcels();
-            foreach (var parcel in dParcelList)
-            {
-                if (!parcel.belongParcel.HasValue)
-                {
-                    bParcelList.Add(MapToList(parcel));
-                }
-            }
+            var unbelongParcelsList = dal.GetUnbelongParcels();
+            var bParcelList = new List<ParcelToList>();
+            foreach (var parcel in unbelongParcelsList)
+	        {
+               bParcelList.Add(ConvertToList(parcel));
+	        }
             return bParcelList;
         }
 
-        private ParcelToList MapToList(IDal.DO.Parcel parcel)
+        private ParcelToList ConvertToList(IDal.DO.Parcel parcel)
         {
             ParcelToList nParcel = new ParcelToList();
             nParcel.Id = parcel.Id;
-            nParcel.SenderName = Extensions.GetById<Customer>(parcel.SenderId).Name;
+            nParcel.SenderName = dal.GetFromDalById<Customer>(parcel.SenderId).Name;
             nParcel.GetterName = Extensions.GetById<Customer>(parcel.GetterId).Name;
             //nParcel.SenderName = customerDalList.First(customer => customer.Id == parcel.SenderId).Name;
             //nParcel.GetterName = customerDalList.First(customer => customer.Id == parcel.GetterId).Name;
@@ -71,21 +70,13 @@ namespace BL
             return nParcel;
         }
 
-
         private Parcel convertToBL(IDal.DO.Parcel parcel)
         {
-            Parcel nParcel = new Parcel();
-            nParcel.Id = parcel.Id;
-            nParcel.Sender = NewCustomerInParcel(parcel.SenderId);
-            nParcel.Getter = NewCustomerInParcel(parcel.GetterId);
-            nParcel.Weight = parcel.Weight;
-            nParcel.MPriority = parcel.Status;
-            nParcel.DInParcel = NewDroneInParcel(parcel.DroneId);
-            nParcel.MakingParcel =parcel.MakingParcel;
-            nParcel.BelongParcel = parcel.BelongParcel;
-            nParcel.PickingUp = parcel.PickingUp;
-            nParcel.Arrival = parcel.Arrival ;
-            return nParcel;
+            var sender = NewCustomerInParcel(parcel.SenderId);
+            var getter = NewCustomerInParcel(parcel.GetterId);
+            var dInParcel = NewDroneInParcel(parcel.DroneId);
+            return new Parcel( parcel.Id, sender, getter,  parcel.Weight, parcel.Status, dInParcel, parcel.MakingParcel,
+                parcel.BelongParcel, parcel.PickingUp, parcel.Arrival);
         }
 
         private ParcelStatus GetParcelStatus(Parcel parcel)

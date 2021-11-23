@@ -8,90 +8,104 @@ namespace BL
 {
     partial class BL
     {
-        //מה הולך פה עם הbl  וdl
-        public IEnumerable<CustomerToList> GetCustomers()
+      /* // יש גנרי
+       // //מה הולך פה עם הbl  וdl
+       // public IEnumerable<CustomerToList> GetCustomers()
+       // {
+       //     IEnumerable<CustomerToList> bLCustomersList = new List<CustomerToList>();
+       //     IEnumerable<IDal.DO.Customer> dalCustomersList = dal.GetListFromDal<IDal.DO.Customer>();
+       //
+       //     //  לשים לב לשורה הזו אם משנים לגנרי
+       //     IEnumerable< IDal.DO.Parcel> dalParcelsList = dal.GetListFromDal<IDal.DO.Parcel>();
+       //
+       //     foreach (var customer in dalCustomersList)
+       //     {
+       //         bLCustomersList.Add(MapToList(customer, dalParcelsList));
+       //     }
+       //     return bLCustomersList.;
+       // }
+
+        // */
+
+       /*  לבדוק אם צריך לאתחל שדות ל-0 
+        SentSupplied, SentNotSupplied, Got, InWayToCustomer*/
+        private CustomerToList ConvertToList(IDal.DO.Customer customer)
         {
-            IEnumerable<CustomerToList> bLCustomersList = new List<CustomerToList>();
-            IEnumerable<IDal.DO.Customer> dalCustomersList = dal.GetListFromDal<IDal.DO.Customer>();
-
-            //  לשים לב לשורה הזו אם משנים לגנרי
-            IEnumerable< IDal.DO.Parcel> dalParcelsList = dal.GetListFromDal<IDal.DO.Parcel>();
-
-            foreach (var customer in dalCustomersList)
-            {
-                bLCustomersList.Add(MapToList(customer, dalParcelsList));
-            }
-            return bLCustomersList.;
-        }
-
-        private CustomerToList ConvertToList(Customer customer)
-        {
-            CustomerToList CustomerToList = new CustomerToList();
-            CustomerToList.Id = customer.Id;
-            CustomerToList.Name = customer.Name;
-            CustomerToList.Phone = customer.Phone;
+            CustomerToList nCustomer = new CustomerToList(customer.Id, customer.Name,  customer.Phone);
             var dParcelslist = dal.GetListFromDal<IDal.DO.Parcel>();
             foreach (var parcel in dParcelslist)
             {
-                if (parcel.SenderId == CustomerToList.Id)
+                if (parcel.SenderId == nCustomer.Id)
                 {
                     switch (GetParcelStatus(parcel))
                     {
-                        // לסדר אין לי תרגום ל supplied
                         case ParcelStatus.InDestination:
-                            ++CustomerToList.Got;
+                            ++nCustomer.SentSupplied;
+                            default
+                            ++nCustomer.SentNotSupplied;
                             break;
-                        case ParcelStatus.collected:
-                            ++CustomerToList.SentSupplied;
-                            break;
-                        case ParcelStatus.belonged:
-                            ++CustomerToList.InWayToCustomer;
-                            break;
-                        case ParcelStatus.made:
-                            ++CustomerToList.SentNotSupplied;
+                    }
+                else if (parcel.GetterId == nCustomer.Id)
+                {
+                    switch (GetParcelStatus(parcel))
+                    {
+                        case ParcelStatus.InDestination:
+                            ++nCustomer.Got;
+                        default
+                            ++nCustomer.InWayToCustomer;
                             break;
                     }
                 }
             }
-            return CustomerToList;
+            return nCustomer;
         }
         
         private Customer ConvertToBL(IDal.DO.Customer customer)
         {
-            Customer customer= new Customer();
-            customer.Id = customer.Id;
-            customer.Name = customer.Name;
-            customer.Phone = customer.Phone;
-            var parcelsFromCustomer = new List<ParcelInCustomer>();
-            var parcelsForCustomer = new List<ParcelInCustomer>();
+            var nLocation = new Location(customer.Longitude, customer.Latitude);
+            Customer nCustomer = new Customer(customer.Id, customer.Name, customer.Phone, nLocation);
             ParcelInCustomer parcelInCustomer;
             var dParcelslist = dal.GetListFromDal<IDal.DO.Parcel>();
             foreach (var parcel in dParcelslist)
             {
-                if (parcel.SenderId == customer.Id)
+                if (parcel.SenderId == nCustomer.Id)
                 {
-                    parcelInCustomer=CopyCommon(parcel,parcel.GetterId);
-                    parcelsFromCustomer.Add(parcelInCustomer);
+                    parcelInCustomer = CopyCommon(parcel, parcel.GetterId);
+                    nCustomer.lFromCustomer.Add(parcelInCustomer);
                 }
-                else if (parcel.GetterId == customer.Id)
+                else if (parcel.GetterId == nCustomer.Id)
 	            {
-                    parcelInCustomer=CopyCommon(parcel,parcel.SenderId);
-                    parcelsForCustomer.Add(parcelInCustomer);
+                    parcelInCustomer = CopyCommon(parcel, parcel.SenderId);
+                    nCustomer.lForCustomer.Add(parcelInCustomer);
 	            }
-             }   
-            return CustomerToList;
+            }   
+            return nCustomer;
         }
 
         /// coppy the commmon feilds from parcel to parcel inCustomer and return it
         private ParcelInCustomer CoppyCommon(IDal.DO.Parcel parcel,int Id)
         {
-            var parcelInCustomer = new ParcelInCustomer();
-            parcelInCustomer.Id = parcel.Id;
-            parcelInCustomer.Weight = parcel.Weight;
-            parcelInCustomer.Priority = parcel.MPriority;
-            parcelInCustomer.PStatus = GetParcelStatus(parcel);
-            parcelInCustomer.OnTheOtherHand = NewCustomerInParcel(Id);
-            return parcelInCustomer;
+            var PStatus = GetParcelStatus(parcel);
+            var OnTheOtherHand = NewCustomerInParcel(Id);
+            return new ParcelInCustomer(parcel.Id, parcel.Weight, parcel.MPriority, PStatus, OnTheOtherHand );
+        }
+
+         // מחזירה את רשימת הלקוחות שיש חבילות שסופקו להם
+        private IList<Customer> CustomersWithProvidedParcels()
+        {
+            IDal.DO.Customer customer;
+            var wantedCustomersList = new List<Customer>():
+            var customersDalList = dal.GetListFromDal<IDal.DO.Customer>();
+            var parcelsDalList = dal.GetListFromDal<IDal.DO.Parcel>();
+            foreach (var parcel in parcelsDalList)
+            {
+                if (parcel.Arrival.HasValue)
+                {
+                    customer = customerDalList.First(customer => customer.Id == parcel.GetterId);
+                    wantedCustomersList.Add(customer);
+                }
+            }
+            return wantedCustomersList;
         }
 
         public void AddingCustomer(Customer bLCustomer)
