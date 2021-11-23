@@ -141,7 +141,7 @@ namespace ConsoleUI_BL
         /// </summary>
         /// <param name="input"></param>
         /// <param name="max"></param>
-        public static void InputValiDoubleNum(out double input, int max)
+        public static void InputValiDoubleNumWithRange(out double input, int max)
         {
             bool check = double.TryParse(Console.ReadLine(), out input);
             while (!check || input < 0 || input > max)
@@ -150,7 +150,14 @@ namespace ConsoleUI_BL
                 check = double.TryParse(Console.ReadLine(), out input);
             }
         }
-
+        public static double InputValiDoubleNum()
+        {
+            double num;
+            while (!double.TryParse(Console.ReadLine(), out num))
+            {
+                Console.WriteLine("Invalid input!, please enter again");
+            }
+        }
 
     }
 }

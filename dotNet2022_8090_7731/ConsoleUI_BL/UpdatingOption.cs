@@ -83,7 +83,7 @@ namespace ConsoleUI_BL
         {
             droneId = GettingId("Drone");
             Console.WriteLine("Enter the time in charging of the drone: ");
-            timeInCharging = double.Parse(Console.ReadLine());
+            timeInCharging = CheckValids.InputValiDoubleNum();
         }
         /// <summary>
         /// A function that Get Details Of new Customer and enters it to the data base
