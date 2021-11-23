@@ -57,6 +57,6 @@ namespace IBL
         // Parcel GetParcel(int Id);
 
         // get specific
-        T GetItemFromBLById<DL>(int Id);
+        T GetFromBLById<BL>(int Id);
     }
 }

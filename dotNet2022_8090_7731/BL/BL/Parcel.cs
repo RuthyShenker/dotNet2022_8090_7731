@@ -17,7 +17,11 @@ namespace IBL.BO
             Weight = weight;
             MPriority = mPriority;
             DInParcel = dInParcel;
-           
+            MakingParcel = new DateTime.Now();
+            // לעשות default באמת?
+            BelongParcel = default(DateTime);
+            PickingUp =default(DateTime);
+            Arrival = default(DateTime);
         }
 
         public int Id { get; init; }

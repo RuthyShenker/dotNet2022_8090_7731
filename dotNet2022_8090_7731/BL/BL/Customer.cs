@@ -15,6 +15,8 @@ namespace IBL.BO
             Name = name;
             Phone = phone;
             CLocation = cLocation;
+            lFromCustomer = new List<ParcelInCustomer>();
+            lForCustomer = new List<ParcelInCustomer>();
         }
         public int Id { get; init; }
         public string Name { get; set; }
