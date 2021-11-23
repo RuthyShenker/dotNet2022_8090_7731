@@ -59,6 +59,7 @@ namespace BL
                 if (lDroneToList.Count != 0 && dal.IsExistInList(lDroneToList, drone => drone.Id == parcel.DroneId))
                 {
                    lDroneToList.First(drone => drone.Id == parcel.DroneId).NumOfParcel++;
+                    return; 
                 }
                 else
                 {
