@@ -19,7 +19,7 @@ namespace IBL.BO
             PInTransfer = pInTransfer;
             CurrLocation = currLocation;
         }
-        int Id { get; init; }
+        public int Id { get; init; }
         string Model { get; set; }
         WeightCategories Weight { get; set; }
         float BatteryStatus { get; set; }

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IBL.BO;
-using IDal.DO;
 
 namespace BL
 {
@@ -31,7 +30,7 @@ namespace BL
             {
                 throw new Exception("this id doesnt exist in base station list!");
             }
-            BaseStation baseStation = dal.GetBaseStation(stationId);
+            var baseStation = dal.GetFromDalById<IDal.DO.BaseStation>(stationId);
             if (!string.IsNullOrEmpty(stationName))
             {
                 baseStation.NameStation = stationName;
@@ -42,7 +41,13 @@ namespace BL
             }
             dal.UpdateBaseStation(stationId, baseStation);
         }
-
+        private Station ConvertToBL(IDal.DO.BaseStation station)
+        {
+            var nLocation = new Location(station.Longitude, station.Latitude);
+            var numAvailablePositions = station.NumberOfChargingPositions - MountOfFullPositions(nLocation);
+            var chargingDroneBList = ChargingDroneBLList();
+            return new Station(station.Id, station.NameStation, nLocation, numAvailablePositions, chargingDroneBList);
+        }
         public IEnumerable<Station> AvailableSlots()
         {
             IEnumerable<StationToList> stationsList = GetStations();
@@ -72,16 +77,13 @@ namespace BL
             return chargingDroneBLList;
         }
        
-        private Station ConvertToBL(IDal.DO.BaseStation station)
-        {
-            var nStation= new Station();
-            nStation.Id = station.Id;
-            nStation.NameStation = station.NameStation;
-            nStation.SLocation = new Location(station.longitude, station.latitude);
-            nStation.NumAvailablePositions = station.NumberOfChargingPositions - MountOfFullPositions(nStation.SLocation);
-            nStation.LBL_ChargingDrone = ChargingDroneBLList(); 
-            return nStation;
-        }
+        //private Station ConvertToBL(IDal.DO.BaseStation station)
+        //{
+        //    var nLocation = new Location(station.Longitude, station.Latitude);
+        //    var numAvailablePositions = station.NumberOfChargingPositions - MountOfFullPositions(nLocation);
+        //    var chargingDroneBList = ChargingDroneBLList(); 
+        //    return new Station(station.Id, station.NameStation, nLocation, numAvailablePositions, chargingDroneBList);
+        //}
 
         private StationToList ConvertToList(IDal.DO.BaseStation station)
         {
@@ -111,7 +113,7 @@ namespace BL
             return location1.Longitude == location2.Longitude && location1.Latitude == location2.Latitude;
         }
         
-        private IDal.DO.BaseStation closestStation(Location location)
+        private Station ClosestStation(Location location)
         {
             var stationDalList = dal.GetListFromDal<IDal.DO.BaseStation>();
             var cCoord = new geoCoordinate(location);
@@ -128,7 +130,7 @@ namespace BL
                     index = i;
                 }
             }
-            return stationDalList.ElementAt(index);
+            return ConvertToBL( stationDalList.ElementAt(index));
         }
 
         public void AddingBaseStation(Station bLStation)

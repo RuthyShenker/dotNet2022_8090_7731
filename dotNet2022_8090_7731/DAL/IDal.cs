@@ -38,7 +38,10 @@ namespace IDal
         IEnumerable<Parcel> GetUnbelongParcels();
         IEnumerable<BaseStation> AvailableSlots();
 
-        IIdentifiable GetFromDalById<T>(int Id) where T : IIdentifiable;
+        T GetFromDalById<T>(int Id) where T : IIdentifiable;
+        T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IIdentifiable;
+
+        bool IsExistInList<T>(List<T> list, Predicate<T> predicate);
 
         IEnumerable<T> GetListFromDal<T>();
        

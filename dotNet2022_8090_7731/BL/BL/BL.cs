@@ -1,6 +1,5 @@
 ﻿using DalObject;
 using IBL.BO;
-using IDal.DO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -35,7 +34,7 @@ namespace BL
             lDroneToList = new List<DroneToList>();
             UpdatePConsumption();
             DroneToList droneToList;
-            foreach (var drone in dal.GetDrones())
+            foreach (var drone in dal.GetListFromDal<IDal.DO.Drone>())
             {
                 lDroneToList.Add(ConvertToList(drone));
             }
@@ -54,13 +53,17 @@ namespace BL
         private DroneToList ConvertToList(IDal.DO.Drone drone)
         {
             var nDrone = copyCommon(drone);
-            var parcel = parcelList.FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
+            var parcel = dal.GetListFromDal<IDal.DO.Parcel>().FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
             if (!parcel.Equals(default(IDal.DO.Parcel)))
             {
-                // first שורות מעל אותו דבר עדיף עם  
-                parcel = parcelList.Where(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
-                nDrone.NumOfParcel = parcel.Length;
-                return CalculateDroneInDelivery(nDrone);
+                if (lDroneToList.Count != 0 && dal.IsExistInList(lDroneToList, drone => drone.Id == parcel.DroneId))
+                {
+                   lDroneToList.First(drone => drone.Id == parcel.DroneId).NumOfParcel++;
+                }
+                else
+                {
+                    return CalculateDroneInDelivery(nDrone, parcel);
+                }
             }
             else // בעצם זהו הcatch של where
             {
@@ -68,6 +71,8 @@ namespace BL
                 return CalculateUnDeliveryingDrone(nDrone);
             }
         }
+
+
 
         /// <summary>
         ///  build new DroneToList object and copy from IDal.DO.Drone the common fields.
@@ -81,15 +86,14 @@ namespace BL
             return nDroneToList;
         }
 
-        private DroneToList CalculateDroneInDelivery(DroneToList nDrone)
+        private DroneToList CalculateDroneInDelivery(DroneToList nDrone, IDal.DO.Parcel parcel)
         {
-             nDrone.DStatus = Delivery;
+            nDrone.DStatus = DroneStatus.Delivery;
             //location
-            var sender = customerDalList.First(customer => customer.Id == parcel.SenderId);
+            var sender = dal.GetFromDalByCondition<IDal.DO.Customer>(customer => customer.Id == parcel.SenderId);
             if (parcel.BelongParcel.HasValue && !parcel.PickingUp.HasValue)
             {
-                var baseStation = closestStation(new Location(sender.Longitude, sender.Latitude));
-                nDrone.CurrLocation = new Location(baseStation.Longitude, baseStation.Latitude);
+                nDrone.CurrLocation = ClosestStation(new Location(sender.Longitude, sender.Latitude)).SLocation;
             }
             else
             {
@@ -98,33 +102,37 @@ namespace BL
                 //droneToList.CurrLocation = bL_Customer.CLocation;
             }
             // battery Status
-            var destination = customerDalList.First(customer => customer.Id == parcel.GetterId);
-            Location closetStation = closestStation(destination, stationDalList);
-            double distance = CalculateDistance(closetStation, droneToList.CurrLocation, destination);
+            var getter = dal.GetFromDalByCondition<IDal.DO.Customer>(customer => customer.Id == parcel.GetterId);
+            Location destination = new Location(getter.Longitude, getter.Latitude);
+            Location closestStation = ClosestStation(destination).SLocation;
+            double distance = CalculateDistance(nDrone.CurrLocation, destination, closestStation);
             nDrone.BatteryStatus = Rand.Next(MinBattery(distance, parcel.Weight), 100);
+            nDrone.NumOfParcel++;
             return nDrone;
         }
 
         private DroneToList CalculateUnDeliveryingDrone(DroneToList nDrone)
         {
-            nDrone.DStatus = (DroneStatus)DataSource.Rand.Next((int)Free, (int)Maintenance);
-            if (nDrone.DStatus == Maintance)
+            nDrone.DStatus = (DroneStatus)DataSource.Rand.Next((int)DroneStatus.Free, (int)DroneStatus.Maintenance);
+            if (nDrone.DStatus == DroneStatus.Maintenance)
             {
-                var stationDalList = dal.GetListFromDal<IDal.Do.BaseStation>();
-                BaseStation station = stationDalList.ElementAt(DataSource.Rand.Next(0, stationDalList.Count()));
+                var stationDalList = dal.GetListFromDal<IDal.DO.BaseStation>();
+                var station = stationDalList.ElementAt(DataSource.Rand.Next(0, stationDalList.Count()));
                 nDrone.CurrLocation = new Location(station.Longitude, station.Latitude);
                 nDrone.BatteryStatus = DataSource.Rand.Next(21);
             }
             else /*if (droneToList.DStatus == Free)*/
             {
                 var customersList = CustomersWithProvidedParcels();
-                droneToList.CurrLocation = customersList[DataSource.Rand.Next(customersList.Count())].CLocation;
-                var closetStation = closestStation(nDrone.CurrLocation);
-                double distance = CalculateDistance(closetStation, nDrone.CurrLocation);
-                nDrone.BatteryStatus = rand.Next(MinBattery(distance), 100);
+                nDrone.CurrLocation = customersList[DataSource.Rand.Next(customersList.Count())].CLocation;
+                var closetStation = ClosestStation(nDrone.CurrLocation);
+                double distance = CalculateDistance(closetStation.SLocation, nDrone.CurrLocation);
+                nDrone.BatteryStatus = Rand.NextDouble() * (100 - MinBattery(distance)) + MinBattery(distance);
             }
             return nDrone;
         }
+
+
         /// <summary>
         /// A function that gets weight of drone
         /// and distance and returns the minimum battery that 
@@ -134,7 +142,7 @@ namespace BL
         /// <param name="weight"></param>
         /// <returns>the minimum battery in double</returns>
         // weight=0 ערך ברירת מחדל לפונקציה
-        private double MinBattery(double distance,  IBL.BO.WeightCategories weight = 0)
+        private double MinBattery(double distance, IBL.BO.WeightCategories weight = 0)
         {
             switch (weight)
             {
@@ -184,55 +192,61 @@ namespace BL
 
         private CustomerInParcel NewCustomerInParcel(int Id)
         {
-            return new CustomerInParcel(Id, GetFromDalById<Customer>(Id).Name );
+            return new CustomerInParcel(Id, dal.GetFromDalById<IDal.DO.Customer>(Id).Name);
         }
 
         private DroneInParcel NewDroneInParcel(int Id)
         {
-            var drone = lDroneToList.FirstOrDefault(drone=>drone.Id==Id);
+            var drone = lDroneToList.FirstOrDefault(drone => drone.Id == Id);
             return new DroneInParcel(Id, drone.BatteryStatus, drone.CurrLocation);
         }
 
-        BLL GetFromBLById<BL>(int Id)
-        {
-            var wanted = dal.GetFromDalById<DL>(Id);
-            return convertToBL(wanted);
-        }
 
-        // מחזיר רשימה BL
-        //  BLל DAL משתמש בפונקציה שממירה 
-        public IEnumerable<BLL> GetListFromBL<DL>()
-        {
-            var bLList = new List<BLL>();
-            var dalList = dal.GetListFromDal<Exstensions.matchBLObject[typeof(DL)]>();
-            foreach (DL dlItem in dalList)
-            {
-                var blItem = ConvertToBL(dlItem);
-                bLList.Add(blItem);
-            }
-            return bLList;
-        }
 
+
+        //// לא למחוק 
+        ////לא עובד  
+        //public BL GetBLById<BL,DL>(int Id)where DL:IDal.DO.IIdentifiable
+        //{
+        //    var wanted = dal.GetFromDalById<DL>(Id);
+        //    return convertToBL(wanted);
+        //}
+
+        // לא למחוק
+        //// לא עובד
+        //// מחזיר רשימה BL
+        ////  BLל DAL משתמש בפונקציה שממירה 
+        //public IEnumerable<BL> GetListOfBL<DL, BL>()
+        //{
+        //    var bLList = new List<BL>();
+        //    var dalList = dal.GetListFromDal<DL>();
+        //    foreach (DL dlItem in dalList)
+        //    {
+        //        var blItem = ConvertToBL(dlItem);
+        //        bLList.Add(blItem);
+        //    }
+        //    return bLList;
+        //}
         // להחליף את שם הפונקציה למשהו ברור פליז
         // פונקציה גנרית
         // מקבל סוג אוביקט DL
         // מחזיר רשימה מסוג מתאים BLToList
         // משתמש במילון 
         // ממיר לכל אוביקט עי פונקציה שממירה - ConvertToList
-        public IEnumerable<BLToList> GetListToList<DL>()
-        {
-            if (typeof( BLToList)==typeof( Drone))
-	        {
-                 return lDroneToList;
-	        }
-            var dalList = GetListFromDal<Exstensions.matchBLToListObject[typeof(DL)]>();
-            var listToList = new List<Exstensions.matchBLToListObject[typeof(DL)]>();
-            foreach (DL dalItem in dalList)
-            {
-                var blToListItem = ConvertToList(dalItem);
-                listToList.Add(blToListItem);
-            }
-            return listToList;
-        }
+        //public IEnumerable<BLToList> GetListToList<DL, BLToList>()
+        //{
+        //    if (typeof( BLToList)==typeof( Drone))
+        // {
+        //         return lDroneToList;
+        // }
+        //    var dalList = dal.GetListFromDal<DL>();
+        //    var listToList = new List<DL>();
+        //    foreach (DL dalItem in dalList)
+        //    {
+        //        var blToListItem = ConvertToList(dalItem);
+        //        listToList.Add(blToListItem);
+        //    }
+        //    return listToList;
+        //}
     }
 }

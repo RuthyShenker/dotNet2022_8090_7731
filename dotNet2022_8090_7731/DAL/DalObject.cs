@@ -123,15 +123,25 @@ namespace DalObject
        {
             ChargingDroneList.Add(new ChargingDrone(dId,sId));
        }
-        T GetFromDalById<T>(int Id) where T : IIdentifiable
+
+        public T GetFromDalById<T>(int Id) where T : IIdentifiable
         {
-            return (T)((List<IIdentifiable>)DataSource.data[typeof(T)]).FirstOrDefault(item => item.Id == Id);
+            return ((List<T>)data[typeof(T)]).FirstOrDefault(item => item.Id == Id);
         }
 
-
+        public T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IIdentifiable
+        {
+            return ((List<T>)data[typeof(T)]).Find(predicate);
+        }
+       
         IEnumerable<T> GetListFromDal<T>() where T:IIdentifiable
         {
             return (IEnumerable<T>)data[typeof(T)];
+        }
+
+        public bool IsExistInList<T>(List<T> list, Predicate<T> predicate)
+        {
+            return list.Find(predicate).Equals(default(T));
         }
     }
 }

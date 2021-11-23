@@ -39,9 +39,11 @@ namespace IBL
         void UpdatingCustomerDetails(string customerId, string newName, string newPhone);
 
         // get lists
-        IEnumerable<BLL> GetListFromBL<DL>()
-        IEnumerable<BLToList> GetListToList<DL>()
+        IEnumerable<BL> GetListOfBL<DL, BL>();
+        IEnumerable<BLToList> GetListToList<DL, BLToList>();
 
+        // get specific
+        BL GetBLById<BL, DL>(int Id);
         // GetListFromBL יש פונקציה גנרית
         // IEnumerable<StationToList> GetStations();
         // IEnumerable<DroneToList> GetDrones();
@@ -56,7 +58,5 @@ namespace IBL
         // Customer GetCustomer(string Id);
         // Parcel GetParcel(int Id);
 
-        // get specific
-        T GetFromBLById<BL>(int Id);
     }
 }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDal.DO;
 
 namespace BL
 {
@@ -17,16 +16,16 @@ namespace BL
             return lDroneToList;
         }*/  
       
-        private Drone ConvertToBL(IBL.BO.Drone drone)                                       
-        {
-            ParcelInTransfer parcelInTransfer = CalculateParcelInTransfer(drone.Id);
-            var wantedDrone = lDroneToList.FirstOrDefault(droneToList=>droneToList.Id == drone.Id);
-            if (!wantedDrone.Equals(default(DroneToList))
-	        {
-                return new Drone(wantedDrone.Id, wantedDrone.Model, wantedDrone.Weight, wantedDrone.BatteryStatus, 
-                                 parcelInTransfer, wantedDrone.CurrLocation)
-	        }
-        }
+        //private Drone ConvertToBL(IDal.DO.Drone drone)                                       
+        //{
+        //    ParcelInTransfer parcelInTransfer = CalculateParcelInTransfer(drone.Id);
+        //    var wantedDrone = lDroneToList.FirstOrDefault(droneToList=>droneToList.Id == drone.Id);
+        //    if (!wantedDrone.Equals(default(DroneToList))
+	       // {
+        //        return new Drone(wantedDrone.Id, wantedDrone.Model, wantedDrone.Weight, wantedDrone.BatteryStatus, 
+        //                         parcelInTransfer, wantedDrone.CurrLocation)
+	       // }
+        //}
 
         private ParcelInTransfer CalculateParcelInTransfer(int droneId)
         {
@@ -57,12 +56,13 @@ namespace BL
                     throw new Exception("this drone in maintenance,it cant go to charge");
                 throw new Exception("this drone in delivery ,it cant go to charge");
             }
-            Station closetBaseStation=closestStation(drone.CurrLocation);
-            if (closetBaseStation.NumAvailablePositions==0)
+            var closetdStation = closestStation(drone.CurrLocation);
+            Station closebdStation = ConvertToBL( closetdStation);
+            if (closebdStation.NumAvailablePositions==0)
             {
                 throw new Exception("The closet Station doesnt have available positions!");
             }
-           double distanceFromDroneToStation= CalculateDistance( closetBaseStation.SLocation,drone.CurrLocation);
+           double distanceFromDroneToStation= CalculateDistance(closebdStation.SLocation,drone.CurrLocation);
            double minBattery = MinBattery(distanceFromDroneToStation, drone.Weight);
             if (drone.BatteryStatus-minBattery<0)
             {
@@ -70,12 +70,12 @@ namespace BL
             }
             
             drone.BatteryStatus = minBattery;
-            drone.CurrLocation = closetBaseStation.SLocation;
+            drone.CurrLocation = closebdStation.SLocation;
             drone.DStatus = IBL.BO.DroneStatus.Maintenance;
 
             //--closetBaseStation.NumAvailablePositions;
             //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
-            dal.AddDroneToCharge(drone.Id,closetBaseStation.Id);
+            dal.AddDroneToCharge(drone.Id, closebdStation.Id);
 
         }
 
@@ -135,9 +135,9 @@ namespace BL
             }
         }
 
-        public void AddingDrone(IBL.BO.Drone bLDrone, int StationId)
+        public void AddingDrone(Drone bLDrone, int StationId)
         {
-            if (dal.ExistsInDroneList(bLDrone.Id))
+            if (dal.ExistsInDroneList(bLDrone.Id)==0)
             {
                 throw new Exception("The id is already exists in the Drone list!");
             }
