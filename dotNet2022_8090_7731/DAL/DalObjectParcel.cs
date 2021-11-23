@@ -13,7 +13,7 @@ namespace DalObject
         /// A function that gets a Parcel and adds it to the list of Parcels.
         /// </summary>
         /// <param name="parcel"></param>
-        public void GettingParcelForDelivery(Parcel parcel)
+        public void AddingParcel(Parcel parcel)
         {
             parcel.ParcelId =
             ParceList.Add(parcel);

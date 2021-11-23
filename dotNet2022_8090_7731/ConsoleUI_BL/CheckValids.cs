@@ -11,6 +11,49 @@ namespace ConsoleUI_BL
     /// </summary>
     public class CheckValids
     {
+        public static int InputNumberValidity(string obj)
+        {
+            int number;
+            while(!int.TryParse(Console.ReadLine(),out number))
+            {
+                Console.WriteLine(obj+" is not valid ,please enter again");
+            }
+            return number;
+        }
+        public static string InputNameValidity()
+        { 
+            string name=null;
+            name = Console.ReadLine();
+            while (!OnlyChars(Console.ReadLine()))
+            {
+                Console.WriteLine("name is not valid ,please enter again");
+            }
+            return name;
+        }
+        private static bool OnlyChars(string name)
+        {
+
+            char ch = default(char);
+            //i dont check length because in every country the length is different.
+            for (int i = 0; i < name.Length; i++)
+            {
+                ch = name[i];
+                if (!char.IsLetter(ch))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public static double InputDoubleValidity(string obj)
+        {
+            double number = 0;
+            while (!double.TryParse(Console.ReadLine(), out number))
+            {
+                Console.WriteLine(obj+" is not valid ,please enter again");
+            }
+            return number;
+        }
         /// <summary>
         /// A function that gets range and requests for input
         /// and checks if the input is valid and in the range if not request again
@@ -27,19 +70,53 @@ namespace ConsoleUI_BL
                 check = int.TryParse(Console.ReadLine(), out input);
             }
         }
+        public static string InputPhoneValidity()
+        {
+            string phone = null;
+            while (!OnlyNumbers(Console.ReadLine()))
+            {
+                Console.WriteLine("The phone is not valid , please enter again ");
+            }
+            return phone;
+        }
+        private static bool OnlyNumbers(string number)
+        {
+            char ch = default(char);
+            //i dont check length because in every country the length is different.
+            for (int i = 0; i < number.Length; i++)
+            {
+                ch = number[i];
+                if(!char.IsDigit(ch))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
         /// <summary>
         /// A function that gets an input and checks if it is in the range of 
         /// WeightCategories if it is not it asks for input again.
         /// </summary>
         /// <param name="input"></param>
-        public static void InputValidWeightCategories(out int input)
+        public static int InputValidWeightCategories()
         {
-            bool check = int.TryParse(Console.ReadLine(), out input);
-            while (!check || input < 0 || input > Enum.GetNames(typeof(WeightCategories)).Length)
+            int input = int.Parse(Console.ReadLine());
+            while (!int.TryParse(Console.ReadLine(), out input) || input < 0 || input >= typeof(IBL.BO.WeightCategories).GetFields().Length)
             {
-                Console.WriteLine("Invalid input!, please enter again");
-                check = int.TryParse(Console.ReadLine(), out input);
+                Console.WriteLine("Weight is not valid !, please enter again");
             }
+            return input;
+        }
+        public static int InputValidPriority()
+        {
+            int input = int.Parse(Console.ReadLine());
+            while (!int.TryParse(Console.ReadLine(), out input) || input < 0 || input >= typeof(IBL.BO.Priority).GetFields().Length)
+            {
+                Console.WriteLine("Priority is not valid !, please enter again");
+            }
+            return input;
         }
 
         /// <summary>

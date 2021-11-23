@@ -9,7 +9,7 @@ namespace IBL.BO
 {
     public class Drone
     {
-         public Drone(int id, int model,WeightCategories weight, float batteryStatus, DroneStatus droneStatus, ParcelInTransfer pInTransfer, Location currLocation)
+         public Drone(int id, string model,WeightCategories weight, float batteryStatus, DroneStatus droneStatus, ParcelInTransfer pInTransfer, Location currLocation)
         {
             Id = id;
             Model = model;
@@ -20,12 +20,12 @@ namespace IBL.BO
             CurrLocation = currLocation;
         }
         public int Id { get; init; }
-        string Model { get; set; }
-        WeightCategories Weight { get; set; }
-        float BatteryStatus { get; set; }
-        DroneStatus DroneStatus { get; set; }
-        ParcelInTransfer PInTransfer { get; set; }
-        Location CurrLocation { get; set; } 
+        public string Model { get; set; }
+        public WeightCategories Weight { get; set; }
+        public float BatteryStatus { get; set; }
+        public DroneStatus DroneStatus { get; set; }
+        public ParcelInTransfer PInTransfer { get; set; }
+        public Location CurrLocation { get; set; } 
        
     }
 }

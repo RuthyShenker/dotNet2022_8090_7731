@@ -25,20 +25,21 @@ namespace BL
 
         public void AddingParcel(Parcel newParcel)
         {
+            newParcel.MakingParcel = DateTime.Now;
             IDal.DO.Parcel parcel = new IDal.DO.Parcel()
-            {
+            {   Id =dal.PickingUpAndReturnIndexParcel(),
                 SenderId = newParcel.Sender.Id,
                 GetterId = newParcel.Getter.Id,
                 Weight = newParcel.Weight,
                 Status = (IDal.DO.UrgencyStatuses)newParcel.MPriority,
                 DroneId = 0,
                 MakingParcel = DateTime.Now,
-                BelongParcel = null,
+                BelongParcel =null,
                 PickingUp = null,
                 Arrival = null
             };
 
-            dal.GettingParcelForDelivery(parcel);
+            dal.AddingParcel(parcel);
         }
 
         /// <summary>

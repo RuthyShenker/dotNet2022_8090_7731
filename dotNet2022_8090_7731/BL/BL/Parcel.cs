@@ -11,14 +11,14 @@ namespace IBL.BO
 
         public Parcel(int senderId, int getterId, WeightCategories weight, Priority mPriority, DroneInParcel dInParcel)
         {
+          
             Sender.Id = senderId;
             Getter.Id = getterId;
             ///WHATS ABOUT THEIR NAME
             Weight = weight;
             MPriority = mPriority;
             DInParcel = dInParcel;
-            MakingParcel = new DateTime.Now();
-            // לעשות default באמת?
+            MakingParcel = default(DateTime);
             BelongParcel = default(DateTime);
             PickingUp =default(DateTime);
             Arrival = default(DateTime);

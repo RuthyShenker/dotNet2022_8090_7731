@@ -15,7 +15,7 @@ namespace IDal
         void AddingBaseStation(BaseStation baseStation);
         void AddingDrone(Drone drone);
         void AddingCustomer(Customer customer);
-        void GettingParcelForDelivery(Parcel parcel);
+        void AddingParcel(Parcel parcel);
         void BelongingParcel(int pId);
         void PickingUpParcel(int Id);
         void DeliveryPackage(int Id);
@@ -27,7 +27,7 @@ namespace IDal
         //Drone GetDrone(int Id);
         //Customer GetCustomer(string Id);
         //Parcel GetParcel(int Id);
-
+        public int PickingUpAndReturnIndexParcel();
 
         // GetListFromDal
         //IEnumerable<BaseStation> GetBaseStations();
