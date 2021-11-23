@@ -43,7 +43,7 @@ namespace BL
         /// A function that gets an id od drone and sending it to charging.
         /// </summary>
         /// <param name="IdDrone"></param>
-        void SendingDroneToCharge(int IdDrone)
+        public void SendingDroneToCharge(int IdDrone)
         {
             if(!dal.ExistsInDroneList(IdDrone))
             {
@@ -84,7 +84,7 @@ namespace BL
         /// </summary>
         /// <param name="dId"></param>
         /// <param name="timeInCharging"></param>
-        void ReleasingDrone(int dId, double timeInCharging)
+        public void ReleasingDrone(int dId, double timeInCharging)
         {
             if(!dal.ExistsInDroneList(dId))
             {
@@ -105,7 +105,7 @@ namespace BL
         /// A function that gets an id of drone and belonging to it a parcel.
         /// </summary>
         /// <param name="dId"></param>
-        void BelongingParcel(int dId)
+        public void BelongingParcel(int dId)
         {
             try
             {
