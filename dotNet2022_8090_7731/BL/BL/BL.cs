@@ -212,6 +212,23 @@ namespace BL
         //    var wanted = dal.GetFromDalById<DL>(Id);
         //    return convertToBL(wanted);
         //}
+        // מחזיר רשימה BL
+        //  BLל DAL משתמש בפונקציה שממירה 
+        public IEnumerable<BL> GetListFromBL<BL,DL>()
+        {
+            BL blList = new List<BL>();
+            var dalList = dal.GetListFromDal<DL>();
+            foreach (DL dlItem in dalList)
+            {
+                var blItem = ConvertToBL((DL)dlItem);
+                bLList.Add(blItem);
+            }
+            return bLList;
+        }
+        public IEnumerable<> ConvertToBLi()
+        {
+
+        }
 
         // לא למחוק
         //// לא עובד

@@ -53,8 +53,10 @@ namespace DalObject
         {
             foreach (var customer in CustomerList)
             {
-
+                if (customer.Id == cId)
+                    return true;
             }
+            return false;
         }
         void UpdateCustomer(string cId, Customer customer)
         {

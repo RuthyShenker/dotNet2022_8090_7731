@@ -69,8 +69,8 @@ namespace ConsoleUI_BL
         private static int GettingId(string obj)
         {
             Console.WriteLine($"Enter The Id Of The {obj}:");
-            return int.Parse(Console.ReadLine());
+            return CheckValids.InputNumberValidity("Id Of "+obj);
         }
     }
 }
-}
+

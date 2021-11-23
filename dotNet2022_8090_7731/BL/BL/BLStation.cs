@@ -137,13 +137,14 @@ namespace BL
         {
             if (dal.ExistsInBaseStation(bLStation.Id))
             {
-                throw new Exception("The id is already exists in the base station list!");
+                throw new IdIsNotValidException("The id is already exists in the base station list!");
             }
-
-            BaseStation station = new BaseStation() { Id = bLStation.Id,
-                Latitude = bLStation.SLocation.Latitude, Longitude = bLStation.SLocation.Longitude,
-                NameStation = bLStation.NameStation,
-                NumberOfChargingPositions = bLStation.NumAvailablePositions };
+            BaseStation station = new BaseStation() {
+            Id = bLStation.Id,
+            Latitude = bLStation.SLocation.Latitude,
+            Longitude = bLStation.SLocation.Longitude,
+            NameStation = bLStation.NameStation,
+            NumberOfChargingPositions = bLStation.NumAvailablePositions };
             dal.AddingBaseStation(station);
         }
     }

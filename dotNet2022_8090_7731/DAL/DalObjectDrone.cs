@@ -82,13 +82,20 @@ namespace DalObject
         /// <param name="dId"></param>
         public void ReleasingDrone(int dId)
         {
-            for (int i = 0; i < ChargingDroneList.Count; i++)
+            try
             {
-                if (ChargingDroneList[i].DroneId == dId)
+                for (int i = 0; i < ChargingDroneList.Count; i++)
                 {
-                    ChargingDroneList.RemoveAt(i);
-                    break;
+                    if (ChargingDroneList[i].DroneId == dId)
+                    {
+                        ChargingDroneList.RemoveAt(i);
+                        break;
+                    }
                 }
+            }
+            catch (ArgumentOutOfRangeException exception)
+            {
+
             }
             throw new IdNotExistInTheListException();
         }

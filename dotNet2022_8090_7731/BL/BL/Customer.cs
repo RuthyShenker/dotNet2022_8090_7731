@@ -15,15 +15,15 @@ namespace IBL.BO
             Name = name;
             Phone = phone;
             CLocation = cLocation;
-            lFromCustomer = new List<ParcelInCustomer>();
-            lForCustomer = new List<ParcelInCustomer>();
+            LFromCustomer = new List<ParcelInCustomer>();
+            LForCustomer =new List<ParcelInCustomer>();
         }
         public int Id { get; init; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public Location CLocation { get; set; }
         // שתי רשימות
-        public List<ParcelInCustomer> lFromCustomer { get; set; }
-        public List<ParcelInCustomer> lForCustomer { get; set; }
+        public List<ParcelInCustomer> LFromCustomer { get; set; }
+        public List<ParcelInCustomer> LForCustomer { get; set; }
     }
 }

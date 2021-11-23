@@ -35,5 +35,19 @@ namespace IBL.BO
             
    
     }
+    public class IdIsNotValidException : Exception
+    {
+        public IdIsNotValidException(string message):base()
+        {
+
+        }
+    }
+    public class TheStationDoesNotHaveFreePositions : Exception
+    {
+        public TheStationDoesNotHaveFreePositions(string message):base()
+        {
+
+        }
+    }
 
 }

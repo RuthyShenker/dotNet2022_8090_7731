@@ -47,7 +47,10 @@ namespace DalObject
         {
             BaseStationList.Add(baseStation);
         }
-
+        public int PickingUpAndReturnIndexParcel()
+        {
+            return ++IndexParcel;
+        }
         /// <summary>
         /// A function that gets an id of base station and returns this base station-copied.
         /// </summary>
@@ -84,10 +87,7 @@ namespace DalObject
             return new List<BaseStation>(BaseStationList.Where(BaseStation => BaseStation.NumberOfChargingPositions > 0).ToList());
         }
 
-        public void AddingCustomer(Customer customer)
-        {
-            throw new NotImplementedException();
-        }
+
 
         Customer IDal.IDal.CustomerDisplay(string Id)
         {
