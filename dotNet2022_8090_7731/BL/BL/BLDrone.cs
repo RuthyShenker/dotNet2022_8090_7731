@@ -86,19 +86,28 @@ namespace BL
         /// <param name="timeInCharging"></param>
         public void ReleasingDrone(int dId, double timeInCharging)
         {
-            if(!dal.ExistsInDroneList(dId))
+            if (!dal.ExistsInDroneList(dId))
             {
                 throw new Exception("this id doesnt exist in the drone list!");
             }
-            DroneToList drone=lDroneToList.Find(drone => drone.Id == dId);
-            if(drone.DStatus!= IBL.BO.DroneStatus.Maintenance)
+            DroneToList drone = lDroneToList.Find(drone => drone.Id == dId);
+            switch (drone.DStatus)
             {
-                if (drone.DStatus == IBL.BO.DroneStatus.Free) throw new Exception("this drone in free state, it cant relese from charging!");
-                else throw new Exception("this drone in delivery state,it cant relese from charging!");
+                case DroneStatus.Free:
+                    throw new Exception("this drone in free state, it cant relese from charging!");
+                case DroneStatus.Delivery:
+                    throw new Exception("this drone in delivery state,it cant relese from charging!");
+                default:
+
+                    drone.DStatus = DroneStatus.Free;
+                    drone.BatteryStatus += timeInCharging * chargingRate;
+                   
+                    // להפחית באחד את מס העמדות המלאות בתחנה המסוימת
+                    var station = dal.GetFromDalByCondition<IDal.DO.BaseStation>(station => 
+                        station.Longitude == drone.CurrLocation.Longitude && station.Latitude == drone.CurrLocation.Latitude);
+                    dal.ReleasingDrone(drone.Id);
+                    break;
             }
-            drone.DStatus = IBL.BO.DroneStatus.Free;
-            drone.BatteryStatus += timeInCharging * chargingRate;
-            dal.ReleasingDrone(drone.Id);
         }
 
         /// <summary>
