@@ -27,7 +27,7 @@ namespace ConsoleUI_BL
                 case 1:
                     try
                     {
-                        int newModel;
+                        string newModel;
                         GetDetailsOfDrone(out droneId, out newModel);
                         bL.UpdatingDroneName(droneId, newModel);
                     }
@@ -120,11 +120,11 @@ namespace ConsoleUI_BL
         /// </summary>
         /// <param name="droneId"></param>
         /// <param name="newModel"></param>
-        private static void GetDetailsOfDrone(out int droneId,out int newModel)
+        private static void GetDetailsOfDrone(out int droneId,out string newModel)
         {
             droneId = GettingId("Drone");
             Console.WriteLine("Enter the new model of the drone: ");
-            newModel = int.Parse(Console.ReadLine());
+            newModel = Console.ReadLine();
         }
     }
 }

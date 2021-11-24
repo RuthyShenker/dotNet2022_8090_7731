@@ -149,8 +149,15 @@ namespace DalObject
         }
         void UpdateDrone(int dId, Drone drone)
         {
-            DroneList.Remove(DroneList.Find(drone => drone.Id == dId));
-            DroneList.Add(drone);
+            try
+            {
+                DroneList.Remove(DroneList.Find(drone => drone.Id == dId));
+                DroneList.Add(drone);
+            }
+            catch ()
+            {
+
+            }
         }
     }
 }

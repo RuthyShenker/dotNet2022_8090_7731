@@ -9,7 +9,7 @@ namespace IBL.BO
     public class DroneToList
     {
         public int Id { get; set; }
-        public int Model { get; set; }
+        public string Model { get; set; }
         public WeightCategories Weight { get; set; }
         public double BatteryStatus { get; set; }
         public DroneStatus DStatus { get; set; }
