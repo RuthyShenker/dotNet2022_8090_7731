@@ -177,13 +177,15 @@ namespace BL
             dal.AddingDrone(drone);
         }
 
-        public void UpdatingDroneName(int droneId, int newModel)
+        public void UpdatingDroneName(int droneId, string newModel)
         {
             try
             {
-                IDal.DO.Drone drone = dal.GetDrone(droneId);
-                drone.Model = newModel;
-                dal.UpdateDrone(droneId, drone);
+               DroneToList droneToList = lDroneToList.Find(drone=>drone.Id==droneId);
+               droneToList.Model = newModel;
+                IDal.DO.Drone dalDrone = new IDal.DO.Drone() { Id=droneToList.Id, Model=droneToList.Model,
+                    MaxWeight = droneToList.Weight };
+               dal.UpdateDrone(droneId, dalDrone);
             }
             catch (DAL.IdNotExistInTheListException)
             {
