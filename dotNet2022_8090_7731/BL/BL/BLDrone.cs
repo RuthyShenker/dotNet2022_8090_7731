@@ -91,6 +91,7 @@ namespace BL
                 throw new Exception("this id doesnt exist in the drone list!");
             }
             DroneToList drone = lDroneToList.Find(drone => drone.Id == dId);
+
             switch (drone.DStatus)
             {
                 case DroneStatus.Free:
