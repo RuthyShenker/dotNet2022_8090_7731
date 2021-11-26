@@ -58,8 +58,8 @@ namespace BL
                     throw new Exception("this drone in maintenance,it cant go to charge");
                 throw new Exception("this drone in delivery ,it cant go to charge");
             }
-            var closetdStation = closestStation(drone.CurrLocation);
-            Station closebdStation = ConvertToBL(closetdStation);
+            var closetdStation = ClosestStation(drone.CurrLocation);
+            //Station closebdStation = ConvertToBL(closetdStation);
             if (closebdStation.NumAvailablePositions == 0)
             {
                 throw new Exception("The closet Station doesnt have available positions!");
