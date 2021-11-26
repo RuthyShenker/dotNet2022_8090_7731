@@ -142,7 +142,7 @@ namespace BL
             nParcel.GetterName = dal.GetFromDalById<IDal.DO.Customer>(parcel.GetterId).Name; /*Extensions.GetById<Customer>(parcel.GetterId).Name;*/
             //nParcel.SenderName = customerDalList.First(customer => customer.Id == parcel.SenderId).Name;
             //nParcel.GetterName = customerDalList.First(customer => customer.Id == parcel.GetterId).Name;
-            nParcel.Weight = parcel.Weight;
+            nParcel.Weight = (WeightCategories)parcel.Weight;
             nParcel.MyPriority = (Priority)parcel.MPriority;
             nParcel.Status = GetParcelStatus(parcel);
             return nParcel;
@@ -153,8 +153,8 @@ namespace BL
             var sender = NewCustomerInParcel(parcel.SenderId);
             var getter = NewCustomerInParcel(parcel.GetterId);
             var dInParcel = NewDroneInParcel(parcel.DroneId);
-            return new Parcel(sender.Id, getter.Id, parcel.Weight, parcel.MPriority, dInParcel, parcel.MakingParcel,
-                parcel.BelongParcel, parcel.PickingUp, parcel.Arrival);
+            return new Parcel(parcel.Id, sender, getter, (WeightCategories)parcel.Weight, (Priority)parcel.MPriority, dInParcel, parcel.MakingParcel,
+                parcel.BelongParcel, parcel.PickingUp, parcel.Arrival );
         }
 
         private ParcelStatus GetParcelStatus(IDal.DO.Parcel parcel)
