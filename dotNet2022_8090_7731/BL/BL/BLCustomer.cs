@@ -59,8 +59,8 @@ namespace BL
                     }
 
                 }
-                return nCustomer;
             }
+            return nCustomer;
         }
 
         private Customer ConvertToBL(IDal.DO.Customer customer)
@@ -74,19 +74,19 @@ namespace BL
                 if (parcel.SenderId == nCustomer.Id)
                 {
                     parcelInCustomer = CopyCommon(parcel, parcel.GetterId);
-                    nCustomer.lFromCustomer.Add(parcelInCustomer);
+                    nCustomer.LFromCustomer.Add(parcelInCustomer);
                 }
                 else if (parcel.GetterId == nCustomer.Id)
                 {
                     parcelInCustomer = CopyCommon(parcel, parcel.SenderId);
-                    nCustomer.lForCustomer.Add(parcelInCustomer);
+                    nCustomer.LForCustomer.Add(parcelInCustomer);
                 }
             }
             return nCustomer;
         }
 
         /// coppy the commmon feilds from parcel to parcel inCustomer and return it
-        private ParcelInCustomer CoppyCommon(IDal.DO.Parcel parcel, int Id)
+        private ParcelInCustomer CopyCommon(IDal.DO.Parcel parcel, int Id)
         {
             var PStatus = GetParcelStatus(parcel);
             var OnTheOtherHand = NewCustomerInParcel(Id);

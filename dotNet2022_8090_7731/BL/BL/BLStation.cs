@@ -92,7 +92,7 @@ namespace BL
             nStation.Id = station.Id;
             nStation.Name = station.NameStation;
             nStation.FullPositions = MountOfFullPositions(new Location(station.Longitude, station.Latitude));
-            nStation.AvailablePositions = station.NumAvailablePositions - nStation.FullPositions;
+            nStation.AvailablePositions = station.NumberOfChargingPositions - nStation.FullPositions;
             return nStation;
         }
 
