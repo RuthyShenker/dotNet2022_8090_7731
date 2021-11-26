@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static DalObject.DataSource;
+using DAL;
+
 namespace DalObject
 {
     public partial class DalObjectBaseStation
@@ -25,7 +26,7 @@ namespace DalObject
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public Customer GetCustomer(string Id)
+        public Customer GetCustomer(int Id)
         {
             for (int i = 0; i < CustomerList.Count; i++)
             {
@@ -58,10 +59,17 @@ namespace DalObject
             }
             return false;
         }
-        void UpdateCustomer(string cId, Customer customer)
+       public void UpdateCustomer(int cId, Customer customer)
         {
-            CustomerList.Remove(CustomerList.Find(customer => customer.Id== cId));
-            DroneList.Add(customer);
+            try
+            {
+                CustomerList.Remove(CustomerList.Find(customer => customer.Id== cId));
+                CustomerList.Add(customer);
+            }
+            catch (ArgumentNullException exception)
+            {
+                throw new IdNotExistInTheListException();
+            }
         }
     }
 }

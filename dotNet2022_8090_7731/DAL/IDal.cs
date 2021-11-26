@@ -27,7 +27,7 @@ namespace IDal
         //Drone GetDrone(int Id);
         //Customer GetCustomer(string Id);
         //Parcel GetParcel(int Id);
-        public int PickingUpAndReturnIndexParcel();
+        int PickingUpAndReturnIndexParcel();
 
         // GetListFromDal
         //IEnumerable<BaseStation> GetBaseStations();
@@ -48,7 +48,7 @@ namespace IDal
 
         void UpdateDrone(int dId, Drone drone);
         void UpdateBaseStation(int bId, BaseStation baseStation);
-        void UpdateCustomer(string cId, Customer customer);
+        void UpdateCustomer(int cId, Customer customer);
         bool ExistsInBaseStation(int id);
         bool ExistsInDroneList(int id);
         Drone GetDrone(int id);

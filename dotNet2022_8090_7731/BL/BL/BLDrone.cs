@@ -45,38 +45,39 @@ namespace BL
         /// <param name="IdDrone"></param>
         public void SendingDroneToCharge(int IdDrone)
         {
-            if(!dal.ExistsInDroneList(IdDrone))
+            try
             {
-                throw new Exception("the id of this drone doesnt exist");
-            }
-            DroneToList drone=lDroneToList.Find(drone => drone.Id == IdDrone);
-            if (drone.DStatus!=IBL.BO.DroneStatus.Free)
-            {
-                if (drone.DStatus == IBL.BO.DroneStatus.Maintenance)
-                    throw new Exception("this drone in maintenance,it cant go to charge");
-                throw new Exception("this drone in delivery ,it cant go to charge");
-            }
-            var closetdStation = closestStation(drone.CurrLocation);
-            Station closebdStation = ConvertToBL( closetdStation);
-            if (closebdStation.NumAvailablePositions==0)
-            {
-                throw new Exception("The closet Station doesnt have available positions!");
-            }
-           double distanceFromDroneToStation= CalculateDistance(closebdStation.SLocation,drone.CurrLocation);
-           double minBattery = MinBattery(distanceFromDroneToStation, drone.Weight);
-            if (drone.BatteryStatus-minBattery<0)
-            {
-                throw new Exception("There isnt enough battery to the drone in order to go to the closet station to be charging");
-            }
-            
-            drone.BatteryStatus = minBattery;
-            drone.CurrLocation = closebdStation.SLocation;
-            drone.DStatus = IBL.BO.DroneStatus.Maintenance;
+                DroneToList drone = lDroneToList.Find(drone => drone.Id == IdDrone);
+                if (drone.DStatus != IBL.BO.DroneStatus.Free)
+                {
+                    if (drone.DStatus == IBL.BO.DroneStatus.Maintenance)
+                        throw new SendingDroneToCharge("this drone in maintenance,it cant go to charge");
+                    throw new SendingDroneToCharge("this drone in delivery ,it cant go to charge");
+                }
+                Station closetdStation = ClosestStation(drone.CurrLocation);
+                //Station closebdStation = ConvertToBL(closetdStation);
+                if (closetdStation.NumAvailablePositions == 0)
+                {
+                    throw new StationDoesntHaveAvailablePositionsException("The closet Station doesnt have available positions!");
+                }
+                double distanceFromDroneToStation = CalculateDistance(closetdStation.SLocation, drone.CurrLocation);
+                double minBattery = MinBattery(distanceFromDroneToStation, drone.Weight);
+                if (drone.BatteryStatus - minBattery < 0)
+                {
+                    throw new ThereIsntEnoughBatteryToTheDrone("There isnt enough battery to the drone in order to go to the closet station to be charging");
+                }
 
-            //--closetBaseStation.NumAvailablePositions;
-            //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
-            dal.AddDroneToCharge(drone.Id, closebdStation.Id);
-
+                drone.BatteryStatus = minBattery;
+                drone.CurrLocation = closetdStation.SLocation;
+                drone.DStatus = IBL.BO.DroneStatus.Maintenance;
+                //--closetBaseStation.NumAvailablePositions;
+                //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
+                dal.AddDroneToCharge(drone.Id, closetdStation.Id);
+            }
+            catch (ArgumentNullException exception)
+            {
+                throw new IdIsNotValidException("This Id Not Exists in list of Drone To List");
+            }
         }
 
         /// <summary>
@@ -183,11 +184,15 @@ namespace BL
             {
                DroneToList droneToList = lDroneToList.Find(drone=>drone.Id==droneId);
                droneToList.Model = newModel;
-                IDal.DO.Drone dalDrone = new IDal.DO.Drone() { Id=droneToList.Id, Model=droneToList.Model,
+               IDal.DO.Drone dalDrone = new IDal.DO.Drone() { Id=droneToList.Id, Model=droneToList.Model,
                     MaxWeight = droneToList.Weight };
                dal.UpdateDrone(droneId, dalDrone);
             }
-            catch (DAL.IdNotExistInTheListException)
+            catch(ArgumentNullException exception)
+            {
+                throw new UpdatingFailedIdNotExistsException("this id doesnt exist in list of drone to list!");
+            }
+            catch (DAL.IdNotExistInTheListException exception)
             {
                 //bl exception-new
                 throw new UpdatingFailedIdNotExistsException("this id doesnt exist in drone list!");

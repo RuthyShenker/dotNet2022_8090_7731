@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IBL.BO;
-
+using DAL;
 namespace BL
 {
     partial class BL
@@ -24,22 +24,23 @@ namespace BL
             //}
             //return bStationsList;
         }
-        public void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions)
+        public void UpdatingStationDetails(int stationId, string stationName, string amountOfPositions)
         {
-            if (!dal.ExistsInBaseStation(stationId))
+            try
             {
-                throw new Exception("this id doesnt exist in base station list!");
+                IDal.DO.BaseStation baseStation = dal.GetFromDalById<IDal.DO.BaseStation>(stationId);
+                if (!string.IsNullOrEmpty(stationName))
+                    baseStation.NameStation = stationName;
+
+                if (!string.IsNullOrEmpty(amountOfPositions))
+                    baseStation.NumberOfChargingPositions = int.Parse(amountOfPositions);
+                dal.UpdateBaseStation(stationId, baseStation);
             }
-            var baseStation = dal.GetFromDalById<IDal.DO.BaseStation>(stationId);
-            if (!string.IsNullOrEmpty(stationName))
+            catch (IdNotExistInTheListException exception)
             {
-                baseStation.NameStation = stationName;
+                throw new IdIsNotValidException("Id of this base station doesn't " +
+                    "exist in the base station list!!");
             }
-            if (amountOfPositions != default)
-            {
-                baseStation.NumberOfChargingPositions = amountOfPositions;
-            }
-            dal.UpdateBaseStation(stationId, baseStation);
         }
         private Station ConvertToBL(IDal.DO.BaseStation station)
         {
@@ -116,13 +117,13 @@ namespace BL
         private Station ClosestStation(Location location)
         {
             var stationDalList = dal.GetListFromDal<IDal.DO.BaseStation>();
-            var cCoord = new geoCoordinate(location);
-            var sCoord = new geoCoordinate(stationDalList.ElementAt(0).Latitude, stationDalList.ElementAt(0).Longitude);
+            var cCoord = new GeoCoordinate(location.Latitude, location.Longitude);
+            var sCoord = new GeoCoordinate(stationDalList.ElementAt(0).Latitude, stationDalList.ElementAt(0).Longitude);
             double currDistance, distance = sCoord.GetDistanceTo(cCoord);
             int index = 0;
             for (int i = 1; i < stationDalList.Count(); i++)
             {
-                sCoord = new geoCoordinate(stationDalList.ElementAt(i).Latitude, stationDalList.ElementAt(i).Longitude);
+                sCoord = new GeoCoordinate(stationDalList.ElementAt(i).Latitude, stationDalList.ElementAt(i).Longitude);
                 currDistance = sCoord.GetDistanceTo(cCoord);
                 if (currDistance < distance)
                 {
@@ -130,7 +131,7 @@ namespace BL
                     index = i;
                 }
             }
-            return ConvertToBL( stationDalList.ElementAt(index));
+            return ConvertToBL(stationDalList.ElementAt(index));
         }
 
         public void AddingBaseStation(Station bLStation)

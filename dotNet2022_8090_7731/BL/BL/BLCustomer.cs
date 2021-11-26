@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL;
 using IBL.BO;
 namespace BL
 {
@@ -121,22 +122,25 @@ namespace BL
             dal.AddingCustomer(newCustomer);
         }
 
-        public void UpdatingCustomerDetails(string customerId, string newName, string newPhone)
+        public void UpdatingCustomerDetails(int customerId, string newName, string newPhone)
         {
-            if (!dal.ExistsInCustomerList(customerId))
+            try
             {
-                throw new Exception("this id doesnt exist in customer list!");
+                IDal.DO.Customer customer = dal.GetFromDalById<IDal.DO.Customer>(customerId);
+                if (!string.IsNullOrEmpty(newName))
+                {
+                    customer.Name = newName;
+                }
+                if (!string.IsNullOrEmpty(newPhone))
+                {
+                    customer.Phone = newPhone;
+                }
+                dal.UpdateCustomer(customerId, customer);
             }
-            IDal.DO.Customer customer = dal.GetCustomer(customerId);
-            if (!string.IsNullOrEmpty(newName))
+            catch (IdNotExistInTheListException exception)
             {
-                customer.Name = newName;
+                throw new UpdatingFailedIdNotExistsException("This Id Not Exist In Customer List");
             }
-            if (!string.IsNullOrEmpty(newPhone))
-            {
-                customer.Phone = newPhone;
-            }
-            dal.UpdateCustomer(customerId, customer);
         }
     }
 }

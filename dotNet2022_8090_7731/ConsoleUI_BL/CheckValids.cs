@@ -20,6 +20,25 @@ namespace ConsoleUI_BL
             }
             return number;
         }
+        //public static int InputNumberOfPositions()
+        //{
+        //    int number;
+        //    while (!int.TryParse(Console.ReadLine(), out number) || number<0)
+        //    {
+        //        Console.WriteLine("Number Of Positions is not valid ,please enter again");
+        //    }
+        //    return number;
+        //}
+        public static string InputIdCustomerValidity()
+        {
+            string number = Console.ReadLine();
+            while (number.Length != 9||!number.All(c=>char.IsDigit(c)))
+            {
+                Console.WriteLine("Id Of Customer is not valid ,please enter again");
+                number = Console.ReadLine();
+            }
+            return number;
+        }
         public static string InputNameValidity()
         { 
             string name=null;
@@ -63,17 +82,15 @@ namespace ConsoleUI_BL
         /// <param name="input"></param>
         public static void CheckValid(int min, int max, out int input)
         {
-            bool check = int.TryParse(Console.ReadLine(), out input);
-            while (!check || input < min || input > max)
+            while (!int.TryParse(Console.ReadLine(), out input) || input < min || input > max)
             {
                 Console.WriteLine("Invalid input!, please enter again");
-                check = int.TryParse(Console.ReadLine(), out input);
             }
         }
         public static string InputPhoneValidity()
         {
             string phone = null;
-            while (!OnlyNumbers(Console.ReadLine()))
+            while (!OnlyNumbers(phone=Console.ReadLine()))
             {
                 Console.WriteLine("The phone is not valid , please enter again ");
             }
