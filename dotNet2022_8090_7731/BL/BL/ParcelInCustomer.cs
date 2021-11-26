@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static IBL.BO.Enum;
 namespace IBL.BO
 {
     public class ParcelInCustomer

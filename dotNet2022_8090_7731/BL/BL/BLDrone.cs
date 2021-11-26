@@ -132,12 +132,12 @@ public void ReleasingDrone(int dId, double timeInCharging)
                 throw new Exception($"this drone cant be belonging to parcel because it is in {dStatus} status!");
             }
             // כשעושים מיון לפי thenby הסדר ממיון לפי המיון הסופי או שהוא מבין למין כל קבוצה שוב?
-            var optionParcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.Weight <= droneToList.Weight)
+            var optionParcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.Weight <= (IDal.DO.WeightCategories)droneToList.Weight)
                 .OrderByDescending(parcel => parcel.MPriority).ThenByDescending(parcel => parcel.Weight).ThenBy(parcel => GetDistance(droneToList.CurrLocation, parcel));
             bool belonged = false;
             foreach (var parcel in optionParcels)
             {
-                if (droneToList.BatteryStatus >= MinBattery(GetDistance(droneToList.CurrLocation, parcel), parcel.Weight))
+                if (droneToList.BatteryStatus >= MinBattery(GetDistance(droneToList.CurrLocation, parcel), (IBL.BO.WeightCategories)parcel.Weight))
                 {
                     droneToList.DStatus = DroneStatus.Delivery;
                     dal.BelongingParcel(parcel, droneToList.Id);
