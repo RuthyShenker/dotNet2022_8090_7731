@@ -42,6 +42,7 @@ namespace BL
                     {
                         case ParcelStatus.InDestination:
                             ++nCustomer.SentSupplied;
+                            break;
                         default:
                             ++nCustomer.SentNotSupplied;
                             break;
@@ -53,6 +54,7 @@ namespace BL
                     {
                         case ParcelStatus.InDestination:
                             ++nCustomer.Got;
+                            break;
                         default:
                             ++nCustomer.InWayToCustomer;
                             break;

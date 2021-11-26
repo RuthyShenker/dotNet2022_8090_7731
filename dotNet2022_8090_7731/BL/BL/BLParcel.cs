@@ -33,7 +33,7 @@ namespace BL
                 Id = dal.PickingUpAndReturnIndexParcel(),
                 SenderId = newParcel.Sender.Id,
                 GetterId = newParcel.Getter.Id,
-                Weight = newParcel.Weight,
+                Weight = (IDal.DO.WeightCategories)newParcel.Weight,
                 MPriority = (IDal.DO.UrgencyStatuses)newParcel.MPriority,
                 DroneId = 0,
                 MakingParcel = DateTime.Now,

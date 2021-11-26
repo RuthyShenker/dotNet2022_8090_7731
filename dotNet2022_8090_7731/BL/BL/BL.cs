@@ -59,7 +59,7 @@ namespace BL
                 if (lDroneToList.Count != 0 && dal.IsExistInList(lDroneToList, drone => drone.Id == parcel.DroneId))
                 {
                    lDroneToList.First(drone => drone.Id == parcel.DroneId).NumOfParcel++;
-                    return; 
+                    return ; 
                 }
                 else
                 {
@@ -83,7 +83,7 @@ namespace BL
             DroneToList nDroneToList = new DroneToList();
             nDroneToList.Id = source.Id;
             nDroneToList.Model = source.Model;
-            nDroneToList.Weight = source.MaxWeight;
+            nDroneToList.Weight = (IBL.BO.WeightCategories)source.MaxWeight;
             return nDroneToList;
         }
 
@@ -107,7 +107,7 @@ namespace BL
             Location destination = new Location(getter.Longitude, getter.Latitude);
             Location closestStation = ClosestStation(destination).SLocation;
             double distance = CalculateDistance(nDrone.CurrLocation, destination, closestStation);
-            nDrone.BatteryStatus = Rand.Next(MinBattery(distance, parcel.Weight), 100);
+            nDrone.BatteryStatus = Rand.Next(MinBattery(distance,(WeightCategories)parcel.Weight), 100);
             nDrone.NumOfParcel++;
             return nDrone;
         }
@@ -210,7 +210,7 @@ namespace BL
         
         // מחזיר רשימה BL
         //  BLל DAL משתמש בפונקציה שממירה 
-        public IEnumerable<BL> GetListOfBL<DL, BL>()
+        public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable
         {
             var bLList = new List<BL>();
             var dalList = dal.GetListFromDal<DL>();
@@ -226,7 +226,7 @@ namespace BL
         // מקבל סוג אוביקט DL
         // מחזיר רשימה מסוג מתאים BLToList
         // ממיר לכל אוביקט עי פונקציה שממירה - ConvertToList
-        public IEnumerable<BLToList> GetListToList<DL, BLToList>()
+        public IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable
         {
             if (typeof(BLToList) == typeof(Drone))
             {

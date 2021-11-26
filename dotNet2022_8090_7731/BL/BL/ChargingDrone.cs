@@ -18,6 +18,6 @@ namespace IBL.BO
             BatteryStatus = batteryStatus;
         }
         public int DroneId { get; set; }
-        public float BatteryStatus { get; set; }
+        public Double BatteryStatus { get; set; }
     }
 }

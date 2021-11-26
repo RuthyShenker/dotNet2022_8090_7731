@@ -49,17 +49,16 @@ namespace BL
             var chargingDroneBList = ChargingDroneBLList();
             return new Station(station.Id, station.NameStation, nLocation, numAvailablePositions, chargingDroneBList);
         }
+
         public IEnumerable<Station> AvailableSlots()
         {
-            IEnumerable<StationToList> stationsList = GetStations();
-            foreach (var station in stationsList)
+            var stationsDList = dal.AvailableSlots();
+            var stationBList = new List<Station>();
+            foreach (dynamic station in stationsDList)
             {
-                if (station.AvailablePositions == 0)
-                {
-                    stationsList.remove(station);
-                }
+                stationBList.Add(convertToBL(station));
             }
-            return stationsList;
+            return stationBList;
         }
 
 
