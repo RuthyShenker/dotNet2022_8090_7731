@@ -83,7 +83,7 @@ namespace BL
             DroneToList nDroneToList = new DroneToList();
             nDroneToList.Id = source.Id;
             nDroneToList.Model = source.Model;
-            nDroneToList.Weight = source.MaxWeight;
+            nDroneToList.Weight = (IBL.BO.WeightCategories)source.MaxWeight;
             return nDroneToList;
         }
 
@@ -107,7 +107,9 @@ namespace BL
             Location destination = new Location(getter.Longitude, getter.Latitude);
             Location closestStation = ClosestStation(destination).SLocation;
             double distance = CalculateDistance(nDrone.CurrLocation, destination, closestStation);
-            nDrone.BatteryStatus = Rand.Next(MinBattery(distance, parcel.Weight), 100);
+            double minBattery = MinBattery(distance, (WeightCategories)parcel.Weight);
+            nDrone.BatteryStatus = Rand.NextDouble() * (100 - minBattery) + minBattery;
+
             nDrone.NumOfParcel++;
             return nDrone;
         }
