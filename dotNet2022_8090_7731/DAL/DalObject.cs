@@ -40,10 +40,7 @@ namespace DalObject
         //    Initialize();
         //}
 
-        public int PickingUpAndReturnIndexParcel()
-        {
-            return ++IndexParcel;
-        }
+       
         /// <summary>
         /// A function that gets an id of base station and returns this base station-copied.
         /// </summary>

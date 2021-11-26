@@ -15,7 +15,6 @@ namespace DalObject
         /// <param name="parcel"></param>
         public void AddingParcel(Parcel parcel)
         {
-            //parcel.ParcelId =
             ParceList.Add(parcel);
         }
 

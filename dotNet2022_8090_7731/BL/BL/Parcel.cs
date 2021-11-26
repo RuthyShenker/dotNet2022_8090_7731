@@ -10,20 +10,26 @@ namespace IBL.BO
     {
 
         public Parcel(int senderId, int getterId, WeightCategories weight, Priority mPriority, DroneInParcel dInParcel)
+            : this(0, new CustomerInParcel(senderId, string.Empty), new CustomerInParcel(getterId, string.Empty),
+                 weight, mPriority, dInParcel, DateTime.Now, null, null, null)
         {
-          
-            Sender.Id = senderId;
-            Getter.Id = getterId;
-            ///WHATS ABOUT THEIR NAME
-            Weight = weight;
-            MPriority = mPriority;
-            DInParcel = dInParcel;
-            MakingParcel = default(DateTime);
-            BelongParcel = default(DateTime);
-            PickingUp =default(DateTime);
-            Arrival = default(DateTime);
         }
 
+        public Parcel(int id, CustomerInParcel sender, CustomerInParcel getter,WeightCategories parcelWeight,
+            Priority parcelMPriority,DroneInParcel dInParcel,DateTime parcelMakingParcel,
+               DateTime? parcelBelongParcel, DateTime? parcelPickingUp, DateTime? parcelArrival)
+        {
+            Id = id;
+            Sender = sender;
+            Getter = getter;
+            Arrival = parcelArrival;
+            PickingUp = parcelPickingUp;
+            BelongParcel = parcelBelongParcel;
+            Weight = parcelWeight;
+            MPriority = parcelMPriority;
+            DInParcel = dInParcel;
+            MakingParcel = parcelMakingParcel;
+        }
         public int Id { get; init; }
         public CustomerInParcel Sender{ get; set; }
         public CustomerInParcel Getter{ get; set; }
