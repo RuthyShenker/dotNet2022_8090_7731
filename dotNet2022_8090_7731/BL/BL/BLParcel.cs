@@ -151,8 +151,8 @@ namespace BL
             var sender = NewCustomerInParcel(parcel.SenderId);
             var getter = NewCustomerInParcel(parcel.GetterId);
             var dInParcel = NewDroneInParcel(parcel.DroneId);
-            return new Parcel(parcel.Id,sender, getter, (IBL.BO.WeightCategories)parcel.Weight, (IBL.BO.Priority)parcel.MPriority, dInParcel, parcel.MakingParcel,
-                parcel.BelongParcel, parcel.PickingUp, parcel.Arrival);
+            return new Parcel(parcel.Id, sender, getter, (WeightCategories)parcel.Weight, (Priority)parcel.MPriority, dInParcel, parcel.MakingParcel,
+                parcel.BelongParcel, parcel.PickingUp, parcel.Arrival );
         }
 
         private ParcelStatus GetParcelStatus(IDal.DO.Parcel parcel)

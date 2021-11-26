@@ -33,7 +33,6 @@ namespace BL
             dal = new DalObject.DalObject();
             lDroneToList = new List<DroneToList>();
             UpdatePConsumption();
-            DroneToList droneToList;
             foreach (var drone in dal.GetListFromDal<IDal.DO.Drone>())
             {
                 lDroneToList.Add(ConvertToList(drone));

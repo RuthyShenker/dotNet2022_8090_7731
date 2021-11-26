@@ -66,7 +66,7 @@ namespace BL
         private List<ChargingDrone> ChargingDroneBLList()
         {
             var chargingDroneBLList = new List<ChargingDrone>();
-            var chargingDroneDalList = dal.ChargingDrone();
+            var chargingDroneDalList =dal.ChargingDroneList();
             var chargingDrone= new ChargingDrone();
             foreach (var chargingPosition in chargingDroneDalList)
 	        {
