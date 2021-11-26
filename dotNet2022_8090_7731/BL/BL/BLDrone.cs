@@ -41,10 +41,10 @@ namespace BL
             Location senderLocation = new Location(sender.Longitude, sender.Latitude);
             var getter = dal.GetFromDalById<IDal.DO.Customer>(parcel.Getter.Id);
             Location getterLocation = new Location(getter.Longitude, getter.Latitude);
-            double distance = CalculateDistance(parcelInTransfer.CollectionLocation, parcelInTransfer.DeliveryLocation);
+            double distance = CalculateDistance(senderLocation, getterLocation);
             return new ParcelInTransfer(parcel.Id, parcel.PickingUp.HasValue, //  האם זו הכוונה IsInWay?
-                parcel.MPriority, parcel.Weight,
-                parcel.Sender, parcel.Getter, );
+            parcel.MPriority, parcel.Weight,
+            parcel.Sender, parcel.Getter, senderLocation, getterLocation, distance);
         }
         /// <summary>
         /// A function that gets an id od drone and sending it to charging.
