@@ -107,7 +107,9 @@ namespace BL
             Location destination = new Location(getter.Longitude, getter.Latitude);
             Location closestStation = ClosestStation(destination).SLocation;
             double distance = CalculateDistance(nDrone.CurrLocation, destination, closestStation);
-            nDrone.BatteryStatus = Rand.Next(MinBattery(distance,(WeightCategories)parcel.Weight), 100);
+            double minBattery = MinBattery(distance, (WeightCategories)parcel.Weight);
+            nDrone.BatteryStatus = Rand.NextDouble() * (100 - minBattery) + minBattery;
+
             nDrone.NumOfParcel++;
             return nDrone;
         }
