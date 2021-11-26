@@ -42,24 +42,24 @@ namespace BL
                     {
                         case ParcelStatus.InDestination:
                             ++nCustomer.SentSupplied;
-                        default
+                        default:
                             ++nCustomer.SentNotSupplied;
                             break;
                     }
+                }
                 else if (parcel.GetterId == nCustomer.Id)
+                {
+                    switch (GetParcelStatus(parcel))
                     {
-                        switch (GetParcelStatus(parcel))
-                        {
-                            case ParcelStatus.InDestination:
-                                ++nCustomer.Got;
-                            default
-                                ++nCustomer.InWayToCustomer;
-                                break;
-                        }
+                        case ParcelStatus.InDestination:
+                            ++nCustomer.Got;
+                        default:
+                            ++nCustomer.InWayToCustomer;
+                            break;
                     }
                 }
-                return nCustomer;
             }
+            return nCustomer;
         }
 
         private Customer ConvertToBL(IDal.DO.Customer customer)
@@ -73,19 +73,19 @@ namespace BL
                 if (parcel.SenderId == nCustomer.Id)
                 {
                     parcelInCustomer = CopyCommon(parcel, parcel.GetterId);
-                    nCustomer.lFromCustomer.Add(parcelInCustomer);
+                    nCustomer.LFromCustomer.Add(parcelInCustomer);
                 }
                 else if (parcel.GetterId == nCustomer.Id)
                 {
                     parcelInCustomer = CopyCommon(parcel, parcel.SenderId);
-                    nCustomer.lForCustomer.Add(parcelInCustomer);
+                    nCustomer.LForCustomer.Add(parcelInCustomer);
                 }
             }
             return nCustomer;
         }
 
         /// coppy the commmon feilds from parcel to parcel inCustomer and return it
-        private ParcelInCustomer CoppyCommon(IDal.DO.Parcel parcel, int Id)
+        private ParcelInCustomer CopyCommon(IDal.DO.Parcel parcel, int Id)
         {
             var PStatus = GetParcelStatus(parcel);
             var OnTheOtherHand = NewCustomerInParcel(Id);
@@ -116,9 +116,14 @@ namespace BL
             {
                 throw new IdIsNotValidException("The id is already exists in the Customer List!");
             }
-            IDal.DO.Customer newCustomer = new IDal.DO.Customer() { Id = bLCustomer.Id,
-                Name = bLCustomer.Name, Phone = bLCustomer.Phone, Latitude = bLCustomer.CLocation.Latitude,
-                Longitude = bLCustomer.CLocation.Longitude };
+            IDal.DO.Customer newCustomer = new IDal.DO.Customer()
+            {
+                Id = bLCustomer.Id,
+                Name = bLCustomer.Name,
+                Phone = bLCustomer.Phone,
+                Latitude = bLCustomer.CLocation.Latitude,
+                Longitude = bLCustomer.CLocation.Longitude
+            };
             dal.AddingCustomer(newCustomer);
         }
 
