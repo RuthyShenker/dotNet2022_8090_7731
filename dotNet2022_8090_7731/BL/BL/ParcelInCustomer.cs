@@ -7,11 +7,11 @@ namespace IBL.BO
 {
     public class ParcelInCustomer
     {
-        public ParcelInCustomer(int id, WeightCategories weight, IDal.DO.UrgencyStatuses mPriority, ParcelStatus pStatus, CustomerInParcel onTheOtherHand)
+        public ParcelInCustomer(int id, WeightCategories weight, Priority mPriority, ParcelStatus pStatus, CustomerInParcel onTheOtherHand)
         {
             Id = id;
             Weight = weight;
-            MPriority = (Priority)mPriority;
+            MPriority = mPriority;
             PStatus = pStatus;
             OnTheOtherHand = onTheOtherHand;
         }
