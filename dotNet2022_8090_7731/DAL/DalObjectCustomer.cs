@@ -9,7 +9,7 @@ using DAL;
 
 namespace DalObject
 {
-    public partial class DalObjec
+    public partial class DalObject
     {
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace DalObject
                 CustomerList.Remove(CustomerList.Find(customer => customer.Id== cId));
                 CustomerList.Add(customer);
             }
-            catch (ArgumentNullException exception)
+            catch (ArgumentNullException)
             {
                 throw new IdNotExistInTheListException();
             }

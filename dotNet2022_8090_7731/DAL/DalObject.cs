@@ -35,19 +35,11 @@ namespace DalObject
         /// <summary>
         /// A constructor of DalObject that activates the function Initialize
         /// </summary>
-        public DalObject()
-        {
-            Initialize();
-        }
+        //public DalObject()
+        //{
+        //    Initialize();
+        //}
 
-        /// <summary>
-        /// A function that gets a base station and adds it to the list of Base Stations.
-        /// </summary>
-        /// <param name="baseStation"></param>
-        public void AddingBaseStation(BaseStation baseStation)
-        {
-            BaseStationList.Add(baseStation);
-        }
         public int PickingUpAndReturnIndexParcel()
         {
             return ++IndexParcel;
@@ -70,64 +62,11 @@ namespace DalObject
             throw new Exception("id doesnt exist");
         }
 
-        /// <summary>
-        /// A function that returns the list of the base stations 
-        /// </summary>
-        /// <returns> base station list</returns>
-        public IEnumerable<BaseStation> GetBaseStations()
-        {
-            return BaseStationList.Select(station => new BaseStation(station)).ToList();
-        }
-
-        /// <summary>
-        /// A function that returns base stations that they have available charging positions.
-        /// </summary>
-        /// <returns>list of base stations that they have available charging positions</returns>
-        public IEnumerable<BaseStation> AvailableSlots()
-        {
-            return new List<BaseStation>(BaseStationList.Where(BaseStation => BaseStation.NumberOfChargingPositions > 0).ToList());
-        }
-
-
-
-        Customer IDal.IDal.CustomerDisplay(string Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Customer> IDal.IDal.DisplayingCustomers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ExistsInBaseStation(int id)
-        {
-            for (int i = 0; i < BaseStationList.Count; i++)
-            {
-                if (BaseStationList[i].Id == id)
-                    return true;
-            }
-            return false;
-        }
-
-        public bool ExistsInDroneList(int id)
-        {
-            for (int i = 0; i < DroneList.Count; i++)
-            {
-                if (DroneList[i].Id==id)
-                    return true;
-            }
-            return false;
-        }
         public bool IsIdExistInList<T>(int Id) where T : IIdentifiable
         {
             return ((List<T>)data[typeof(T)]).Any(item => item.Id == Id);
         }
-        public void AddDroneToCharge(int dId, int sId)
-       {
-            ChargingDroneList.Add(new ChargingDrone(dId,sId));
-       }
-
+       
         public T GetFromDalById<T>(int Id) where T : IIdentifiable
         {
             try
@@ -148,7 +87,7 @@ namespace DalObject
         {
             return ((List<T>)data[typeof(T)]).FindAll(predicate);
         }
-        IEnumerable<T> GetListFromDal<T>() where T:IIdentifiable
+        public IEnumerable<T> GetListFromDal<T>() where T:IIdentifiable
         {
             return (IEnumerable<T>)data[typeof(T)];
         }

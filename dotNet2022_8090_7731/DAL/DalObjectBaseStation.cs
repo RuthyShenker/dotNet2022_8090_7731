@@ -32,13 +32,7 @@ namespace DalObject
     /// AvailableSlots
     /// </summary>
     {
-        /// <summary>
-        /// A constructor of DalObject that activates the function Initialize
-        /// </summary>
-        public DalObjectBaseStation()
-        {
-            Initialize();
-        }
+
 
         /// <summary>
         /// A function that gets a base station and adds it to the list of Base Stations.
@@ -84,7 +78,9 @@ namespace DalObject
         {
             return BaseStationList.Where(BaseStation => BaseStation.NumberOfChargingPositions > 0).ToList();
         }
-     
+
+
+
 
         public bool ExistsInBaseStation(int id)
         {
@@ -109,7 +105,7 @@ namespace DalObject
                 BaseStationList.Remove(BaseStationList.Find(baseStation => baseStation.Id == bId));
                 BaseStationList.Add(baseStation);
             }
-            catch (ArgumentNullException exception)
+            catch (ArgumentNullException )
             {
                 throw new IdNotExistInTheListException();
             }

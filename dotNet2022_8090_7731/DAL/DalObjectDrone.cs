@@ -32,6 +32,11 @@ namespace DalObject
         {
             DroneList.Add(drone);
         }
+        public void AddDroneToCharge(int dId, int sId)
+        {
+            ChargingDroneList.Add(new ChargingDrone(dId, sId));
+        }
+
 
         /// <summary>
         ///A function that gets an integer that means a new status and Id of drone and 
@@ -147,7 +152,7 @@ namespace DalObject
             }
             return count;
         }
-        void UpdateDrone(int dId, Drone drone)
+        public void UpdateDrone(int dId, Drone drone)
         {
             try
             {

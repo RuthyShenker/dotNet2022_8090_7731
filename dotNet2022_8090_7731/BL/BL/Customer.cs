@@ -9,7 +9,7 @@ namespace IBL.BO
 {
     public class Customer
     {
-        public Customer(string id, string name, string phone, Location cLocation)
+        public Customer(int id, string name, string phone, Location cLocation)
         {
             Id = id;
             Name = name;
@@ -18,7 +18,7 @@ namespace IBL.BO
             LFromCustomer = new List<ParcelInCustomer>();
             LForCustomer =new List<ParcelInCustomer>();
         }
-        public string Id { get; init; }
+        public int Id { get; init; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public Location CLocation { get; set; }

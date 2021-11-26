@@ -9,9 +9,9 @@ namespace IBL.BO
     public class ParcelInCustomer
     {
         public int Id { get; set; }
-        public WeightCategories weight { get; set; }
-        public Priority priority { get; set; }
-        public ParcelStatus pStatus { get; set; }
+        public WeightCategories Weight { get; set; }
+        public Priority Priority { get; set; }
+        public ParcelStatus PStatus { get; set; }
         //	לקוח במשלוח - המקור\היעד 
         public CustomerInParcel OnTheOtherHand { get; set; }
     }

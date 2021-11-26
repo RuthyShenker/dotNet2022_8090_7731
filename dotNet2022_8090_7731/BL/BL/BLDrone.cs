@@ -20,11 +20,11 @@ namespace BL
         {
             ParcelInTransfer parcelInTransfer = CalculateParcelInTransfer(drone.Id);
             var wantedDrone = lDroneToList.FirstOrDefault(droneToList => droneToList.Id == drone.Id);
-            if (!wantedDrone.Equals(default(DroneToList))
-         {
+            if (!wantedDrone.Equals(default(DroneToList)))
+            {
                 return new Drone(wantedDrone.Id, wantedDrone.Model, wantedDrone.Weight, wantedDrone.BatteryStatus,
-                                 parcelInTransfer, wantedDrone.CurrLocation)
-         }
+                                 parcelInTransfer, wantedDrone.CurrLocation);
+            }
         }
 
         private ParcelInTransfer CalculateParcelInTransfer(int droneId)
@@ -32,8 +32,10 @@ namespace BL
             var parcelsDalList = dal.GetListFromDal<IDal.DO.Parcel>();
             var dalParcel = parcelsDalList.First(parcel => parcel.DroneId == droneId);
             var parcel = convertToBL(dalParcel);
-            Location senderLocation = GetFromBLById<Customer>(parcel.Sender.Id)().CLocation;
-            Location senderLocation = GetFromBLById<Customer>(parcel.Getter.Id)().CLocation;
+            var sender = dal.GetFromDalById<IDal.DO.Customer>(parcel.Sender.Id);
+            Location senderLocation = new Location(sender.Longitude, sender.Latitude);
+            var getter = dal.GetFromDalById<IDal.DO.Customer>(parcel.Getter.Id);
+            Location getterLocation = new Location(getter.Longitude, getter.Latitude);
             double distance = CalculateDistance(parcelInTransfer.CollectionLocation, parcelInTransfer.DeliveryLocation);
             return new ParcelInTransfer(parcel.Id, parcel.PickingUp.HasValue, //  האם זו הכוונה IsInWay?
                 parcel.MPriority, parcel.Weight,
@@ -45,40 +47,8 @@ namespace BL
         /// <param name="IdDrone"></param>
         public void SendingDroneToCharge(int IdDrone)
         {
-            //================ how to merge
-            if (!dal.ExistsInDroneList(IdDrone))
-            try
-            {
-                throw new Exception("the id of this drone doesnt exist");
-            }
-            DroneToList drone = lDroneToList.Find(drone => drone.Id == IdDrone);
-            if (drone.DStatus != IBL.BO.DroneStatus.Free)
-            {
-                if (drone.DStatus == IBL.BO.DroneStatus.Maintenance)
-                    throw new Exception("this drone in maintenance,it cant go to charge");
-                throw new Exception("this drone in delivery ,it cant go to charge");
-            }
-            var closetdStation = ClosestStation(drone.CurrLocation);
-            //Station closebdStation = ConvertToBL(closetdStation);
-            if (closebdStation.NumAvailablePositions == 0)
-            {
-                throw new Exception("The closet Station doesnt have available positions!");
-            }
-            double distanceFromDroneToStation = CalculateDistance(closebdStation.SLocation, drone.CurrLocation);
-            double minBattery = MinBattery(distanceFromDroneToStation, drone.Weight);
-            if (drone.BatteryStatus - minBattery < 0)
-            {
-                throw new Exception("There isnt enough battery to the drone in order to go to the closet station to be charging");
-            }
 
-            drone.BatteryStatus = minBattery;
-            drone.CurrLocation = closebdStation.SLocation;
-            drone.DStatus = IBL.BO.DroneStatus.Maintenance;
-
-            //--closetBaseStation.NumAvailablePositions;
-            //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
-            dal.AddDroneToCharge(drone.Id, closebdStation.Id);
-
+            try { 
                 DroneToList drone = lDroneToList.Find(drone => drone.Id == IdDrone);
                 if (drone.DStatus != IBL.BO.DroneStatus.Free)
                 {
@@ -172,7 +142,7 @@ namespace BL
             }
             if (!belonged)
             {
-                throw 
+                throw new Exception(); 
             }
         }
 
@@ -185,7 +155,7 @@ namespace BL
 
         public void AddingDrone(Drone bLDrone, int StationId)
         {
-            if (dal.ExistsInDroneList(bLDrone.Id) == 0)
+            if (dal.ExistsInDroneList(bLDrone.Id))
             {
                 throw new IdIsNotValidException("The id is already exists in the Drone list!");
             }
@@ -199,7 +169,7 @@ namespace BL
             }
             bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
             bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
-            BaseStation station = dal.GetFromDalById<BaseStation>(StationId);
+            IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
             DroneToList droneToList = new DroneToList()
             {
                 Id = bLDrone.Id,
@@ -214,7 +184,7 @@ namespace BL
             IDal.DO.Drone drone = new IDal.DO.Drone()
             {
                 Id = bLDrone.Id,
-                MaxWeight = bLDrone.Weight,
+                MaxWeight = (IDal.DO.WeightCategories)bLDrone.Weight,
                 Model = bLDrone.Model
             };
             dal.AddingDrone(drone);
@@ -230,20 +200,15 @@ namespace BL
                 {
                     Id = droneToList.Id,
                     Model = droneToList.Model,
-                    MaxWeight = droneToList.Weight
+                    MaxWeight = (IDal.DO.WeightCategories)droneToList.Weight
                 };
-                dal.UpdateDrone(droneId, dalDrone);
-               DroneToList droneToList = lDroneToList.Find(drone=>drone.Id==droneId);
-               droneToList.Model = newModel;
-               IDal.DO.Drone dalDrone = new IDal.DO.Drone() { Id=droneToList.Id, Model=droneToList.Model,
-                    MaxWeight = droneToList.Weight };
                dal.UpdateDrone(droneId, dalDrone);
             }
-            catch(ArgumentNullException exception)
+            catch(ArgumentNullException )
             {
                 throw new UpdatingFailedIdNotExistsException("this id doesnt exist in list of drone to list!");
             }
-            catch (DAL.IdNotExistInTheListException exception)
+            catch (DAL.IdNotExistInTheListException )
             {
                 //bl exception-new
                 throw new UpdatingFailedIdNotExistsException("this id doesnt exist in drone list!");

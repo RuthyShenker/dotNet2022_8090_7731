@@ -42,21 +42,22 @@ namespace BL
                     {
                         case ParcelStatus.InDestination:
                             ++nCustomer.SentSupplied;
-                        default
+                        default:
                             ++nCustomer.SentNotSupplied;
                             break;
                     }
+                }
                 else if (parcel.GetterId == nCustomer.Id)
+                {
+                    switch (GetParcelStatus(parcel))
                     {
-                        switch (GetParcelStatus(parcel))
-                        {
-                            case ParcelStatus.InDestination:
-                                ++nCustomer.Got;
-                            default
-                                ++nCustomer.InWayToCustomer;
-                                break;
-                        }
+                        case ParcelStatus.InDestination:
+                            ++nCustomer.Got;
+                        default:
+                            ++nCustomer.InWayToCustomer;
+                            break;
                     }
+
                 }
                 return nCustomer;
             }
@@ -116,9 +117,14 @@ namespace BL
             {
                 throw new IdIsNotValidException("The id is already exists in the Customer List!");
             }
-            IDal.DO.Customer newCustomer = new IDal.DO.Customer() { Id = bLCustomer.Id,
-                Name = bLCustomer.Name, Phone = bLCustomer.Phone, Latitude = bLCustomer.CLocation.Latitude,
-                Longitude = bLCustomer.CLocation.Longitude };
+            IDal.DO.Customer newCustomer = new IDal.DO.Customer()
+            {
+                Id = bLCustomer.Id,
+                Name = bLCustomer.Name,
+                Phone = bLCustomer.Phone,
+                Latitude = bLCustomer.CLocation.Latitude,
+                Longitude = bLCustomer.CLocation.Longitude
+            };
             dal.AddingCustomer(newCustomer);
         }
 
