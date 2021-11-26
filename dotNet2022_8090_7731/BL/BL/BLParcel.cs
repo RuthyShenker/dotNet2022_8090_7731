@@ -23,6 +23,8 @@ namespace BL
              return bParcelList;
          }*/
 
+
+
         public void AddingParcel(Parcel newParcel)
         {
             newParcel.MakingParcel = DateTime.Now;
