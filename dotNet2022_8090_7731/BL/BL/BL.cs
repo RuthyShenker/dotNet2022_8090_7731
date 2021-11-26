@@ -59,7 +59,7 @@ namespace BL
                 if (lDroneToList.Count != 0 && dal.IsExistInList(lDroneToList, drone => drone.Id == parcel.DroneId))
                 {
                    lDroneToList.First(drone => drone.Id == parcel.DroneId).NumOfParcel++;
-                    return; 
+                    return ; 
                 }
                 else
                 {
@@ -212,7 +212,7 @@ namespace BL
         
         // מחזיר רשימה BL
         //  BLל DAL משתמש בפונקציה שממירה 
-        public IEnumerable<BL> GetListOfBL<DL, BL>()
+        public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable
         {
             var bLList = new List<BL>();
             var dalList = dal.GetListFromDal<DL>();
@@ -228,7 +228,7 @@ namespace BL
         // מקבל סוג אוביקט DL
         // מחזיר רשימה מסוג מתאים BLToList
         // ממיר לכל אוביקט עי פונקציה שממירה - ConvertToList
-        public IEnumerable<BLToList> GetListToList<DL, BLToList>()
+        public IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable
         {
             if (typeof(BLToList) == typeof(Drone))
             {

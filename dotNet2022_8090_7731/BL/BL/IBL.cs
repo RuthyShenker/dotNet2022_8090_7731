@@ -39,8 +39,9 @@ namespace IBL
         void UpdatingCustomerDetails(int customerId, string newName, string newPhone);
 
         // get lists
-        IEnumerable<BL> GetListOfBL<DL, BL>();
-        IEnumerable<BLToList> GetListToList<DL, BLToList>();
+        IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable;
+        IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable;
+        IEnumerable<Station> AvailableSlots();
 
         // get specific
         BL GetBLById<DL, BL>(int Id) where DL: IDal.DO.IIdentifiable;
