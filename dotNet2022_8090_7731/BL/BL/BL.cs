@@ -11,7 +11,7 @@ using System.Device.Location;
 
 namespace BL
 {
-    partial class BL : IBL.IBL
+    public partial class BL : IBL.IBL
     {
         IDal.IDal dal;
         List<DroneToList> lDroneToList;
@@ -38,6 +38,8 @@ namespace BL
                 lDroneToList.Add(ConvertToList(drone));
             }
         }
+       
+
 
         private void UpdatePConsumption()
         {
@@ -51,14 +53,14 @@ namespace BL
 
         private DroneToList ConvertToList(IDal.DO.Drone drone)
         {
-            var nDrone = copyCommon(drone);
-            var parcel = dal.GetListFromDal<IDal.DO.Parcel>().wh.FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
+            DroneToList nDrone = copyCommon(drone);
+            var parcel = dal.GetListFromDal<IDal.DO.Parcel>().FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
             if (!parcel.Equals(default(IDal.DO.Parcel)))
             {
                 if (lDroneToList.Count != 0 && dal.IsExistInList(lDroneToList, drone => drone.Id == parcel.DroneId))
                 {
                    lDroneToList.First(drone => drone.Id == parcel.DroneId).NumOfParcel++;
-                    return ; 
+                    return nDrone; 
                 }
                 else
                 {
@@ -205,8 +207,10 @@ namespace BL
 
         public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable
         {
-            dynamic wanted = dal.GetFromDalById<DL>(Id);
-            return convertToBL(wanted);
+            dynamic wantedDal = dal.GetFromDalById<DL>(Id);
+            Console.WriteLine(wantedDal);
+            BL wantedBl= convertToBL(wantedDal);
+            return wantedBl;
         }
         
         // מחזיר רשימה BL

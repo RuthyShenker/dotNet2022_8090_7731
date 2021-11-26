@@ -147,12 +147,14 @@ namespace BL
         }
 
         private Parcel convertToBL(IDal.DO.Parcel parcel)
-        {
-            var sender = NewCustomerInParcel(parcel.SenderId);
-            var getter = NewCustomerInParcel(parcel.GetterId);
-            var dInParcel = NewDroneInParcel(parcel.DroneId);
-            return new Parcel(parcel.Id, sender, getter, (WeightCategories)parcel.Weight, (Priority)parcel.MPriority, dInParcel, parcel.MakingParcel,
-                parcel.BelongParcel, parcel.PickingUp, parcel.Arrival );
+        { 
+            CustomerInParcel sender = NewCustomerInParcel(parcel.SenderId);
+            CustomerInParcel getter = NewCustomerInParcel(parcel.GetterId);
+            DroneInParcel dInParcel = NewDroneInParcel(parcel.DroneId);
+            return new Parcel(parcel.Id, sender, getter, 
+                (WeightCategories)parcel.Weight, (Priority)parcel.MPriority,
+                dInParcel, parcel.MakingParcel,parcel.BelongParcel,
+                parcel.PickingUp, parcel.Arrival );
         }
 
         private ParcelStatus GetParcelStatus(IDal.DO.Parcel parcel)

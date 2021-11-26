@@ -76,7 +76,7 @@ namespace ConsoleUI_BL
         private static Customer GettingNewCustomer()
         {
             Console.WriteLine("Enter the id of the new customer: ");
-            string id = CheckValids.InputIdCustomerValidity("Id");
+            int id = CheckValids.InputIdCustomerValidity();
             Console.WriteLine("Enter the name of the new customer: ");
             string name = CheckValids.InputNameValidity();
             Console.WriteLine("Enter the phone of the new customer: ");

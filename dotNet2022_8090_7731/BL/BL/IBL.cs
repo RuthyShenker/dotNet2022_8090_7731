@@ -41,7 +41,7 @@ namespace IBL
         // get lists
         IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable;
         IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable;
-        IEnumerable<Station> AvailableSlots();
+        IEnumerable<StationToList> AvailableSlots();
 
         // get specific
         BL GetBLById<DL, BL>(int Id) where DL: IDal.DO.IIdentifiable;
@@ -50,7 +50,7 @@ namespace IBL
         // IEnumerable<DroneToList> GetDrones();
         // IEnumerable<CustomerToList> GetCustomers();
         // IEnumerable<ParcelToList> GetParcels();
-        // IEnumerable<ParcelToList> GetUnbelongParcels();
+        IEnumerable<ParcelToList> GetUnbelongParcels();
         // IEnumerable<StationToList> AvailableSlots();
 
         //  GetItemFromBLById יש פונקציה גנרית 

@@ -92,7 +92,7 @@ namespace BL
         {
             var PStatus = GetParcelStatus(parcel);
             var OnTheOtherHand = NewCustomerInParcel(Id);
-            return new ParcelInCustomer(parcel.Id, (IBL.BO.WeightCategories)parcel.Weight, parcel.MPriority, PStatus, OnTheOtherHand);
+            return new ParcelInCustomer(parcel.Id, (IBL.BO.WeightCategories)parcel.Weight, (IBL.BO.Priority)parcel.MPriority, PStatus, OnTheOtherHand);
         }
 
         // מחזירה את רשימת הלקוחות שיש חבילות שסופקו להם

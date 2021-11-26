@@ -23,28 +23,28 @@ namespace ConsoleUI_BL
             switch (input)
             {
                 case 1:
-                    IEnumerable<StationToList> StationList = bL.GetBaseStations();
+                    IEnumerable<StationToList> StationList = bL.GetListToList<IDal.DO.BaseStation,StationToList>();
                     foreach (StationToList baseStation in StationList)
                     {
                         Console.WriteLine(baseStation);
                     }
                     break;
                 case 2:
-                    IEnumerable<DroneToList> DroneList = bL.GetDrones();
+                    IEnumerable<DroneToList> DroneList = bL.GetListToList<IDal.DO.Drone, DroneToList>();
                     foreach (DroneToList drone in DroneList)
                     {
                         Console.WriteLine(drone);
                     }
                     break;
                 case 3:
-                    IEnumerable<CustomerToList> CustomerList = bL.GetCustomers();
+                    IEnumerable<CustomerToList> CustomerList =bL.GetListToList<IDal.DO.Customer, CustomerToList>();
                     foreach (CustomerToList customer in CustomerList)
                     {
                         Console.WriteLine(customer);
                     }
                     break;
                 case 4:
-                    IEnumerable<ParcelToList> ParcelList = bL.GetParcels();
+                    IEnumerable<ParcelToList> ParcelList = bL.GetListToList<IDal.DO.Parcel, ParcelToList>();
                     foreach (ParcelToList parcel in ParcelList)
                     {
                         Console.WriteLine(parcel);

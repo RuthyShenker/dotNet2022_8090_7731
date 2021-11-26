@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IDal.DO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace ConsoleUI_BL
         //    }
         //    return number;
         //}
-        public static string InputIdCustomerValidity()
+        public static int InputIdCustomerValidity()
         {
             string number = Console.ReadLine();
             while (number.Length != 9||!number.All(c=>char.IsDigit(c)))
@@ -37,13 +38,13 @@ namespace ConsoleUI_BL
                 Console.WriteLine("Id Of Customer is not valid ,please enter again");
                 number = Console.ReadLine();
             }
-            return number;
+            return int.Parse(number);
         }
         public static string InputNameValidity()
         { 
             string name=null;
-            name = Console.ReadLine();
-            while (!OnlyChars(Console.ReadLine()))
+           
+            while (!OnlyChars(name=Console.ReadLine()))
             {
                 Console.WriteLine("name is not valid ,please enter again");
             }
@@ -119,7 +120,7 @@ namespace ConsoleUI_BL
         /// <param name="input"></param>
         public static int InputValidWeightCategories()
         {
-            int input = int.Parse(Console.ReadLine());
+            int input;
             while (!int.TryParse(Console.ReadLine(), out input) || input < 0 || input >= typeof(IBL.BO.WeightCategories).GetFields().Length)
             {
                 Console.WriteLine("Weight is not valid !, please enter again");
@@ -144,7 +145,7 @@ namespace ConsoleUI_BL
         public static void InputValidUrgencyStatuses(out int input)
         {
             bool check = int.TryParse(Console.ReadLine(), out input);
-            while (!check || input < 0 || input > Enum.GetNames(typeof(UrgencyStatuses)).Length)
+            while (!check || input < 0 || input > typeof(UrgencyStatuses).GetFields().Length)
             {
                 Console.WriteLine("Invalid input!, please enter again");
                 check = int.TryParse(Console.ReadLine(), out input);
@@ -174,6 +175,7 @@ namespace ConsoleUI_BL
             {
                 Console.WriteLine("Invalid input!, please enter again");
             }
+            return num;
         }
 
     }

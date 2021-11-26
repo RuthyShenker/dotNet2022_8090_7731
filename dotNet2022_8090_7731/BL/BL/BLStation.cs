@@ -46,27 +46,27 @@ namespace BL
         {
             var nLocation = new Location(station.Longitude, station.Latitude);
             var numAvailablePositions = station.NumberOfChargingPositions - MountOfFullPositions(nLocation);
-            var chargingDroneBList = ChargingDroneBLList();
+            var chargingDroneBList = ChargingDroneBLList(station.Id);
             return new Station(station.Id, station.NameStation, nLocation, numAvailablePositions, chargingDroneBList);
         }
 
-        public IEnumerable<Station> AvailableSlots()
+        public IEnumerable<StationToList> AvailableSlots()
         {
-            var stationsDList = dal.AvailableSlots();
-            var stationBList = new List<Station>();
-            foreach (dynamic station in stationsDList)
+            var stationsDalList = dal.AvailableSlots();
+            var stationBalList = new List<StationToList>();
+            foreach (var station in stationsDalList)
             {
-                stationBList.Add(convertToBL(station));
+                stationBalList.Add(ConvertToList(station));
             }
-            return stationBList;
+            return stationBalList;
         }
 
 
         // returns a new list of charging drone of BL
-        private List<ChargingDrone> ChargingDroneBLList()
+        private List<ChargingDrone> ChargingDroneBLList(int sId)
         {
             var chargingDroneBLList = new List<ChargingDrone>();
-            var chargingDroneDalList =dal.ChargingDroneList();
+            var chargingDroneDalList =dal.GetChargingDrones().Where(charge=>charge.StationId==sId);
             var chargingDrone= new ChargingDrone();
             foreach (var chargingPosition in chargingDroneDalList)
 	        {

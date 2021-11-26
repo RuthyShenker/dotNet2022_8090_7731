@@ -37,6 +37,11 @@ namespace DalObject
             ChargingDroneList.Add(new ChargingDrone(dId, sId));
         }
 
+        public IEnumerable<ChargingDrone> GetChargingDrones()
+        {
+            return new List<ChargingDrone>(ChargingDroneList);
+        }
+
 
         /// <summary>
         ///A function that gets an integer that means a new status and Id of drone and 

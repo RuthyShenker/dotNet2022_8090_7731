@@ -61,7 +61,7 @@ namespace IDal
         bool ThereAreFreePositions(int sId);
         int SumOfDronesInSpecificStation(int sId);
         bool ExistsInCustomerList(int cId);
-
+        IEnumerable<ChargingDrone> GetChargingDrones();
 
 
         double[] PowerConsumptionRequest();

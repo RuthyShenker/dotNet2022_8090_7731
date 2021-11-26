@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,24 +19,30 @@ namespace ConsoleUI_BL
             int input;
 
             CheckValids.CheckValid(1, 4, out input);
-
-            switch (input)
+            try
             {
-                case 1:
-                    Console.WriteLine(bL.GetStation(GettingId("Base Station")));
-                    break;
-                case 2:
-                    Console.WriteLine(bL.GetDrone(GettingId("Drone")));
-                    break;
-                case 3:
-                    Console.WriteLine(bL.GetCustomer(GettingIdAsString("Customer")));
-                    break;
-                case 4:
-                    Console.WriteLine(bL.GetParcel(GettingId("Parcel")));
-                    break;
-                default:
-                    break;
+                switch (input)
+                {
+                    case 1:
+                        Console.WriteLine(bL.GetBLById<IDal.DO.BaseStation, IBL.BO.Station>(GettingId("Base Station")));
+                        break;
+                    case 2:
+                        Console.WriteLine(bL.GetBLById<IDal.DO.Drone, IBL.BO.Drone>(GettingId("Drone")));
+                        break;
+                    case 3:
+                        Console.WriteLine(bL.GetBLById<IDal.DO.Customer, IBL.BO.Customer>(GettingId("Customer")));
+                        break;
+                    case 4:
+                        Console.WriteLine(bL.GetBLById<IDal.DO.Parcel, IBL.BO.Parcel>(GettingId("Parcel")));
+                        break;
+                    default:
+                        break;
 
+                }
+            }
+            catch (IdNotExistInTheListException exception )
+            {
+                Console.WriteLine(exception.Message);
             }
         }
     }

@@ -12,12 +12,12 @@ namespace IBL.BO
         {
         }
 
-        public ChargingDrone(int droneId,float batteryStatus)
+        public ChargingDrone(int droneId,double batteryStatus)
         {
             DroneId = droneId;
             BatteryStatus = batteryStatus;
         }
         public int DroneId { get; set; }
-        public Double BatteryStatus { get; set; }
+        public double BatteryStatus { get; set; }
     }
 }
