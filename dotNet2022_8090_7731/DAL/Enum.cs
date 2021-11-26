@@ -21,7 +21,5 @@ namespace IDal
         /// Normal, Fast, Emergency.
         /// </summary>
         public enum UrgencyStatuses { Normal, Fast, Emergency };
-
-        public enum DroneStatus { Available, Maintenance, Delivery };
     };
 }
