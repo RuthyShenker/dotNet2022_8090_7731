@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL;
 using IDal.DO;
 using static DalObject.DataSource;
 using static DalObject.DataSource.Config;
@@ -129,7 +130,14 @@ namespace DalObject
 
         public T GetFromDalById<T>(int Id) where T : IIdentifiable
         {
-            return ((List<T>)data[typeof(T)]).FirstOrDefault(item => item.Id == Id);
+            try
+            {
+                return ((List<T>)data[typeof(T)]).Find(item => item.Id == Id);
+            }
+            catch (ArgumentNullException exception)
+            {
+                throw new IdNotExistInTheListException();
+            }
         }
 
         public T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IIdentifiable

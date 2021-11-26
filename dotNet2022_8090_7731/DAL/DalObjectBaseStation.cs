@@ -102,10 +102,17 @@ namespace DalObject
             return (BaseStationList.Find(baseStation => baseStation.Id == sId).NumberOfChargingPositions - SumOfDronesInSpecificStation(sId)) > 0;
         }
 
-        void UpdateBaseStation(int bId, BaseStation baseStation)
+        public void UpdateBaseStation(int bId, BaseStation baseStation)
         {
-            BaseStationList.Remove(BaseStationList.Find(baseStation => baseStation.Id == bId));
-            BaseStationList.Add(baseStation);
+            try
+            {
+                BaseStationList.Remove(BaseStationList.Find(baseStation => baseStation.Id == bId));
+                BaseStationList.Add(baseStation);
+            }
+            catch (ArgumentNullException exception)
+            {
+                throw new IdNotExistInTheListException();
+            }
         }
 
 

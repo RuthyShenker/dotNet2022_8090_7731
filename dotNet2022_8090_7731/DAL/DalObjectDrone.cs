@@ -154,9 +154,9 @@ namespace DalObject
                 DroneList.Remove(DroneList.Find(drone => drone.Id == dId));
                 DroneList.Add(drone);
             }
-            catch ()
+            catch (ArgumentNullException exception)
             {
-
+                throw new IdNotExistInTheListException();
             }
         }
     }

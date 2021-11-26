@@ -22,7 +22,7 @@ namespace IBL
         //void ChangeDroneStatus(int Id, DroneStatus newStatus);
 
         //ChargingDrone
-        void ChargingDrone(int IdDrone);
+        void SendingDroneToCharge(int IdDrone);
 
         //void ReleasingDrone(int dId);
         //ReleasingDrone
@@ -34,9 +34,9 @@ namespace IBL
         void AddingCustomer(Customer customer);
         void AddingParcel(Parcel parcel);
         //update
-        void UpdatingDroneName(int droneId, int newModel);
-        void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions);
-        void UpdatingCustomerDetails(string customerId, string newName, string newPhone);
+        void UpdatingDroneName(int droneId, string newModel);
+        void UpdatingStationDetails(int stationId, string stationName, string amountOfPositions);
+        void UpdatingCustomerDetails(int customerId, string newName, string newPhone);
 
         // get lists
         IEnumerable<BL> GetListOfBL<DL, BL>();

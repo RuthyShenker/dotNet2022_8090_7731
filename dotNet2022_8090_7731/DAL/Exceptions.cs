@@ -8,25 +8,9 @@ namespace DAL
 {
     public class IdNotExistInTheListException : Exception
     {
-        public IdNotExistInTheListException():base()
+        public IdNotExistInTheListException() : base()
         {
 
         }
-    }
-    public class Exceptions : Exception
-    {
-
-    }
-    public class Exceptions : Exception
-    {
-
-    }
-    public class Exceptions : Exception
-    {
-
-    }
-    public class Exceptions : Exception
-    {
-
     }
 }
