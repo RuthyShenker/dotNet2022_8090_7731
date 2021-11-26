@@ -10,7 +10,7 @@ using static DalObject.DataSource.Config;
 
 namespace DalObject
 {
-    public partial class DalObjectBaseStation : IDal.IDal
+    public partial class DalObject
     /// <summary>
     /// A class that contains:
     /// Add

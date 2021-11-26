@@ -15,7 +15,7 @@ namespace IBL
         //BelongingParcel
         void BelongingParcel(int pId);
         //PickingUpParcel
-        void PickingUpParcel(int Id);
+        void PickingUpParcel(int dId);
         //אספקת חבילה
         void DeliveryPackage(int Id);
 
@@ -43,7 +43,7 @@ namespace IBL
         IEnumerable<BLToList> GetListToList<DL, BLToList>();
 
         // get specific
-        BL GetBLById<BL, DL>(int Id);
+        BL GetBLById<DL, BL>(int Id) where DL: IDal.DO.IIdentifiable;
         // GetListFromBL יש פונקציה גנרית
         // IEnumerable<StationToList> GetStations();
         // IEnumerable<DroneToList> GetDrones();

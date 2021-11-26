@@ -36,7 +36,7 @@ namespace IDal
                 SenderId = senderId;
                 GetterId = getterId;
                 Weight = weight;
-                Status = status;
+                MPriority = status;
                 DroneId = 0;
                 MakingParcel = makingParcel;
                 BelongParcel = belongParcel;
@@ -56,7 +56,7 @@ namespace IDal
                 SenderId = parcel.SenderId;
                 GetterId = parcel.GetterId;
                 Weight = parcel.Weight;
-                Status = parcel.Status;
+                MPriority = parcel.MPriority;
                 DroneId = parcel.DroneId;
                 MakingParcel = parcel.MakingParcel;
                 BelongParcel = parcel.BelongParcel;
@@ -75,7 +75,7 @@ namespace IDal
 
             public WeightCategories Weight { get; set; }
 
-            public UrgencyStatuses Status { get; set; }
+            public UrgencyStatuses MPriority { get; set; }
 
             public int DroneId { get; set; }
 
@@ -107,7 +107,7 @@ namespace IDal
             {
                 return $"Parcel Id: {Id}    SenderId: {SenderId}   " +
                     $" GetterId: {GetterId}  Parcel weight: {Weight} " +
-                    $"Priority: {Status}    DroneId: {DroneId} " +
+                    $"Priority: {MPriority}    DroneId: {DroneId} " +
                     $"Making parcel: {MakingParcel}  Belong parcel:{BelongParcel}   " +
                     $"Picking up: {PickingUp}   Arrival: {Arrival} ";
             }
@@ -124,7 +124,7 @@ namespace IDal
                     SenderId = SenderId,
                     GetterId = GetterId,
                     Weight = Weight,
-                    Status = Status,
+                    MPriority = MPriority,
                     DroneId = DroneId,
                     MakingParcel = MakingParcel,
                     BelongParcel = BelongParcel,

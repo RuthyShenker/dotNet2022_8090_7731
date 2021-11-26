@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BF8A3A7-3BAC-42C7-81C4-B267886137AD}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		BL\BL\BLParcel.cs = BL\BL\BLParcel.cs
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using static DalObject.DataSource;
 namespace DalObject
 {
-    public partial class DalObjectBaseStation
+    public partial class DalObjec
     {
 
         /// <summary>

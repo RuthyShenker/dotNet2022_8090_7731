@@ -10,7 +10,7 @@ using DAL;
 
 namespace DalObject
 {
-    public partial class DalObjectBaseStation
+    public partial class DalObject
     {
         public Drone this[int id]
         {

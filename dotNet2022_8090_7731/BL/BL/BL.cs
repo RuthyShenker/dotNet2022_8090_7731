@@ -202,69 +202,44 @@ namespace BL
             return new DroneInParcel(Id, drone.BatteryStatus, drone.CurrLocation);
         }
 
-
-
-
-        //// לא למחוק 
-        ////לא עובד  
-        //public BL GetBLById<BL,DL>(int Id)where DL:IDal.DO.IIdentifiable
-        //{
-        //    var wanted = dal.GetFromDalById<DL>(Id);
-        //    return convertToBL(wanted);
-        //}
+        public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable
+        {
+            dynamic wanted = dal.GetFromDalById<DL>(Id);
+            return convertToBL(wanted);
+        }
+        
         // מחזיר רשימה BL
         //  BLל DAL משתמש בפונקציה שממירה 
-        public IEnumerable<BL> GetListFromBL<BL,DL>()
+        public IEnumerable<BL> GetListOfBL<DL, BL>()
         {
-            BL blList = new List<BL>();
+            var bLList = new List<BL>();
             var dalList = dal.GetListFromDal<DL>();
-            foreach (DL dlItem in dalList)
+            foreach (dynamic dlItem in dalList)
             {
-                var blItem = ConvertToBL((DL)dlItem);
+                var blItem = ConvertToBL(dlItem);
                 bLList.Add(blItem);
             }
             return bLList;
         }
-        public IEnumerable<> ConvertToBLi()
-        {
-
-        }
-
-        // לא למחוק
-        //// לא עובד
-        //// מחזיר רשימה BL
-        ////  BLל DAL משתמש בפונקציה שממירה 
-        //public IEnumerable<BL> GetListOfBL<DL, BL>()
-        //{
-        //    var bLList = new List<BL>();
-        //    var dalList = dal.GetListFromDal<DL>();
-        //    foreach (DL dlItem in dalList)
-        //    {
-        //        var blItem = ConvertToBL(dlItem);
-        //        bLList.Add(blItem);
-        //    }
-        //    return bLList;
-        //}
         // להחליף את שם הפונקציה למשהו ברור פליז
         // פונקציה גנרית
         // מקבל סוג אוביקט DL
         // מחזיר רשימה מסוג מתאים BLToList
-        // משתמש במילון 
         // ממיר לכל אוביקט עי פונקציה שממירה - ConvertToList
-        //public IEnumerable<BLToList> GetListToList<DL, BLToList>()
-        //{
-        //    if (typeof( BLToList)==typeof( Drone))
-        // {
-        //         return lDroneToList;
-        // }
-        //    var dalList = dal.GetListFromDal<DL>();
-        //    var listToList = new List<DL>();
-        //    foreach (DL dalItem in dalList)
-        //    {
-        //        var blToListItem = ConvertToList(dalItem);
-        //        listToList.Add(blToListItem);
-        //    }
-        //    return listToList;
-        //}
+        public IEnumerable<BLToList> GetListToList<DL, BLToList>()
+        {
+            if (typeof(BLToList) == typeof(Drone))
+            {
+                return (IEnumerable<BLToList>)lDroneToList;
+            }
+            var dalList = dal.GetListFromDal<DL>();
+            var listToList = new List<BLToList>();
+            foreach (dynamic dalItem in dalList)
+            {
+                var blToListItem = ConvertToList(dalItem);
+                listToList.Add(blToListItem);
+            }
+            return listToList;
+        }
     }
 }

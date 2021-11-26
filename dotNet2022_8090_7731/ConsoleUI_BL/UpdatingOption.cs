@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleUI_BL
 {
+    // gettingId לבדוק מס ספרות לקלט
     partial class Program
     {
         private static void UpdatingOption()

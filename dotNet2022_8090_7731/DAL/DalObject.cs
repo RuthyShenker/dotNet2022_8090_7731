@@ -118,7 +118,10 @@ namespace DalObject
             }
             return false;
         }
-       
+        public bool IsIdExistInList<T>(int Id) where T : IIdentifiable
+        {
+            return ((List<T>)data[typeof(T)]).Any(item => item.Id == Id);
+        }
         public void AddDroneToCharge(int dId, int sId)
        {
             ChargingDroneList.Add(new ChargingDrone(dId,sId));
@@ -133,7 +136,10 @@ namespace DalObject
         {
             return ((List<T>)data[typeof(T)]).Find(predicate);
         }
-       
+        public IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IIdentifiable
+        {
+            return ((List<T>)data[typeof(T)]).FindAll(predicate);
+        }
         IEnumerable<T> GetListFromDal<T>() where T:IIdentifiable
         {
             return (IEnumerable<T>)data[typeof(T)];

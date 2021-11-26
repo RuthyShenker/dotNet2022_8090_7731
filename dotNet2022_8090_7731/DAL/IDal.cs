@@ -16,9 +16,9 @@ namespace IDal
         void AddingDrone(Drone drone);
         void AddingCustomer(Customer customer);
         void AddingParcel(Parcel parcel);
-        void BelongingParcel(int pId);
+        void BelongingParcel(Parcel parcel, int dId);
         void PickingUpParcel(int Id);
-        void DeliveryPackage(int Id);
+        void ProvidePackage(int Id);
         void ChargingDrone(int IdDrone);
         void ReleasingDrone(int dId);
 
@@ -40,8 +40,11 @@ namespace IDal
 
         T GetFromDalById<T>(int Id) where T : IIdentifiable;
         T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IIdentifiable;
+        IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IIdentifiable;
 
         bool IsExistInList<T>(List<T> list, Predicate<T> predicate);
+
+        bool IsIdExistInList<T>(int Id) where T : IIdentifiable;
 
         IEnumerable<T> GetListFromDal<T>();
        

@@ -10,37 +10,114 @@ namespace BL
     partial class BL
     {
 
-       /* //יש גנרי
-        public IEnumerable<ParcelToList> GetParcels()
-        {
-            IEnumerable<ParcelToList> bParcelList = new List<ParcelToList>();
-            List<IDal.DO.Parcel> dParcelList = GetList<IDal.DO.Parcel>();
-            //IEnumerable<IDal.DO.Parcel> dParcelList = dal.GetParcels();
-            foreach (var parcel in dParcelList)
-            {
-                bParcelList.Add(MapToList(parcel));
-            }
-            return bParcelList;
-        }*/
+        /* //יש גנרי
+         public IEnumerable<ParcelToList> GetParcels()
+         {
+             IEnumerable<ParcelToList> bParcelList = new List<ParcelToList>();
+             List<IDal.DO.Parcel> dParcelList = GetList<IDal.DO.Parcel>();
+             //IEnumerable<IDal.DO.Parcel> dParcelList = dal.GetParcels();
+             foreach (var parcel in dParcelList)
+             {
+                 bParcelList.Add(MapToList(parcel));
+             }
+             return bParcelList;
+         }*/
 
         public void AddingParcel(Parcel newParcel)
         {
             newParcel.MakingParcel = DateTime.Now;
             IDal.DO.Parcel parcel = new IDal.DO.Parcel()
-            {   Id =dal.PickingUpAndReturnIndexParcel(),
+            {
+                Id = dal.PickingUpAndReturnIndexParcel(),
                 SenderId = newParcel.Sender.Id,
                 GetterId = newParcel.Getter.Id,
                 Weight = newParcel.Weight,
-                Status = (IDal.DO.UrgencyStatuses)newParcel.MPriority,
+                MPriority = (IDal.DO.UrgencyStatuses)newParcel.MPriority,
                 DroneId = 0,
                 MakingParcel = DateTime.Now,
-                BelongParcel =null,
+                BelongParcel = null,
                 PickingUp = null,
                 Arrival = null
             };
 
             dal.AddingParcel(parcel);
         }
+
+        public void PickingUpParcel(int dId)
+        {
+            try
+            {
+                lDroneToList.Exists(drone => drone.Id == dId);
+            }
+            catch (ArgumentNullException)
+            {
+                throw // ID isnt exist
+            }
+            try
+            {
+                var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
+                bool pickedUp = false;
+                foreach (var parcel in parcels)
+                {
+                    if (parcel.PickingUp == null)
+                    {
+                        var drone = lDroneToList.Find(drone => drone.Id == dId);
+                        Location senderLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
+                        drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, senderLocation));
+                        drone.CurrLocation = senderLocation;
+                        // לא היה כתוב לשנות status
+                        drone.DStatus = DroneStatus.Delivery;
+                        dal.PickingUpParcel(parcel.Id);
+                        pickedUp = true;
+                    }
+                }
+                if (!pickedUp)
+                {
+                    throw // חבילות כבר נאספו
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                throw;// שום חבילה לא משויכת לרחפן זה
+            }
+        }
+
+        public void DeliveryPackage(int dId)
+        {
+            bool deliveryed = false;
+            try
+            {
+                lDroneToList.Exists(drone => drone.Id == dId);
+            }
+            catch (ArgumentNullException)
+            {
+                throw // ID isnt exist
+            }
+            try
+            {
+                var drone = lDroneToList.Find(drone => drone.Id == dId);
+            }
+            var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
+            
+            foreach (var parcel in parcels)
+            {
+                if (parcel.PickingUp != null && parcel.Arrival == null)
+                {
+                    Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.GetterId).CLocation;
+                    drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, getterLocation));
+                    drone.CurrLocation = getterLocation;
+                    drone.DStatus = DroneStatus.Free;
+                    dal.ProvidePackage(parcel.Id);
+                    deliveryed = true;
+                }
+            }
+            if (!deliveryed)
+            {
+                throw// parcels status isnnt match
+            }
+
+        }
+
 
         /// <summary>
         /// return a list of unbelong parcels
@@ -51,9 +128,9 @@ namespace BL
             var unbelongParcelsList = dal.GetUnbelongParcels();
             var bParcelList = new List<ParcelToList>();
             foreach (var parcel in unbelongParcelsList)
-	        {
-               bParcelList.Add(ConvertToList(parcel));
-	        }
+            {
+                bParcelList.Add(ConvertToList(parcel));
+            }
             return bParcelList;
         }
 
@@ -66,7 +143,7 @@ namespace BL
             //nParcel.SenderName = customerDalList.First(customer => customer.Id == parcel.SenderId).Name;
             //nParcel.GetterName = customerDalList.First(customer => customer.Id == parcel.GetterId).Name;
             nParcel.Weight = parcel.Weight;
-            nParcel.MyPriority = parcel.Status;
+            nParcel.MyPriority = parcel.MPriority;
             nParcel.Status = GetParcelStatus(parcel);
             return nParcel;
         }
@@ -76,7 +153,7 @@ namespace BL
             var sender = NewCustomerInParcel(parcel.SenderId);
             var getter = NewCustomerInParcel(parcel.GetterId);
             var dInParcel = NewDroneInParcel(parcel.DroneId);
-            return new Parcel( parcel.Id, sender, getter,  parcel.Weight, parcel.Status, dInParcel, parcel.MakingParcel,
+            return new Parcel(parcel.Id, sender, getter, parcel.Weight, parcel.MPriority, dInParcel, parcel.MakingParcel,
                 parcel.BelongParcel, parcel.PickingUp, parcel.Arrival);
         }
 
