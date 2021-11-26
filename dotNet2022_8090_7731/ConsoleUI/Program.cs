@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            IDal.IDal dalObject = new DalObject.DalObjectBaseStation();
+            //IDal.IDal dalObject = new DalObject.DalObjectBaseStation();
         }
     }
 }

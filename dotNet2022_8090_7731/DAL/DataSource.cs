@@ -114,27 +114,27 @@ namespace DalObject
         //        BaseStationList.Add(fillBaseStation);
         //    }
 
-<<<<<<< HEAD
-            Parcel fillParcel ;
-            for (int i = 0; i < INITIALIZE_PARCEL; ++i)
-            {
-                fillParcel = new Parcel() { Id = ++Config.IndexParcel };
-                fillParcel.SenderId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
-                do
-                {
-                    fillParcel.GetterId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
-                } while (fillParcel.GetterId == fillParcel.SenderId);
-                fillParcel.Weight = (WeightCategories)Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
-                fillParcel.Status = (UrgencyStatuses)Rand.Next(0, Enum.GetNames(typeof(UrgencyStatuses)).Length);
-                fillParcel.DroneId = availableDrone(); 
-                fillParcel.MakingParcel = DateTime.Now;
-                fillParcel.BelongParcel = fillParcel.DroneId == 0 ? new DateTime():DateTime.Now;
-                fillParcel.PickingUp = fillParcel.DroneId == 0 ?new DateTime(): fillParcel.BelongParcel.AddDays(Rand.Next(0, 11));
-                //fillParcel.Arrival = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.PickingUp.AddDays(rand.Next(0, 11));
-                ParceList.Add(fillParcel);
-            }
-        }
-=======
+
+        //    Parcel fillParcel ;
+        //    for (int i = 0; i < INITIALIZE_PARCEL; ++i)
+        //    {
+        //        fillParcel = new Parcel() { Id = ++Config.IndexParcel };
+        //        fillParcel.SenderId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
+        //        do
+        //        {
+        //            fillParcel.GetterId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
+        //        } while (fillParcel.GetterId == fillParcel.SenderId);
+        //        fillParcel.Weight = (WeightCategories)Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
+        //        fillParcel.Status = (UrgencyStatuses)Rand.Next(0, Enum.GetNames(typeof(UrgencyStatuses)).Length);
+        //        fillParcel.DroneId = availableDrone(); 
+        //        fillParcel.MakingParcel = DateTime.Now;
+        //        fillParcel.BelongParcel = fillParcel.DroneId == 0 ? new DateTime():DateTime.Now;
+        //        fillParcel.PickingUp = fillParcel.DroneId == 0 ?new DateTime(): fillParcel.BelongParcel.AddDays(Rand.Next(0, 11));
+        //        //fillParcel.Arrival = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.PickingUp.AddDays(rand.Next(0, 11));
+        //        ParceList.Add(fillParcel);
+        //    }
+        //}
+
         //    Parcel fillParcel ;
         //    for (int i = 0; i < INITIALIZE_PARCEL; ++i)
         //    {
@@ -154,7 +154,7 @@ namespace DalObject
         //        ParceList.Add(fillParcel);
         //    }
         //}
->>>>>>> b0b8e234a79098bf1379a2a177505eff6cf6f12b
+
 
         //private static int availableDrone()
         //{

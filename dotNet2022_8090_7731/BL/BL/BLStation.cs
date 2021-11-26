@@ -10,20 +10,20 @@ namespace BL
 {
     partial class BL
     {
-        public IEnumerable<StationToList> GetStations()
-        {
-            //
-            return GetBList<StationToList, IDal.DO.BaseStation>(MapStation);
+        //public IEnumerable<StationToList> GetStations()
+        //{
+        //    //
+        //    //return GetBList<StationToList, IDal.DO.BaseStation>(MapStation);
 
-            //IEnumerable<StationToList> bStationsList = new List<StationToList>();
-            //List<IDal.DO.Station> dStationsList = GetList<IDal.DO.BaseStation>();
-            ////IEnumerable<IDal.DO.Station> dParcelList = dal.GetStations();
-            //foreach (var station in dStationsList)
-            //{
-            //    bStationsList.Add(MapToList(station));
-            //}
-            //return bStationsList;
-        }
+        //    //IEnumerable<StationToList> bStationsList = new List<StationToList>();
+        //    //List<IDal.DO.Station> dStationsList = GetList<IDal.DO.BaseStation>();
+        //    ////IEnumerable<IDal.DO.Station> dParcelList = dal.GetStations();
+        //    //foreach (var station in dStationsList)
+        //    //{
+        //    //    bStationsList.Add(MapToList(station));
+        //    //}
+        //    //return bStationsList;
+        //}
         public void UpdatingStationDetails(int stationId, string stationName, string amountOfPositions)
         {
             try
@@ -36,7 +36,7 @@ namespace BL
                     baseStation.NumberOfChargingPositions = int.Parse(amountOfPositions);
                 dal.UpdateBaseStation(stationId, baseStation);
             }
-            catch (IdNotExistInTheListException exception)
+            catch (IdNotExistInTheListException )
             {
                 throw new IdIsNotValidException("Id of this base station doesn't " +
                     "exist in the base station list!!");
@@ -67,7 +67,7 @@ namespace BL
         private List<ChargingDrone> ChargingDroneBLList()
         {
             var chargingDroneBLList = new List<ChargingDrone>();
-            var chargingDroneDalList = dal.ChargingDroneList();
+            var chargingDroneDalList = dal.ChargingDrone();
             var chargingDrone= new ChargingDrone();
             foreach (var chargingPosition in chargingDroneDalList)
 	        {
@@ -91,7 +91,7 @@ namespace BL
             StationToList nStation = new StationToList();
             nStation.Id = station.Id;
             nStation.Name = station.NameStation;
-            nStation.FullPositions = MountOfFullPositions(new Location(station.logitude, station.latitude));
+            nStation.FullPositions = MountOfFullPositions(new Location(station.Longitude, station.Latitude));
             nStation.AvailablePositions = station.NumAvailablePositions - nStation.FullPositions;
             return nStation;
         }
@@ -101,7 +101,7 @@ namespace BL
             int sumFullPositions = 0;
             foreach (var drone in lDroneToList)
             {
-                if (drone.DStatus == Maintance && equalLocations(drone.CurrLocation, stationLocation))
+                if (drone.DStatus == DroneStatus.Maintenance && equalLocations(drone.CurrLocation, stationLocation))
                 {
                     ++sumFullPositions;
                 }
@@ -140,7 +140,7 @@ namespace BL
             {
                 throw new IdIsNotValidException("The id is already exists in the base station list!");
             }
-            BaseStation station = new BaseStation() {
+            IDal.DO.BaseStation station = new IDal.DO.BaseStation() {
             Id = bLStation.Id,
             Latitude = bLStation.SLocation.Latitude,
             Longitude = bLStation.SLocation.Longitude,

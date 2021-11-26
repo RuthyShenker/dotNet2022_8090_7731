@@ -53,7 +53,7 @@ namespace BL
             }
             catch (ArgumentNullException)
             {
-                throw // ID isnt exist
+                throw; // ID isnt exist
             }
             try
             {
@@ -75,7 +75,7 @@ namespace BL
                 }
                 if (!pickedUp)
                 {
-                    throw // חבילות כבר נאספו
+                    throw new Exception(); // חבילות כבר נאספו
                 }
             }
             catch (ArgumentNullException)
@@ -90,32 +90,30 @@ namespace BL
             try
             {
                 lDroneToList.Exists(drone => drone.Id == dId);
+                var drone = lDroneToList.Find(drone => drone.Id == dId);
+
+                var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
+
+                foreach (var parcel in parcels)
+                {
+                    if (parcel.PickingUp != null && parcel.Arrival == null)
+                    {
+                        Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.GetterId).CLocation;
+                        drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, getterLocation));
+                        drone.CurrLocation = getterLocation;
+                        drone.DStatus = DroneStatus.Free;
+                        dal.ProvidePackage(parcel.Id);
+                        deliveryed = true;
+                    }
+                }
+                if (!deliveryed)
+                {
+                    throw new Exception();// parcels status isnnt match
+                }
             }
             catch (ArgumentNullException)
             {
-                throw // ID isnt exist
-            }
-            try
-            {
-                var drone = lDroneToList.Find(drone => drone.Id == dId);
-            }
-            var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
-            
-            foreach (var parcel in parcels)
-            {
-                if (parcel.PickingUp != null && parcel.Arrival == null)
-                {
-                    Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.GetterId).CLocation;
-                    drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, getterLocation));
-                    drone.CurrLocation = getterLocation;
-                    drone.DStatus = DroneStatus.Free;
-                    dal.ProvidePackage(parcel.Id);
-                    deliveryed = true;
-                }
-            }
-            if (!deliveryed)
-            {
-                throw// parcels status isnnt match
+                throw; // ID isnt exist
             }
 
         }
@@ -140,12 +138,12 @@ namespace BL
         {
             ParcelToList nParcel = new ParcelToList();
             nParcel.Id = parcel.Id;
-            nParcel.SenderName = dal.GetFromDalById<Customer>(parcel.SenderId).Name;
-            nParcel.GetterName = Extensions.GetById<Customer>(parcel.GetterId).Name;
+            nParcel.SenderName = dal.GetFromDalById<IDal.DO.Customer>(parcel.SenderId).Name;
+            nParcel.GetterName = dal.GetFromDalById<IDal.DO.Customer>(parcel.GetterId).Name; /*Extensions.GetById<Customer>(parcel.GetterId).Name;*/
             //nParcel.SenderName = customerDalList.First(customer => customer.Id == parcel.SenderId).Name;
             //nParcel.GetterName = customerDalList.First(customer => customer.Id == parcel.GetterId).Name;
             nParcel.Weight = parcel.Weight;
-            nParcel.MyPriority = parcel.MPriority;
+            nParcel.MyPriority = (Priority)parcel.MPriority;
             nParcel.Status = GetParcelStatus(parcel);
             return nParcel;
         }
@@ -155,11 +153,11 @@ namespace BL
             var sender = NewCustomerInParcel(parcel.SenderId);
             var getter = NewCustomerInParcel(parcel.GetterId);
             var dInParcel = NewDroneInParcel(parcel.DroneId);
-            return new Parcel(parcel.Id, sender, getter, parcel.Weight, parcel.MPriority, dInParcel, parcel.MakingParcel,
+            return new Parcel(sender.Id, getter.Id, parcel.Weight, parcel.MPriority, dInParcel, parcel.MakingParcel,
                 parcel.BelongParcel, parcel.PickingUp, parcel.Arrival);
         }
 
-        private ParcelStatus GetParcelStatus(Parcel parcel)
+        private ParcelStatus GetParcelStatus(IDal.DO.Parcel parcel)
         {
             if (parcel.Arrival.HasValue)
             {
