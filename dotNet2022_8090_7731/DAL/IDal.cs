@@ -30,7 +30,6 @@ namespace IDal
         //Drone GetDrone(int Id);
         //Customer GetCustomer(string Id);
         //Parcel GetParcel(int Id);
-        int PickingUpAndReturnIndexParcel();
 
         // GetListFromDal
         //IEnumerable<BaseStation> GetBaseStations();
