@@ -57,6 +57,7 @@ namespace BL
                             ++nCustomer.InWayToCustomer;
                             break;
                     }
+
                 }
             }
             return nCustomer;
