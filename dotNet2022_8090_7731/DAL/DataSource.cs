@@ -55,6 +55,7 @@ namespace DalObject
         };
 
 
+
         /// <summary>
         /// A class Config that contains :
         /// IndexParcel

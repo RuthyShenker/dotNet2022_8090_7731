@@ -73,7 +73,7 @@ namespace DalObject
             {
                 return ((List<T>)data[typeof(T)]).Find(item => item.Id == Id);
             }
-            catch (ArgumentNullException exception)
+            catch (ArgumentNullException)
             {
                 throw new IdNotExistInTheListException();
             }
@@ -85,11 +85,11 @@ namespace DalObject
         }
         public IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IIdentifiable
         {
-            return ((List<T>)data[typeof(T)]).FindAll(predicate);
+            return new List<T>(((List<T>)data[typeof(T)]).FindAll(predicate));
         }
         public IEnumerable<T> GetListFromDal<T>() where T:IIdentifiable
         {
-            return (IEnumerable<T>)data[typeof(T)];
+            return new List<T>((IEnumerable<T>)data[typeof(T)]);
         }
 
         public bool IsExistInList<T>(List<T> list, Predicate<T> predicate)
