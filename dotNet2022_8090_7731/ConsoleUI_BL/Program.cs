@@ -12,8 +12,8 @@ namespace ConsoleUI_BL
             
             while ((Enum.ProgramOptions)input != Enum.ProgramOptions.Exit)
             {
-                Console.WriteLine
-                  ($"\nTap the desired option:\n" +
+                Console.WriteLine(
+                  $"\nTap the desired option:\n" +
                   $"1 - Adding\n" +
                   $"2 - Updating\n" +
                   $"3 - Displaying a specific item\n" +

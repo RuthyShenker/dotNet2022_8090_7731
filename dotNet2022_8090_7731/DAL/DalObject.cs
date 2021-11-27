@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL;
 using IDal.DO;
+using IDAL.DO;
 using static DalObject.DataSource;
-using static DalObject.DataSource.Config;
 
 namespace DalObject
 {
@@ -41,23 +40,23 @@ namespace DalObject
         //}
 
        
-        /// <summary>
-        /// A function that gets an id of base station and returns this base station-copied.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>a base station </returns>
-        /// 
-        public BaseStation BaseStationDisplay(int id)
-        {
-            for (int i = 0; i < BaseStationList.Count; i++)
-            {
-                if (BaseStationList[i].Id == id)
-                {
-                    return BaseStationList[i].Clone();
-                }
-            }
-            throw new Exception("id doesnt exist");
-        }
+        ///// <summary>
+        ///// A function that gets an id of base station and returns this base station-copied.
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns>a base station </returns>
+        ///// 
+        //public BaseStation BaseStationDisplay(int id)
+        //{
+        //    for (int i = 0; i < BaseStationList.Count; i++)
+        //    {
+        //        if (BaseStationList[i].Id == id)
+        //        {
+        //            return BaseStationList[i].Clone();
+        //        }
+        //    }
+        //    throw new Exception("id doesnt exist");
+        //}
 
         public bool IsIdExistInList<T>(int Id) where T : IIdentifiable
         {

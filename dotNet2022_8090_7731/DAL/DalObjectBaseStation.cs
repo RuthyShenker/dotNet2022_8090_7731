@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL;
 using IDal.DO;
+using IDAL.DO;
 using static DalObject.DataSource;
 using static DalObject.DataSource.Config;
 
@@ -43,32 +43,32 @@ namespace DalObject
             BaseStationList.Add(baseStation);
         }
 
-        /// <summary>
-        /// A function that gets an id of base station and returns this base station-copied.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>a base station </returns>
-        /// 
-        public BaseStation GetBaseStation(int id)
-        {
-            for (int i = 0; i < BaseStationList.Count; i++)
-            {
-                if (BaseStationList[i].Id == id)
-                {
-                    return BaseStationList[i].Clone();
-                }
-            }
-            throw new IdNotExistInTheListException();
-        }
+        ///// <summary>
+        ///// A function that gets an id of base station and returns this base station-copied.
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns>a base station </returns>
+        ///// 
+        //public BaseStation GetBaseStation(int id)
+        //{
+        //    for (int i = 0; i < BaseStationList.Count; i++)
+        //    {
+        //        if (BaseStationList[i].Id == id)
+        //        {
+        //            return BaseStationList[i].Clone();
+        //        }
+        //    }
+        //    throw new IdNotExistInTheListException();
+        //}
 
-        /// <summary>
-        /// A function that returns the list of the base stations 
-        /// </summary>
-        /// <returns> base station list</returns>
-        public IEnumerable<BaseStation> GetBaseStations()
-        {
-            return BaseStationList.Select(station => new BaseStation(station)).ToList();
-        }
+        ///// <summary>
+        ///// A function that returns the list of the base stations 
+        ///// </summary>
+        ///// <returns> base station list</returns>
+        //public IEnumerable<BaseStation> GetBaseStations()
+        //{
+        //    return BaseStationList.Select(station => new BaseStation(station)).ToList();
+        //}
 
         /// <summary>
         /// A function that returns copy base stations that they have available charging positions.
@@ -76,12 +76,11 @@ namespace DalObject
         /// <returns>list of base stations that they have available charging positions</returns>
         public IEnumerable<BaseStation> AvailableSlots()
         {
-            return BaseStationList.Where(BaseStation => BaseStation.NumberOfChargingPositions > 0).ToList();
+            return new List<BaseStation>(BaseStationList.Where(BaseStation => BaseStation.NumberOfChargingPositions > 0).ToList());
+
+
+            //צריך גםTOLISTוגם NEW LIST??????
         }
-
-
-
-
         public bool ExistsInBaseStation(int id)
         {
             for (int i = 0; i < BaseStationList.Count; i++)

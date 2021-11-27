@@ -55,7 +55,8 @@ namespace BL
         private DroneToList ConvertToList(IDal.DO.Drone drone)
         {
             DroneToList nDrone = copyCommon(drone);
-            var parcel = dal.GetListFromDal<IDal.DO.Parcel>().FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
+            var parcel = dal.GetListFromDal<IDal.DO.Parcel>().
+                FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
             if (!parcel.Equals(default(IDal.DO.Parcel)))
             {
                 if (lDroneToList.Count != 0 && dal.IsExistInList(lDroneToList, drone => drone.Id == parcel.DroneId))
@@ -209,8 +210,8 @@ namespace BL
         public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable
         {
             dynamic wantedDal = dal.GetFromDalById<DL>(Id);
-            Console.WriteLine(wantedDal);
-            BL wantedBl = ConvertToBL(wantedDal);
+
+            BL wantedBl= ConvertToBL(wantedDal);
             return wantedBl;
         }
         

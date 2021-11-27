@@ -6,24 +6,24 @@ using System.Threading.Tasks;
 using static DalObject.DataSource.Config;
 using IDal.DO;
 using static DalObject.DataSource;
-using DAL;
+using IDAL.DO;
 
 namespace DalObject
 {
     public partial class DalObject
     {
-        public Drone this[int id]
-        {
-            //set
-            //{
-            //   Drone drone= DroneList.First(drone => drone.Id == id);
-            //   drone
-            //}
-            get
-            {
-                return DroneList.First(drone => drone.Id == id);
-            }
-        }
+        //public Drone this[int id]
+        //{
+        //    //set
+        //    //{
+        //    //   Drone drone= DroneList.First(drone => drone.Id == id);
+        //    //   drone
+        //    //}
+        //    get
+        //    {
+        //        return DroneList.First(drone => drone.Id == id);
+        //    }
+        //}
         /// <summary>
         /// A function that gets a Drone and adds it to the list of Drones.
         /// </summary>
@@ -102,41 +102,42 @@ namespace DalObject
                         break;
                     }
                 }
+                throw new ArgumentOutOfRangeException();
             }
-            catch (ArgumentOutOfRangeException exception)
+            catch(ArgumentOutOfRangeException)
             {
-
+                 throw new IdNotExistInTheListException();
             }
-            throw new IdNotExistInTheListException();
+            
         }
 
-        /// <summary>
-        /// A function that gets an id of drone and returns this drone-copied.
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public Drone GetDrone(int Id)
-        {
-            for (int i = 0; i < DroneList.Count; i++)
-            {
-                if (DroneList[i].Id == Id)
-                {
-                    return DroneList[i].Clone();
-                }
-            }
-            throw new IdNotExistInTheListException();
-            //return DroneList.First(drone => drone.Id == Id).Clone();
-        }
+        ///// <summary>
+        ///// A function that gets an id of drone and returns this drone-copied.
+        ///// </summary>
+        ///// <param name="Id"></param>
+        ///// <returns></returns>
+        //public Drone GetDrone(int Id)
+        //{
+        //    for (int i = 0; i < DroneList.Count; i++)
+        //    {
+        //        if (DroneList[i].Id == Id)
+        //        {
+        //            return DroneList[i].Clone();
+        //        }
+        //    }
+        //    throw new IdNotExistInTheListException();
+        //    //return DroneList.First(drone => drone.Id == Id).Clone();
+        //}
 
-        /// <summary>
-        /// A function that returns the list of the drones
-        /// </summary>
-        /// <returns> drone list</returns>
-        public IEnumerable<Drone> GetDrones()
-        {
-            return DroneList.Select(drone => new Drone(drone)).ToList();
+        ///// <summary>
+        ///// A function that returns the list of the drones
+        ///// </summary>
+        ///// <returns> drone list</returns>
+        //public IEnumerable<Drone> GetDrones()
+        //{
+        //    return DroneList.Select(drone => new Drone(drone)).ToList();
 
-        }
+        //}
 
         public double[] PowerConsumptionRequest() => new double[5] { available, lightWeight, mediumWeight, heavyWeight, chargingRate };
         public bool ExistsInDroneList(int id)

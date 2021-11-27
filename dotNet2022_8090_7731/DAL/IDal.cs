@@ -12,9 +12,6 @@ namespace IDal
     public interface IDal
     {
 
-        
-
-
         void AddingBaseStation(BaseStation baseStation);
         void AddingDrone(Drone drone);
         void AddingCustomer(Customer customer);
@@ -56,7 +53,6 @@ namespace IDal
         void UpdateCustomer(int cId, Customer customer);
         bool ExistsInBaseStation(int id);
         bool ExistsInDroneList(int id);
-        Drone GetDrone(int id);
         bool ExistsInParcelList(int pId);
         bool ThereAreFreePositions(int sId);
         int SumOfDronesInSpecificStation(int sId);
@@ -66,19 +62,5 @@ namespace IDal
 
         double[] PowerConsumptionRequest();
     }
-    //public abstract class IDalGeneric<T>
-    //{
-    //    List<T> _list;
-    //    public IDalGeneric()
-    //    {
-    //        _list = new List<T>();
-    //    }
-
-    //    public abstract void Add {
-    //        }
-    //    IEnumerable<T> GetList()
-    //    {
-    //        return _list.Select( item=>new T(item)).ToList();
-    //    }
-    //}
+   
 }

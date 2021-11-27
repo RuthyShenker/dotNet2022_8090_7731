@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using IDal.DO;
+using IDAL.DO;
 using static DalObject.DataSource;
 namespace DalObject
 {
@@ -61,27 +63,28 @@ namespace DalObject
             try
             {
                 ParceList.Exists(parcel => parcel.Id == pId);
+           
+                for (int i = 0; i < ParceList.Count; i++)
+                {
+                    if (ParceList[i].Id == pId)
+                    {// זה טוב או צריך להשתמש ב removeat
+                        Parcel tempParcel = ParceList[i];
+                        if (action == "pickingUp")
+                        {
+                            tempParcel.PickingUp = DateTime.Now;
+                        }
+                        else
+                        {
+                           tempParcel.Arrival = DateTime.Now;
+                        }
+                        ParceList[i] = tempParcel;
+                        break;
+                    }
+                }
             }
             catch (ArgumentNullException)
             {
-                throw new Exception(); // id isnt exist;
-            }
-            for (int i = 0; i < ParceList.Count; i++)
-            {
-                if (ParceList[i].Id == pId)
-                {// זה טוב או צריך להשתמש ב removeat
-                    Parcel tempParcel = ParceList[i];
-                    if (action == "pickingUp")
-                    {
-                        tempParcel.PickingUp = DateTime.Now;
-                    }
-                    else
-                    {
-                       tempParcel.Arrival = DateTime.Now;
-                    }
-                    ParceList[i] = tempParcel;
-                    break;
-                }
+                throw new IdNotExistInTheListException();
             }
         }
 
@@ -92,7 +95,7 @@ namespace DalObject
         /// <returns></returns>
         public IEnumerable<Parcel> GetUnbelongParcels()
         {
-            return ParceList.Where(parcel => parcel.DroneId == 0).ToList();
+            return new List<Parcel>(ParceList.Where(parcel => parcel.DroneId == 0).ToList());
         }
 
         //// יש פונקציות גנריות
@@ -125,14 +128,14 @@ namespace DalObject
         //    return ParceList.Select(parcel => new Parcel(parcel)).ToList();
         //}
 
-        /// <summary>
-        /// A function that returns the list of the parcels
-        /// </summary>
-        /// <returns> parcle list</returns>
-        public IEnumerable<Parcel> GetParcels()
-        {
-            return ParceList.Select(parcel => new Parcel(parcel)).ToList();
-        }
+        ///// <summary>
+        ///// A function that returns the list of the parcels
+        ///// </summary>
+        ///// <returns> parcle list</returns>
+        //public IEnumerable<Parcel> GetParcels()
+        //{
+        //    return ParceList.Select(parcel => new Parcel(parcel)).ToList();
+        //}
         public bool ExistsInParcelList(int pId)
         {
             for (int i = 0; i < ParceList.Count; i++)
