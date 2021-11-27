@@ -119,7 +119,7 @@ namespace BL
             {
                 throw new IdIsNotValidException("The id is already exists in the Customer List!");
             }
-            IDal.DO.Customer newCustomer = new IDal.DO.Customer()
+            IDal.DO.Customer newCustomer = new()
             {
                 Id = bLCustomer.Id,
                 Name = bLCustomer.Name,

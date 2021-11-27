@@ -27,7 +27,7 @@ namespace BL
 
         public void AddingParcel(Parcel newParcel)
         {
-            IDal.DO.Parcel parcel = new IDal.DO.Parcel()
+            IDal.DO.Parcel parcel = new()
             {
                 SenderId = newParcel.Sender.Id,
                 GetterId = newParcel.Getter.Id,

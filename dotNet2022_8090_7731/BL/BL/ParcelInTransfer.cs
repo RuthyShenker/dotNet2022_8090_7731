@@ -32,5 +32,9 @@ namespace IBL.BO
             DeliveryLocation = deliveryLocation;
             TransDistance = transDistance;
         }
+
+        public ParcelInTransfer()
+        {
+        }
     }
 }

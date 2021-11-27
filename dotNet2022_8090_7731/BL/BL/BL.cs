@@ -36,6 +36,10 @@ namespace BL
             UpdatePConsumption();
             foreach (var drone in dal.GetListFromDal<IDal.DO.Drone>())
             {
+                if (lDroneToList.Count() != 0 && dal.IsExistInList(lDroneToList, droneInList => droneInList.Id == drone.Id))
+                {
+                    lDroneToList.First(droneInList => droneInList.Id == drone.Id).NumOfParcel++;
+                }
                 lDroneToList.Add(ConvertToList(drone));
             }
         }
@@ -55,21 +59,12 @@ namespace BL
         private DroneToList ConvertToList(IDal.DO.Drone drone)
         {
             DroneToList nDrone = copyCommon(drone);
-            var parcel = dal.GetListFromDal<IDal.DO.Parcel>().
-                FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
+            var parcel = dal.GetListFromDal<IDal.DO.Parcel>().FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
             if (!parcel.Equals(default(IDal.DO.Parcel)))
             {
-                if (lDroneToList.Count != 0 && dal.IsExistInList(lDroneToList, drone => drone.Id == parcel.DroneId))
-                {
-                   lDroneToList.First(drone => drone.Id == parcel.DroneId).NumOfParcel++;
-                    return nDrone; 
-                }
-                else
-                {
-                    return CalculateDroneInDelivery(nDrone, parcel);
-                }
+               return CalculateDroneInDelivery(nDrone, parcel);
             }
-            else // בעצם זהו הcatch של where
+            else 
             {
                 nDrone.NumOfParcel = null; // אולי לא צריך שורה זו
                 return CalculateUnDeliveryingDrone(nDrone);
@@ -95,44 +90,40 @@ namespace BL
             nDrone.DStatus = DroneStatus.Delivery;
             //location
             var sender = dal.GetFromDalByCondition<IDal.DO.Customer>(customer => customer.Id == parcel.SenderId);
-            if (parcel.BelongParcel.HasValue && !parcel.PickingUp.HasValue)
+            if (parcel.BelongParcel != null && parcel.PickingUp == null)
             {
                 nDrone.CurrLocation = ClosestStation(new Location(sender.Longitude, sender.Latitude)).SLocation;
             }
-            else
+            else if (parcel.Arrival == null && parcel.PickingUp != null)
             {
                 nDrone.CurrLocation = new Location(sender.Longitude, sender.Latitude);
-                //IEnumerable bL_Customer = dal.GetSpecificItem(typeof(Customer), parcel.SenderId);
-                //droneToList.CurrLocation = bL_Customer.CLocation;
             }
             // battery Status
-            var getter = dal.GetFromDalByCondition<IDal.DO.Customer>(customer => customer.Id == parcel.GetterId);
-            Location destination = new Location(getter.Longitude, getter.Latitude);
+            Location destination = GetBLById<IDal.DO.Customer, Customer>(parcel.GetterId).CLocation;
             Location closestStation = ClosestStation(destination).SLocation;
             double distance = CalculateDistance(nDrone.CurrLocation, destination, closestStation);
             double minBattery = MinBattery(distance, (WeightCategories)parcel.Weight);
             nDrone.BatteryStatus = Rand.NextDouble() * (100 - minBattery) + minBattery;
-
             nDrone.NumOfParcel++;
             return nDrone;
         }
 
         private DroneToList CalculateUnDeliveryingDrone(DroneToList nDrone)
         {
-            nDrone.DStatus = (DroneStatus)DataSource.Rand.Next((int)DroneStatus.Free, (int)DroneStatus.Maintenance);
+            nDrone.DStatus = (DroneStatus)Rand.Next((int)DroneStatus.Free, (int)DroneStatus.Maintenance);
             if (nDrone.DStatus == DroneStatus.Maintenance)
             {
                 var stationDalList = dal.GetListFromDal<IDal.DO.BaseStation>();
-                var station = stationDalList.ElementAt(DataSource.Rand.Next(0, stationDalList.Count()));
+                var station = stationDalList.ElementAt(Rand.Next(stationDalList.Count()));
                 nDrone.CurrLocation = new Location(station.Longitude, station.Latitude);
-                nDrone.BatteryStatus = DataSource.Rand.Next(21);
+                nDrone.BatteryStatus = Rand.NextDouble() * 20;
             }
-            else /*if (droneToList.DStatus == Free)*/
+            else // droneToList.DStatus == Free
             {
                 var customersList = CustomersWithProvidedParcels();
-                nDrone.CurrLocation = customersList[DataSource.Rand.Next(customersList.Count())].CLocation;
+                nDrone.CurrLocation = customersList[Rand.Next(customersList.Count)].CLocation;
                 var closetStation = ClosestStation(nDrone.CurrLocation);
-                double distance = CalculateDistance(closetStation.SLocation, nDrone.CurrLocation);
+                double distance = CalculateDistance( nDrone.CurrLocation, closetStation.SLocation);
                 nDrone.BatteryStatus = Rand.NextDouble() * (100 - MinBattery(distance)) + MinBattery(distance);
             }
             return nDrone;
@@ -248,12 +239,6 @@ namespace BL
                 listToList.Add(blToListItem);
             }
             return listToList;
-        }
-
-        public override string ToString()
-        {
-           
-            return $"Id: {Id}   Model: {Model}    MaxWeight: {MaxWeight}    ";
         }
     }
 }
