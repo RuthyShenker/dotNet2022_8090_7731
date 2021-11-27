@@ -25,6 +25,12 @@ namespace BL
         //    //}
         //    //return bStationsList;
         //}
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="stationId"></param>
+        /// <param name="stationName"></param>
+        /// <param name="amountOfPositions"></param>
         public void UpdatingStationDetails(int stationId, string stationName, string amountOfPositions)
         {
             try
@@ -43,7 +49,11 @@ namespace BL
                     "exist in the base station list!!");
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="station"></param>
+        /// <returns></returns>
         private Station ConvertToBL(IDal.DO.BaseStation station)
         {
             var nLocation = new Location(station.Longitude, station.Latitude);
@@ -51,7 +61,10 @@ namespace BL
             var chargingDroneBList = ChargingDroneBLList(station.Id);
             return new Station(station.Id, station.NameStation, nLocation, numAvailablePositions, chargingDroneBList);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<StationToList> AvailableSlots()
         {
             var stationsDalList = dal.AvailableSlots();
@@ -65,6 +78,11 @@ namespace BL
 
 
         // returns a new list of charging drone of BL
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sId"></param>
+        /// <returns></returns>
         private List<ChargingDrone> ChargingDroneBLList(int sId)
         {
             var chargingDroneBLList = new List<ChargingDrone>();
@@ -87,6 +105,11 @@ namespace BL
         //    return new Station(station.Id, station.NameStation, nLocation, numAvailablePositions, chargingDroneBList);
         //}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="station"></param>
+        /// <returns></returns>
         private StationToList ConvertToList(IDal.DO.BaseStation station)
         {
             StationToList nStation = new StationToList();
@@ -96,7 +119,11 @@ namespace BL
             nStation.AvailablePositions = station.NumberOfChargingPositions - nStation.FullPositions;
             return nStation;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="stationLocation"></param>
+        /// <returns></returns>
         private int MountOfFullPositions(Location stationLocation)
         {
             int sumFullPositions = 0;
@@ -109,12 +136,21 @@ namespace BL
             }
             return sumFullPositions;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="location1"></param>
+        /// <param name="location2"></param>
+        /// <returns></returns>
         private bool equalLocations( Location location1, Location location2 )
         {
             return location1.Longitude == location2.Longitude && location1.Latitude == location2.Latitude;
         }
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         private Station ClosestStation(Location location)
         {
             var stationDalList = dal.GetListFromDal<IDal.DO.BaseStation>();
@@ -134,7 +170,10 @@ namespace BL
             }
             return ConvertToBL(stationDalList.ElementAt(index));
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bLStation"></param>
         public void AddingBaseStation(Station bLStation)
         {
             if (dal.ExistsInBaseStation(bLStation.Id))

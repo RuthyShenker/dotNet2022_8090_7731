@@ -15,20 +15,18 @@ namespace BL
     public partial class BL : IBL.IBL
     {
         IDal.IDal dal;
+
         List<DroneToList> lDroneToList;
 
-        // לשנות שם לכל השדות האלו המשמעות שלהם:
-        // עצמת הבטריה שרחפן צריך כאשר הוא פנוי
-        // עצמת הבטריה שרחפן צריך כאשר הוא נושא משקל קל וכו
-        // powerConsumptionFree, powerConsumptionLight, powerConsumptionMedium......
-        static double pConsumFree;
-        static double pConsumLight;
-        static double pConsumMedium;
-        static double pConsumHeavy;
+        static double powerConsumptionFree;
+        static double powerConsumptionLight;
+        static double powerConsumptionMedium;
+        static double powerConsumptionHeavy;
         /// <summary>
-        /// לשעה קצב טעינה
+        /// Charging rate per hour
         /// </summary>
         static double chargingRate;
+
         public BL()
         {
             dal = new DalObject.DalObject();
@@ -43,19 +41,33 @@ namespace BL
                 lDroneToList.Add(ConvertToList(drone));
             }
         }
-       
 
 
+        /// <summary>
+        /// A function that Pulls out from that data base the data of the fields:
+        /// powerConsumptionFree
+        //powerConsumptionLight
+        // powerConsumptionMedium
+        //powerConsumptionHeavy
+        //chargingRate
+        //this function doesn't return any thing.
+        /// </summary>
         private void UpdatePConsumption()
         {
             double[] arrPCRequest = dal.PowerConsumptionRequest();
-            pConsumFree = arrPCRequest[0];
-            pConsumLight = arrPCRequest[1];
-            pConsumMedium = arrPCRequest[2];
-            pConsumHeavy = arrPCRequest[3];
+            powerConsumptionFree = arrPCRequest[0];
+            powerConsumptionLight = arrPCRequest[1];
+            powerConsumptionMedium = arrPCRequest[2];
+            powerConsumptionHeavy = arrPCRequest[3];
             chargingRate = arrPCRequest[4];
         }
 
+        /// <summary>
+        /// A function that gets an object of IDal.DO.Drone and Expands it to object of 
+        /// IBL.BO.DroneToList Considering of course with logic.
+        /// </summary>
+        /// <param name="drone"></param>
+        /// <returns></returns>
         private DroneToList ConvertToList(IDal.DO.Drone drone)
         {
             DroneToList nDrone = copyCommon(drone);
@@ -74,7 +86,8 @@ namespace BL
 
 
         /// <summary>
-        ///  build new DroneToList object and copy from IDal.DO.Drone the common fields.
+        /// A function that builds new DroneToList object and gets an object of IDal.DO.Drone
+        /// and copies from the object-IDal.DO.Drone the common fields.
         /// </summary>
         private DroneToList copyCommon(IDal.DO.Drone source)
         {
@@ -85,6 +98,12 @@ namespace BL
             return nDroneToList;
         }
 
+        /// <summary>
+        /// ???????????????????????????????????????????????
+        /// </summary>
+        /// <param name="nDrone"></param>
+        /// <param name="parcel"></param>
+        /// <returns></returns>
         private DroneToList CalculateDroneInDelivery(DroneToList nDrone, IDal.DO.Parcel parcel)
         {
             nDrone.DStatus = DroneStatus.Delivery;
@@ -108,6 +127,11 @@ namespace BL
             return nDrone;
         }
 
+        /// <summary>
+        /// ?????????????????????????????????????????????
+        /// </summary>
+        /// <param name="nDrone"></param>
+        /// <returns></returns>
         private DroneToList CalculateUnDeliveryingDrone(DroneToList nDrone)
         {
             nDrone.DStatus = (DroneStatus)Rand.Next((int)DroneStatus.Free, (int)DroneStatus.Maintenance);
@@ -134,33 +158,35 @@ namespace BL
         /// A function that gets weight of drone
         /// and distance and returns the minimum battery that 
         /// the drone needs in order to flight.
+        /// Default value of weight=0.
         /// </summary>
         /// <param name="distance"></param>
         /// <param name="weight"></param>
         /// <returns>the minimum battery in double</returns>
-        // weight=0 ערך ברירת מחדל לפונקציה
         private double MinBattery(double distance, IBL.BO.WeightCategories weight = 0)
         {
             switch (weight)
             {
                 case IBL.BO.WeightCategories.Light:
-                    return pConsumLight * distance;
+                    return powerConsumptionLight * distance;
                 case IBL.BO.WeightCategories.Medium:
-                    return pConsumMedium * distance;
+                    return powerConsumptionMedium * distance;
                 case IBL.BO.WeightCategories.Heavy:
-                    return pConsumHeavy * distance;
+                    return powerConsumptionHeavy * distance;
                 default:
-                    return pConsumFree * distance;
+                    return powerConsumptionFree * distance;
             }
         }
-        // מחשבת מרחק בין כל המקומים במערך 
-        // צריכים לשלוח לפוקציה מקומים לפי סדר הטיסה
-        // זא לדוג מטוס שלוקח חבילה נוסע מלקוח ליעד לעמדת טעינה
+
         /// <summary>
-        /// the function gets an array of locations and return the sum of the distance between them
+        /// A function that Calculates distance between all places in the array
+        /// Places to be sent to function in the order of the flight
+        /// This is a fishing plane that takes a package that travels from a customer to a destination to a charging station
         /// </summary>
         /// <param name="locations"></param>
-        /// <returns></returns>
+        ///<returns>the function gets an array of locations and returns
+        /// the sum of the distance between them
+        /// in double.</returns>
         private double CalculateDistance(params Location[] locations)
         {
             var locationCoords1 = geoCoordinate(locations[0]);
@@ -175,38 +201,70 @@ namespace BL
             return distance;
         }
 
-        // מקבלת אוביקט מסוג Location
-        // מחזירה אוביקט מסוג geoCoordinate
         /// <summary>
-        /// get an object of location and return an object of GeoCoordinate
+        /// A function that gets an object of Location and bulids from it an object of  
+        /// GeoCoordinate and returns it.
         /// </summary>
         /// <param name="location"></param>
-        /// <returns></returns>
+        /// <returns>returns an object of GeoCoordinate</returns>
         private GeoCoordinate geoCoordinate(Location location)
         {
             return new GeoCoordinate(location.Latitude, location.Longitude);
         }
 
+        /// <summary>
+        /// A function that gets id of customer and builds from it an object
+        /// of CustomerInParcel and Of course considering logic and returns 
+        /// the new object of CustomerInParcel.
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns>eturns 
+        /// the new object of CustomerInParcel</returns>
         private CustomerInParcel NewCustomerInParcel(int Id)
         {
             return new CustomerInParcel(Id, dal.GetFromDalById<IDal.DO.Customer>(Id).Name);
         }
 
+        /// <summary>
+        /// A function that gets id of drone and bulids from it an object of 
+        /// DroneInParcel and of course considering logic and returns 
+        /// the new object of DroneInParcel.
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns>returns 
+        /// the new object of DroneInParcel</returns>
         private DroneInParcel NewDroneInParcel(int Id)
         {
             var drone = lDroneToList.FirstOrDefault(drone => drone.Id == Id);
             return new DroneInParcel(Id, drone.BatteryStatus, drone.CurrLocation);
         }
 
+        /// <summary>
+        /// A generic function that gets two types: DL, BL and id and 
+        /// pulls out from the dal the object that its type DL and its id is the
+        /// same as the id that the function gets and Expands this object to new object
+        /// of BL type and returns this object.
+        /// </summary>
+        /// <typeparam name="DL"></typeparam>
+        /// <typeparam name="BL"></typeparam>
+        /// <param name="Id"></param>
+        /// <returns>returns an object of BL type</returns>
         public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable
         {
             dynamic wantedDal = dal.GetFromDalById<DL>(Id);
             BL wantedBl= ConvertToBL(wantedDal);
             return wantedBl;
         }
-        
-        // מחזיר רשימה BL
-        //  BLל DAL משתמש בפונקציה שממירה 
+
+        /// <summary>
+        /// A function that gets two types: DL, BL and 
+        /// pulls out the list from dal with DL type and 
+        /// creates list Of BL type and converts every object in the
+        /// list to DL type,to BL type and adds it to BL list and returns this List.
+        /// </summary>
+        /// <typeparam name="DL"></typeparam>
+        /// <typeparam name="BL"></typeparam>
+        /// <returns>returns list of data with type of BL. </returns>
         public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable
         {
             var bLList = new List<BL>();
@@ -219,11 +277,15 @@ namespace BL
             return bLList;
         }
 
-        // להחליף את שם הפונקציה למשהו ברור פליז
-        // פונקציה גנרית
-        // מקבל סוג אוביקט DL
-        // מחזיר רשימה מסוג מתאים BLToList
-        // ממיר לכל אוביקט עי פונקציה שממירה - ConvertToList
+        /// <summary>
+        /// A generic function that gets two types:DL, BLToList
+        /// and pulls out the list from dal with DL type and 
+        /// creates list Of BLToList type and converts every object in the
+        /// list to BLToList type and adds it to BLToList list and returns this List.
+        /// </summary>
+        /// <typeparam name="DL"></typeparam>
+        /// <typeparam name="BLToList"></typeparam>
+        /// <returns>returns list of data with the BLToList</returns>
         public IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable
         {
             if (typeof(BLToList) == typeof(Drone))

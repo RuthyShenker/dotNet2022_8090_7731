@@ -17,6 +17,13 @@ namespace BL
               return lDroneToList;
           }*/
 
+        /// <summary>
+        ///  
+        /// A function that gets an object of IDal.DO.Drone
+        /// and Expands it to Drone object and returns this object.
+        /// </summary>
+        /// <param name="drone"></param>
+        /// <returns>returns Drone object </returns>
         private Drone ConvertToBL(IDal.DO.Drone drone)
         {
             ParcelInTransfer parcelInTransfer = CalculateParcelInTransfer(drone.Id);
@@ -25,6 +32,17 @@ namespace BL
                 wantedDrone.DStatus, parcelInTransfer, wantedDrone.CurrLocation);
         }
 
+                throw new IdIsNotValidException("Id Not Exists in drone list!!!!!");
+            }
+        }
+
+        /// <summary>
+        /// A function that creates ParcelInTransferand
+        /// Calculates bills for specific drone id 
+        /// and returns this ParcelInTransfer.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <returns>returns ParcelInTransfer object.</returns>
         private ParcelInTransfer CalculateParcelInTransfer(int droneId)
         {
             var parcelsDalList = dal.GetListFromDal<IDal.DO.Parcel>();
@@ -45,7 +63,8 @@ namespace BL
         }
 
         /// <summary>
-        /// A function that gets an id od drone and sending it to charging.
+        /// A function that gets an id of drone and sending it to charging,the 
+        /// function doesn't return anything.
         /// </summary>
         /// <param name="IdDrone"></param>
         public void SendingDroneToCharge(int IdDrone)
@@ -150,74 +169,93 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// A function that calculates the distance that the drone has to pass in order to give 
+        /// a parcel to the destination and go the the closet base station in order to
+        /// go charging .
+        /// </summary>
+        /// <param name="droneLocation"></param>
+        /// <param name="parcel"></param>
+        /// <returns>the function returns this distance</returns>
         private double GetDistance(Location droneLocation, IDal.DO.Parcel parcel)
-        {
-            Location senderLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
-            Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
-            return CalculateDistance(droneLocation, senderLocation, getterLocation, ClosestStation(getterLocation).SLocation);
-        }
-
+            {
+                Location senderLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
+                Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
+                return CalculateDistance(droneLocation, senderLocation, getterLocation, ClosestStation(getterLocation).SLocation);
+            }
+        /// <summary>
+        /// A function that gets Drone and station id and adds this Drone to the data base and sending
+        /// this drone to charging in the StationId that the function gets,
+        /// the function doesn't return anything.
+        /// </summary>
+        /// <param name="bLDrone"></param>
+        /// <param name="StationId"></param>
         public void AddingDrone(Drone bLDrone, int StationId)
-        {
-            if (dal.ExistsInDroneList(bLDrone.Id))
             {
-                throw new IdIsNotValidException("The id is already exists in the Drone list!");
-            }
-            if (!dal.ExistsInBaseStation(StationId))
-            {
-                throw new IdIsNotValidException("This base station doesnt exists!");
-            }
-            if (!dal.ThereAreFreePositions(StationId))
-            {
-                throw new TheStationDoesNotHaveFreePositions("There arent free positions for this base station!");
-            }
-            bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
-            bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
-            dal.AddDroneToCharge(bLDrone.Id, StationId);
-            IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
-            DroneToList droneToList = new DroneToList()
-            {
-                Id = bLDrone.Id,
-                Model = bLDrone.Model,
-                Weight = bLDrone.Weight,
-                BatteryStatus = bLDrone.BatteryStatus,
-                DStatus = bLDrone.DroneStatus,
-                CurrLocation = new Location(station.Longitude, station.Latitude),
-                NumOfParcel = null
-            };
-            lDroneToList.Add(droneToList);
-            IDal.DO.Drone drone = new IDal.DO.Drone()
-            {
-                Id = bLDrone.Id,
-                MaxWeight = (IDal.DO.WeightCategories)bLDrone.Weight,
-                Model = bLDrone.Model
-            };
-            dal.AddingDrone(drone);
-        }
-
-        public void UpdatingDroneName(int droneId, string newModel)
-        {
-            try
-            {
-                DroneToList droneToList = lDroneToList.Find(drone => drone.Id == droneId);
-                droneToList.Model = newModel;
-                IDal.DO.Drone dalDrone = new()
+                if (dal.ExistsInDroneList(bLDrone.Id))
                 {
-                    Id = droneToList.Id,
-                    Model = droneToList.Model,
-                    MaxWeight = (IDal.DO.WeightCategories)droneToList.Weight
+                    throw new IdIsNotValidException("The id is already exists in the Drone list!");
+                }
+                if (!dal.ExistsInBaseStation(StationId))
+                {
+                    throw new IdIsNotValidException("This base station doesnt exists!");
+                }
+                if (!dal.ThereAreFreePositions(StationId))
+                {
+                    throw new TheStationDoesNotHaveFreePositions("There arent free positions for this base station!");
+                }
+                bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
+                bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
+                dal.AddDroneToCharge(bLDrone.Id, StationId);
+                IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
+                DroneToList droneToList = new DroneToList()
+                {
+                    Id = bLDrone.Id,
+                    Model = bLDrone.Model,
+                    Weight = bLDrone.Weight,
+                    BatteryStatus = bLDrone.BatteryStatus,
+                    DStatus = bLDrone.DroneStatus,
+                    CurrLocation = new Location(station.Longitude, station.Latitude),
+                    NumOfParcel = null
                 };
-                dal.UpdateDrone(droneId, dalDrone);
+                lDroneToList.Add(droneToList);
+                IDal.DO.Drone drone = new IDal.DO.Drone()
+                {
+                    Id = bLDrone.Id,
+                    MaxWeight = (IDal.DO.WeightCategories)bLDrone.Weight,
+                    Model = bLDrone.Model
+                };
+                dal.AddingDrone(drone);
             }
-            catch (ArgumentNullException)
+        /// <summary>
+        /// A function that gets droneId and newModel and updates the drone with the id of 
+        /// droneId to be with the model of newModel, the function doesn't return anything.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <param name="newModel"></param>
+        public void UpdatingDroneName(int droneId, string newModel)
             {
-                throw new UpdatingFailedIdNotExistsException("this id doesnt exist in list of drone to list!");
+                try
+                {
+                    DroneToList droneToList = lDroneToList.Find(drone => drone.Id == droneId);
+                    droneToList.Model = newModel;
+                    IDal.DO.Drone dalDrone = new IDal.DO.Drone()
+                    {
+                        Id = droneToList.Id,
+                        Model = droneToList.Model,
+                        MaxWeight = (IDal.DO.WeightCategories)droneToList.Weight
+                    };
+                   dal.UpdateDrone(droneId, dalDrone);
+                }
+                catch(ArgumentNullException )
+                {
+                    throw new UpdatingFailedIdNotExistsException("this id doesnt exist in list of drone to list!");
+                }
+                catch (IdNotExistInTheListException )
+                {
+                    //bl exception-new
+                    throw new UpdatingFailedIdNotExistsException("this id doesnt exist in drone list!");
+                }
             }
-            catch (IdNotExistInTheListException )
-            {
-                //bl exception-new
-                throw new UpdatingFailedIdNotExistsException("this id doesnt exist in drone list!");
-            }
-        }
     }
 }
