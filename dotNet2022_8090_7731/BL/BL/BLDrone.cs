@@ -1,4 +1,5 @@
 ﻿using IBL.BO;
+using IDAL.DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -127,7 +128,7 @@ namespace BL
             if (droneToList.DStatus != DroneStatus.Free)
             {
                 string dStatus = droneToList.DStatus.ToString();
-                throw new Exception($"this drone cant be belonging to parcel because it is in {dStatus} status!");
+                throw new BelongingParcel($"this drone cant be belonging to parcel because it is in {dStatus} status!");
             }
             // כשעושים מיון לפי thenby הסדר ממיון לפי המיון הסופי או שהוא מבין למין כל קבוצה שוב?
             var optionParcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.Weight <= (IDal.DO.WeightCategories)droneToList.Weight)
@@ -172,6 +173,7 @@ namespace BL
             }
             bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
             bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
+            dal.AddDroneToCharge(bLDrone.Id, StationId);
             IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
             DroneToList droneToList = new DroneToList()
             {
@@ -211,7 +213,7 @@ namespace BL
             {
                 throw new UpdatingFailedIdNotExistsException("this id doesnt exist in list of drone to list!");
             }
-            catch (DAL.IdNotExistInTheListException)
+            catch (IdNotExistInTheListException )
             {
                 //bl exception-new
                 throw new UpdatingFailedIdNotExistsException("this id doesnt exist in drone list!");

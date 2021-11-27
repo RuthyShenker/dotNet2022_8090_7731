@@ -76,6 +76,13 @@ namespace IBL.BO
 
         }
     }
+    public class BelongingParcel:Exception
+    {
+        public BelongingParcel(string message):base()
+        {
+
+        }
+    }
 }
 
 

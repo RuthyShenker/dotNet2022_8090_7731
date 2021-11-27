@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using IDal.DO;
 using IDAL.DO;
 using static DalObject.DataSource;
+
 namespace DalObject
 {
     public partial class DalObject
@@ -104,20 +104,18 @@ namespace DalObject
         ///// </summary>
         ///// <param name="Id"></param>
         ///// <returns></returns>
-        public Parcel GetParcel(int Id)
-        {
-            for (int i = 0; i < ParceList.Count; i++)
-            {
-                if (ParceList[i].Id == Id)
-                {
-                    return ParceList[i].Clone();
-                }
-            }
-            throw new Exception("id doesnt exist");
-            //return ParceList.First(parcel => parcel.ParcelId == Id).Clone();
-
-
-            //}
+        //public Parcel GetParcel(int Id)
+        //{
+        //    for (int i = 0; i < ParceList.Count; i++)
+        //    {
+        //        if (ParceList[i].Id == Id)
+        //        {
+        //            return ParceList[i].Clone();
+        //        }
+        //    }
+        //    throw new Exception("id doesnt exist");
+        //    //return ParceList.First(parcel => parcel.ParcelId == Id).Clone();
+        //}
 
             ///// <summary>
             ///// A function that returns the list of the parcels

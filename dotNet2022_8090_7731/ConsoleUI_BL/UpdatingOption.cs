@@ -87,6 +87,10 @@ namespace ConsoleUI_BL
             {
                 Console.WriteLine(exception.Message);
             }
+            catch(BelongingParcel exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
         }
 
         /// <summary>

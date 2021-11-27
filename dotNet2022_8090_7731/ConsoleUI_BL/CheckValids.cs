@@ -103,7 +103,7 @@ namespace ConsoleUI_BL
         }
         public static int InputValidPriority()
         {
-            int input = int.Parse(Console.ReadLine());
+            int input ;
             while (!int.TryParse(Console.ReadLine(), out input) || input < 0 || input >= typeof(IBL.BO.Priority).GetFields().Length)
             {
                 Console.WriteLine("Priority is not valid !, please enter again");

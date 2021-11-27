@@ -201,7 +201,6 @@ namespace BL
         public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable
         {
             dynamic wantedDal = dal.GetFromDalById<DL>(Id);
-
             BL wantedBl= ConvertToBL(wantedDal);
             return wantedBl;
         }
