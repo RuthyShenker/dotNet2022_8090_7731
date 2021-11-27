@@ -40,31 +40,18 @@ namespace ConsoleUI_BL
             }
             return int.Parse(number);
         }
+
         public static string InputNameValidity()
         { 
-            string name=null;
-           
-            while (!OnlyChars(name=Console.ReadLine()))
+            string name = Console.ReadLine();
+            while (!name.All(ch => char.IsLetter(ch)))
             {
-                Console.WriteLine("name is not valid ,please enter again");
+                Console.WriteLine("name must contains only letters ,please enter again");
+                name = Console.ReadLine();
             }
             return name;
         }
-        private static bool OnlyChars(string name)
-        {
-
-            char ch = default(char);
-            //i dont check length because in every country the length is different.
-            for (int i = 0; i < name.Length; i++)
-            {
-                ch = name[i];
-                if (!char.IsLetter(ch))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
+       
         public static double InputDoubleValidity(string obj)
         {
             double number = 0;
@@ -88,30 +75,17 @@ namespace ConsoleUI_BL
                 Console.WriteLine("Invalid input!, please enter again");
             }
         }
+        
         public static string InputPhoneValidity()
         {
-            string phone = null;
-            while (!OnlyNumbers(phone=Console.ReadLine()))
+            string phone = Console.ReadLine();
+            while (!phone.All(ch => char.IsDigit(ch)))
             {
                 Console.WriteLine("The phone is not valid , please enter again ");
+                phone = Console.ReadLine();
             }
             return phone;
         }
-        private static bool OnlyNumbers(string number)
-        {
-            char ch = default(char);
-            //i dont check length because in every country the length is different.
-            for (int i = 0; i < number.Length; i++)
-            {
-                ch = number[i];
-                if(!char.IsDigit(ch))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
 
         /// <summary>
         /// A function that gets an input and checks if it is in the range of 
@@ -168,6 +142,7 @@ namespace ConsoleUI_BL
                 check = double.TryParse(Console.ReadLine(), out input);
             }
         }
+        // צריך להכניס מבנה שעה
         public static double InputValiDoubleNum()
         {
             double num;

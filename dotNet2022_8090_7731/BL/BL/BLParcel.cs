@@ -146,7 +146,7 @@ namespace BL
             return nParcel;
         }
 
-        private Parcel convertToBL(IDal.DO.Parcel parcel)
+        private Parcel ConvertToBL(IDal.DO.Parcel parcel)
         { 
             CustomerInParcel sender = NewCustomerInParcel(parcel.SenderId);
             CustomerInParcel getter = NewCustomerInParcel(parcel.GetterId);

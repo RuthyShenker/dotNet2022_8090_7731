@@ -3,6 +3,7 @@ using IBL.BO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -209,7 +210,7 @@ namespace BL
         {
             dynamic wantedDal = dal.GetFromDalById<DL>(Id);
             Console.WriteLine(wantedDal);
-            BL wantedBl= convertToBL(wantedDal);
+            BL wantedBl = ConvertToBL(wantedDal);
             return wantedBl;
         }
         
@@ -226,6 +227,7 @@ namespace BL
             }
             return bLList;
         }
+
         // להחליף את שם הפונקציה למשהו ברור פליז
         // פונקציה גנרית
         // מקבל סוג אוביקט DL
@@ -245,6 +247,12 @@ namespace BL
                 listToList.Add(blToListItem);
             }
             return listToList;
+        }
+
+        public override string ToString()
+        {
+           
+            return $"Id: {Id}   Model: {Model}    MaxWeight: {MaxWeight}    ";
         }
     }
 }
