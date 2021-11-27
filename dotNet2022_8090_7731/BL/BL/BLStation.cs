@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IBL.BO;
-using DAL;
+using IDAL.DO;
+
 namespace BL
 {
     partial class BL
@@ -42,6 +43,7 @@ namespace BL
                     "exist in the base station list!!");
             }
         }
+
         private Station ConvertToBL(IDal.DO.BaseStation station)
         {
             var nLocation = new Location(station.Longitude, station.Latitude);

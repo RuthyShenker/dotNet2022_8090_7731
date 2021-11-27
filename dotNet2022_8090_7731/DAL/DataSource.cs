@@ -58,7 +58,7 @@ namespace DalObject
 
         /// <summary>
         /// A class Config that contains :
-        /// IndexParcel
+        /// IndexParcel,chargingRate,heavyWeight,mediumWeight,lightWeight,available
         /// </summary>
         internal class Config
         {
