@@ -24,7 +24,7 @@ namespace BL
             {
                var wantedDrone = lDroneToList.FirstOrDefault(droneToList => droneToList.Id == drone.Id);
                 return new Drone(wantedDrone.Id, wantedDrone.Model, wantedDrone.Weight, wantedDrone.BatteryStatus, wantedDrone.DStatus,
-                                     parcelInTransfer, wantedDrone.CurrLocation);
+                parcelInTransfer, wantedDrone.CurrLocation);
             }
             catch (ArgumentNullException)
             {
@@ -35,7 +35,6 @@ namespace BL
 
         private ParcelInTransfer CalculateParcelInTransfer(int droneId)
         {
-            
                 var parcelsDalList = dal.GetListFromDal<IDal.DO.Parcel>();
                 var dalParcel = parcelsDalList.First(parcel => parcel.DroneId == droneId);
                 var parcel = ConvertToBL(dalParcel);

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using IDal.DO;
 using IDAL.DO;
 using static DalObject.DataSource;
+
 namespace DalObject
 {
     public partial class DalObject
@@ -115,8 +115,6 @@ namespace DalObject
         //    }
         //    throw new Exception("id doesnt exist");
         //    //return ParceList.First(parcel => parcel.ParcelId == Id).Clone();
-
-
         //}
 
         ///// <summary>
