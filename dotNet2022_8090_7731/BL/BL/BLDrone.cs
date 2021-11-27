@@ -29,7 +29,7 @@ namespace BL
             catch (ArgumentNullException)
             {
 
-                throw;
+                throw new IdIsNotValidException("Id Not Exists in drone list!!!!!");
             }
         }
 
@@ -38,8 +38,7 @@ namespace BL
             
                 var parcelsDalList = dal.GetListFromDal<IDal.DO.Parcel>();
                 var dalParcel = parcelsDalList.First(parcel => parcel.DroneId == droneId);
-            
-            var parcel = ConvertToBL(dalParcel);
+                var parcel = ConvertToBL(dalParcel);
                 var sender = dal.GetFromDalById<IDal.DO.Customer>(parcel.Sender.Id);
                 Location senderLocation = new Location(sender.Longitude, sender.Latitude);
                 var getter = dal.GetFromDalById<IDal.DO.Customer>(parcel.Getter.Id);
