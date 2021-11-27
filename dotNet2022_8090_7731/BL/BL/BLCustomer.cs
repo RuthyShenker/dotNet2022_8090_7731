@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL;
+
 using IBL.BO;
+using IDAL.DO;
+
 namespace BL
 {
     partial class BL
@@ -119,14 +121,8 @@ namespace BL
             {
                 throw new IdIsNotValidException("The id is already exists in the Customer List!");
             }
-            IDal.DO.Customer newCustomer = new IDal.DO.Customer()
-            {
-                Id = bLCustomer.Id,
-                Name = bLCustomer.Name,
-                Phone = bLCustomer.Phone,
-                Latitude = bLCustomer.CLocation.Latitude,
-                Longitude = bLCustomer.CLocation.Longitude
-            };
+            IDal.DO.Customer newCustomer = new IDal.DO.Customer(bLCustomer.Id,bLCustomer.Name,
+            bLCustomer.Phone,bLCustomer.CLocation.Longitude,bLCustomer.CLocation.Latitude);
             dal.AddingCustomer(newCustomer);
         }
 
@@ -145,7 +141,7 @@ namespace BL
                 }
                 dal.UpdateCustomer(customerId, customer);
             }
-            catch (IdNotExistInTheListException exception)
+            catch (IdNotExistInTheListException )
             {
                 throw new UpdatingFailedIdNotExistsException("This Id Not Exist In Customer List");
             }

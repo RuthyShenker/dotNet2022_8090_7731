@@ -249,11 +249,7 @@ namespace BL
             }
             return listToList;
         }
-
-        public override string ToString()
-        {
-           
-            return $"Id: {Id}   Model: {Model}    MaxWeight: {MaxWeight}    ";
-        }
+        
+       
     }
 }

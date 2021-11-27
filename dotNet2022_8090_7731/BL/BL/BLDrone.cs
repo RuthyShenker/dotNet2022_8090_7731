@@ -1,4 +1,5 @@
 ﻿using IBL.BO;
+using IDAL.DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,17 +35,20 @@ namespace BL
 
         private ParcelInTransfer CalculateParcelInTransfer(int droneId)
         {
-            var parcelsDalList = dal.GetListFromDal<IDal.DO.Parcel>();
-            var dalParcel = parcelsDalList.First(parcel => parcel.DroneId == droneId);
+            
+                var parcelsDalList = dal.GetListFromDal<IDal.DO.Parcel>();
+                var dalParcel = parcelsDalList.First(parcel => parcel.DroneId == droneId);
+            
             var parcel = ConvertToBL(dalParcel);
-            var sender = dal.GetFromDalById<IDal.DO.Customer>(parcel.Sender.Id);
-            Location senderLocation = new Location(sender.Longitude, sender.Latitude);
-            var getter = dal.GetFromDalById<IDal.DO.Customer>(parcel.Getter.Id);
-            Location getterLocation = new Location(getter.Longitude, getter.Latitude);
-            double distance = CalculateDistance(senderLocation, getterLocation);
-            return new ParcelInTransfer(parcel.Id, parcel.PickingUp.HasValue, //  האם זו הכוונה IsInWay?
-            parcel.MPriority, parcel.Weight,
-            parcel.Sender, parcel.Getter, senderLocation, getterLocation, distance);
+                var sender = dal.GetFromDalById<IDal.DO.Customer>(parcel.Sender.Id);
+                Location senderLocation = new Location(sender.Longitude, sender.Latitude);
+                var getter = dal.GetFromDalById<IDal.DO.Customer>(parcel.Getter.Id);
+                Location getterLocation = new Location(getter.Longitude, getter.Latitude);
+                double distance = CalculateDistance(senderLocation, getterLocation);
+                return new ParcelInTransfer(parcel.Id, parcel.PickingUp.HasValue, //  האם זו הכוונה IsInWay?
+                parcel.MPriority, parcel.Weight,
+                parcel.Sender, parcel.Getter, senderLocation, getterLocation, distance);
+            
         }
         /// <summary>
         /// A function that gets an id od drone and sending it to charging.
@@ -129,7 +133,7 @@ public void ReleasingDrone(int dId, double timeInCharging)
             if (droneToList.DStatus != DroneStatus.Free)
             {
                 string dStatus = droneToList.DStatus.ToString();
-                throw new Exception($"this drone cant be belonging to parcel because it is in {dStatus} status!");
+                throw new BelongingParcel($"this drone cant be belonging to parcel because it is in {dStatus} status!");
             }
             // כשעושים מיון לפי thenby הסדר ממיון לפי המיון הסופי או שהוא מבין למין כל קבוצה שוב?
             var optionParcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.Weight <= (IDal.DO.WeightCategories)droneToList.Weight)
@@ -174,6 +178,7 @@ private double GetDistance(Location droneLocation, IDal.DO.Parcel parcel)
             }
             bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
             bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
+            dal.AddDroneToCharge(bLDrone.Id, StationId);
             IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
             DroneToList droneToList = new DroneToList()
             {
@@ -213,7 +218,7 @@ private double GetDistance(Location droneLocation, IDal.DO.Parcel parcel)
             {
                 throw new UpdatingFailedIdNotExistsException("this id doesnt exist in list of drone to list!");
             }
-            catch (DAL.IdNotExistInTheListException )
+            catch (IdNotExistInTheListException )
             {
                 //bl exception-new
                 throw new UpdatingFailedIdNotExistsException("this id doesnt exist in drone list!");

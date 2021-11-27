@@ -81,7 +81,12 @@ namespace ConsoleUI_BL
             string name = CheckValids.InputNameValidity();
             Console.WriteLine("Enter the phone of the new customer: ");
             string phone = CheckValids.InputPhoneValidity();
-            Location cLocation = null;
+            Console.WriteLine("Enter the Location of the new customer: ");
+            Console.WriteLine("longitude: ");
+            double longitude = CheckValids.InputDoubleValidity("longitude");
+            Console.WriteLine("latitude: ");
+            double latitude = CheckValids.InputDoubleValidity("latitude");
+            Location cLocation = new Location(longitude, latitude);
             //List<ParcelInCustomer> lFromCustomer;
             //List<ParcelInCustomer> LForCustomer
             return new Customer(id, name, phone, cLocation);
@@ -117,7 +122,8 @@ namespace ConsoleUI_BL
         {
             Console.WriteLine("Enter the serial number of the manufacturer of the new drone: ");
             int id = CheckValids.InputNumberValidity("Id");
-            string model = null;
+            Console.WriteLine("Enter the new Model of the drone: ");
+            string model = Console.ReadLine();
             Console.WriteLine("enter the weight of the new drone: ");
             WeightCategories weight = (WeightCategories)CheckValids.InputValidWeightCategories();
             Console.WriteLine("Enter the number of the station to charge the new drone for first charging:  ");

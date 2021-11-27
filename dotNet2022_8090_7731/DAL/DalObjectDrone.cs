@@ -92,6 +92,7 @@ namespace DalObject
         /// <param name="dId"></param>
         public void ReleasingDrone(int dId)
         {
+            bool flag = false;
             try
             {
                 for (int i = 0; i < ChargingDroneList.Count; i++)
@@ -99,10 +100,12 @@ namespace DalObject
                     if (ChargingDroneList[i].DroneId == dId)
                     {
                         ChargingDroneList.RemoveAt(i);
+                        flag = true;
                         break;
                     }
                 }
-                throw new ArgumentOutOfRangeException();
+                if(flag==false)
+                    throw new ArgumentOutOfRangeException();
             }
             catch(ArgumentOutOfRangeException)
             {
