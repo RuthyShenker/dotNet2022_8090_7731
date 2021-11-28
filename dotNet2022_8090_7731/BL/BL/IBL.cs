@@ -52,8 +52,8 @@ namespace IBL
         //Adding
         void AddingBaseStation(Station baseStation);
         void AddingDrone(Drone drone, int numberStation);
-        void AddingCustomer(Customer customer);
-        void AddingParcel(Parcel parcel);
+        int AddingCustomer(Customer customer);
+        int AddingParcel(Parcel parcel);
         //update
         void UpdatingDroneName(int droneId, string newModel);
         void UpdatingStationDetails(int stationId, string stationName, string amountOfPositions);
