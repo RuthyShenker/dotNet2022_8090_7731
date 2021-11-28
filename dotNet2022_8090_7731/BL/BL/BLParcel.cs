@@ -9,21 +9,6 @@ namespace BL
 {
     partial class BL
     {
-
-        /* //יש גנרי
-         public IEnumerable<ParcelToList> GetParcels()
-         {
-             IEnumerable<ParcelToList> bParcelList = new List<ParcelToList>();
-             List<IDal.DO.Parcel> dParcelList = GetList<IDal.DO.Parcel>();
-             //IEnumerable<IDal.DO.Parcel> dParcelList = dal.GetParcels();
-             foreach (var parcel in dParcelList)
-             {
-                 bParcelList.Add(MapToList(parcel));
-             }
-             return bParcelList;
-         }*/
-
-
         /// <summary>
         /// A function that gets a parcel and adds it to the data base,the function
         /// doesn't return anything.
@@ -45,6 +30,7 @@ namespace BL
             };
             dal.AddingItemToDList(parcel);
         }
+
         /// <summary>
         /// A function that gets an id of drone and
         /// causes the drone to pick up the parcel that 
@@ -74,13 +60,12 @@ namespace BL
                 }
                 if (!pickedUp)
                 {
-                    throw new ParcelIsAlreadyPickedUpException("the drone is already picked up " +
-                        "the parcel"); 
+                    throw new InValidActionException("the drone had already picked up all the parcels ");
                 }
             }
             catch (ArgumentNullException)
             {
-                throw new NoParcelAssociatedToTheDroneException("Any Parcel matches to this drone");// שום חבילה לא משויכת לרחפן זה
+                throw new InValidActionException("there is no parcel matches to this drone");
             }
         }
 
@@ -115,16 +100,14 @@ namespace BL
                 }
                 if (!deliveryed)
                 {
-                    throw new ParcelsStatusIsntMatchException("parcels status doesnt match");// parcels status isnnt match
+                    throw new InValidActionException("parcels status doesnt match");
                 }
             }
             catch (ArgumentNullException)
             {
-                throw new IdIsNotValidException("This id doesn't exists"); // ID isnt exist
+                throw new IdIsNotExistException(typeof(Drone), dId);
             }
-
         }
-
 
         /// <summary>
         /// A function that returns a list of unbelong parcels.
@@ -140,6 +123,7 @@ namespace BL
             }
             return bParcelList;
         }
+
         /// <summary>
         /// A function that gets an object of IDal.DO.Parcel
         /// and Expands it to a new object of 
@@ -149,16 +133,17 @@ namespace BL
         /// <returns>returns ParcelToList object</returns>
         private ParcelToList ConvertToList(IDal.DO.Parcel parcel)
         {
-            ParcelToList nParcel = new ParcelToList(
+            ParcelToList nParcel = new(
             parcel.Id,
-           dal.GetFromDalById<IDal.DO.Customer>(parcel.SenderId).Name,
-           dal.GetFromDalById<IDal.DO.Customer>(parcel.GetterId).Name,
+            dal.GetFromDalById<IDal.DO.Customer>(parcel.SenderId).Name,
+            dal.GetFromDalById<IDal.DO.Customer>(parcel.GetterId).Name,
             (IBL.BO.WeightCategories)parcel.Weight,
             (Priority)parcel.MPriority,
             GetParcelStatus(parcel)
-        );
+            );
             return nParcel;
         }
+        
         /// <summary>
         /// A function that gets an object of IDal.DO.Parcel
         /// and Expands it to a new object of 
@@ -166,15 +151,16 @@ namespace BL
         /// <param name="parcel"></param>
         /// <returns>returns Parcel object</returns>
         private Parcel ConvertToBL(IDal.DO.Parcel parcel)
-        { 
+        {
             CustomerInParcel sender = NewCustomerInParcel(parcel.SenderId);
             CustomerInParcel getter = NewCustomerInParcel(parcel.GetterId);
             DroneInParcel dInParcel = NewDroneInParcel(parcel.DroneId);
-            return new Parcel(parcel.Id, sender, getter, 
+            return new Parcel(parcel.Id, sender, getter,
                 (WeightCategories)parcel.Weight, (Priority)parcel.MPriority,
-                dInParcel, parcel.MakingParcel,parcel.BelongParcel,
-                parcel.PickingUp, parcel.Arrival );
+                dInParcel, parcel.MakingParcel, parcel.BelongParcel,
+                parcel.PickingUp, parcel.Arrival);
         }
+        
         /// <summary>
         /// A function that gets IDal.DO.Parcel object and returns its status
         /// </summary>
@@ -196,7 +182,6 @@ namespace BL
             }
             return ParcelStatus.made;
         }
-
     }
 }
 

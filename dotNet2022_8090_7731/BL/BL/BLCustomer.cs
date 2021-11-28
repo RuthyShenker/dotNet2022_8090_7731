@@ -10,27 +10,6 @@ namespace BL
 {
     partial class BL
     {
-        /* // יש גנרי
-         // //מה הולך פה עם הbl  וdl
-         // public IEnumerable<CustomerToList> GetCustomers()
-         // {
-         //     IEnumerable<CustomerToList> bLCustomersList = new List<CustomerToList>();
-         //     IEnumerable<IDal.DO.Customer> dalCustomersList = dal.GetListFromDal<IDal.DO.Customer>();
-         //
-         //     //  לשים לב לשורה הזו אם משנים לגנרי
-         //     IEnumerable< IDal.DO.Parcel> dalParcelsList = dal.GetListFromDal<IDal.DO.Parcel>();
-         //
-         //     foreach (var customer in dalCustomersList)
-         //     {
-         //         bLCustomersList.Add(MapToList(customer, dalParcelsList));
-         //     }
-         //     return bLCustomersList.;
-         // }
-
-          // */
-
-        /*  לבדוק אם צריך לאתחל שדות ל-0 
-         SentSupplied, SentNotSupplied, Got, InWayToCustomer*/
         /// <summary>
         /// A function that gets an object of IDal.DO.Customer
         /// and Expands it to CustomerToList object and returns this object.
@@ -39,7 +18,7 @@ namespace BL
         /// <returns>returns CustomerToList object </returns>
         private CustomerToList ConvertToList(IDal.DO.Customer customer)
         {
-            CustomerToList nCustomer = new CustomerToList(customer.Id, customer.Name, customer.Phone);
+            CustomerToList nCustomer = new(customer.Id, customer.Name, customer.Phone);
             var dParcelslist = dal.GetListFromDal<IDal.DO.Parcel>();
             foreach (var parcel in dParcelslist)
             {
@@ -71,6 +50,7 @@ namespace BL
             }
             return nCustomer;
         }
+       
         /// <summary>
         /// A function that gets an object of IDal.DO.Customer
         /// and Expands it to Customer object and returns this object.
@@ -112,9 +92,8 @@ namespace BL
         {
             var PStatus = GetParcelStatus(parcel);
             var OnTheOtherHand = NewCustomerInParcel(Id);
-            return new ParcelInCustomer(parcel.Id, (IBL.BO.WeightCategories)parcel.Weight, (IBL.BO.Priority)parcel.MPriority, PStatus, OnTheOtherHand);
+            return new ParcelInCustomer(parcel.Id, (WeightCategories)parcel.Weight, (Priority)parcel.MPriority, PStatus, OnTheOtherHand);
         }
-
 
         /// <summary>
         /// A function that 
@@ -137,6 +116,7 @@ namespace BL
             }
             return wantedCustomersList;
         }
+        
         /// <summary>
         /// A function that gets Customer and adds it to the data base the
         /// function doesn't return anything.
@@ -146,12 +126,13 @@ namespace BL
         {
             if (dal.IsIdExistInList<IDal.DO.Customer>(bLCustomer.Id))
             {
-                throw new IdIsNotValidException("The id is already exists in the Customer List!");
+                throw new IdIsAlreadyExistException(typeof(IDal.DO.Customer), bLCustomer.Id);
             }
             var newCustomer = new IDal.DO.Customer(bLCustomer.Id,bLCustomer.Name,
             bLCustomer.Phone,bLCustomer.CLocation.Longitude,bLCustomer.CLocation.Latitude);
             dal.AddingCustomer(newCustomer);
         }
+        
         /// <summary>
         /// A function that gets customerId,newName,newPhone
         ///and updates the customer with id of customerId
@@ -178,7 +159,7 @@ namespace BL
             }
             catch (IDal.DO.IdNotExistInTheListException)
             {
-                throw new UpdatingFailedIdNotExistsException("This Id Not Exist In Customer List");
+                throw new IdIsNotExistException( typeof(IDal.DO.Customer), customerId);
             }
         }
     }

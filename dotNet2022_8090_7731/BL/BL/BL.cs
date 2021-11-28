@@ -257,6 +257,18 @@ namespace BL
         }
 
         /// <summary>
+        /// A function that gets two locations and returns if they are the same or not.
+        /// </summary>
+        /// <param name="location1"></param>
+        /// <param name="location2"></param>
+        /// <returns>returns if they are the same or not</returns>
+        private bool equalLocations(Location location1, Location location2)
+        {
+            return location1.Longitude == location2.Longitude && location1.Latitude == location2.Latitude;
+        }
+
+
+        /// <summary>
         /// A function that gets two types: DL, BL and 
         /// pulls out the list from dal with DL type and 
         /// creates list Of BL type and converts every object in the
