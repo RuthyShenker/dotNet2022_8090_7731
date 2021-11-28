@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using IBL.BO;
-using IDAL.DO;
 
 namespace BL
 {
@@ -117,11 +116,11 @@ namespace BL
 
         public void AddingCustomer(Customer bLCustomer)
         {
-            if (dal.ExistsInCustomerList(bLCustomer.Id))
+            if (dal.IsIdExistInList<IDal.DO.Customer>(bLCustomer.Id))
             {
                 throw new IdIsNotValidException("The id is already exists in the Customer List!");
             }
-            IDal.DO.Customer newCustomer = new IDal.DO.Customer(bLCustomer.Id,bLCustomer.Name,
+            var newCustomer = new IDal.DO.Customer(bLCustomer.Id,bLCustomer.Name,
             bLCustomer.Phone,bLCustomer.CLocation.Longitude,bLCustomer.CLocation.Latitude);
             dal.AddingCustomer(newCustomer);
         }
@@ -141,7 +140,7 @@ namespace BL
                 }
                 dal.UpdateCustomer(customerId, customer);
             }
-            catch (IdNotExistInTheListException )
+            catch (IDal.DO.IdNotExistInTheListException)
             {
                 throw new UpdatingFailedIdNotExistsException("This Id Not Exist In Customer List");
             }

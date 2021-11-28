@@ -1,5 +1,5 @@
 ﻿using BL;
-using IDAL.DO;
+using IDal.DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,16 +25,16 @@ namespace ConsoleUI_BL
                 switch (input)
                 {
                     case 1:
-                        Console.WriteLine(bL.GetBLById<IDal.DO.BaseStation, IBL.BO.Station>(GettingId("Base Station")).ToStringPrperty());
+                        Console.WriteLine(Tools.ToString(bL.GetBLById<IDal.DO.BaseStation, IBL.BO.Station>(GettingId("Base Station"))));
                         break;
                     case 2:
-                        Console.WriteLine(bL.GetBLById<IDal.DO.Drone, IBL.BO.Drone>(GettingId("Drone")).ToStringPrperty());
+                        Console.WriteLine(Tools.ToString(bL.GetBLById<IDal.DO.Drone, IBL.BO.Drone>(GettingId("Drone"))));
                         break;
                     case 3:
-                        Console.WriteLine(bL.GetBLById<IDal.DO.Customer, IBL.BO.Customer>(GettingId("Customer")).ToStringPrperty());
+                        Console.WriteLine(Tools.ToString(bL.GetBLById<IDal.DO.Customer, IBL.BO.Customer>(GettingId("Customer"))));
                         break;
                     case 4:
-                        Console.WriteLine(bL.GetBLById<IDal.DO.Parcel, IBL.BO.Parcel>(GettingId("Parcel")).ToStringPrperty());
+                        Console.WriteLine(Tools.ToString(bL.GetBLById<IDal.DO.Parcel, IBL.BO.Parcel>(GettingId("Parcel"))));
                         break;
                     default:
                         break;

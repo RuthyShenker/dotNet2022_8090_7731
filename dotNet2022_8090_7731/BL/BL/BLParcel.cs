@@ -39,8 +39,7 @@ namespace BL
                 PickingUp = null,
                 Arrival = null
             };
-
-            dal.AddingParcel(parcel);
+            dal.AddingItemToDList(parcel);
         }
 
         public void PickingUpParcel(int dId)
@@ -100,7 +99,7 @@ namespace BL
                         drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, getterLocation));
                         drone.CurrLocation = getterLocation;
                         drone.DStatus = DroneStatus.Free;
-                        dal.ProvidePackage(parcel.Id);
+                        dal.ProvidingPackage(parcel.Id);
                         deliveryed = true;
                     }
                 }

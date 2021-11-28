@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IDal.DO;
-using IDAL.DO;
+using IDal.DO;
 using static DalObject.DataSource;
 
 namespace DalObject
@@ -83,6 +83,9 @@ namespace DalObject
         {
             return new List<T>(((List<T>)data[typeof(T)]).FindAll(predicate));
         }
+
+        
+
         public IEnumerable<T> GetListFromDal<T>() where T:IIdentifiable
         {
             return new List<T>((IEnumerable<T>)data[typeof(T)]);

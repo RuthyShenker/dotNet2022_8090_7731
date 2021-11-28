@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IBL.BO;
-using IDAL.DO;
 
 namespace BL
 {
@@ -37,7 +36,7 @@ namespace BL
                     baseStation.NumberOfChargingPositions = int.Parse(amountOfPositions);
                 dal.UpdateBaseStation(stationId, baseStation);
             }
-            catch (IdNotExistInTheListException )
+            catch (IDal.DO.IdNotExistInTheListException)
             {
                 throw new IdIsNotValidException("Id of this base station doesn't " +
                     "exist in the base station list!!");
@@ -137,7 +136,7 @@ namespace BL
 
         public void AddingBaseStation(Station bLStation)
         {
-            if (dal.ExistsInBaseStation(bLStation.Id))
+            if (dal.IsIdExistInList<IDal.DO.BaseStation>(bLStation.Id))
             {
                 throw new IdIsNotValidException("The id is already exists in the base station list!");
             }
@@ -147,7 +146,7 @@ namespace BL
             Longitude = bLStation.SLocation.Longitude,
             NameStation = bLStation.NameStation,
             NumberOfChargingPositions = bLStation.NumAvailablePositions };
-            dal.AddingBaseStation(station);
+            dal.AddingItemToDList(station);
         }
     }
 }

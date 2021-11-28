@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IDal.DO;
-using IDAL.DO;
 using static DalObject.DataSource;
 
 namespace DalObject
@@ -20,11 +19,12 @@ namespace DalObject
             ParceList.Add(parcel);
         }
 
-        /// <summary>
-        /// A function that gets a id of parcel and belonging that parcel to a drone.
-        /// </summary>
-        /// <param name="pId"></param>
-        public void BelongingParcel(Parcel parcel, int dId)
+       /// <summary>
+       /// update parcel is belonged to drone
+       /// </summary>
+       /// <param name="parcel"></param>
+       /// <param name="dId"></param>
+        public void UpdateBelongedParcel(Parcel parcel, int dId)
         {
             parcel.DroneId = dId;
             parcel.BelongParcel = DateTime.Now;
@@ -45,7 +45,7 @@ namespace DalObject
         /// <param name="Id"></param>
         public void PickingUpParcel(int pId)
         {
-            updateTimeAction(pId, "pickingUp");
+            UpdateTimeAction(pId, "pickingUp");
         }
 
         /// <summary>
@@ -53,30 +53,26 @@ namespace DalObject
         /// brings the parcel to the destination.
         /// </summary>
         /// <param name = "pId" ></ param >
-        public void ProvidePackage(int pId)
+        public void ProvidingPackage(int pId)
         {
-            updateTimeAction(pId, "provide");
+            UpdateTimeAction(pId, "providing");
         }
 
-        private void updateTimeAction(int pId, string action)
+        private void UpdateTimeAction(int pId, string action)
         {
             try
             {
                 ParceList.Exists(parcel => parcel.Id == pId);
-           
                 for (int i = 0; i < ParceList.Count; i++)
                 {
                     if (ParceList[i].Id == pId)
                     {// זה טוב או צריך להשתמש ב removeat
                         Parcel tempParcel = ParceList[i];
-                        if (action == "pickingUp")
+                        _ = action switch
                         {
-                            tempParcel.PickingUp = DateTime.Now;
-                        }
-                        else
-                        {
-                           tempParcel.Arrival = DateTime.Now;
-                        }
+                            var x when x == "pickingUp" => tempParcel.PickingUp = DateTime.Now,
+                            _ => tempParcel.Arrival = DateTime.Now,
+                        };
                         ParceList[i] = tempParcel;
                         break;
                     }
@@ -95,7 +91,7 @@ namespace DalObject
         /// <returns></returns>
         public IEnumerable<Parcel> GetUnbelongParcels()
         {
-            return new List<Parcel>(ParceList.Where(parcel => parcel.DroneId == 0).ToList());
+            return ParceList.Where(parcel => parcel.DroneId == 0).ToList();
         }
 
         //// יש פונקציות גנריות
@@ -134,15 +130,6 @@ namespace DalObject
             //{
             //    return ParceList.Select(parcel => new Parcel(parcel)).ToList();
             //}
-            public bool ExistsInParcelList(int pId)
-        {
-            for (int i = 0; i < ParceList.Count; i++)
-            {
-                if (ParceList[i].Id == pId) return true;
-            }
-            return false;
-        }
-
     }
 
 }

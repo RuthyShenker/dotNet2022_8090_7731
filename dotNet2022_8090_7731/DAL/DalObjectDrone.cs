@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using static DalObject.DataSource.Config;
 using IDal.DO;
 using static DalObject.DataSource;
-using IDAL.DO;
+using IDal.DO;
 
 namespace DalObject
 {
@@ -143,15 +143,7 @@ namespace DalObject
         //}
 
         public double[] PowerConsumptionRequest() => new double[5] { available, lightWeight, mediumWeight, heavyWeight, chargingRate };
-        public bool ExistsInDroneList(int id)
-        {
-            for (int i = 0; i < DroneList.Count; i++)
-            {
-                if (DroneList[i].Id == id)
-                    return true;
-            }
-            return false;
-        }
+
         public int SumOfDronesInSpecificStation(int sId)
         {
             int count = 0;

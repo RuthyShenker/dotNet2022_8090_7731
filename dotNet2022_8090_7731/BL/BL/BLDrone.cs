@@ -1,5 +1,4 @@
 ﻿using IBL.BO;
-using IDAL.DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,7 +92,7 @@ namespace BL
         /// <param name="timeInCharging"></param>
         public void ReleasingDrone(int dId, double timeInCharging)
         {
-            if (!dal.ExistsInDroneList(dId))
+            if (!dal.IsIdExistInList<IDal.DO.Drone>(dId))
             {
                 throw new Exception("this id doesnt exist in the drone list!");
             }
@@ -139,7 +138,7 @@ namespace BL
                 if (droneToList.BatteryStatus >= MinBattery(GetDistance(droneToList.CurrLocation, parcel), (IBL.BO.WeightCategories)parcel.Weight))
                 {
                     droneToList.DStatus = DroneStatus.Delivery;
-                    dal.BelongingParcel(parcel, droneToList.Id);
+                    dal.UpdateBelongedParcel(parcel, droneToList.Id);
                     belonged = true;
                     break;
                 }
@@ -159,15 +158,15 @@ namespace BL
 
         public void AddingDrone(Drone bLDrone, int StationId)
         {
-            if (dal.ExistsInDroneList(bLDrone.Id))
+            if (dal.IsIdExistInList<IDal.DO.Drone>(bLDrone.Id))
             {
                 throw new IdIsNotValidException("The id is already exists in the Drone list!");
             }
-            if (!dal.ExistsInBaseStation(StationId))
+            if (!dal.IsIdExistInList<IDal.DO.BaseStation>(StationId))
             {
                 throw new IdIsNotValidException("This base station doesnt exists!");
             }
-            if (!dal.ThereAreFreePositions(StationId))
+            if (!dal.AreThereFreePositions(StationId))
             {
                 throw new TheStationDoesNotHaveFreePositions("There arent free positions for this base station!");
             }
@@ -192,7 +191,7 @@ namespace BL
                 MaxWeight = (IDal.DO.WeightCategories)bLDrone.Weight,
                 Model = bLDrone.Model
             };
-            dal.AddingDrone(drone);
+            dal.AddingItemToDList(drone);
         }
 
         public void UpdatingDroneName(int droneId, string newModel)
@@ -213,7 +212,7 @@ namespace BL
             {
                 throw new UpdatingFailedIdNotExistsException("this id doesnt exist in list of drone to list!");
             }
-            catch (IdNotExistInTheListException )
+            catch (IDal.DO.IdNotExistInTheListException)
             {
                 //bl exception-new
                 throw new UpdatingFailedIdNotExistsException("this id doesnt exist in drone list!");

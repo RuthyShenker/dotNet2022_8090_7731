@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL.DO;
+using IDal.DO;
 
 namespace DalObject
 {
@@ -50,15 +50,6 @@ namespace DalObject
         //    return CustomerList.Select(customer => new Customer(customer)).ToList();
         //}
 
-        public bool ExistsInCustomerList(int cId)
-        {
-            foreach (var customer in CustomerList)
-            {
-                if (customer.Id == cId)
-                    return true;
-            }
-            return false;
-        }
        public void UpdateCustomer(int cId, Customer customer)
         {
             try

@@ -9,13 +9,12 @@ namespace BL
 {
     public static class Tools
     {
-        public static string ToStringPrperty<T>(this T t)
+        public static string ToString<T>(this T t)
         {
             string str = "";
             foreach (PropertyInfo item in t.GetType().GetProperties())
             {
-                str += "\n" + item.Name + ":" + 
-                    item.GetValue(t, null);
+                str += item.Name + ":" + item.GetValue(t, null);
             }
             return str;
         }

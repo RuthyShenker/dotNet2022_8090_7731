@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IDal.DO;
-using IDAL.DO;
+using IDal.DO;
 using static DalObject.DataSource;
 using static DalObject.DataSource.Config;
 
@@ -33,7 +33,6 @@ namespace DalObject
     /// </summary>
     {
 
-
         /// <summary>
         /// A function that gets a base station and adds it to the list of Base Stations.
         /// </summary>
@@ -41,6 +40,11 @@ namespace DalObject
         public void AddingBaseStation(BaseStation baseStation)
         {
             BaseStationList.Add(baseStation);
+        }
+
+        public void AddingItemToDList<T>(T item)where T:IIdentifiable
+        {
+             ((List<T>)data[typeof(T)]).Add(item);
         }
 
         ///// <summary>
@@ -76,23 +80,10 @@ namespace DalObject
         /// <returns>list of base stations that they have available charging positions</returns>
         public IEnumerable<BaseStation> AvailableSlots()
         {
-            return new List<BaseStation>(BaseStationList.Where(BaseStation => BaseStation.NumberOfChargingPositions > 0).ToList());
-
-
-            //צריך גםTOLISTוגם NEW LIST??????
+            return new List<BaseStation>(BaseStationList.Where(baseStation => AreThereFreePositions(baseStation.Id)));
         }
-        public bool ExistsInBaseStation(int id)
-        {
-            for (int i = 0; i < BaseStationList.Count; i++)
-            {
-                if (BaseStationList[i].Id == id)
-                    return true;
-            }
-            return false;
-        }
-
         
-        public bool ThereAreFreePositions(int sId)
+        public bool AreThereFreePositions(int sId)
         {
             return (BaseStationList.Find(baseStation => baseStation.Id == sId).NumberOfChargingPositions - SumOfDronesInSpecificStation(sId)) > 0;
         }
