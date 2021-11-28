@@ -143,7 +143,6 @@ namespace BL
                 string dStatus = droneToList.DStatus.ToString();
                 throw new BelongingParcel($"this drone cant be belonging to parcel because it is in {dStatus} status!");
             }
-            // כשעושים מיון לפי thenby הסדר ממיון לפי המיון הסופי או שהוא מבין למין כל קבוצה שוב?
             var optionParcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.Weight <= (IDal.DO.WeightCategories)droneToList.Weight)
                 .OrderByDescending(parcel => parcel.MPriority).ThenByDescending(parcel => parcel.Weight).ThenBy(parcel => GetDistance(droneToList.CurrLocation, parcel));
             bool belonged = false;
@@ -159,7 +158,7 @@ namespace BL
             }
             if (!belonged)
             {
-                throw new CantBelongingParcelToDroneException("");
+                throw new CantBelongingParcelToDroneException("there isnt match parcel to belong the drone");
             }
         }
 

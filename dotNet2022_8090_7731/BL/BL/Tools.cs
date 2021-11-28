@@ -21,19 +21,27 @@ namespace BL
             str += typeof(T).Name+' ';
             foreach (PropertyInfo item in t.GetType().GetProperties())
             {
-                if (item.PropertyType.Namespace!= typeof(int).Namespace)
-                {
-                    str += nameof(ToolboxItemFilterType)+' ';
-                    foreach (PropertyInfo pItem in item.GetType().GetProperties())
-                    {
-                        str += pItem.Name + ": " + pItem.GetValue(t, null)+' ';
-                    }
-                }
-                else
-                {
+                //if (item.PropertyType.Namespace!= typeof(int).Namespace)
+                //{
+                //    str += nameof(ToolboxItemFilterType)+' ';
+                //    str += item.PropertyType;
+                //    str += "     ";
+                //    str += item.PropertyType.DeclaringType;
+                //    foreach (var fieldInfo in item.PropertyType.GetFields())
+                //    {
+                //        str += fieldInfo.Name + ": " + fieldInfo.Attributes + "    ";
+                //    }
+                //    str += item.PropertyType.GetFields();
+                //    //foreach (PropertyInfo pItem in item.PropertyType.GetCustomAttributes())
+                //    //{
+                //    //    str += pItem.Name + ": " + pItem.GetValue(t, null)+' ';
+                //    //}
+                //}
+                //else
+                //{
 
                 str += item.Name + ": " + item.GetValue(t, null) +' ';
-                }
+                
             }
             return str;
         }
