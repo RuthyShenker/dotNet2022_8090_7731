@@ -91,6 +91,14 @@ namespace ConsoleUI_BL
             {
                 Console.WriteLine(exception.Message);
             }
+            catch (CantRelasingDroneFromChargingException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+            catch (CantBelongingParcelToDroneException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
         }
 
         /// <summary>

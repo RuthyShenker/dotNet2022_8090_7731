@@ -14,13 +14,22 @@ namespace IBL.BO
     /// </summary>
     public class DroneInParcel
     {
+        /// <summary>
+        /// A constructor of DroneInParcel with fields.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="batteryStatus"></param>
+        /// <param name="location"></param>
         public DroneInParcel(int id, double batteryStatus, Location location)
         {
             Id = id;
             BatteryStatus = batteryStatus;
             CurrLocation = location;
         }
-        public int Id{ get; set; }
+        /// <summary>
+        /// this field is init.
+        /// </summary>
+        public int Id{ get; init; }
         public double BatteryStatus{ get; set; }
         public Location CurrLocation { get; set; }
         

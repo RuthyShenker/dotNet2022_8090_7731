@@ -11,23 +11,28 @@ using System.Collections;
 
 namespace IDal.DO
 {
+    /// <summary>
+    /// A class of Extensions
+    /// </summary>
     public static class Extensions
     {
 
-        public static IIdentifiable GetFromDalById<T>(int Id) where T : IIdentifiable
-        {
-            return (IIdentifiable)DataSource.data[typeof(T)].Cast<IIdentifiable>().Where(item => item.Id == Id);
-        }
+        //public static IIdentifiable GetFromDalById<T>(int Id) where T : IIdentifiable
+        //{
+        //    return (IIdentifiable)DataSource.data[typeof(T)].Cast<IIdentifiable>().Where(item => item.Id == Id);
+        //}
 
 
         //public static IEnumerable GetListFromDal<T>() where T : IIdentifiable
         //{
         //    return DataSource.data[typeof(T)];
         //}
-        public static IEnumerable<T> GetListFromDal<T>() where T : IIdentifiable
-        {
-            return (IEnumerable < T > )DataSource.data[typeof(T)];
-        }
+
+
+        //public static IEnumerable<T> GetListFromDal<T>() where T : IIdentifiable
+        //{
+        //    return (IEnumerable < T > )DataSource.data[typeof(T)];
+        //}
 
         //static IEnumerable GetListFromDal(Type type)
         //{

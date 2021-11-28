@@ -7,7 +7,9 @@ using IDal.DO;
 using static DalObject.DataSource;
 
 namespace DalObject
-{
+{/// <summary>
+/// partial class of DalObject:IDal
+/// </summary>
     public partial class DalObject
     {
         /// <summary>
@@ -58,7 +60,12 @@ namespace DalObject
             UpdateTimeAction(pId, "providing");
         }
 
-        private void UpdateTimeAction(int pId, string action)
+        /// <summary>
+        /// A function that update Time of Action,the function doesn't return anything.
+        /// </summary>
+        /// <param name="pId"></param>
+        /// <param name="action"></param>
+        private void updateTimeAction(int pId, string action)
         {
             try
             {
@@ -86,9 +93,9 @@ namespace DalObject
 
 
         /// <summary>
-        /// return copy parcels that aren't belonged to any drone.
+        /// A function that returns copy parcels that aren't belonged to any drone.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> returns copy parcels that aren't belonged to any drone.</returns>
         public IEnumerable<Parcel> GetUnbelongParcels()
         {
             return ParceList.Where(parcel => parcel.DroneId == 0).ToList();
@@ -113,14 +120,14 @@ namespace DalObject
         //    //return ParceList.First(parcel => parcel.ParcelId == Id).Clone();
         //}
 
-            ///// <summary>
-            ///// A function that returns the list of the parcels
-            ///// </summary>
-            ///// <returns> parcle list</returns>
-            //public IEnumerable<Parcel> GetParcels()
-            //{
-            //    return ParceList.Select(parcel => new Parcel(parcel)).ToList();
-            //}
+        ///// <summary>
+        ///// A function that returns the list of the parcels
+        ///// </summary>
+        ///// <returns> parcle list</returns>
+        //public IEnumerable<Parcel> GetParcels()
+        //{
+        //    return ParceList.Select(parcel => new Parcel(parcel)).ToList();
+        //}
 
             ///// <summary>
             ///// A function that returns the list of the parcels

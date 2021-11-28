@@ -56,13 +56,6 @@ namespace BL
             try
             {
                 lDroneToList.Exists(drone => drone.Id == dId);
-            }
-            catch (ArgumentNullException)
-            {
-                throw; // ID isnt exist
-            }
-            try
-            {
                 var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
                 bool pickedUp = false;
                 foreach (var parcel in parcels)
@@ -81,12 +74,13 @@ namespace BL
                 }
                 if (!pickedUp)
                 {
-                    throw new Exception(); // חבילות כבר נאספו
+                    throw new ParcelIsAlreadyPickedUpException("the drone is already picked up " +
+                        "the parcel"); 
                 }
             }
             catch (ArgumentNullException)
             {
-                throw;// שום חבילה לא משויכת לרחפן זה
+                throw NoParcelAssociatedToTheDroneException("");// שום חבילה לא משויכת לרחפן זה
             }
         }
 
@@ -121,12 +115,12 @@ namespace BL
                 }
                 if (!deliveryed)
                 {
-                    throw new Exception();// parcels status isnnt match
+                    throw new ParcelsStatusIsntMatchException("");// parcels status isnnt match
                 }
             }
             catch (ArgumentNullException)
             {
-                throw; // ID isnt exist
+                throw new IdIsNotValidException("This id doesn't exists"); // ID isnt exist
             }
 
         }
@@ -155,15 +149,14 @@ namespace BL
         /// <returns>returns ParcelToList object</returns>
         private ParcelToList ConvertToList(IDal.DO.Parcel parcel)
         {
-            ParcelToList nParcel = new ParcelToList();
-            nParcel.Id = parcel.Id;
-            nParcel.SenderName = dal.GetFromDalById<IDal.DO.Customer>(parcel.SenderId).Name;
-            nParcel.GetterName = dal.GetFromDalById<IDal.DO.Customer>(parcel.GetterId).Name; /*Extensions.GetById<Customer>(parcel.GetterId).Name;*/
-            //nParcel.SenderName = customerDalList.First(customer => customer.Id == parcel.SenderId).Name;
-            //nParcel.GetterName = customerDalList.First(customer => customer.Id == parcel.GetterId).Name;
-            nParcel.Weight = (IBL.BO.WeightCategories)parcel.Weight;
-            nParcel.MyPriority = (Priority)parcel.MPriority;
-            nParcel.Status = GetParcelStatus(parcel);
+            ParcelToList nParcel = new ParcelToList(
+            parcel.Id,
+           dal.GetFromDalById<IDal.DO.Customer>(parcel.SenderId).Name,
+           dal.GetFromDalById<IDal.DO.Customer>(parcel.GetterId).Name,
+            (IBL.BO.WeightCategories)parcel.Weight,
+            (Priority)parcel.MPriority,
+            GetParcelStatus(parcel)
+        );
             return nParcel;
         }
         /// <summary>

@@ -15,6 +15,14 @@ namespace IBL.BO
     /// </summary>
     public class ParcelInCustomer
     {
+        /// <summary>
+        /// A constructor with fields.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="weight"></param>
+        /// <param name="mPriority"></param>
+        /// <param name="pStatus"></param>
+        /// <param name="onTheOtherHand"></param>
         public ParcelInCustomer(int id, WeightCategories weight, Priority mPriority, ParcelStatus pStatus, CustomerInParcel onTheOtherHand)
         {
             Id = id;
@@ -23,8 +31,10 @@ namespace IBL.BO
             PStatus = pStatus;
             OnTheOtherHand = onTheOtherHand;
         }
-
-        public int Id { get; set; }
+        /// <summary>
+        /// this field is init.
+        /// </summary>
+        public int Id { get; init; }
         public WeightCategories Weight { get; set; }
         public Priority MPriority { get; set; }
         public ParcelStatus PStatus { get; set; }

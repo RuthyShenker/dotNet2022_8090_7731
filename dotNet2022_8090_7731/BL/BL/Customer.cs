@@ -18,6 +18,13 @@ namespace IBL.BO
     /// </summary>
     public class Customer
     {
+        /// <summary>
+        /// A constructor of Customer with fields.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="phone"></param>
+        /// <param name="cLocation"></param>
         public Customer(int id, string name, string phone, Location cLocation)
         {
             Id = id;
@@ -27,11 +34,14 @@ namespace IBL.BO
             LFromCustomer = new List<ParcelInCustomer>();
             LForCustomer =new List<ParcelInCustomer>();
         }
+        /// <summary>
+        /// this field is init.
+        /// </summary>
         public int Id { get; init; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public Location CLocation { get; set; }
-        // שתי רשימות
+        // two lists
         public List<ParcelInCustomer> LFromCustomer { get; set; }
         public List<ParcelInCustomer> LForCustomer { get; set; }
     }

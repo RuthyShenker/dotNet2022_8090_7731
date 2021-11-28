@@ -16,6 +16,14 @@ namespace IBL.BO
     /// </summary>
     public class Station
     {
+        /// <summary>
+        /// A constructor of Station with fields.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="nameStation"></param>
+        /// <param name="sLocation"></param>
+        /// <param name="numAvailablePositions"></param>
+        /// <param name="lBL_ChargingDrone"></param>
         public Station(int id, string nameStation, Location sLocation, int numAvailablePositions, List<ChargingDrone> lBL_ChargingDrone)
         {
             Id = id;
@@ -24,6 +32,9 @@ namespace IBL.BO
             NumAvailablePositions = numAvailablePositions;
             LBL_ChargingDrone = lBL_ChargingDrone;
         }
+        /// <summary>
+        /// this field is init.
+        /// </summary>
         public int Id { get; init; }
         public string NameStation { get; set; }
         public Location SLocation{ get; set; }

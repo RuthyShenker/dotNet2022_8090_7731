@@ -18,14 +18,22 @@ namespace IBL.BO
     /// </summary>
     public class CustomerToList
     {
+        /// <summary>
+        ///A constructor of CustomerToList with fields.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="phone"></param>
         public CustomerToList(int id, string name, string phone)
         {
             Id = id;
             Name = name;
             Phone = phone;
         }
-
-        public int Id { get; set; }
+        /// <summary>
+        /// this field is init. 
+        /// </summary>
+        public int Id { get; init; }
         public string Name{ get; set; }
         public string Phone { get; set; }
         public int SentSupplied { get; set; }

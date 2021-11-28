@@ -93,7 +93,7 @@ namespace BL
                 //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
                 dal.AddDroneToCharge(drone.Id, closetdStation.Id);
             }
-            catch (ArgumentNullException exception)
+            catch (ArgumentNullException )
             {
                 throw new IdIsNotValidException("This Id Not Exists in list of Drone To List");
             }
@@ -108,16 +108,16 @@ namespace BL
         {
             if (!dal.IsIdExistInList<IDal.DO.Drone>(dId))
             {
-                throw new Exception("this id doesnt exist in the drone list!");
+                throw new IdIsNotValidException("this id doesnt exist in the drone list!");
             }
             DroneToList drone = lDroneToList.Find(drone => drone.Id == dId);
 
             switch (drone.DStatus)
             {
                 case DroneStatus.Free:
-                    throw new Exception("this drone in free state, it cant relese from charging!");
+                    throw new CantRelasingDroneFromChargingException("this drone in free state, it cant relese from charging!");
                 case DroneStatus.Delivery:
-                    throw new Exception("this drone in delivery state,it cant relese from charging!");
+                    throw new CantRelasingDroneFromChargingException("this drone in delivery state,it cant relese from charging!");
                 default:
 
                     drone.DStatus = DroneStatus.Free;
@@ -135,7 +135,7 @@ namespace BL
         {
             if (!dal.IsIdExistInList<IDal.DO.Drone>(dId))
             {
-                //throw
+                throw new IdIsNotValidException("this id is already exists in drone list!!!");
             }
             DroneToList droneToList = lDroneToList.Find(drone => drone.Id == dId);
             if (droneToList.DStatus != DroneStatus.Free)
@@ -159,7 +159,7 @@ namespace BL
             }
             if (!belonged)
             {
-                throw new Exception();
+                throw new CantBelongingParcelToDroneException("");
             }
         }
 
@@ -202,16 +202,14 @@ namespace BL
             bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
             dal.AddDroneToCharge(bLDrone.Id, StationId);
             IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
-            DroneToList droneToList = new DroneToList()
-            {
-                Id = bLDrone.Id,
-                Model = bLDrone.Model,
-                Weight = bLDrone.Weight,
-                BatteryStatus = bLDrone.BatteryStatus,
-                DStatus = bLDrone.DroneStatus,
-                CurrLocation = new Location(station.Longitude, station.Latitude),
-                NumOfParcel = null
-            };
+            DroneToList droneToList = new DroneToList(
+                bLDrone.Id,
+                bLDrone.Model,
+                bLDrone.Weight,
+                bLDrone.BatteryStatus,
+                bLDrone.DroneStatus,
+                new Location(station.Longitude, station.Latitude),
+                null);
             lDroneToList.Add(droneToList);
             IDal.DO.Drone drone = new IDal.DO.Drone()
             {
@@ -222,6 +220,12 @@ namespace BL
             dal.AddingItemToDList(drone);
         }
 
+        /// <summary>
+        /// A function that gets droneId and newModel and updates the drone with the id of 
+        /// droneId to be with the model of newModel, the function doesn't return anything.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <param name="newModel"></param>
         public void UpdatingDroneName(int droneId, string newModel)
         {
             try

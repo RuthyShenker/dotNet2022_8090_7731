@@ -25,6 +25,18 @@ namespace IBL.BO
         {
         }
 
+        /// <summary>
+        /// A constructor of ParcelInTransfer with fields.
+        /// </summary>
+        /// <param name="pId"></param>
+        /// <param name="isInWay"></param>
+        /// <param name="mPriority"></param>
+        /// <param name="weight"></param>
+        /// <param name="sender"></param>
+        /// <param name="getter"></param>
+        /// <param name="collectionLocation"></param>
+        /// <param name="deliveryLocation"></param>
+        /// <param name="transDistance"></param>
         public ParcelInTransfer(int pId, bool isInWay, Priority mPriority, WeightCategories weight, CustomerInParcel sender,
             CustomerInParcel getter, Location collectionLocation, Location deliveryLocation, double transDistance)
         {
@@ -38,7 +50,7 @@ namespace IBL.BO
             DeliveryLocation = deliveryLocation;
             TransDistance = transDistance;
         }
-        public int PId { get; set; }
+        public int PId { get; init; }
         public bool IsInWay { get; set; }
         public Priority MPriority { get; set; }
         public WeightCategories Weight { get; set; }

@@ -14,15 +14,21 @@ namespace IBL.BO
     /// </summary>
     public class CustomerInParcel
     {
+        /// <summary>
+        ///A constructor of CustomerInParcel with fields.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
         public CustomerInParcel(int id, string name)
         {
             Id = id;
             Name = name;
         }
-        public int Id { get; set; }
+        /// <summary>
+        /// this field is init.
+        /// </summary>
+        public int Id { get; init; }
         public string Name { get; set; }
-       
-       
     }
 
 }

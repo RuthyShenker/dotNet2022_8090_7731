@@ -9,6 +9,9 @@ using static DalObject.DataSource;
 
 namespace DalObject
 {
+    /// <summary>
+    /// partial class of DalObject:IDal
+    /// </summary>
     public partial class DalObject : IDal.IDal
     /// <summary>
     /// A class that contains:

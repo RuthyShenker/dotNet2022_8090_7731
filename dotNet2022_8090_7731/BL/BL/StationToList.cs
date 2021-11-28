@@ -15,7 +15,17 @@ namespace IBL.BO
     /// </summary>
     public class StationToList
     {
-        public int Id { get; set; }
+        public StationToList(int id, string name,int availablePositions, int fullPositions)
+        {
+            Id = id;
+            Name = name;
+            AvailablePositions = availablePositions;
+            FullPositions = fullPositions;
+        }
+        /// <summary>
+        /// this field is init.
+        /// </summary>
+        public int Id { get; init; }
         public string Name { get; set; }
         public int AvailablePositions { get; set; }
         public int FullPositions { get; set; }
