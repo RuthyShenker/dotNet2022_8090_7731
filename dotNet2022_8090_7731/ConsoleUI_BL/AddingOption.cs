@@ -45,7 +45,7 @@ namespace ConsoleUI_BL
             {
                 Console.WriteLine(exception);
             }
-            catch(TheStationDoesNotHaveFreePositions exception)
+            catch(TheStationDoesNotHaveFreePositionsException exception)
             {
                 Console.WriteLine(exception);
             }

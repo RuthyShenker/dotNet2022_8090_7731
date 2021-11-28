@@ -70,8 +70,8 @@ namespace BL
                 if (drone.DStatus != IBL.BO.DroneStatus.Free)
                 {
                     if (drone.DStatus == IBL.BO.DroneStatus.Maintenance)
-                        throw new SendingDroneToCharge("this drone in maintenance,it cant go to charge");
-                    throw new SendingDroneToCharge("this drone in delivery ,it cant go to charge");
+                        throw new SendingDroneToChargeException("this drone in maintenance,it cant go to charge");
+                    throw new SendingDroneToChargeException("this drone in delivery ,it cant go to charge");
                 }
                 Station closetdStation = ClosestStation(drone.CurrLocation);
                 //Station closebdStation = ConvertToBL(closetdStation);
@@ -83,7 +83,7 @@ namespace BL
                 double minBattery = MinBattery(distanceFromDroneToStation, drone.Weight);
                 if (drone.BatteryStatus - minBattery < 0)
                 {
-                    throw new ThereIsntEnoughBatteryToTheDrone("There isnt enough battery to the drone in order to go to the closet station to be charging");
+                    throw new ThereIsntEnoughBatteryToTheDroneException("There isnt enough battery to the drone in order to go to the closet station to be charging");
                 }
 
                 drone.BatteryStatus = minBattery;
@@ -141,7 +141,7 @@ namespace BL
             if (droneToList.DStatus != DroneStatus.Free)
             {
                 string dStatus = droneToList.DStatus.ToString();
-                throw new BelongingParcel($"this drone cant be belonging to parcel because it is in {dStatus} status!");
+                throw new BelongingParcelException($"this drone cant be belonging to parcel because it is in {dStatus} status!");
             }
             // כשעושים מיון לפי thenby הסדר ממיון לפי המיון הסופי או שהוא מבין למין כל קבוצה שוב?
             var optionParcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.Weight <= (IDal.DO.WeightCategories)droneToList.Weight)
@@ -172,11 +172,11 @@ namespace BL
         /// <param name="parcel"></param>
         /// <returns>the function returns this distance</returns>
         private double GetDistance(Location droneLocation, IDal.DO.Parcel parcel)
-            {
-                Location senderLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
-                Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
-                return CalculateDistance(droneLocation, senderLocation, getterLocation, ClosestStation(getterLocation).SLocation);
-            }
+        {
+            Location senderLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
+            Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
+            return CalculateDistance(droneLocation, senderLocation, getterLocation, ClosestStation(getterLocation).SLocation);
+        }
         /// <summary>
         /// A function that gets Drone and station id and adds this Drone to the data base and sending
         /// this drone to charging in the StationId that the function gets,
@@ -196,7 +196,7 @@ namespace BL
             }
             if (!dal.AreThereFreePositions(StationId))
             {
-                throw new TheStationDoesNotHaveFreePositions("There arent free positions for this base station!");
+                throw new TheStationDoesNotHaveFreePositionsException("There arent free positions for this base station!");
             }
             bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
             bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
