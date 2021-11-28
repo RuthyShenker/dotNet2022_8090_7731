@@ -91,9 +91,9 @@ namespace BL
                 drone.DStatus = IBL.BO.DroneStatus.Maintenance;
                 //--closetBaseStation.NumAvailablePositions;
                 //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
-                dal.AddingDroneToCharge(drone.Id, closetdStation.Id);
+                dal.AddDroneToCharge(drone.Id, closetdStation.Id);
             }
-            catch (ArgumentNullException exception)
+            catch (ArgumentNullException )
             {
                 throw new IdIsNotValidException("This Id Not Exists in list of Drone To List");
             }
@@ -108,16 +108,16 @@ namespace BL
         {
             if (!dal.IsIdExistInList<IDal.DO.Drone>(dId))
             {
-                throw new Exception("this id doesnt exist in the drone list!");
+                throw new IdIsNotValidException("this id doesnt exist in the drone list!");
             }
             DroneToList drone = lDroneToList.Find(drone => drone.Id == dId);
 
             switch (drone.DStatus)
             {
                 case DroneStatus.Free:
-                    throw new Exception("this drone in free state, it cant relese from charging!");
+                    throw new CantRelasingDroneFromChargingException("this drone in free state, it cant relese from charging!");
                 case DroneStatus.Delivery:
-                    throw new Exception("this drone in delivery state,it cant relese from charging!");
+                    throw new CantRelasingDroneFromChargingException("this drone in delivery state,it cant relese from charging!");
                 default:
 
                     drone.DStatus = DroneStatus.Free;
@@ -135,7 +135,7 @@ namespace BL
         {
             if (!dal.IsIdExistInList<IDal.DO.Drone>(dId))
             {
-                //throw
+                throw new IdIsNotValidException("this id is already exists in drone list!!!");
             }
             DroneToList droneToList = lDroneToList.Find(drone => drone.Id == dId);
             if (droneToList.DStatus != DroneStatus.Free)
@@ -159,7 +159,7 @@ namespace BL
             }
             if (!belonged)
             {
-                throw new Exception();
+                throw new CantBelongingParcelToDroneException("");
             }
         }
 

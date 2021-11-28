@@ -148,6 +148,21 @@ namespace IBL.BO
 
         }
     }
+    public class CantRelasingDroneFromChargingException : Exception
+    {
+        public CantRelasingDroneFromChargingException(string message):base()
+        {
+
+        }
+    }
+    public class CantBelongingParcelToDroneException : Exception
+    {
+        public CantBelongingParcelToDroneException(string message):base()
+        {
+
+        }
+    }
+
 }
 
 
