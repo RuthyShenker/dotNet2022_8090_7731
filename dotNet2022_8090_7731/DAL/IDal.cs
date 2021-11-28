@@ -9,9 +9,43 @@ using System.Threading.Tasks;
 
 namespace IDal
 {
+    /// <summary>
+    ///An interface of IDal 
+    ///contains:
+    ///AddingBaseStation
+    ///AddingDrone
+    ///AddingCustomer
+    ///AddingParcel
+    ///AddingDroneToCharge
+    ///BelongingParcel
+    ///PickingUpParcel
+    ///ProvidePackage
+    ///ReleasingDrone
+    ///GetUnbelongParcels
+    ///AvailableSlots
+    ///GetFromDalById<T>
+    ///GetFromDalByCondition<T>
+    ///GetDalListByCondition<T>
+    ///IsExistInList<T>
+    ///IsIdExistInList<T>
+    ///GetListFromDal<T>
+    ///UpdateDrone
+    ///UpdateBaseStation
+    ///UpdateCustomer
+    ///ExistsInBaseStation
+    ///ExistsInDroneList
+    ///ExistsInParcelList
+    ///ThereAreFreePositions
+    ///SumOfDronesInSpecificStation
+    ///ExistsInCustomerList
+    ///GetChargingDrones
+    ///PowerConsumptionRequest
+
+    /// </summary>
     public interface IDal
     {
-        // adding
+
+        //Adding:
         void AddingBaseStation(BaseStation baseStation);
         void AddingDrone(Drone drone);
         void AddingCustomer(Customer customer);
@@ -25,6 +59,8 @@ namespace IDal
         void UpdateBelongedParcel(Parcel parcel, int dId);
         void PickingUpParcel(int Id);
         void ProvidingPackage(int Id);
+
+        //Releasing Drone:
         void ReleasingDrone(int dId);
         void UpdateDrone(int dId, Drone drone);
         void UpdateBaseStation(int bId, BaseStation baseStation);
@@ -32,6 +68,7 @@ namespace IDal
         int SumOfDronesInSpecificStation(int sId);
 
         // get an item
+        //get by id:
         T GetFromDalById<T>(int Id) where T : IIdentifiable;
         T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IIdentifiable;
        

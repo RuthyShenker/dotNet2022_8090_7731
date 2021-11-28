@@ -19,7 +19,10 @@ namespace IBL.BO
     /// </summary>
     public class DroneToList
     {
-        public int Id { get; set; }
+        /// <summary>
+        /// this field is init.
+        /// </summary>
+        public int Id { get; init; }
         public string Model { get; set; }
         public WeightCategories Weight { get; set; }
         public double BatteryStatus { get; set; }

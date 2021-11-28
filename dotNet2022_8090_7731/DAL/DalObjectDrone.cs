@@ -9,7 +9,9 @@ using static DalObject.DataSource;
 using IDal.DO;
 
 namespace DalObject
-{
+{/// <summary>
+/// partial class of DalObject:IDal
+/// </summary>
     public partial class DalObject
     {
         //public Drone this[int id]
@@ -25,18 +27,31 @@ namespace DalObject
         //    }
         //}
         /// <summary>
-        /// A function that gets a Drone and adds it to the list of Drones.
+        /// A function that gets a Drone and adds it to the list of Drones,
+        /// the function doesn't return anything.
         /// </summary>
         /// <param name="drone"></param>
         public void AddingDrone(Drone drone)
         {
             DroneList.Add(drone);
         }
-        public void AddDroneToCharge(int dId, int sId)
+        /// <summary>
+        /// A function that gets :
+        /// drone Id,station Id
+        ///and adds a ChargingDrone object contains these fields to 
+        ///the list ChargingDroneList,the function doesn't return anything.
+        /// </summary>
+        /// <param name="dId"></param>
+        /// <param name="sId"></param>
+        public void AddingDroneToCharge(int dId, int sId)
         {
             ChargingDroneList.Add(new ChargingDrone(dId, sId));
         }
 
+        /// <summary>
+        /// A function that returns new list of all Charging Drone.
+        /// </summary>
+        /// <returns>returns new list of all the Charging Drone  </returns>
         public IEnumerable<ChargingDrone> GetChargingDrones()
         {
             return new List<ChargingDrone>(ChargingDroneList);
@@ -87,7 +102,8 @@ namespace DalObject
         //}
 
         /// <summary>
-        /// A function that gets an id of droneand releasing this drone from charging.
+        /// A function that gets an id of drone and 
+        /// releasing this drone from charging,the function doesn't return anything.
         /// </summary>
         /// <param name="dId"></param>
         public void ReleasingDrone(int dId)
@@ -141,6 +157,14 @@ namespace DalObject
         //    return DroneList.Select(drone => new Drone(drone)).ToList();
 
         //}
+        /// <summary>
+        /// A function that returnsthe data of : available, lightWeight,
+        ///mediumWeight, heavyWeight, chargingRate
+        /// </summary>
+        /// <returns>returns an array of double that contains:available, lightWeight,
+        ///mediumWeight, heavyWeight, chargingRate</returns>
+        public double[] PowerConsumptionRequest() => new double[5] { available, lightWeight,
+            mediumWeight, heavyWeight, chargingRate };
 
         public double[] PowerConsumptionRequest() => new double[5] { available, lightWeight, mediumWeight, heavyWeight, chargingRate };
 
@@ -153,6 +177,14 @@ namespace DalObject
             }
             return count;
         }
+        /// <summary>
+        /// A function that gets an id of drone 
+        /// and a drone and updates the data base to 
+        /// contains this object of this id,the function
+        /// doesn't return anything.
+        /// </summary>
+        /// <param name="dId"></param>
+        /// <param name="drone"></param>
         public void UpdateDrone(int dId, Drone drone)
         {
             try
@@ -160,7 +192,7 @@ namespace DalObject
                 DroneList.Remove(DroneList.Find(drone => drone.Id == dId));
                 DroneList.Add(drone);
             }
-            catch (ArgumentNullException exception)
+            catch (ArgumentNullException)
             {
                 throw new IdNotExistInTheListException();
             }

@@ -32,6 +32,10 @@ namespace IBL.BO
     /// </summary>
     public class UpdatingFailedIdNotExistsException : Exception
     {
+        /// <summary>
+        /// A class UpdatingFailedIdNotExistsException : Exception
+        /// gets A string
+        /// </summary>
         public UpdatingFailedIdNotExistsException(string message) : base()
         {
 
@@ -43,6 +47,10 @@ namespace IBL.BO
     /// </summary>
     public class ThereIsntEnoughBatteryToTheDrone : Exception
     {
+        /// <summary>
+        /// A class ThereIsntEnoughBatteryToTheDrone : Exception
+        /// gets A string
+        /// </summary>
         public ThereIsntEnoughBatteryToTheDrone(string message) : base()
         {
 
@@ -54,6 +62,10 @@ namespace IBL.BO
     /// </summary>
     public class StationDoesntHaveAvailablePositionsException : Exception
     {
+        /// <summary>
+        /// A class StationDoesntHaveAvailablePositionsException : Exception
+        /// gets A string
+        /// </summary>
         public StationDoesntHaveAvailablePositionsException(string message) : base()
         {
 
@@ -65,6 +77,10 @@ namespace IBL.BO
     /// </summary>
     public class IdIsNotValidException : Exception
     {
+        /// <summary>
+        /// A class IdIsNotValidException : Exception
+        /// gets A string
+        /// </summary>
         public IdIsNotValidException(string message) : base()
         {
 
@@ -77,6 +93,10 @@ namespace IBL.BO
     /// </summary>
     public class TheStationDoesNotHaveFreePositions : Exception
     {
+        /// <summary>
+        /// A class TheStationDoesNotHaveFreePositions : Exception
+        /// gets A string
+        /// </summary>
         public TheStationDoesNotHaveFreePositions(string message) : base()
         {
 
@@ -88,6 +108,10 @@ namespace IBL.BO
     /// </summary>
     public class UpdatingCustomerDetails : Exception
     {
+        /// <summary>
+        /// A constructor of UpdatingCustomerDetails with one parameter of string
+        /// </summary>
+        /// <param name="message"></param>
         public UpdatingCustomerDetails(string message) : base()
         {
 
@@ -99,6 +123,10 @@ namespace IBL.BO
     /// </summary>
     public class SendingDroneToCharge : Exception
     {
+        /// <summary>
+        /// A constructor of SendingDroneToCharge with one parameter of string
+        /// </summary>
+        /// <param name="message"></param>
         public SendingDroneToCharge(string message):base()
         {
 
@@ -111,6 +139,10 @@ namespace IBL.BO
     /// </summary>
     public class BelongingParcel:Exception
     {
+        /// <summary>
+        /// A constructor of BelongingParcel with one parameter of string
+        /// </summary>
+        /// <param name="message"></param>
         public BelongingParcel(string message):base()
         {
 

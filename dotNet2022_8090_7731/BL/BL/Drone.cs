@@ -19,7 +19,17 @@ namespace IBL.BO
     /// </summary>
     public class Drone
     {
-         public Drone(int id, string model,WeightCategories weight, double batteryStatus, DroneStatus droneStatus, ParcelInTransfer pInTransfer, Location currLocation)
+        /// <summary>
+        /// A constructor of Drone with fields.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="model"></param>
+        /// <param name="weight"></param>
+        /// <param name="batteryStatus"></param>
+        /// <param name="droneStatus"></param>
+        /// <param name="pInTransfer"></param>
+        /// <param name="currLocation"></param>
+        public Drone(int id, string model,WeightCategories weight, double batteryStatus, DroneStatus droneStatus, ParcelInTransfer pInTransfer, Location currLocation)
         {
             Id = id;
             Model = model;
@@ -29,6 +39,9 @@ namespace IBL.BO
             PInTransfer = pInTransfer;
             CurrLocation = currLocation;
         }
+        /// <summary>
+        /// this field is init.
+        /// </summary>
         public int Id { get; init; }
         public string Model { get; set; }
         public WeightCategories Weight { get; set; }

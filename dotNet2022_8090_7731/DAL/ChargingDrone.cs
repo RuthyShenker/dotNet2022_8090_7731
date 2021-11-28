@@ -10,6 +10,11 @@ namespace IDal
         /// </summary>
         public struct ChargingDrone
         {
+            /// <summary>
+            /// A constructor of ChargingDrone with fields.
+            /// </summary>
+            /// <param name="dId"></param>
+            /// <param name="sId"></param>
             public ChargingDrone(int dId, int sId)
             {
                 DroneId = dId;

@@ -13,6 +13,11 @@ namespace IBL.BO
     /// </summary>
     public class ChargingDrone
     {
+        /// <summary>
+        /// A constructor of ChargingDrone with fields.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <param name="batteryStatus"></param>
         public ChargingDrone(int droneId,double batteryStatus)
         {
             DroneId = droneId;

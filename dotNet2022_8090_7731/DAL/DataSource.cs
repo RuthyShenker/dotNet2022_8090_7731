@@ -45,7 +45,14 @@ namespace DalObject
         /// A list of Charging Drones.
         /// </summary>
         static internal List<ChargingDrone> ChargingDroneList = new List<ChargingDrone>();
-       
+
+        /// <summary>
+        /// A dictionary contains:
+        /// [typeof(Drone)] = DroneList,
+        /// [typeof(Customer)] = CustomerList,
+        /// [typeof(Parcel)] = ParceList,
+        /// [typeof(BaseStation)] = BaseStationList,
+        /// </summary>
         static internal Dictionary<Type, IList> data = new()
         {
             [typeof(Drone)] = DroneList,

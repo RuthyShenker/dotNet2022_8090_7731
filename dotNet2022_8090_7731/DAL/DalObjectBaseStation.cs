@@ -10,6 +10,9 @@ using static DalObject.DataSource.Config;
 
 namespace DalObject
 {
+    /// <summary>
+    /// partial class of DalObject:IDal
+    /// </summary>
     public partial class DalObject
     /// <summary>
     /// A class that contains:
@@ -34,7 +37,9 @@ namespace DalObject
     {
 
         /// <summary>
-        /// A function that gets a base station and adds it to the list of Base Stations.
+        /// A function that gets a base station and adds
+        /// it to the list of Base Stations,the function
+        /// doesn't return anything.
         /// </summary>
         /// <param name="baseStation"></param>
         public void AddingBaseStation(BaseStation baseStation)
@@ -75,7 +80,8 @@ namespace DalObject
         //}
 
         /// <summary>
-        /// A function that returns copy base stations that they have available charging positions.
+        /// A function that returns - copy of base stations
+        /// that they have available charging positions.
         /// </summary>
         /// <returns>list of base stations that they have available charging positions</returns>
         public IEnumerable<BaseStation> AvailableSlots()
@@ -87,7 +93,15 @@ namespace DalObject
         {
             return (BaseStationList.Find(baseStation => baseStation.Id == sId).NumberOfChargingPositions - SumOfDronesInSpecificStation(sId)) > 0;
         }
-
+        /// <summary>
+        /// A function that gets an id of base station and an 
+        /// object of base station and changes
+        /// the data base to contain this object to the id that is
+        /// sent to the function,
+        /// the function doesn't return anything.
+        /// </summary>
+        /// <param name="bId"></param>
+        /// <param name="baseStation"></param>
         public void UpdateBaseStation(int bId, BaseStation baseStation)
         {
             try

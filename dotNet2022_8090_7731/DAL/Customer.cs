@@ -46,6 +46,9 @@ namespace IDal
                 Longitude = customer.Longitude;
                 Latitude = customer.Latitude;
             }
+            /// <summary>
+            /// this field is init.
+            /// </summary>
             public int Id { get; init; }
             public string Name { get; set; }
             public string Phone { get; set; }

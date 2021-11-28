@@ -91,7 +91,7 @@ namespace BL
                 drone.DStatus = IBL.BO.DroneStatus.Maintenance;
                 //--closetBaseStation.NumAvailablePositions;
                 //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
-                dal.AddDroneToCharge(drone.Id, closetdStation.Id);
+                dal.AddingDroneToCharge(drone.Id, closetdStation.Id);
             }
             catch (ArgumentNullException exception)
             {
@@ -222,6 +222,12 @@ namespace BL
             dal.AddingItemToDList(drone);
         }
 
+        /// <summary>
+        /// A function that gets droneId and newModel and updates the drone with the id of 
+        /// droneId to be with the model of newModel, the function doesn't return anything.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <param name="newModel"></param>
         public void UpdatingDroneName(int droneId, string newModel)
         {
             try

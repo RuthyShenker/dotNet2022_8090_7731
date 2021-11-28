@@ -9,6 +9,9 @@ using IDal.DO;
 
 namespace DalObject
 {
+    /// <summary>
+    /// partial class of DalObject:IDal
+    /// </summary>
     public partial class DalObject
     {
 
