@@ -148,6 +148,11 @@ namespace IBL.BO
 
         }
     }
+
+    /// <summary>
+    /// A class CantRelasingDroneFromChargingException : Exception
+    /// gets A string
+    /// </summary>
     public class CantRelasingDroneFromChargingException : Exception
     {
         public CantRelasingDroneFromChargingException(string message):base()
@@ -155,6 +160,10 @@ namespace IBL.BO
 
         }
     }
+    /// <summary>
+    /// A class CantBelongingParcelToDroneException : Exception
+    /// gets A string
+    /// </summary>
     public class CantBelongingParcelToDroneException : Exception
     {
         public CantBelongingParcelToDroneException(string message):base()
@@ -162,6 +171,40 @@ namespace IBL.BO
 
         }
     }
+    /// <summary>
+    /// A class ParcelIsAlreadyPickedUpException : Exception
+    /// gets A string
+    /// </summary>
+    public class ParcelIsAlreadyPickedUpException : Exception
+    {
+        public ParcelIsAlreadyPickedUpException(string message):base()
+        {
+           
+        }
+    }
+    /// <summary>
+    /// A class NoParcelAssociatedToTheDroneException : Exception
+    /// gets A string
+    /// </summary>
+    public class NoParcelAssociatedToTheDroneException:Exception
+        {
+            public NoParcelAssociatedToTheDroneException(string message):base()
+            {
+
+            }
+        }
+    /// <summary>
+    /// A class ParcelsStatusIsntMatchException : Exception
+    /// gets A string
+    /// </summary>
+    public class ParcelsStatusIsntMatchException : Exception
+    {
+        public ParcelsStatusIsntMatchException(string message):base()
+        {
+                
+        }
+    }
+
 
 }
 

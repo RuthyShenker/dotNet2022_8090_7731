@@ -202,16 +202,14 @@ namespace BL
             bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
             dal.AddDroneToCharge(bLDrone.Id, StationId);
             IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
-            DroneToList droneToList = new DroneToList()
-            {
-                Id = bLDrone.Id,
-                Model = bLDrone.Model,
-                Weight = bLDrone.Weight,
-                BatteryStatus = bLDrone.BatteryStatus,
-                DStatus = bLDrone.DroneStatus,
-                CurrLocation = new Location(station.Longitude, station.Latitude),
-                NumOfParcel = null
-            };
+            DroneToList droneToList = new DroneToList(
+                bLDrone.Id,
+                bLDrone.Model,
+                bLDrone.Weight,
+                bLDrone.BatteryStatus,
+                bLDrone.DroneStatus,
+                new Location(station.Longitude, station.Latitude),
+                null);
             lDroneToList.Add(droneToList);
             IDal.DO.Drone drone = new IDal.DO.Drone()
             {

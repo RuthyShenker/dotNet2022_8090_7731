@@ -115,11 +115,13 @@ namespace BL
         /// <returns>returns StationToList object</returns>
         private StationToList ConvertToList(IDal.DO.BaseStation station)
         {
-            StationToList nStation = new StationToList();
-            nStation.Id = station.Id;
-            nStation.Name = station.NameStation;
-            nStation.FullPositions = MountOfFullPositions(new Location(station.Longitude, station.Latitude));
-            nStation.AvailablePositions = station.NumberOfChargingPositions - nStation.FullPositions;
+            ///ruti מה הולך פה?
+            var x = MountOfFullPositions(new Location(station.Longitude, station.Latitude));
+            StationToList nStation = new StationToList(
+            station.Id,
+           station.NameStation,
+            x,
+           station.NumberOfChargingPositions - nStation.FullPositions); 
             return nStation;
         }
         /// <summary>

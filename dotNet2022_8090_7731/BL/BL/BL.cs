@@ -91,10 +91,10 @@ namespace BL
         /// </summary>
         private DroneToList copyCommon(IDal.DO.Drone source)
         {
-            DroneToList nDroneToList = new DroneToList();
-            nDroneToList.Id = source.Id;
-            nDroneToList.Model = source.Model;
-            nDroneToList.Weight = (IBL.BO.WeightCategories)source.MaxWeight;
+            DroneToList nDroneToList = new DroneToList(
+            source.Id,
+           source.Model,
+           (IBL.BO.WeightCategories)source.MaxWeight);
             return nDroneToList;
         }
 

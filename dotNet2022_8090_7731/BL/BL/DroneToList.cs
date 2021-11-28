@@ -19,6 +19,20 @@ namespace IBL.BO
     /// </summary>
     public class DroneToList
     {
+        public DroneToList(int id, string model, WeightCategories weight
+            , double batteryStatus, DroneStatus dStatus, Location currLocation, int? numOfParcel)
+        {
+            Id = id;
+            Model = model;
+            Weight = weight;
+            BatteryStatus = batteryStatus;
+            DStatus = dStatus;
+            CurrLocation = currLocation;
+            NumOfParcel = numOfParcel;
+        }
+        public DroneToList(int id, string model, WeightCategories weight):this(id,model,weight,0,0,null,0)
+        {
+        }
         /// <summary>
         /// this field is init.
         /// </summary>

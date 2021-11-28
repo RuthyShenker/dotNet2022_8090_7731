@@ -23,6 +23,10 @@ namespace IBL.BO
             DroneId = droneId;
             BatteryStatus = batteryStatus;
         }
+        public ChargingDrone():this(0,0)
+        {
+           
+        }
         public int DroneId { get; set; }
         public double BatteryStatus { get; set; }
     }
