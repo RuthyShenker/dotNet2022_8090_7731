@@ -78,7 +78,6 @@ namespace DalObject
         {
             return new List<BaseStation>(BaseStationList.Where(BaseStation => BaseStation.NumberOfChargingPositions > 0).ToList());
 
-
             //צריך גםTOLISTוגם NEW LIST??????
         }
         public bool ExistsInBaseStation(int id)

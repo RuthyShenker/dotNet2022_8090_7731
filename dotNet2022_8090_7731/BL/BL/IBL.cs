@@ -12,20 +12,21 @@ namespace IBL
 {
     public interface IBL
     {
-        //BelongingParcel
+        //Belonging Parcel
         void BelongingParcel(int pId);
-        //PickingUpParcel
+        //Picking Up Parcel
         void PickingUpParcel(int dId);
-        //אספקת חבילה
+        //Package delivery
         void DeliveryPackage(int Id);
 
         //void ChangeDroneStatus(int Id, DroneStatus newStatus);
 
-        //ChargingDrone
+        //Charging Drone
         void SendingDroneToCharge(int IdDrone);
 
         //void ReleasingDrone(int dId);
-        //ReleasingDrone
+
+        //Releasing Drone from charging
         void ReleasingDrone(int dId, double timeInCharging);
 
         //Adding
@@ -38,9 +39,10 @@ namespace IBL
         void UpdatingStationDetails(int stationId, string stationName, string amountOfPositions);
         void UpdatingCustomerDetails(int customerId, string newName, string newPhone);
 
-        // get lists
+        //get lists
         IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable;
         IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable;
+        //list of: Available Slots
         IEnumerable<StationToList> AvailableSlots();
 
         // get specific
@@ -50,7 +52,10 @@ namespace IBL
         // IEnumerable<DroneToList> GetDrones();
         // IEnumerable<CustomerToList> GetCustomers();
         // IEnumerable<ParcelToList> GetParcels();
+
+        //Get Unbelong Parcels
         IEnumerable<ParcelToList> GetUnbelongParcels();
+
         // IEnumerable<StationToList> AvailableSlots();
 
         //  GetItemFromBLById יש פונקציה גנרית 

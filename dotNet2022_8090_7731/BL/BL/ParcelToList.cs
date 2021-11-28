@@ -7,6 +7,15 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
+    /// <summary>
+    ///A class of ParcelToList that contains:
+    ///Id
+    ///SenderName
+    ///GetterName
+    ///Weight
+    ///MyPriority
+    ///Status
+    /// </summary>
     public class ParcelToList
     {
         public int Id { get; set; }

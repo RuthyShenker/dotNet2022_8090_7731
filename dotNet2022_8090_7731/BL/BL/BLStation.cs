@@ -26,7 +26,9 @@ namespace BL
         //    //return bStationsList;
         //}
         /// <summary>
-        /// 
+        /// A function that gets stationId,stationName,amountOfPositions
+        /// and updates the station with the stationId to be with these fields
+        /// and updates it in the data base,the function doesn't return anything.
         /// </summary>
         /// <param name="stationId"></param>
         /// <param name="stationName"></param>
@@ -43,17 +45,18 @@ namespace BL
                     baseStation.NumberOfChargingPositions = int.Parse(amountOfPositions);
                 dal.UpdateBaseStation(stationId, baseStation);
             }
-            catch (IdNotExistInTheListException )
+            catch (IdNotExistInTheListException)
             {
                 throw new IdIsNotValidException("Id of this base station doesn't " +
                     "exist in the base station list!!");
             }
         }
         /// <summary>
-        /// 
+        /// A function that gets an object of IDal.DO.BaseStation
+        /// and expands it to Station type and returns it.
         /// </summary>
         /// <param name="station"></param>
-        /// <returns></returns>
+        /// <returns>returns Station object</returns>
         private Station ConvertToBL(IDal.DO.BaseStation station)
         {
             var nLocation = new Location(station.Longitude, station.Latitude);
@@ -62,9 +65,9 @@ namespace BL
             return new Station(station.Id, station.NameStation, nLocation, numAvailablePositions, chargingDroneBList);
         }
         /// <summary>
-        /// 
+        /// A function that returns Available Slots by type of StationToList.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> returns Available Slots</returns>
         public IEnumerable<StationToList> AvailableSlots()
         {
             var stationsDalList = dal.AvailableSlots();
@@ -77,12 +80,12 @@ namespace BL
         }
 
 
-        // returns a new list of charging drone of BL
         /// <summary>
-        /// 
+        /// A function that gets id of station and
+        /// returns a new list of charging drone of BL of this station.
         /// </summary>
         /// <param name="sId"></param>
-        /// <returns></returns>
+        /// <returns>a new list of charging drone of BL of specific station</returns>
         private List<ChargingDrone> ChargingDroneBLList(int sId)
         {
             var chargingDroneBLList = new List<ChargingDrone>();
@@ -96,7 +99,7 @@ namespace BL
             }
             return chargingDroneBLList;
         }
-       
+
         //private Station ConvertToBL(IDal.DO.BaseStation station)
         //{
         //    var nLocation = new Location(station.Longitude, station.Latitude);
@@ -106,10 +109,11 @@ namespace BL
         //}
 
         /// <summary>
-        /// 
+        /// A function that gets an object of IDal.DO.BaseStation
+        /// and expands it to StationToList object and returns it.
         /// </summary>
         /// <param name="station"></param>
-        /// <returns></returns>
+        /// <returns>returns StationToList object</returns>
         private StationToList ConvertToList(IDal.DO.BaseStation station)
         {
             StationToList nStation = new StationToList();
@@ -120,10 +124,11 @@ namespace BL
             return nStation;
         }
         /// <summary>
-        /// 
+        /// A function that gets a location of station 
+        /// and returns Mount Of Full Positions of this station.
         /// </summary>
         /// <param name="stationLocation"></param>
-        /// <returns></returns>
+        /// <returns>ount Of Full Positions of specific station</returns>
         private int MountOfFullPositions(Location stationLocation)
         {
             int sumFullPositions = 0;
@@ -137,20 +142,21 @@ namespace BL
             return sumFullPositions;
         }
         /// <summary>
-        /// 
+        /// A function that gets two locations and returns if they are the same or not.
         /// </summary>
         /// <param name="location1"></param>
         /// <param name="location2"></param>
-        /// <returns></returns>
+        /// <returns>returns if they are the same or not</returns>
         private bool equalLocations( Location location1, Location location2 )
         {
             return location1.Longitude == location2.Longitude && location1.Latitude == location2.Latitude;
         }
         /// <summary>
-        /// 
+        /// A function that gets a location and retrns the
+        /// closet base station-BL to this location.
         /// </summary>
         /// <param name="location"></param>
-        /// <returns></returns>
+        /// <returns>returns Station that closet to the location that the function gets.</returns>
         private Station ClosestStation(Location location)
         {
             var stationDalList = dal.GetListFromDal<IDal.DO.BaseStation>();
@@ -171,7 +177,8 @@ namespace BL
             return ConvertToBL(stationDalList.ElementAt(index));
         }
         /// <summary>
-        /// 
+        /// A function that gets a base station and adds it to the data base,
+        /// the function doesn't return anything.
         /// </summary>
         /// <param name="bLStation"></param>
         public void AddingBaseStation(Station bLStation)

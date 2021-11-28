@@ -6,6 +6,19 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
+    /// <summary>
+    ///A class of Parcel that contains:
+    ///Id
+    ///Sender
+    /// Getter
+    ///Weight
+    ///MPriority
+    ///DInParcel
+    ///MakingParcel
+    ///BelongParcel
+    ///PickingUp
+    ///Arrival
+    /// </summary>
     public class Parcel
     {
 

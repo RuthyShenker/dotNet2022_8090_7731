@@ -25,16 +25,16 @@ namespace ConsoleUI_BL
                 switch (input)
                 {
                     case 1:
-                        Console.WriteLine(bL.GetBLById<IDal.DO.BaseStation, IBL.BO.Station>(GettingId("Base Station")).ToStringPrperty());
+                        Console.WriteLine(bL.GetBLById<IDal.DO.BaseStation, IBL.BO.Station>(GettingId("Base Station")).ToStringProperty());
                         break;
                     case 2:
-                        Console.WriteLine(bL.GetBLById<IDal.DO.Drone, IBL.BO.Drone>(GettingId("Drone")).ToStringPrperty());
+                        Console.WriteLine(bL.GetBLById<IDal.DO.Drone, IBL.BO.Drone>(GettingId("Drone")).ToStringProperty());
                         break;
                     case 3:
-                        Console.WriteLine(bL.GetBLById<IDal.DO.Customer, IBL.BO.Customer>(GettingId("Customer")).ToStringPrperty());
+                        Console.WriteLine(bL.GetBLById<IDal.DO.Customer, IBL.BO.Customer>(GettingId("Customer")).ToStringProperty());
                         break;
                     case 4:
-                        Console.WriteLine(bL.GetBLById<IDal.DO.Parcel, IBL.BO.Parcel>(GettingId("Parcel")).ToStringPrperty());
+                        Console.WriteLine(bL.GetBLById<IDal.DO.Parcel, IBL.BO.Parcel>(GettingId("Parcel")).ToStringProperty());
                         break;
                     default:
                         break;

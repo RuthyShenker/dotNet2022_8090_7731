@@ -6,6 +6,17 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
+    /// <summary>
+    /// A class of DroneToList
+    /// that contains:
+    /// Id
+    ///Model
+    ///Weight
+    ///BatteryStatus
+    ///DStatus
+    ///CurrLocation
+    ///NumOfParcel
+    /// </summary>
     public class DroneToList
     {
         public int Id { get; set; }

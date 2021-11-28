@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
+    /// <summary>
+    ///A class of StationToList that contains:
+    ///Id
+    ///Name
+    ///AvailablePositions
+    ///FullPositions
+    /// </summary>
     public class StationToList
     {
         public int Id { get; set; }

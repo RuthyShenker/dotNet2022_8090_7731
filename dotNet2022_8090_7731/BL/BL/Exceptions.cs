@@ -26,6 +26,10 @@ namespace IBL.BO
     //        Console.WriteLine("{0} isnt exist in {1} list.", Id, typeList);
     //    }
 
+    /// <summary>
+    /// A class UpdatingFailedIdNotExistsException : Exception
+    /// gets A string
+    /// </summary>
     public class UpdatingFailedIdNotExistsException : Exception
     {
         public UpdatingFailedIdNotExistsException(string message) : base()
@@ -33,14 +37,21 @@ namespace IBL.BO
 
         }
     }
-
-          public class ThereIsntEnoughBatteryToTheDrone : Exception
+    /// <summary>
+    /// A class ThereIsntEnoughBatteryToTheDrone : Exception
+    /// gets A string
+    /// </summary>
+    public class ThereIsntEnoughBatteryToTheDrone : Exception
     {
         public ThereIsntEnoughBatteryToTheDrone(string message) : base()
         {
 
         }
     }
+    /// <summary>
+    /// A class StationDoesntHaveAvailablePositionsException : Exception
+    /// gets A string
+    /// </summary>
     public class StationDoesntHaveAvailablePositionsException : Exception
     {
         public StationDoesntHaveAvailablePositionsException(string message) : base()
@@ -48,6 +59,10 @@ namespace IBL.BO
 
         }
     }
+    /// <summary>
+    /// A class IdIsNotValidException : Exception
+    /// gets A string
+    /// </summary>
     public class IdIsNotValidException : Exception
     {
         public IdIsNotValidException(string message) : base()
@@ -55,6 +70,11 @@ namespace IBL.BO
 
         }
     }
+
+    /// <summary>
+    /// A class TheStationDoesNotHaveFreePositions : Exception
+    /// gets A string
+    /// </summary>
     public class TheStationDoesNotHaveFreePositions : Exception
     {
         public TheStationDoesNotHaveFreePositions(string message) : base()
@@ -62,6 +82,10 @@ namespace IBL.BO
 
         }
     }
+    /// <summary>
+    /// A class UpdatingCustomerDetails : Exception
+    /// gets A string
+    /// </summary>
     public class UpdatingCustomerDetails : Exception
     {
         public UpdatingCustomerDetails(string message) : base()
@@ -69,6 +93,10 @@ namespace IBL.BO
 
         }
     }
+    /// <summary>
+    /// A class SendingDroneToCharge : Exception
+    /// gets A string
+    /// </summary>
     public class SendingDroneToCharge : Exception
     {
         public SendingDroneToCharge(string message):base()
@@ -76,6 +104,11 @@ namespace IBL.BO
 
         }
     }
+
+    /// <summary>
+    /// A class BelongingParcel : Exception
+    /// gets A string
+    /// </summary>
     public class BelongingParcel:Exception
     {
         public BelongingParcel(string message):base()

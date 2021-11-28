@@ -31,11 +31,6 @@ namespace BL
             return new Drone(wantedDrone.Id, wantedDrone.Model, wantedDrone.Weight, wantedDrone.BatteryStatus, 
                 wantedDrone.DStatus, parcelInTransfer, wantedDrone.CurrLocation);
         }
-
-                throw new IdIsNotValidException("Id Not Exists in drone list!!!!!");
-            }
-        }
-
         /// <summary>
         /// A function that creates ParcelInTransferand
         /// Calculates bills for specific drone id 

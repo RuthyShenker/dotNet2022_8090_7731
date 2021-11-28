@@ -7,6 +7,16 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
+    /// <summary>
+    ///A class of Drone contains:
+    ///Id
+    ///Model
+    ///Weight
+    ///BatteryStatus
+    ///DroneStatus
+    ///ParcelInTransfer
+    ///CurrLocation
+    /// </summary>
     public class Drone
     {
          public Drone(int id, string model,WeightCategories weight, double batteryStatus, DroneStatus droneStatus, ParcelInTransfer pInTransfer, Location currLocation)
