@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BL;
 using IBL.BO;
 namespace ConsoleUI_BL
 {
@@ -26,42 +27,42 @@ namespace ConsoleUI_BL
                     IEnumerable<StationToList> StationList = bL.GetListToList<IDal.DO.BaseStation,StationToList>();
                     foreach (StationToList baseStation in StationList)
                     {
-                        Console.WriteLine(baseStation);
+                        Console.WriteLine(Tools.ToString(baseStation));
                     }
                     break;
                 case 2:
                     IEnumerable<DroneToList> DroneList = bL.GetListToList<IDal.DO.Drone, DroneToList>();
                     foreach (DroneToList drone in DroneList)
                     {
-                        Console.WriteLine(drone);
+                        Console.WriteLine(Tools.ToString(drone));
                     }
                     break;
                 case 3:
                     IEnumerable<CustomerToList> CustomerList =bL.GetListToList<IDal.DO.Customer, CustomerToList>();
                     foreach (CustomerToList customer in CustomerList)
                     {
-                        Console.WriteLine(customer);
+                        Console.WriteLine(Tools.ToString(customer));
                     }
                     break;
                 case 4:
                     IEnumerable<ParcelToList> ParcelList = bL.GetListToList<IDal.DO.Parcel, ParcelToList>();
                     foreach (ParcelToList parcel in ParcelList)
                     {
-                        Console.WriteLine(parcel);
+                        Console.WriteLine(Tools.ToString(parcel));
                     }
                     break;
                 case 5:
                     IEnumerable<ParcelToList> UnbelongParcelsList = bL.GetUnbelongParcels();
                     foreach (ParcelToList parcel in UnbelongParcelsList)
                     {
-                        Console.WriteLine(parcel);
+                        Console.WriteLine(Tools.ToString(parcel));
                     }
                     break;
                 case 6:
                     IEnumerable<StationToList> AvailableSlotsList = bL.AvailableSlots();
                     foreach (StationToList baseStation in AvailableSlotsList)
                     {
-                        Console.WriteLine(baseStation);
+                        Console.WriteLine(Tools.ToString(baseStation));
                     }
                     break;
                 default:

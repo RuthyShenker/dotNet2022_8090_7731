@@ -10,6 +10,26 @@ using System.Collections;
 
 namespace IBL
 {
+    /// <summary>
+    ///An interface of IBL that contains:
+    ///BelongingParcel
+    ///PickingUpParcel
+    ///DeliveryPackage
+    ///SendingDroneToCharge
+    ///ReleasingDrone
+    ///AddingBaseStation
+    ///AddingDrone
+    ///AddingCustomer
+    ///AddingParcel
+    ///UpdatingDroneName
+    ///UpdatingStationDetails
+    ///UpdatingCustomerDetails
+    ///GetListOfBL
+    ///GetListToList
+    ///AvailableSlots
+    ///GetBLById
+    ///GetUnbelongParcels
+    /// </summary>
     public interface IBL
     {
         //Belonging Parcel

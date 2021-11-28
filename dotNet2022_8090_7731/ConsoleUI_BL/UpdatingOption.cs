@@ -71,6 +71,8 @@ namespace ConsoleUI_BL
                         break;
                 }
             }
+
+
             catch (UpdatingFailedIdNotExistsException exception)
             {
                 Console.WriteLine(exception.Message);
@@ -83,11 +85,15 @@ namespace ConsoleUI_BL
             {
                 Console.WriteLine(exception.Message);
             }
-            catch (ThereIsntEnoughBatteryToTheDrone exception)
+            catch (ThereIsntEnoughBatteryToTheDroneException exception)
             {
                 Console.WriteLine(exception.Message);
             }
-            catch(BelongingParcel exception)
+            catch(ThereIsntEnoughBatteryToTheDrone exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+            catch(BelongingParcelException exception)
             {
                 Console.WriteLine(exception.Message);
             }
@@ -99,7 +105,24 @@ namespace ConsoleUI_BL
             {
                 Console.WriteLine(exception.Message);
             }
-        }
+            catch(ParcelsStatusIsntMatchException exception)
+            {
+                Console.WriteLine(exception.Message);
+
+            }
+            catch(NoParcelAssociatedToTheDroneException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+            catch (ParcelIsAlreadyPickedUpException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+            catch(SendingDroneToChargeException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+        } 
 
         /// <summary>
         /// A function that Get Details Of Relesing Drone From Charging

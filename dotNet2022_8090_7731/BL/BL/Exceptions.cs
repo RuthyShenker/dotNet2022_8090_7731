@@ -45,13 +45,13 @@ namespace IBL.BO
     /// A class ThereIsntEnoughBatteryToTheDrone : Exception
     /// gets A string
     /// </summary>
-    public class ThereIsntEnoughBatteryToTheDrone : Exception
+    public class ThereIsntEnoughBatteryToTheDroneException : Exception
     {
         /// <summary>
         /// A class ThereIsntEnoughBatteryToTheDrone : Exception
         /// gets A string
         /// </summary>
-        public ThereIsntEnoughBatteryToTheDrone(string message) : base()
+        public ThereIsntEnoughBatteryToTheDroneException(string message) : base()
         {
 
         }
@@ -91,13 +91,13 @@ namespace IBL.BO
     /// A class TheStationDoesNotHaveFreePositions : Exception
     /// gets A string
     /// </summary>
-    public class TheStationDoesNotHaveFreePositions : Exception
+    public class TheStationDoesNotHaveFreePositionsException : Exception
     {
         /// <summary>
         /// A class TheStationDoesNotHaveFreePositions : Exception
         /// gets A string
         /// </summary>
-        public TheStationDoesNotHaveFreePositions(string message) : base()
+        public TheStationDoesNotHaveFreePositionsException(string message) : base()
         {
 
         }
@@ -106,13 +106,13 @@ namespace IBL.BO
     /// A class UpdatingCustomerDetails : Exception
     /// gets A string
     /// </summary>
-    public class UpdatingCustomerDetails : Exception
+    public class UpdatingCustomerDetailsException : Exception
     {
         /// <summary>
         /// A constructor of UpdatingCustomerDetails with one parameter of string
         /// </summary>
         /// <param name="message"></param>
-        public UpdatingCustomerDetails(string message) : base()
+        public UpdatingCustomerDetailsException(string message) : base()
         {
 
         }
@@ -121,13 +121,13 @@ namespace IBL.BO
     /// A class SendingDroneToCharge : Exception
     /// gets A string
     /// </summary>
-    public class SendingDroneToCharge : Exception
+    public class SendingDroneToChargeException : Exception
     {
         /// <summary>
         /// A constructor of SendingDroneToCharge with one parameter of string
         /// </summary>
         /// <param name="message"></param>
-        public SendingDroneToCharge(string message):base()
+        public SendingDroneToChargeException(string message):base()
         {
 
         }
@@ -137,13 +137,13 @@ namespace IBL.BO
     /// A class BelongingParcel : Exception
     /// gets A string
     /// </summary>
-    public class BelongingParcel:Exception
+    public class BelongingParcelException:Exception
     {
         /// <summary>
         /// A constructor of BelongingParcel with one parameter of string
         /// </summary>
         /// <param name="message"></param>
-        public BelongingParcel(string message):base()
+        public BelongingParcelException(string message):base()
         {
 
         }
@@ -186,7 +186,7 @@ namespace IBL.BO
     /// A class NoParcelAssociatedToTheDroneException : Exception
     /// gets A string
     /// </summary>
-    public class NoParcelAssociatedToTheDroneException:Exception
+    public class NoParcelAssociatedToTheDroneException : Exception
         {
             public NoParcelAssociatedToTheDroneException(string message):base()
             {

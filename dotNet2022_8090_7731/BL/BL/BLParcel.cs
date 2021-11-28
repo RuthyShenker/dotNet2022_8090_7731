@@ -80,7 +80,7 @@ namespace BL
             }
             catch (ArgumentNullException)
             {
-                //throw NoParcelAssociatedToTheDroneException("");// שום חבילה לא משויכת לרחפן זה
+                throw new NoParcelAssociatedToTheDroneException("Any Parcel matches to this drone");// שום חבילה לא משויכת לרחפן זה
             }
         }
 
@@ -115,7 +115,7 @@ namespace BL
                 }
                 if (!deliveryed)
                 {
-                    throw new ParcelsStatusIsntMatchException("");// parcels status isnnt match
+                    throw new ParcelsStatusIsntMatchException("parcels status doesnt match");// parcels status isnnt match
                 }
             }
             catch (ArgumentNullException)
