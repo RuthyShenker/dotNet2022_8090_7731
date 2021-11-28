@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ConsoleUI_BL.MEnum;
 
 namespace ConsoleUI_BL
 {
@@ -12,33 +13,27 @@ namespace ConsoleUI_BL
     {
         private static void DisplayingSpecificObjOption()
         {
-            Console.WriteLine(
-                         $"1 - Base station view\n" +
-                         $"2 - Drone view\n" +
-                         $"3 - Customer view\n" +
-                         $"4 - Package view");
-            int input;
+            tools.PrintEnum(typeof(DisplayingItem));
 
-            CheckValids.CheckValid(1, 4, out input);
+            CheckValids.CheckValid(1, 4, out int input);
             try
             {
-                switch (input)
+                switch ((DisplayingItem)input)
                 {
-                    case 1:
+                    case DisplayingItem.BaseStation:
                         Console.WriteLine(Tools.ToString(bL.GetBLById<IDal.DO.BaseStation, IBL.BO.Station>(GettingId("Base Station"))));
                         break;
-                    case 2:
+                    case DisplayingItem.Drone:
                         Console.WriteLine(Tools.ToString(bL.GetBLById<IDal.DO.Drone, IBL.BO.Drone>(GettingId("Drone"))));
                         break;
-                    case 3:
+                    case DisplayingItem.Customer:
                         Console.WriteLine(Tools.ToString(bL.GetBLById<IDal.DO.Customer, IBL.BO.Customer>(GettingId("Customer"))));
                         break;
-                    case 4:
+                    case DisplayingItem.Parcel:
                         Console.WriteLine(Tools.ToString(bL.GetBLById<IDal.DO.Parcel, IBL.BO.Parcel>(GettingId("Parcel"))));
                         break;
                     default:
                         break;
-
                 }
             }
             catch (IdNotExistInTheListException exception )

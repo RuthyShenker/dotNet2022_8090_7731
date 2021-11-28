@@ -16,10 +16,10 @@ namespace DalObject
         /// A function that gets a Parcel and adds it to the list of Parcels.
         /// </summary>
         /// <param name="parcel"></param>
-        public void AddingParcel(Parcel parcel)
-        {
-            ParceList.Add(parcel);
-        }
+        //public void AddingParcel(Parcel parcel)
+        //{
+        //    ParceList.Add(parcel);
+        //}
 
        /// <summary>
        /// update parcel is belonged to drone

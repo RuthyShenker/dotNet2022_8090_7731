@@ -6,24 +6,43 @@ using System.Threading.Tasks;
 
 namespace ConsoleUI_BL
 {
-    class Enum
+    class MEnum
     {
-        ///// <summary>
-        ///// An Enum of ProgramOptions contains:
-        ///// Add, Update, DisplaySpecific, DisplayList, Exit.
-        ///// </summary>
-        public enum ProgramOptions { Add = 1, Update, DisplaySpecific, DisplayList, Exit };
+        public enum ProgramOptions { Adding = 1, 
+            Updating, 
+            DisplayingItem, 
+            DisplayingList, 
+            Exit 
+        };
 
+        public enum Adding { BaseStation = 1, 
+            Drone, 
+            Customer, 
+            Parcel
+        };
 
-        ///// <summary>
-        ///// An Enum of WeightCategories contains:
-        ///// Light, Medium, Heavy.
-        ///// </summary>
-       //public enum WeightCategories { Light, Medium, Heavy };
-       // /// <summary>
-       // /// An Enum of DroneStatuses contains:
-       // /// Available, Maintenance, Delivery.
-       // /// </summary>
-       // public enum DroneStatus { Available, Maintenance, Delivery };
+        public enum Updating { DroneDetails = 1,
+            StationDetails,
+            CustomerDetails, 
+            SendingDroneToChargingPosition,
+            RealesingDroneFromChargingPosition,
+            BelongingParcelToDrone,
+            PickingParcelByDrone,
+            DeliveryParcelToDestination
+        };
+
+        public enum DisplayingItem { BaseStation = 1, 
+            Drone, 
+            Customer, 
+            Parcel 
+        };
+
+        public enum DisplayingList { BaseStation = 1,
+            Drone,
+            Customer,
+            Parcel,
+            PackageWhichArentBelongToDrone,
+            StationsWithAvailablePositions 
+        };
     }
 }

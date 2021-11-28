@@ -19,10 +19,10 @@ namespace DalObject
         /// A function that gets a Customer and adds it to the list of Customers.
         /// </summary>
         /// <param name="customer"></param>
-        public void AddingCustomer(Customer customer)
-        {
-            CustomerList.Add(customer);
-        }
+        //public void AddingCustomer(Customer customer)
+        //{
+        //    CustomerList.Add(customer);
+        //}
 
         ///// <summary>
         ///// A function that gets an id of customer and returns this customer-copied.

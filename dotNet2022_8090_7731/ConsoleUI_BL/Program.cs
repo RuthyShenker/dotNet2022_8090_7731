@@ -1,48 +1,42 @@
 ﻿using System;
+using static ConsoleUI_BL.MEnum;
+
 
 namespace ConsoleUI_BL
 {
+    // לבדוק 9 ספרות ID
     partial class Program
     {
         static IBL.IBL bL = new BL.BL();
        static void Main(string[] args)
        {
-            
             int input = 0;
             
-            while ((Enum.ProgramOptions)input != Enum.ProgramOptions.Exit)
+            while ((ProgramOptions)input != ProgramOptions.Exit)
             {
-                Console.WriteLine(
-                  $"\nTap the desired option:\n" +
-                  $"1 - Adding\n" +
-                  $"2 - Updating\n" +
-                  $"3 - Displaying a specific item\n" +
-                  $"4 - Displaying a specific List\n" +
-                  $"5 - Exit");
+                tools.PrintMain(typeof(ProgramOptions));
                 CheckValids.CheckValid(1, 5, out input);
-                switch ((Enum.ProgramOptions)input)
+                switch ((ProgramOptions)input)
                 {
-                    case Enum.ProgramOptions.Add:
+                    case ProgramOptions.Adding:
                         AddingOption();
                         break;
 
-                    case Enum.ProgramOptions.Update:
+                    case ProgramOptions.Updating:
                         UpdatingOption();
                         break;
 
-                    case Enum.ProgramOptions.DisplaySpecific:
+                    case ProgramOptions.DisplayingItem:
                         DisplayingSpecificObjOption();
                         break;
 
-                    case Enum.ProgramOptions.DisplayList:
+                    case ProgramOptions.DisplayingList:
                         DisplayingListOption();
                         break;
 
-                    case Enum.ProgramOptions.Exit:
-                        {
-                            Console.WriteLine("good bye!");
-                            break;
-                        }
+                    case ProgramOptions.Exit:
+                        Console.WriteLine("good bye!");
+                        break;
 
                     default:
                         break;
@@ -60,7 +54,7 @@ namespace ConsoleUI_BL
             Console.WriteLine($"Enter The Id Of The {obj}:");
             return Console.ReadLine();
         }
-
+       
         /// <summary>
         /// A function that gets from the user Id and returns it as int
         /// </summary>

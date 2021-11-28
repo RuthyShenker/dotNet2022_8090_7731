@@ -41,10 +41,17 @@ namespace BL
                 //{
 
                 str += item.Name + ": " + item.GetValue(t, null) +' ';
-                
+                if (item.PropertyType!=null)
+                {
+                    var p = item.PropertyType.DeclaringType;
+                   
+
+                }
             }
             return str;
         }
+
+       
     }
 }
 // StationId:1NameStation:lSLocation:IBL.BO.LocationNumAvailablePositions:1LBL_ChargingDrone:System.Collections.Generic.List`1[IBL.BO.ChargingDrone]

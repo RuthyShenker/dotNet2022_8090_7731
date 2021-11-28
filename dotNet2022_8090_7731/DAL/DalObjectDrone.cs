@@ -31,10 +31,10 @@ namespace DalObject
         /// the function doesn't return anything.
         /// </summary>
         /// <param name="drone"></param>
-        public void AddingDrone(Drone drone)
-        {
-            DroneList.Add(drone);
-        }
+        //public void AddingDrone(Drone drone)
+        //{
+        //    DroneList.Add(drone);
+        //}
         /// <summary>
         /// A function that gets :
         /// drone Id,station Id

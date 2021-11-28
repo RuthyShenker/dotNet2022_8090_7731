@@ -46,10 +46,10 @@ namespace IDal
     {
 
         //Adding:
-        void AddingBaseStation(BaseStation baseStation);
-        void AddingDrone(Drone drone);
-        void AddingCustomer(Customer customer);
-        void AddingParcel(Parcel parcel);
+        //void AddingBaseStation(BaseStation baseStation);
+        //void AddingDrone(Drone drone);
+        //void AddingCustomer(Customer customer);
+        //void AddingParcel(Parcel parcel);
 
         void AddingItemToDList<T>(T item) where T : IIdentifiable;
 

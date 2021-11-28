@@ -42,10 +42,10 @@ namespace DalObject
         /// doesn't return anything.
         /// </summary>
         /// <param name="baseStation"></param>
-        public void AddingBaseStation(BaseStation baseStation)
-        {
-            BaseStationList.Add(baseStation);
-        }
+        //public void AddingBaseStation(BaseStation baseStation)
+        //{
+        //    BaseStationList.Add(baseStation);
+        //}
 
         public void AddingItemToDList<T>(T item)where T:IIdentifiable
         {

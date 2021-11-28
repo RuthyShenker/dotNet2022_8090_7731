@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IBL.BO;
-
-
+using static ConsoleUI_BL.MEnum;
 
 namespace ConsoleUI_BL
 {
@@ -13,42 +12,49 @@ namespace ConsoleUI_BL
     {
         public static void AddingOption()
         {
-
             int input = 0;
-            Console.WriteLine($"1 - Adding a new base station to the stations list.\n" +
-                              $"2 - Adding a new drone to the drones list.\n" +
-                              $"3 - Adding a new customer to the customer list.\n" +
-                              $"4 - Adding a new parcel to the parcel list.");
+            tools.PrintEnum(typeof(Adding));
             CheckValids.CheckValid(1, 4, out input);
             try
             {
-                switch (input)
+                switch ((Adding)input)
                 {
-                    case 1:
-                        bL.AddingBaseStation(GettingNewBaseStation());
-                        break;
-                    case 2:
-                        int stationId;
-                        bL.AddingDrone(GettingNewDrone(out stationId), stationId);
-                        break;
-                    case 3:
-                        bL.AddingCustomer(GettingNewCustomer());
-                        break;
-                    case 4:
-                        bL.AddingParcel(GettingNewParcel());
-                        break;
-                    default:
-                        break;
+                    case Adding.BaseStation:    bL.AddingBaseStation(GettingNewBaseStation());  break;
+                 
+                    case Adding.Drone:  bL.AddingDrone(GettingNewDrone(out int stationId), stationId);  break;
+
+                    case Adding.Customer:    bL.AddingCustomer(GettingNewCustomer());    break;
+                       
+                    case Adding.Parcel: bL.AddingParcel(GettingNewParcel());    break;
+                        
+                    default:     break;
                 }
             }
-            catch (IdIsNotValidException exception)
+            catch (BL.IdIsNotExistException idIsNotExistException)
             {
-                Console.WriteLine(exception);
+                Console.WriteLine(idIsNotExistException);
             }
-            catch(TheStationDoesNotHaveFreePositionsException exception)
+            catch (BL.IdIsAlreadyExistException idIsAlreadyExistException)
             {
-                Console.WriteLine(exception);
+                Console.WriteLine(idIsAlreadyExistException);
             }
+            catch (BL.ListIsEmptyException listIsEmptyException)
+            {
+                Console.WriteLine(listIsEmptyException);
+            }
+            catch (BL.InValidActionException inValidActionException)
+            {
+                Console.WriteLine(inValidActionException);
+            }
+
+            //catch (IdIsNotValidException exception)
+            //{
+            //    Console.WriteLine(exception);
+            //}
+            //catch(TheStationDoesNotHaveFreePositionsException exception)
+            //{
+            //    Console.WriteLine(exception);
+            //}
         }
 
         /// <summary>
@@ -122,9 +128,9 @@ namespace ConsoleUI_BL
         {
             Console.WriteLine("Enter the serial number of the manufacturer of the new drone: ");
             int id = CheckValids.InputNumberValidity("Id");
-            Console.WriteLine("Enter the new Model of the drone: ");
+            Console.WriteLine("Enter Model: ");
             string model = Console.ReadLine();
-            Console.WriteLine("enter the weight of the new drone: ");
+            Console.WriteLine("Enter the max weight the drone can carry: ");
             WeightCategories weight = (WeightCategories)CheckValids.InputValidWeightCategories();
             Console.WriteLine("Enter the number of the station to charge the new drone for first charging:  ");
             stationId = CheckValids.InputNumberValidity("id");

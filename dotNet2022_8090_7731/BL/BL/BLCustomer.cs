@@ -130,7 +130,7 @@ namespace BL
             }
             var newCustomer = new IDal.DO.Customer(bLCustomer.Id,bLCustomer.Name,
             bLCustomer.Phone,bLCustomer.CLocation.Longitude,bLCustomer.CLocation.Latitude);
-            dal.AddingCustomer(newCustomer);
+            dal.AddingItemToDList(newCustomer);
         }
         
         /// <summary>

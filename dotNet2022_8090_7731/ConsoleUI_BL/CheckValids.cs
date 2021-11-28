@@ -17,7 +17,7 @@ namespace ConsoleUI_BL
             int number;
             while(!int.TryParse(Console.ReadLine(),out number))
             {
-                Console.WriteLine(obj+" is not valid ,please enter again");
+                Console.WriteLine(obj+" has to contain only numbers. please enter again");
             }
             return number;
         }
@@ -46,7 +46,7 @@ namespace ConsoleUI_BL
             string name = Console.ReadLine();
             while (!name.All(ch => char.IsLetter(ch)))
             {
-                Console.WriteLine("name must contains only letters ,please enter again");
+                Console.WriteLine("name must contains only letters, please enter again");
                 name = Console.ReadLine();
             }
             return name;
@@ -57,10 +57,11 @@ namespace ConsoleUI_BL
             double number = 0;
             while (!double.TryParse(Console.ReadLine(), out number))
             {
-                Console.WriteLine(obj+" is not valid ,please enter again");
+                Console.WriteLine(obj+" is not valid, please enter again");
             }
             return number;
         }
+        
         /// <summary>
         /// A function that gets range and requests for input
         /// and checks if the input is valid and in the range if not request again
@@ -72,16 +73,16 @@ namespace ConsoleUI_BL
         {
             while (!int.TryParse(Console.ReadLine(), out input) || input < min || input > max)
             {
-                Console.WriteLine("Invalid input!, please enter again");
+                Console.WriteLine($"Input has to contain only numbers ( {min}-{max} ), please enter again");
             }
         }
         
         public static string InputPhoneValidity()
         {
             string phone = Console.ReadLine();
-            while (!phone.All(ch => char.IsDigit(ch)))
+            while (!phone.All(ch => char.IsDigit(ch)) && phone.Length != 10)
             {
-                Console.WriteLine("The phone is not valid , please enter again ");
+                Console.WriteLine("Phone number has to contain 10 numbers, please enter again ");
                 phone = Console.ReadLine();
             }
             return phone;
@@ -101,6 +102,7 @@ namespace ConsoleUI_BL
             }
             return input;
         }
+        
         public static int InputValidPriority()
         {
             int input ;

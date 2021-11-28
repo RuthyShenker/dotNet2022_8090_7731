@@ -4,125 +4,129 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ConsoleUI_BL.MEnum;
 
 namespace ConsoleUI_BL
 {
-    // gettingId לבדוק מס ספרות לקלט
     partial class Program
     {
         private static void UpdatingOption()
         {
-            Console.WriteLine($"1 - Updating details of drone\n" +
-                $"2 - Updating details of base station\n" +
-                $"3 - Updating details of customer\n" +
-                $"4 - sending drone to charging\n" + 
-                $"5 - Relesing drone from charging " +
-                $"6 - belonging a parcel to a drone" + 
-                $"7 - PickingUpParcel by drone" + 
-                $"8 - DeliveryPackage to the getter ");
-            int input=0;
+            tools.PrintEnum(typeof(Updating));
+            int input = 0;
             CheckValids.CheckValid(1, 8, out input);
             try
             {
-                switch (input)
+                switch ((Updating)input)
                 {
-
-                    case 1:
-
+                    case Updating.DroneDetails:
                         int droneId = 0;
                         string newModel;
                         GetDetailsOfDrone(out droneId, out newModel);
                         bL.UpdatingDroneName(droneId, newModel);
                         break;
-                    case 2:
+                    case Updating.StationDetails:
                         int stationId = 0;
                         string stationName;
-                        //כמות עמדות טעינה כוללת 
                         string amountOfPositions;
                         GetDetailsOfStation(out stationId, out stationName, out amountOfPositions);
                         bL.UpdatingStationDetails(stationId, stationName, amountOfPositions);
                         break;
-                    case 3:
+                    case Updating.CustomerDetails:
                         int customerId;
                         string newName;
                         string newPhone;
                         GetDetailsOfCustomer(out customerId, out newName, out newPhone);
                         bL.UpdatingCustomerDetails(customerId, newName, newPhone);
                         break;
-                    case 4:
+                    case Updating.SendingDroneToChargingPosition:
                         bL.SendingDroneToCharge(GettingId("Drone"));
                         break;
-                    case 5:
+                    case Updating.RealesingDroneFromChargingPosition:
                         double timeInCharging = 0;
                         GetDetailsOfRelesingDroneFromCharging(out droneId, out timeInCharging);
                         bL.ReleasingDrone(droneId, timeInCharging);
                         break;
-                    case 6:
+                    case Updating.BelongingParcelToDrone:
                         bL.BelongingParcel(GettingId("drone"));
                         break;
-                    case 7:
+                    case Updating.PickingParcelByDrone:
                         bL.PickingUpParcel(GettingId("Drone"));
                         break;
-                    case 8:
+                    case Updating.DeliveryParcelToDestination:
                         bL.DeliveryPackage(GettingId("Drone"));
                         break;
-
                     default:
                         break;
+
                 }
             }
+            catch (BL.IdIsNotExistException idIsNotExistException)
+            {
+                Console.WriteLine(idIsNotExistException);
+            }
+            catch (BL.IdIsAlreadyExistException idIsAlreadyExistException)
+            {
+                Console.WriteLine(idIsAlreadyExistException);
+            }
+            catch (BL.ListIsEmptyException listIsEmptyException)
+            {
+                Console.WriteLine(listIsEmptyException);
+            }
+            catch (BL.InValidActionException inValidActionException)
+            {
+                Console.WriteLine(inValidActionException);
+            }
+            //    catch (UpdatingFailedIdNotExistsException exception)
+            //    {
+            //        Console.WriteLine(exception.Message);
+            //    }
+            //    catch(IdIsNotValidException exception)
+            //    {
+            //        Console.WriteLine(exception.Message);
+            //    }
+            //    catch (StationDoesntHaveAvailablePositionsException exception)
+            //    {
+            //        Console.WriteLine(exception.Message);
+            //    }
+            //    catch (ThereIsntEnoughBatteryToTheDroneException exception)
+            //    {
+            //        Console.WriteLine(exception.Message);
+            //    }
+            //    catch(ThereIsntEnoughBatteryToTheDrone exception)
+            //    {
+            //        Console.WriteLine(exception.Message);
+            //    }
+            //    catch(BelongingParcelException exception)
+            //    {
+            //        Console.WriteLine(exception.Message);
+            //    }
+            //    catch (CantRelasingDroneFromChargingException exception)
+            //    {
+            //        Console.WriteLine(exception.Message);
+            //    }
+            //    catch (CantBelongingParcelToDroneException exception)
+            //    {
+            //        Console.WriteLine(exception.Message);
+            //    }
+            //    catch(ParcelsStatusIsntMatchException exception)
+            //    {
+            //        Console.WriteLine(exception.Message);
 
-
-            catch (UpdatingFailedIdNotExistsException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-            catch(IdIsNotValidException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-            catch (StationDoesntHaveAvailablePositionsException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-            catch (ThereIsntEnoughBatteryToTheDroneException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-            catch(ThereIsntEnoughBatteryToTheDrone exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-            catch(BelongingParcelException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-            catch (CantRelasingDroneFromChargingException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-            catch (CantBelongingParcelToDroneException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-            catch(ParcelsStatusIsntMatchException exception)
-            {
-                Console.WriteLine(exception.Message);
-
-            }
-            catch(NoParcelAssociatedToTheDroneException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-            catch (ParcelIsAlreadyPickedUpException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-            catch(SendingDroneToChargeException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-        } 
+            //    }
+            //    catch(NoParcelAssociatedToTheDroneException exception)
+            //    {
+            //        Console.WriteLine(exception.Message);
+            //    }
+            //    catch (ParcelIsAlreadyPickedUpException exception)
+            //    {
+            //        Console.WriteLine(exception.Message);
+            //    }
+            //    catch(SendingDroneToChargeException exception)
+            //    {
+            //        Console.WriteLine(exception.Message);
+            //    }
+        }
 
         /// <summary>
         /// A function that Get Details Of Relesing Drone From Charging
@@ -135,13 +139,14 @@ namespace ConsoleUI_BL
             Console.WriteLine("Enter the time in charging of the drone: ");
             timeInCharging = CheckValids.InputValiDoubleNum();
         }
+
         /// <summary>
         /// A function that Get Details Of new Customer and enters it to the data base
         /// </summary>
         /// <param name="customerId"></param>
         /// <param name="newName"></param>
         /// <param name="newPhone"></param>
-        private static void GetDetailsOfCustomer(out int customerId,out string newName,out string newPhone)
+        private static void GetDetailsOfCustomer(out int customerId, out string newName, out string newPhone)
         {
             Console.WriteLine("Enter the id of the customer: ");
             customerId = CheckValids.InputNumberValidity("Id Of Customer");
@@ -150,6 +155,7 @@ namespace ConsoleUI_BL
             Console.WriteLine("Enter the new phone of the customer: ");
             newPhone = CheckValids.InputPhoneValidity();
         }
+
         /// <summary>
         /// A function that Get Details Of new Station and enters it to the data base
         /// </summary>
@@ -165,13 +171,14 @@ namespace ConsoleUI_BL
             Console.WriteLine("Enter the number of all the positions: ");
             amountOfPositions = Console.ReadLine();
         }
+
         /// <summary>
         /// A function that Gets from the console id of drone and new model and dont rerurn
         /// them because they are sent to the function by out.
         /// </summary>
         /// <param name="droneId"></param>
         /// <param name="newModel"></param>
-        private static void GetDetailsOfDrone(out int droneId,out string newModel)
+        private static void GetDetailsOfDrone(out int droneId, out string newModel)
         {
             droneId = GettingId("Drone");
             Console.WriteLine("Enter the new model of the drone: ");
