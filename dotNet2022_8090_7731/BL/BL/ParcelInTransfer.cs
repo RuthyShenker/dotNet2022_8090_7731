@@ -21,6 +21,10 @@ namespace IBL.BO
     /// </summary>
     public class ParcelInTransfer
     {
+        public ParcelInTransfer()
+        {
+        }
+
         public ParcelInTransfer(int pId, bool isInWay, Priority mPriority, WeightCategories weight, CustomerInParcel sender,
             CustomerInParcel getter, Location collectionLocation, Location deliveryLocation, double transDistance)
         {

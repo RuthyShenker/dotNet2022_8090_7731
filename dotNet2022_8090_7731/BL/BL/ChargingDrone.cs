@@ -13,6 +13,10 @@ namespace IBL.BO
     /// </summary>
     public class ChargingDrone
     {
+        public ChargingDrone()
+        {
+        }
+
         public ChargingDrone(int droneId,double batteryStatus)
         {
             DroneId = droneId;
