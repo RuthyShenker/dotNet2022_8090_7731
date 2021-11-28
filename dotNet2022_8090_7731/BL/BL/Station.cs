@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
+    // <summary>
+    ///A class of Station that contains:
+    ///Id
+    ///Name Station
+    ///Station Location
+    ///Num Available Positions
+    ///List_BL_ChargingDrone
+    /// </summary>
     public class Station
     {
         public Station(int id, string nameStation, Location sLocation, int numAvailablePositions, List<ChargingDrone> lBL_ChargingDrone)

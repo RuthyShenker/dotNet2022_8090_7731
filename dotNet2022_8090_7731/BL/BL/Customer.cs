@@ -7,6 +7,15 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
+    /// <summary>
+    /// A class of Customer that contains:
+    /// Id
+    ///Name
+    ///Phone
+    ///CustomerLocation
+    ///ListFromCustomer
+    ///ListForCustomer
+    /// </summary>
     public class Customer
     {
         public Customer(int id, string name, string phone, Location cLocation)

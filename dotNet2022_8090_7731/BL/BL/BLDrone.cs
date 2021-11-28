@@ -16,6 +16,13 @@ namespace BL
               return lDroneToList;
           }*/
 
+        /// <summary>
+        ///  
+        /// A function that gets an object of IDal.DO.Drone
+        /// and Expands it to Drone object and returns this object.
+        /// </summary>
+        /// <param name="drone"></param>
+        /// <returns>returns Drone object </returns>
         private Drone ConvertToBL(IDal.DO.Drone drone)
         {
             ParcelInTransfer parcelInTransfer = CalculateParcelInTransfer(drone.Id);
@@ -23,7 +30,13 @@ namespace BL
             return new Drone(wantedDrone.Id, wantedDrone.Model, wantedDrone.Weight, wantedDrone.BatteryStatus, 
                 wantedDrone.DStatus, parcelInTransfer, wantedDrone.CurrLocation);
         }
-
+        /// <summary>
+        /// A function that creates ParcelInTransferand
+        /// Calculates bills for specific drone id 
+        /// and returns this ParcelInTransfer.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <returns>returns ParcelInTransfer object.</returns>
         private ParcelInTransfer CalculateParcelInTransfer(int droneId)
         {
             var parcelsDalList = dal.GetListFromDal<IDal.DO.Parcel>();
@@ -44,7 +57,8 @@ namespace BL
         }
 
         /// <summary>
-        /// A function that gets an id od drone and sending it to charging.
+        /// A function that gets an id of drone and sending it to charging,the 
+        /// function doesn't return anything.
         /// </summary>
         /// <param name="IdDrone"></param>
         public void SendingDroneToCharge(int IdDrone)
@@ -149,13 +163,27 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// A function that calculates the distance that the drone has to pass in order to give 
+        /// a parcel to the destination and go the the closet base station in order to
+        /// go charging .
+        /// </summary>
+        /// <param name="droneLocation"></param>
+        /// <param name="parcel"></param>
+        /// <returns>the function returns this distance</returns>
         private double GetDistance(Location droneLocation, IDal.DO.Parcel parcel)
-        {
-            Location senderLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
-            Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
-            return CalculateDistance(droneLocation, senderLocation, getterLocation, ClosestStation(getterLocation).SLocation);
-        }
-
+            {
+                Location senderLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
+                Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
+                return CalculateDistance(droneLocation, senderLocation, getterLocation, ClosestStation(getterLocation).SLocation);
+            }
+        /// <summary>
+        /// A function that gets Drone and station id and adds this Drone to the data base and sending
+        /// this drone to charging in the StationId that the function gets,
+        /// the function doesn't return anything.
+        /// </summary>
+        /// <param name="bLDrone"></param>
+        /// <param name="StationId"></param>
         public void AddingDrone(Drone bLDrone, int StationId)
         {
             if (dal.IsIdExistInList<IDal.DO.Drone>(bLDrone.Id))

@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace BL
 {
+    /// <summary>
+    /// A class of Tools that contains a function 
+    /// ToStringProperty that instead ToString.
+    /// </summary>
     public static class Tools
     {
         public static string ToString<T>(this T t)

@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
+    /// <summary>
+    ///A class of CustomerToList that contains:
+    ///Id
+    ///Name
+    ///Phone
+    ///SentSupplied
+    ///SentNotSupplied
+    ///Got
+    ///InWayToCustomer
+    /// </summary>
     public class CustomerToList
     {
         public CustomerToList(int id, string name, string phone)

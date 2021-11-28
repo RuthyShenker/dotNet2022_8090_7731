@@ -7,8 +7,33 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
+    /// <summary>
+    ///A class of ParcelInTransfer that contains:
+    ///PId
+    ///IsInWay
+    ///MPriority
+    ///Weight
+    ///Sender
+    ///Getter
+    ///CollectionLocation
+    ///DeliveryLocation
+    ///TransDistance
+    /// </summary>
     public class ParcelInTransfer
     {
+        public ParcelInTransfer(int pId, bool isInWay, Priority mPriority, WeightCategories weight, CustomerInParcel sender,
+            CustomerInParcel getter, Location collectionLocation, Location deliveryLocation, double transDistance)
+        {
+            PId = pId;
+            IsInWay = isInWay;
+            MPriority = mPriority;
+            Weight = weight;
+            Sender = sender;
+            Getter = Getter;
+            CollectionLocation = collectionLocation;
+            DeliveryLocation = deliveryLocation;
+            TransDistance = transDistance;
+        }
         public int PId { get; set; }
         public bool IsInWay { get; set; }
         public Priority MPriority { get; set; }
@@ -19,22 +44,7 @@ namespace IBL.BO
         public Location DeliveryLocation { get; set; }
         public double TransDistance { get; set; }
 
-        public ParcelInTransfer(int pId, bool isInWay,Priority mPriority,WeightCategories weight, CustomerInParcel sender,
-                    CustomerInParcel getter, Location collectionLocation, Location deliveryLocation, double transDistance)
-        {
-            PId  = pId;
-            IsInWay  = isInWay;
-            MPriority  = mPriority;
-            Weight  = weight;
-            Sender  = sender;
-            Getter  = Getter;
-            CollectionLocation = collectionLocation;
-            DeliveryLocation = deliveryLocation;
-            TransDistance = transDistance;
-        }
 
-        public ParcelInTransfer()
-        {
-        }
+
     }
 }

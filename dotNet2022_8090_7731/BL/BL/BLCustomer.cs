@@ -31,6 +31,12 @@ namespace BL
 
         /*  לבדוק אם צריך לאתחל שדות ל-0 
          SentSupplied, SentNotSupplied, Got, InWayToCustomer*/
+        /// <summary>
+        /// A function that gets an object of IDal.DO.Customer
+        /// and Expands it to CustomerToList object and returns this object.
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>returns CustomerToList object </returns>
         private CustomerToList ConvertToList(IDal.DO.Customer customer)
         {
             CustomerToList nCustomer = new CustomerToList(customer.Id, customer.Name, customer.Phone);
@@ -65,7 +71,12 @@ namespace BL
             }
             return nCustomer;
         }
-
+        /// <summary>
+        /// A function that gets an object of IDal.DO.Customer
+        /// and Expands it to Customer object and returns this object.
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>returns Customer object </returns>
         private Customer ConvertToBL(IDal.DO.Customer customer)
         {
             var nLocation = new Location(customer.Longitude, customer.Latitude);
@@ -88,7 +99,15 @@ namespace BL
             return nCustomer;
         }
 
-        /// coppy the commmon feilds from parcel to parcel inCustomer and return it
+        /// <summary>
+        /// A function that gets an object of IDal.DO.Parcel and creates
+        /// a new object of ParcelInCustomerand 
+        /// copies the the commmon fields from IDal.DO.Parcel
+        /// to ParcelInCustomer and returns it
+        /// </summary>
+        /// <param name="parcel"></param>
+        /// <param name="Id"></param>
+        /// <returns>returns an object of ParcelInCustomer</returns>
         private ParcelInCustomer CopyCommon(IDal.DO.Parcel parcel, int Id)
         {
             var PStatus = GetParcelStatus(parcel);
@@ -96,7 +115,12 @@ namespace BL
             return new ParcelInCustomer(parcel.Id, (IBL.BO.WeightCategories)parcel.Weight, (IBL.BO.Priority)parcel.MPriority, PStatus, OnTheOtherHand);
         }
 
-        // מחזירה את רשימת הלקוחות שיש חבילות שסופקו להם
+
+        /// <summary>
+        /// A function that 
+        /// returns the list of customers that have packages delivered to them.
+        /// </summary>
+        /// <returns>returns the list of customers that have packages delivered to them. </returns>
         private IList<Customer> CustomersWithProvidedParcels()
         {
             IDal.DO.Customer customer;
@@ -113,7 +137,11 @@ namespace BL
             }
             return wantedCustomersList;
         }
-
+        /// <summary>
+        /// A function that gets Customer and adds it to the data base the
+        /// function doesn't return anything.
+        /// </summary>
+        /// <param name="bLCustomer"></param>
         public void AddingCustomer(Customer bLCustomer)
         {
             if (dal.IsIdExistInList<IDal.DO.Customer>(bLCustomer.Id))
@@ -124,7 +152,15 @@ namespace BL
             bLCustomer.Phone,bLCustomer.CLocation.Longitude,bLCustomer.CLocation.Latitude);
             dal.AddingCustomer(newCustomer);
         }
-
+        /// <summary>
+        /// A function that gets customerId,newName,newPhone
+        ///and updates the customer with id of customerId
+        ///and updates its fields of name to newName and phone to newPhone
+        /// and updates it in the data base,the function doesn't return anything.
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <param name="newName"></param>
+        /// <param name="newPhone"></param>
         public void UpdatingCustomerDetails(int customerId, string newName, string newPhone)
         {
             try

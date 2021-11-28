@@ -5,6 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 namespace IBL.BO
 {
+    /// <summary>
+    ///A class of ParcelInCustomer that contains:
+    ///Id
+    ///Weight
+    ///MPriority
+    ///ParcelStatus
+    ///OnTheOtherHand
+    /// </summary>
     public class ParcelInCustomer
     {
         public ParcelInCustomer(int id, WeightCategories weight, Priority mPriority, ParcelStatus pStatus, CustomerInParcel onTheOtherHand)

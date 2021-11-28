@@ -24,7 +24,11 @@ namespace BL
          }*/
 
 
-
+        /// <summary>
+        /// A function that gets a parcel and adds it to the data base,the function
+        /// doesn't return anything.
+        /// </summary>
+        /// <param name="newParcel"></param>
         public void AddingParcel(Parcel newParcel)
         {
             IDal.DO.Parcel parcel = new()
@@ -41,7 +45,12 @@ namespace BL
             };
             dal.AddingItemToDList(parcel);
         }
-
+        /// <summary>
+        /// A function that gets an id of drone and
+        /// causes the drone to pick up the parcel that 
+        /// it needs to take to the destination,the function doesn't return anything.
+        /// </summary>
+        /// <param name="dId"></param>
         public void PickingUpParcel(int dId)
         {
             try
@@ -81,6 +90,13 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// A function that gets an id of drone
+        /// and causes this drone to Delivery the Package
+        /// that it needs to take 
+        /// to the destination,the function doesn't return anything.
+        /// </summary>
+        /// <param name="dId"></param>
         public void DeliveryPackage(int dId)
         {
             bool deliveryed = false;
@@ -117,9 +133,9 @@ namespace BL
 
 
         /// <summary>
-        /// return a list of unbelong parcels
+        /// A function that returns a list of unbelong parcels.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>returns a list of unbelong parcels.</returns>
         public IEnumerable<ParcelToList> GetUnbelongParcels()
         {
             var unbelongParcelsList = dal.GetUnbelongParcels();
@@ -130,7 +146,13 @@ namespace BL
             }
             return bParcelList;
         }
-
+        /// <summary>
+        /// A function that gets an object of IDal.DO.Parcel
+        /// and Expands it to a new object of 
+        /// ParcelToList and returns it.
+        /// </summary>
+        /// <param name="parcel"></param>
+        /// <returns>returns ParcelToList object</returns>
         private ParcelToList ConvertToList(IDal.DO.Parcel parcel)
         {
             ParcelToList nParcel = new ParcelToList();
@@ -144,7 +166,12 @@ namespace BL
             nParcel.Status = GetParcelStatus(parcel);
             return nParcel;
         }
-
+        /// <summary>
+        /// A function that gets an object of IDal.DO.Parcel
+        /// and Expands it to a new object of 
+        /// Parcel and returns it.
+        /// <param name="parcel"></param>
+        /// <returns>returns Parcel object</returns>
         private Parcel ConvertToBL(IDal.DO.Parcel parcel)
         { 
             CustomerInParcel sender = NewCustomerInParcel(parcel.SenderId);
@@ -155,7 +182,11 @@ namespace BL
                 dInParcel, parcel.MakingParcel,parcel.BelongParcel,
                 parcel.PickingUp, parcel.Arrival );
         }
-
+        /// <summary>
+        /// A function that gets IDal.DO.Parcel object and returns its status
+        /// </summary>
+        /// <param name="parcel"></param>
+        /// <returns>returns ParcelStatus of specific parcel </returns>
         private ParcelStatus GetParcelStatus(IDal.DO.Parcel parcel)
         {
             if (parcel.Arrival.HasValue)
