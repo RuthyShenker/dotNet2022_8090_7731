@@ -13,10 +13,6 @@ namespace IBL.BO
     /// </summary>
     public class ChargingDrone
     {
-        public ChargingDrone()
-        {
-        }
-
         /// <summary>
         /// A constructor of ChargingDrone with fields.
         /// </summary>
@@ -27,7 +23,7 @@ namespace IBL.BO
             DroneId = droneId;
             BatteryStatus = batteryStatus;
         }
-        public ChargingDrone():this(0,0)
+        public ChargingDrone()
         {
            
         }

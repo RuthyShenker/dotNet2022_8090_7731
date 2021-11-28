@@ -163,10 +163,7 @@ namespace DalObject
         /// </summary>
         /// <returns>returns an array of double that contains:available, lightWeight,
         ///mediumWeight, heavyWeight, chargingRate</returns>
-        public double[] PowerConsumptionRequest() => new double[5] { available, lightWeight,
-            mediumWeight, heavyWeight, chargingRate };
-
-        public double[] PowerConsumptionRequest() => new double[5] { available, lightWeight, mediumWeight, heavyWeight, chargingRate };
+        public double[] PowerConsumptionRequest() => new double[5] { available, lightWeight,mediumWeight, heavyWeight, chargingRate };
 
         public int SumOfDronesInSpecificStation(int sId)
         {

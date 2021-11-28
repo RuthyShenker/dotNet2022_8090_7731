@@ -88,13 +88,13 @@ namespace BL
         private List<ChargingDrone> ChargingDroneBLList(int sId)
         {
             var chargingDroneBLList = new List<ChargingDrone>();
-            var chargingDroneDalList =dal.GetChargingDrones().Where(charge=>charge.StationId==sId);
-            var chargingDrone= new ChargingDrone();
+            var chargingDroneDalList = dal.GetChargingDrones().Where(charge => charge.StationId == sId);
+            var chargingDrone = new ChargingDrone();
             foreach (var chargingPosition in chargingDroneDalList)
-	        {
+            {
                 chargingDrone.DroneId = chargingPosition.DroneId;
-                chargingDrone.BatteryStatus = lDroneToList.FirstOrDefault(drone=>drone.Id== chargingDrone.DroneId).BatteryStatus;
-	            chargingDroneBLList.Add(chargingDrone);
+                chargingDrone.BatteryStatus = lDroneToList.FirstOrDefault(drone => drone.Id == chargingDrone.DroneId).BatteryStatus;
+                chargingDroneBLList.Add(chargingDrone);
             }
             return chargingDroneBLList;
         }
@@ -115,13 +115,12 @@ namespace BL
         /// <returns>returns StationToList object</returns>
         private StationToList ConvertToList(IDal.DO.BaseStation station)
         {
-            ///ruti מה הולך פה?
-            var x = MountOfFullPositions(new Location(station.Longitude, station.Latitude));
-            StationToList nStation = new StationToList(
+            var fullPositions = MountOfFullPositions(new Location(station.Longitude, station.Latitude));
+            StationToList nStation = new(
             station.Id,
-           station.NameStation,
-            x,
-           station.NumberOfChargingPositions - nStation.FullPositions); 
+            station.NameStation,
+            station.NumberOfChargingPositions - fullPositions,
+            fullPositions);
             return nStation;
         }
         /// <summary>
@@ -148,7 +147,7 @@ namespace BL
         /// <param name="location1"></param>
         /// <param name="location2"></param>
         /// <returns>returns if they are the same or not</returns>
-        private bool equalLocations( Location location1, Location location2 )
+        private bool equalLocations(Location location1, Location location2)
         {
             return location1.Longitude == location2.Longitude && location1.Latitude == location2.Latitude;
         }
@@ -188,12 +187,14 @@ namespace BL
             {
                 throw new IdIsNotValidException("The id is already exists in the base station list!");
             }
-            IDal.DO.BaseStation station = new IDal.DO.BaseStation() {
-            Id = bLStation.Id,
-            Latitude = bLStation.SLocation.Latitude,
-            Longitude = bLStation.SLocation.Longitude,
-            NameStation = bLStation.NameStation,
-            NumberOfChargingPositions = bLStation.NumAvailablePositions };
+            IDal.DO.BaseStation station = new IDal.DO.BaseStation()
+            {
+                Id = bLStation.Id,
+                Latitude = bLStation.SLocation.Latitude,
+                Longitude = bLStation.SLocation.Longitude,
+                NameStation = bLStation.NameStation,
+                NumberOfChargingPositions = bLStation.NumAvailablePositions
+            };
             dal.AddingItemToDList(station);
         }
     }

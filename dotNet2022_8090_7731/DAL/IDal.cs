@@ -53,7 +53,7 @@ namespace IDal
 
         void AddingItemToDList<T>(T item) where T : IIdentifiable;
 
-        void AddDroneToCharge(int dId, int sId);
+        void AddingDroneToCharge(int dId, int sId);
         
         // updating
         void UpdateBelongedParcel(Parcel parcel, int dId);

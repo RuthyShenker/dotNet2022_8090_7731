@@ -65,7 +65,7 @@ namespace DalObject
         /// </summary>
         /// <param name="pId"></param>
         /// <param name="action"></param>
-        private void updateTimeAction(int pId, string action)
+        private void UpdateTimeAction(int pId, string action)
         {
             try
             {

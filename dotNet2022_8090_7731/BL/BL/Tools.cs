@@ -24,7 +24,7 @@ namespace BL
                 if (item.PropertyType.Namespace!= typeof(int).Namespace)
                 {
                     str += nameof(ToolboxItemFilterType)+' ';
-                    foreach (PropertyInfo pItem in t.GetType().GetProperties())
+                    foreach (PropertyInfo pItem in item.GetType().GetProperties())
                     {
                         str += pItem.Name + ": " + pItem.GetValue(t, null)+' ';
                     }

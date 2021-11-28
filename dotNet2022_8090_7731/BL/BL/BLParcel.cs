@@ -80,7 +80,7 @@ namespace BL
             }
             catch (ArgumentNullException)
             {
-                throw NoParcelAssociatedToTheDroneException("");// שום חבילה לא משויכת לרחפן זה
+                //throw NoParcelAssociatedToTheDroneException("");// שום חבילה לא משויכת לרחפן זה
             }
         }
 

@@ -91,7 +91,7 @@ namespace BL
                 drone.DStatus = IBL.BO.DroneStatus.Maintenance;
                 //--closetBaseStation.NumAvailablePositions;
                 //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
-                dal.AddDroneToCharge(drone.Id, closetdStation.Id);
+                dal.AddingDroneToCharge(drone.Id, closetdStation.Id);
             }
             catch (ArgumentNullException )
             {
@@ -200,7 +200,7 @@ namespace BL
             }
             bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
             bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
-            dal.AddDroneToCharge(bLDrone.Id, StationId);
+            dal.AddingDroneToCharge(bLDrone.Id, StationId);
             IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
             DroneToList droneToList = new DroneToList(
                 bLDrone.Id,
