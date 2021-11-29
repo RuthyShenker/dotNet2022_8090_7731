@@ -137,7 +137,7 @@ namespace ConsoleUI_BL
         {
             droneId = GettingId("Drone");
             Console.WriteLine("Enter the time in charging of the drone: ");
-            timeInCharging = CheckValids.InputValiDoubleNum();
+            timeInCharging = CheckValids.InputDoubleValidity("Time");
         }
 
         /// <summary>

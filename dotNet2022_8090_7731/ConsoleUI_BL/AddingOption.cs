@@ -64,17 +64,20 @@ namespace ConsoleUI_BL
         private static Parcel GettingNewParcel()
         {   
             Console.WriteLine("Enter the id of the sender of the new parcel: ");
-            int senderId = CheckValids.InputNumberValidity("Sender ID");
+            int senderId = CheckValids.InputIdCustomerValidity(); 
             Console.WriteLine("Enter the id of the getter of the new parcel: ");
-            int getterId = CheckValids.InputNumberValidity("Getter ID");
-            Console.WriteLine("Enter the weight of the new parcel: 0-Light, 1-Medium, 2-Heavy ");
-            WeightCategories weight = (WeightCategories)CheckValids.InputValidWeightCategories();
-            Console.WriteLine("Enter the priority of the new parcel: 0-Normal, 1-Fast, 2-Emergency");
-            Priority mPriority = (Priority)CheckValids.InputValidPriority();
+            int getterId = CheckValids.InputIdCustomerValidity(); 
+            Console.WriteLine("Enter the weight of the new parcel");
+            tools.PrintEnum(typeof(WeightCategories));
+            WeightCategories weight = (WeightCategories)CheckValids.InputValidOfEnum(typeof(WeightCategories));
+            Console.WriteLine("Enter the priority of the new parcel");
+            tools.PrintEnum(typeof(Priority));
+            Priority mPriority = (Priority)CheckValids.InputValidOfEnum(typeof(Priority));
             DroneInParcel DInParcel = null;
 
             return new Parcel(senderId, getterId, weight, mPriority, DInParcel);
         }
+        
         /// <summary>
         /// A function that gets details from the user and create a new customer of bl and returns it.
         /// </summary>
@@ -95,9 +98,10 @@ namespace ConsoleUI_BL
             Location cLocation = new Location(longitude, latitude);
             //List<ParcelInCustomer> lFromCustomer;
             //List<ParcelInCustomer> LForCustomer
+        
             return new Customer(id, name, phone, cLocation);
-
         }
+        
         /// <summary>
         /// A function that gets details from the user and create a new Station of bl and returns it.
         /// </summary>
@@ -118,8 +122,10 @@ namespace ConsoleUI_BL
             ///●	מספר עמדות טעינה (פנויות) - כל העמדות פנויות בהוספה
             int numAvailablePositions = CheckValids.InputNumberValidity("number of positions");
             List<ChargingDrone> lBL_ChargingDrone = new List<ChargingDrone>();
+        
             return new Station(id, nameStation, sLocation, numAvailablePositions, lBL_ChargingDrone);
         }
+        
         /// <summary>
         /// A function that gets details from the user and create a new Drone of bl and returns it.
         /// </summary>
@@ -131,13 +137,15 @@ namespace ConsoleUI_BL
             Console.WriteLine("Enter Model: ");
             string model = Console.ReadLine();
             Console.WriteLine("Enter the max weight the drone can carry: ");
-            WeightCategories weight = (WeightCategories)CheckValids.InputValidWeightCategories();
+            tools.PrintEnum(typeof(WeightCategories));
+            WeightCategories weight = (WeightCategories)CheckValids.InputValidOfEnum(typeof(WeightCategories));
             Console.WriteLine("Enter the number of the station to charge the new drone for first charging:  ");
             stationId = CheckValids.InputNumberValidity("id");
             float batteryStatus = 0;
             DroneStatus droneStatus = default(DroneStatus);
             ParcelInTransfer pInTransfer = null;
             Location currLocation = null;
+        
             return new Drone(id, model, weight, batteryStatus,
                 droneStatus, pInTransfer, currLocation);
         }
