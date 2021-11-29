@@ -20,10 +20,10 @@ namespace BL
         {
             ParcelInTransfer parcelInTransfer = CalculateParcelInTransfer(drone.Id);
             var wantedDrone = lDroneToList.FirstOrDefault(droneToList => droneToList.Id == drone.Id);
-            return new Drone(wantedDrone.Id, wantedDrone.Model, wantedDrone.Weight, wantedDrone.BatteryStatus, 
+            return new Drone(wantedDrone.Id, wantedDrone.Model, wantedDrone.Weight, wantedDrone.BatteryStatus,
                 wantedDrone.DStatus, parcelInTransfer, wantedDrone.CurrLocation);
         }
-        
+
         /// <summary>
         /// A function that creates ParcelInTransferand
         /// Calculates bills for specific drone id 
@@ -45,7 +45,7 @@ namespace BL
                 Location senderLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.Sender.Id).CLocation;
                 Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.Getter.Id).CLocation;
                 double distance = CalculateDistance(senderLocation, getterLocation);
-                return new ParcelInTransfer(parcel.Id, parcel.PickingUp.HasValue,parcel.MPriority,
+                return new ParcelInTransfer(parcel.Id, parcel.PickingUp.HasValue, parcel.MPriority,
                     parcel.Weight, parcel.Sender, parcel.Getter, senderLocation, getterLocation, distance);
             }
         }
@@ -87,7 +87,7 @@ namespace BL
                 //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
                 dal.AddingDroneToCharge(drone.Id, closetdStation.Id);
             }
-            catch (ArgumentNullException )
+            catch (ArgumentNullException)
             {
                 throw new ListIsEmptyException(typeof(Drone));
             }
@@ -100,11 +100,7 @@ namespace BL
         /// <param name="timeInCharging"></param>
         public void ReleasingDrone(int dId, double timeInCharging)
         {
-            if (!dal.IsIdExistInList<IDal.DO.Drone>(dId))
-            {
-                throw new IdIsAlreadyExistException(typeof(Drone), dId);
-            }
-            DroneToList drone = lDroneToList.Find(drone => drone.Id == dId);
+            DroneToList drone = FindDroneInList(dId);
 
             switch (drone.DStatus)
             {
@@ -120,6 +116,22 @@ namespace BL
             }
         }
 
+        private DroneToList FindDroneInList(int dId)
+        {
+            try
+            {
+                return lDroneToList.First(drone => drone.Id == dId);
+            }
+            catch (ArgumentNullException)
+            {
+                throw new ListIsEmptyException(typeof(Drone));
+            }
+            catch (InvalidOperationException)
+            {
+                throw new IdIsNotExistException(typeof(Drone), dId);
+            }
+        }
+
         /// <summary>
         /// A function that gets an id of drone and belonging to it a parcel.
         /// </summary>
@@ -128,7 +140,7 @@ namespace BL
         {
             if (!dal.IsIdExistInList<IDal.DO.Drone>(dId))
             {
-                throw new IdIsAlreadyExistException(typeof(Drone), dId); 
+                throw new IdIsAlreadyExistException(typeof(Drone), dId);
             }
             DroneToList droneToList = lDroneToList.Find(drone => drone.Id == dId);
             if (droneToList.DStatus != DroneStatus.Free)
@@ -184,7 +196,7 @@ namespace BL
             }
             if (!dal.IsIdExistInList<IDal.DO.BaseStation>(StationId))
             {
-                throw new IdIsNotExistException(typeof(IDal.DO.BaseStation),StationId);
+                throw new IdIsNotExistException(typeof(IDal.DO.BaseStation), StationId);
             }
             if (!dal.AreThereFreePositions(StationId))
             {
@@ -220,26 +232,16 @@ namespace BL
         /// <param name="newModel"></param>
         public void UpdatingDroneName(int droneId, string newModel)
         {
-            try
+            DroneToList droneToList = FindDroneInList(droneId);
+            droneToList.Model = newModel;
+            IDal.DO.Drone dalDrone = new()
             {
-                DroneToList droneToList = lDroneToList.Find(drone => drone.Id == droneId);
-                droneToList.Model = newModel;
-                IDal.DO.Drone dalDrone = new()
-                {
-                    Id = droneToList.Id,
-                    Model = droneToList.Model,
-                    MaxWeight = (IDal.DO.WeightCategories)droneToList.Weight
-                };
-                dal.UpdateDrone(droneId, dalDrone);
-            }
-            catch (ArgumentNullException)
-            {
-                throw new ListIsEmptyException(typeof(Drone));
-            }
-            catch (IDal.DO.IdNotExistInTheListException)
-            {
-                throw new IdIsNotExistException(typeof(Drone), droneId);
-            }
+                Id = droneToList.Id,
+                Model = droneToList.Model,
+                MaxWeight = (IDal.DO.WeightCategories)droneToList.Weight
+            };
+            dal.UpdateDrone(droneId, dalDrone);
         }
     }
 }
+

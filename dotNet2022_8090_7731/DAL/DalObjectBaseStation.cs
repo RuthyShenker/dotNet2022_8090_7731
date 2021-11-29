@@ -47,9 +47,9 @@ namespace DalObject
         //    BaseStationList.Add(baseStation);
         //}
 
-        public void AddingItemToDList<T>(T item)where T:IIdentifiable
+        public void AddingItemToDList<T>(T item) where T : IIdentifiable
         {
-             ((List<T>)data[typeof(T)]).Add(item);
+            ((List<T>)data[typeof(T)]).Add(item);
         }
 
         ///// <summary>
@@ -88,11 +88,12 @@ namespace DalObject
         {
             return new List<BaseStation>(BaseStationList.Where(baseStation => AreThereFreePositions(baseStation.Id)));
         }
-        
+
         public bool AreThereFreePositions(int sId)
         {
             return (BaseStationList.Find(baseStation => baseStation.Id == sId).NumberOfChargingPositions - SumOfDronesInSpecificStation(sId)) > 0;
         }
+        
         /// <summary>
         /// A function that gets an id of base station and an 
         /// object of base station and changes
@@ -104,17 +105,8 @@ namespace DalObject
         /// <param name="baseStation"></param>
         public void UpdateBaseStation(int bId, BaseStation baseStation)
         {
-            try
-            {
-                BaseStationList.Remove(BaseStationList.Find(baseStation => baseStation.Id == bId));
-                BaseStationList.Add(baseStation);
-            }
-            catch (ArgumentNullException )
-            {
-                throw new IdNotExistInTheListException();
-            }
+            BaseStationList.Remove(BaseStationList.Find(baseStation => baseStation.Id == bId));
+            BaseStationList.Add(baseStation);
         }
-
-
     }
 }

@@ -70,11 +70,15 @@ namespace DalObject
         {
             try
             {
-                return ((List<T>)data[typeof(T)]).Find(item => item.Id == Id);
+                return ((List<T>)data[typeof(T)]).First(item => item.Id == Id);
             }
             catch (ArgumentNullException)
             {
-                throw new IdNotExistInTheListException();
+                throw new ListIsEmptyException(typeof(T)); 
+            }
+            catch(InvalidOperationException)
+            {
+                throw new IdIsNotExistException(typeof(T), Id);
             }
         }
 

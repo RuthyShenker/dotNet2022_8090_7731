@@ -34,7 +34,7 @@ namespace BL
             UpdatePConsumption();
             foreach (var drone in dal.GetListFromDal<IDal.DO.Drone>())
             {
-                if (lDroneToList.Count() != 0 && dal.IsExistInList(lDroneToList, droneInList => droneInList.Id == drone.Id))
+                if (lDroneToList.Count != 0 && lDroneToList.Exists(droneInList => droneInList.Id == drone.Id))
                 {
                     lDroneToList.First(droneInList => droneInList.Id == drone.Id).NumOfParcel++;
                 }
@@ -300,7 +300,7 @@ namespace BL
         /// <returns>returns list of data with the BLToList</returns>
         public IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable
         {
-            if (typeof(BLToList) == typeof(Drone))
+            if (typeof(BLToList) == typeof(DroneToList))
             {
                 return (IEnumerable<BLToList>)lDroneToList;
             }

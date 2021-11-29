@@ -50,7 +50,7 @@ namespace BL
             }
             return nCustomer;
         }
-       
+
         /// <summary>
         /// A function that gets an object of IDal.DO.Customer
         /// and Expands it to Customer object and returns this object.
@@ -116,7 +116,7 @@ namespace BL
             }
             return wantedCustomersList;
         }
-        
+
         /// <summary>
         /// A function that gets Customer and adds it to the data base the
         /// function doesn't return anything.
@@ -128,12 +128,12 @@ namespace BL
             {
                 throw new IdIsAlreadyExistException(typeof(IDal.DO.Customer), bLCustomer.Id);
             }
-            var newCustomer = new IDal.DO.Customer(bLCustomer.Id,bLCustomer.Name,
-            bLCustomer.Phone,bLCustomer.CLocation.Longitude,bLCustomer.CLocation.Latitude);
+            var newCustomer = new IDal.DO.Customer(bLCustomer.Id, bLCustomer.Name,
+            bLCustomer.Phone, bLCustomer.CLocation.Longitude, bLCustomer.CLocation.Latitude);
             dal.AddingItemToDList(newCustomer);
             return bLCustomer.Id;
         }
-        
+
         /// <summary>
         /// A function that gets customerId,newName,newPhone
         ///and updates the customer with id of customerId
@@ -145,23 +145,17 @@ namespace BL
         /// <param name="newPhone"></param>
         public void UpdatingCustomerDetails(int customerId, string newName, string newPhone)
         {
-            try
+            IDal.DO.Customer customer = dal.GetFromDalById<IDal.DO.Customer>(customerId);
+            if (!string.IsNullOrEmpty(newName))
             {
-                IDal.DO.Customer customer = dal.GetFromDalById<IDal.DO.Customer>(customerId);
-                if (!string.IsNullOrEmpty(newName))
-                {
-                    customer.Name = newName;
-                }
-                if (!string.IsNullOrEmpty(newPhone))
-                {
-                    customer.Phone = newPhone;
-                }
-                dal.UpdateCustomer(customerId, customer);
+                customer.Name = newName;
             }
-            catch (IDal.DO.IdNotExistInTheListException)
+            if (!string.IsNullOrEmpty(newPhone))
             {
-                throw new IdIsNotExistException( typeof(IDal.DO.Customer), customerId);
+                customer.Phone = newPhone;
             }
+            dal.UpdateCustomer(customerId, customer);
         }
     }
 }
+

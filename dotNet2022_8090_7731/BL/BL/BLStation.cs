@@ -31,7 +31,7 @@ namespace BL
             };
             dal.AddingItemToDList(station);
         }
-        
+
         /// <summary>
         /// A function that gets stationId,stationName,amountOfPositions
         /// and updates the station with the stationId to be with these fields
@@ -42,22 +42,16 @@ namespace BL
         /// <param name="amountOfPositions"></param>
         public void UpdatingStationDetails(int stationId, string stationName, string amountOfPositions)
         {
-            try
-            {
-                var baseStation = dal.GetFromDalById<IDal.DO.BaseStation>(stationId);
-                if (!string.IsNullOrEmpty(stationName))
-                    baseStation.NameStation = stationName;
+            var baseStation = dal.GetFromDalById<IDal.DO.BaseStation>(stationId);
+            if (!string.IsNullOrEmpty(stationName))
+                baseStation.NameStation = stationName;
 
-                if (!string.IsNullOrEmpty(amountOfPositions))
-                    baseStation.NumberOfChargingPositions = int.Parse(amountOfPositions);
-                dal.UpdateBaseStation(stationId, baseStation);
-            }
-            catch (IDal.DO.IdNotExistInTheListException)
-            {
-                throw new IdIsNotExistException(typeof(IDal.DO.BaseStation), stationId);
-            }
+            if (!string.IsNullOrEmpty(amountOfPositions))
+                baseStation.NumberOfChargingPositions = int.Parse(amountOfPositions);
+            dal.UpdateBaseStation(stationId, baseStation);
         }
-        
+
+
         /// <summary>
         /// A function that gets an object of IDal.DO.BaseStation
         /// and expands it to Station type and returns it.
@@ -88,7 +82,7 @@ namespace BL
             fullPositions);
             return nStation;
         }
-        
+
         /// <summary>
         /// A function that gets id of station and
         /// returns a new list of charging drone of BL of this station.
@@ -108,7 +102,7 @@ namespace BL
             }
             return chargingDroneBLList;
         }
-        
+
         /// <summary>
         /// A function that returns Available Slots by type of StationToList.
         /// </summary>
@@ -142,7 +136,7 @@ namespace BL
             }
             return sumFullPositions;
         }
-       
+
         /// <summary>
         /// A function that gets a location and retrns the
         /// closet base station-BL to this location.

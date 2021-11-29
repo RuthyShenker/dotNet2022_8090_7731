@@ -109,9 +109,7 @@ namespace DalObject
         public void ReleasingDrone(int dId)
         {
             bool flag = false;
-            try
-            {
-                for (int i = 0; i < ChargingDroneList.Count; i++)
+             for (int i = 0; i < ChargingDroneList.Count; i++)
                 {
                     if (ChargingDroneList[i].DroneId == dId)
                     {
@@ -120,14 +118,8 @@ namespace DalObject
                         break;
                     }
                 }
-                if(flag==false)
-                    throw new ArgumentOutOfRangeException();
-            }
-            catch(ArgumentOutOfRangeException)
-            {
-                 throw new IdNotExistInTheListException();
-            }
-            
+                //if(flag==false)
+                //    throw new ArgumentOutOfRangeException();
         }
 
         ///// <summary>
@@ -184,15 +176,8 @@ namespace DalObject
         /// <param name="drone"></param>
         public void UpdateDrone(int dId, Drone drone)
         {
-            try
-            {
-                DroneList.Remove(DroneList.Find(drone => drone.Id == dId));
-                DroneList.Add(drone);
-            }
-            catch (ArgumentNullException)
-            {
-                throw new IdNotExistInTheListException();
-            }
+            DroneList.Remove(DroneList.Find(drone => drone.Id == dId));
+            DroneList.Add(drone);
         }
     }
 }

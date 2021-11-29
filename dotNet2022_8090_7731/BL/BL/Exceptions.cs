@@ -286,7 +286,7 @@ namespace BL
         }
         override public string ToString()
         {
-            return $"{GetType().Name} list is empty";
+            return $"{GetType().Name}: {Type.Name} list is empty";
         }
     }
 
@@ -306,7 +306,7 @@ namespace BL
 
         protected override string Message()
         {
-            return $"The action couldn't be done. "+ ExceptionDetails + $"in {Type.Name} with Id {Id}";
+            return $"{GetType().Name}: The action couldn't be done. "+ ExceptionDetails + $"in {Type.Name} with Id {Id}";
         }
     }
 }

@@ -21,11 +21,11 @@ namespace DalObject
         //    ParceList.Add(parcel);
         //}
 
-       /// <summary>
-       /// update parcel is belonged to drone
-       /// </summary>
-       /// <param name="parcel"></param>
-       /// <param name="dId"></param>
+        /// <summary>
+        /// update parcel is belonged to drone
+        /// </summary>
+        /// <param name="parcel"></param>
+        /// <param name="dId"></param>
         public void UpdateBelongedParcel(Parcel parcel, int dId)
         {
             parcel.DroneId = dId;
@@ -67,30 +67,17 @@ namespace DalObject
         /// <param name="action"></param>
         private void UpdateTimeAction(int pId, string action)
         {
-            try
+            // זה טוב או צריך להשתמש ב removeat
+            Parcel tempParcel = ParceList.Find(parcel => parcel.Id == pId);
+            _ = action switch
             {
-                ParceList.Exists(parcel => parcel.Id == pId);
-                for (int i = 0; i < ParceList.Count; i++)
-                {
-                    if (ParceList[i].Id == pId)
-                    {// זה טוב או צריך להשתמש ב removeat
-                        Parcel tempParcel = ParceList[i];
-                        _ = action switch
-                        {
-                            var x when x == "pickingUp" => tempParcel.PickingUp = DateTime.Now,
-                            _ => tempParcel.Arrival = DateTime.Now,
-                        };
-                        ParceList[i] = tempParcel;
-                        break;
-                    }
-                }
-            }
-            catch (ArgumentNullException)
-            {
-                throw new IdNotExistInTheListException();
-            }
-        }
+                var x when x == "pickingUp" => tempParcel.PickingUp = DateTime.Now,
+                _ => tempParcel.Arrival = DateTime.Now,
+            };
 
+            ParceList.Remove(ParceList.Find(parcel => parcel.Id == pId));
+            ParceList.Add(tempParcel);
+        }
 
         /// <summary>
         /// A function that returns copy parcels that aren't belonged to any drone.
@@ -100,43 +87,43 @@ namespace DalObject
         {
             return ParceList.Where(parcel => parcel.DroneId == 0).ToList();
         }
-
-        //// יש פונקציות גנריות
-        ///// <summary>
-        ///// A function that gets an id of parcel and returns this parcel-copied.
-        ///// </summary>
-        ///// <param name="Id"></param>
-        ///// <returns></returns>
-        //public Parcel GetParcel(int Id)
-        //{
-        //    for (int i = 0; i < ParceList.Count; i++)
-        //    {
-        //        if (ParceList[i].Id == Id)
-        //        {
-        //            return ParceList[i].Clone();
-        //        }
-        //    }
-        //    throw new Exception("id doesnt exist");
-        //    //return ParceList.First(parcel => parcel.ParcelId == Id).Clone();
-        //}
-
-        ///// <summary>
-        ///// A function that returns the list of the parcels
-        ///// </summary>
-        ///// <returns> parcle list</returns>
-        //public IEnumerable<Parcel> GetParcels()
-        //{
-        //    return ParceList.Select(parcel => new Parcel(parcel)).ToList();
-        //}
-
-            ///// <summary>
-            ///// A function that returns the list of the parcels
-            ///// </summary>
-            ///// <returns> parcle list</returns>
-            //public IEnumerable<Parcel> GetParcels()
-            //{
-            //    return ParceList.Select(parcel => new Parcel(parcel)).ToList();
-            //}
     }
 
+    //// יש פונקציות גנריות
+    ///// <summary>
+    ///// A function that gets an id of parcel and returns this parcel-copied.
+    ///// </summary>
+    ///// <param name="Id"></param>
+    ///// <returns></returns>
+    //public Parcel GetParcel(int Id)
+    //{
+    //    for (int i = 0; i < ParceList.Count; i++)
+    //    {
+    //        if (ParceList[i].Id == Id)
+    //        {
+    //            return ParceList[i].Clone();
+    //        }
+    //    }
+    //    throw new Exception("id doesnt exist");
+    //    //return ParceList.First(parcel => parcel.ParcelId == Id).Clone();
+    //}
+
+    ///// <summary>
+    ///// A function that returns the list of the parcels
+    ///// </summary>
+    ///// <returns> parcle list</returns>
+    //public IEnumerable<Parcel> GetParcels()
+    //{
+    //    return ParceList.Select(parcel => new Parcel(parcel)).ToList();
+    //}
+
+    ///// <summary>
+    ///// A function that returns the list of the parcels
+    ///// </summary>
+    ///// <returns> parcle list</returns>
+    //public IEnumerable<Parcel> GetParcels()
+    //{
+    //    return ParceList.Select(parcel => new Parcel(parcel)).ToList();
+    //}
 }
+
