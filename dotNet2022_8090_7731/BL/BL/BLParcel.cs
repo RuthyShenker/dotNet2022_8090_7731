@@ -14,21 +14,19 @@ namespace BL
         /// doesn't return anything.
         /// </summary>
         /// <param name="newParcel"></param>
-        public void AddingParcel(Parcel newParcel)
+        public int AddingParcel(Parcel newParcel)
         {
-            IDal.DO.Parcel parcel = new()
-            {
-                SenderId = newParcel.Sender.Id,
-                GetterId = newParcel.Getter.Id,
-                Weight = (IDal.DO.WeightCategories)newParcel.Weight,
-                MPriority = (IDal.DO.UrgencyStatuses)newParcel.MPriority,
-                DroneId = 0,
-                MakingParcel = DateTime.Now,
-                BelongParcel = null,
-                PickingUp = null,
-                Arrival = null
-            };
+            IDal.DO.Parcel parcel = new IDal.DO.Parcel(
+               newParcel.Sender.Id,
+               newParcel.Getter.Id,
+           (IDal.DO.WeightCategories)newParcel.Weight,
+               (IDal.DO.UrgencyStatuses)newParcel.MPriority,
+              DateTime.Now,
+              new DateTime(),
+             new DateTime(),
+              new DateTime());
             dal.AddingItemToDList(parcel);
+            return parcel.Id;
         }
 
         /// <summary>

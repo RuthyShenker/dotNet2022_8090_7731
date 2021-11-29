@@ -122,7 +122,7 @@ namespace BL
         /// function doesn't return anything.
         /// </summary>
         /// <param name="bLCustomer"></param>
-        public void AddingCustomer(Customer bLCustomer)
+        public int AddingCustomer(Customer bLCustomer)
         {
             if (dal.IsIdExistInList<IDal.DO.Customer>(bLCustomer.Id))
             {
@@ -131,6 +131,7 @@ namespace BL
             var newCustomer = new IDal.DO.Customer(bLCustomer.Id,bLCustomer.Name,
             bLCustomer.Phone,bLCustomer.CLocation.Longitude,bLCustomer.CLocation.Latitude);
             dal.AddingItemToDList(newCustomer);
+            return bLCustomer.Id;
         }
         
         /// <summary>

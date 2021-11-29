@@ -23,9 +23,15 @@ namespace ConsoleUI_BL
                  
                     case Adding.Drone:  bL.AddingDrone(GettingNewDrone(out int stationId), stationId);  break;
 
-                    case Adding.Customer:    bL.AddingCustomer(GettingNewCustomer());    break;
-                       
-                    case Adding.Parcel: bL.AddingParcel(GettingNewParcel());    break;
+                    case Adding.Customer:    int id=bL.AddingCustomer(GettingNewCustomer());  
+                        Console.WriteLine("The process of adding a new customer has been completed." +
+                             " The adding was completed successfully. The id that was added is: " + id); 
+                        break;
+                    case Adding.Parcel: int numberOfOrder=bL.AddingParcel(GettingNewParcel());
+
+                        Console.WriteLine("The process of creating a new package has been completed." +
+                            " The order was completed successfully. The order number is: "+ numberOfOrder);
+                        break;
                         
                     default:     break;
                 }
