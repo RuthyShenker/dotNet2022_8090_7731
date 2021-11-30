@@ -68,18 +68,9 @@ namespace DalObject
        
         public T GetFromDalById<T>(int Id) where T : IIdentifiable
         {
-            try
-            {
-                return ((List<T>)data[typeof(T)]).First(item => item.Id == Id);
-            }
-            catch (ArgumentNullException)
-            {
-                throw new ListIsEmptyException(typeof(T)); 
-            }
-            catch(InvalidOperationException)
-            {
-                throw new IdIsNotExistException(typeof(T), Id);
-            }
+
+            return ((List<T>)data[typeof(T)]).First(item => item.Id == Id);
+
         }
 
         public T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IIdentifiable

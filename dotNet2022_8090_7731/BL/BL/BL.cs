@@ -222,7 +222,19 @@ namespace BL
         /// the new object of CustomerInParcel</returns>
         private CustomerInParcel NewCustomerInParcel(int Id)
         {
-            return new CustomerInParcel(Id, dal.GetFromDalById<IDal.DO.Customer>(Id).Name);
+            try
+            {
+                var name = dal.GetFromDalById<IDal.DO.Customer>(Id).Name;
+                return new CustomerInParcel(Id, name);
+            }
+            //catch (ArgumentNullException)
+            //{
+            //    throw new ListIsEmptyException(typeof(T));
+            //}
+            //catch (InvalidOperationException)
+            //{
+            //    throw new IdIsNotExistException(typeof(T), Id);
+            //}
         }
 
         /// <summary>
@@ -251,6 +263,7 @@ namespace BL
         /// <returns>returns an object of BL type</returns>
         public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable
         {
+
             dynamic wantedDal = dal.GetFromDalById<DL>(Id);
             BL wantedBl= ConvertToBL(wantedDal);
             return wantedBl;

@@ -131,10 +131,16 @@ namespace BL
         /// <returns>returns ParcelToList object</returns>
         private ParcelToList ConvertToList(IDal.DO.Parcel parcel)
         {
+            try
+            {
+            }
+            string senderName = dal.GetFromDalById<IDal.DO.Customer>(parcel.SenderId).Name;
+            string getterNmae = dal.GetFromDalById<IDal.DO.Customer>(parcel.GetterId).Name;
+
             ParcelToList nParcel = new(
             parcel.Id,
-            dal.GetFromDalById<IDal.DO.Customer>(parcel.SenderId).Name,
-            dal.GetFromDalById<IDal.DO.Customer>(parcel.GetterId).Name,
+           senderName ,
+           getterNmae,
             (IBL.BO.WeightCategories)parcel.Weight,
             (Priority)parcel.MPriority,
             GetParcelStatus(parcel)
