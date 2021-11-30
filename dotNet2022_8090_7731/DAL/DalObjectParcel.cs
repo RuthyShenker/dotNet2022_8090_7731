@@ -85,8 +85,15 @@ namespace DalObject
         /// <returns> returns copy parcels that aren't belonged to any drone.</returns>
         public IEnumerable<Parcel> GetUnbelongParcels()
         {
-            return ParceList.Where(parcel => parcel.DroneId == 0).ToList();
-        }
+            try
+            {
+                return ParceList.Where(parcel => parcel.DroneId == 0).ToList();
+            }
+            catch (ArgumentNullException)
+            {
+                throw new InValidActionException();
+            }
+}
     }
 
     //// יש פונקציות גנריות

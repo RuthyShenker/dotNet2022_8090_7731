@@ -144,8 +144,11 @@ namespace BL
                 string dStatus = droneToList.DStatus.ToString();
                 throw new InValidActionException(typeof(Drone), dId, $"status of drone is {dStatus} ");
             }
-            var optionParcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.Weight <= (IDal.DO.WeightCategories)droneToList.Weight)
-                .OrderByDescending(parcel => parcel.MPriority).ThenByDescending(parcel => parcel.Weight).ThenBy(parcel => GetDistance(droneToList.CurrLocation, parcel));
+            var optionParcels = dal.GetDalListByCondition<IDal.DO.Parcel>
+                (parcel => parcel.Weight <= (IDal.DO.WeightCategories)droneToList.Weight)
+                .OrderByDescending(parcel => parcel.MPriority)
+                .ThenByDescending(parcel => parcel.Weight).ThenBy(parcel =>
+                GetDistance(droneToList.CurrLocation, parcel));
             bool belonged = false;
             foreach (var parcel in optionParcels)
             {

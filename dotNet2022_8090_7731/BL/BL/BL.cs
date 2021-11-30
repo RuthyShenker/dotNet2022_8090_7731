@@ -224,7 +224,8 @@ namespace BL
         {
             try
             {
-                return new CustomerInParcel(Id, dal.GetFromDalById<IDal.DO.Customer>(Id).Name);
+                string name = dal.GetFromDalById<IDal.DO.Customer>(Id).Name;
+                return new CustomerInParcel(Id,name);
             }
             catch (DalObject.IdIsNotExistException)
             {
