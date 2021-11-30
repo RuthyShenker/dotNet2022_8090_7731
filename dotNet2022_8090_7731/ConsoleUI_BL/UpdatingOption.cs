@@ -15,9 +15,7 @@ namespace ConsoleUI_BL
             tools.PrintEnum(typeof(Updating));
             int input = 0;
             CheckValids.CheckValid(1, 8, out input);
-            try
-            {
-                switch ((Updating)input)
+           switch ((Updating)input)
                 {
                     case Updating.DroneDetails:
                         int droneId = 0;
@@ -47,36 +45,15 @@ namespace ConsoleUI_BL
                         GetDetailsOfRelesingDroneFromCharging(out droneId, out timeInCharging);
                         bL.ReleasingDrone(droneId, timeInCharging);
                         break;
-                    case Updating.BelongingParcelToDrone:
-                        bL.BelongingParcel(GettingId("drone"));
-                        break;
-                    case Updating.PickingParcelByDrone:
-                        bL.PickingUpParcel(GettingId("Drone"));
-                        break;
-                    case Updating.DeliveryParcelToDestination:
-                        bL.DeliveryPackage(GettingId("Drone"));
-                        break;
-                    default:
-                        break;
+                    case Updating.BelongingParcelToDrone:       bL.BelongingParcel(GettingId("drone"));    break;
 
+                    case Updating.PickingParcelByDrone:         bL.PickingUpParcel(GettingId("Drone"));    break;
+                       
+                    case Updating.DeliveryParcelToDestination:  bL.DeliveryPackage(GettingId("Drone"));    break;
+                       
+                    default:    break;
                 }
-            }
-            catch (BL.IdIsNotExistException idIsNotExistException)
-            {
-                Console.WriteLine(idIsNotExistException);
-            }
-            catch (BL.IdIsAlreadyExistException idIsAlreadyExistException)
-            {
-                Console.WriteLine(idIsAlreadyExistException);
-            }
-            catch (BL.ListIsEmptyException listIsEmptyException)
-            {
-                Console.WriteLine(listIsEmptyException);
-            }
-            catch (BL.InValidActionException inValidActionException)
-            {
-                Console.WriteLine(inValidActionException);
-            }
+            #region MyRegion
             //    catch (UpdatingFailedIdNotExistsException exception)
             //    {
             //        Console.WriteLine(exception.Message);
@@ -126,6 +103,7 @@ namespace ConsoleUI_BL
             //    {
             //        Console.WriteLine(exception.Message);
             //    }
+            #endregion
         }
 
         /// <summary>
@@ -149,7 +127,7 @@ namespace ConsoleUI_BL
         private static void GetDetailsOfCustomer(out int customerId, out string newName, out string newPhone)
         {
             Console.WriteLine("Enter the id of the customer: ");
-            customerId = CheckValids.InputNumberValidity("Id Of Customer");
+            customerId = CheckValids.InputIdCustomerValidity();
             Console.WriteLine("Enter the new name of the customer: ");
             newName = CheckValids.InputNameValidity();
             Console.WriteLine("Enter the new phone of the customer: ");

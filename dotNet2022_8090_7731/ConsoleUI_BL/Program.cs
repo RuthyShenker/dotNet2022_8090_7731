@@ -4,45 +4,58 @@ using static ConsoleUI_BL.MEnum;
 
 namespace ConsoleUI_BL
 {
-    // לבדוק 9 ספרות ID
     partial class Program
     {
         static IBL.IBL bL = new BL.BL();
-       static void Main(string[] args)
-       {
+        static void Main(string[] args)
+        {
             int input = 0;
-            
             while ((ProgramOptions)input != ProgramOptions.Exit)
             {
-                tools.PrintMain(typeof(ProgramOptions));
-                CheckValids.CheckValid(1, 5, out input);
-                switch ((ProgramOptions)input)
+                try
                 {
-                    case ProgramOptions.Adding:
-                        AddingOption();
-                        break;
+                    tools.PrintMain(typeof(ProgramOptions));
+                    
+                    CheckValids.CheckValid(1, 5, out input);
+            
+                    switch ((ProgramOptions)input)
+                    {
+                        case ProgramOptions.Adding:             AddingOption();                     break;
 
-                    case ProgramOptions.Updating:
-                        UpdatingOption();
-                        break;
+                        case ProgramOptions.Updating:           UpdatingOption();                   break;
 
-                    case ProgramOptions.DisplayingItem:
-                        DisplayingSpecificObjOption();
-                        break;
+                        case ProgramOptions.DisplayingItem:     DisplayingItemOption();             break;
 
-                    case ProgramOptions.DisplayingList:
-                        DisplayingListOption();
-                        break;
+                        case ProgramOptions.DisplayingList:     DisplayingListOption();             break;
 
-                    case ProgramOptions.Exit:
-                        Console.WriteLine("good bye!");
-                        break;
+                        case ProgramOptions.Exit:               Console.WriteLine("good bye!");     break;
 
-                    default:
-                        break;
+                        default: break;
+
+                    }
+                }
+                catch (BL.IdIsNotExistException idIsNotExistException)
+                {
+                    Console.WriteLine(idIsNotExistException);
+                }
+                catch (DalObject.IdIsNotExistException idIsNotExistException)
+                {
+                    Console.WriteLine(idIsNotExistException);
+                }
+                catch (BL.IdIsAlreadyExistException idIsAlreadyExistException)
+                {
+                    Console.WriteLine(idIsAlreadyExistException);
+                }
+                catch (BL.ListIsEmptyException listIsEmptyException)
+                {
+                    Console.WriteLine(listIsEmptyException);
+                }
+                catch (BL.InValidActionException inValidActionException)
+                {
+                    Console.WriteLine(inValidActionException);
                 }
             }
-       }
+        }
 
         /// <summary>
         /// A function that gets from the user Id and returns it as string
@@ -54,7 +67,7 @@ namespace ConsoleUI_BL
             Console.WriteLine($"Enter The Id Of The {obj}:");
             return Console.ReadLine();
         }
-       
+
         /// <summary>
         /// A function that gets from the user Id and returns it as int
         /// </summary>
@@ -63,7 +76,7 @@ namespace ConsoleUI_BL
         private static int GettingId(string obj)
         {
             Console.WriteLine($"Enter The Id Of The {obj}:");
-            return CheckValids.InputNumberValidity("Id Of "+obj);
+            return CheckValids.InputNumberValidity("Id Of " + obj);
         }
     }
 }

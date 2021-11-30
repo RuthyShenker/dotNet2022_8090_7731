@@ -19,7 +19,7 @@ namespace BL
         {
             if (dal.IsIdExistInList<IDal.DO.BaseStation>(bLStation.Id))
             {
-                throw new IdIsAlreadyExistException(typeof(IDal.DO.BaseStation), bLStation.Id);
+                throw new DalObject.IdIsAlreadyExistException(typeof(IDal.DO.BaseStation), bLStation.Id);
             }
             IDal.DO.BaseStation station = new IDal.DO.BaseStation()
             {

@@ -59,7 +59,7 @@ namespace BL
         {
             try
             {
-                DroneToList drone = lDroneToList.Find(drone => drone.Id == IdDrone);
+                DroneToList drone = FindDroneInList(IdDrone); 
                 switch (drone.DStatus)
                 {
                     case DroneStatus.Maintenance:
@@ -192,15 +192,15 @@ namespace BL
         {
             if (dal.IsIdExistInList<IDal.DO.Drone>(bLDrone.Id))
             {
-                throw new IdIsAlreadyExistException(typeof(IDal.DO.Drone), bLDrone.Id);
+                throw new DalObject.IdIsAlreadyExistException(typeof(IDal.DO.Drone), bLDrone.Id);
             }
             if (!dal.IsIdExistInList<IDal.DO.BaseStation>(StationId))
             {
-                throw new IdIsNotExistException(typeof(IDal.DO.BaseStation), StationId);
+                throw new DalObject.IdIsNotExistException(typeof(IDal.DO.BaseStation), StationId);
             }
             if (!dal.AreThereFreePositions(StationId))
             {
-                throw new InValidActionException(typeof(IDal.DO.BaseStation), StationId, "There aren't free positions ");
+                throw new DalObject.InValidActionException(typeof(IDal.DO.BaseStation), StationId, "There aren't free positions ");
             }
             bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
             bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;

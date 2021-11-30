@@ -126,7 +126,7 @@ namespace BL
         {
             if (dal.IsIdExistInList<IDal.DO.Customer>(bLCustomer.Id))
             {
-                throw new IdIsAlreadyExistException(typeof(IDal.DO.Customer), bLCustomer.Id);
+                throw new DalObject.IdIsAlreadyExistException(typeof(IDal.DO.Customer), bLCustomer.Id);
             }
             var newCustomer = new IDal.DO.Customer(bLCustomer.Id, bLCustomer.Name,
             bLCustomer.Phone, bLCustomer.CLocation.Longitude, bLCustomer.CLocation.Latitude);

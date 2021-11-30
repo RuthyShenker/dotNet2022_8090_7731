@@ -11,7 +11,7 @@ namespace ConsoleUI_BL
 {
     partial class Program
     {
-        private static void DisplayingSpecificObjOption()
+        private static void DisplayingItemOption()
         {
             tools.PrintEnum(typeof(DisplayingItem));
 

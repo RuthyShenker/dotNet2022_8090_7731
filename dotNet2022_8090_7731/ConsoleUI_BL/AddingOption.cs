@@ -15,43 +15,31 @@ namespace ConsoleUI_BL
             int input = 0;
             tools.PrintEnum(typeof(Adding));
             CheckValids.CheckValid(1, 4, out input);
-            try
+            switch ((Adding)input)
             {
-                switch ((Adding)input)
-                {
-                    case Adding.BaseStation:    bL.AddingBaseStation(GettingNewBaseStation());  break;
-                 
-                    case Adding.Drone:  bL.AddingDrone(GettingNewDrone(out int stationId), stationId);  break;
+                case Adding.BaseStation:
+                    bL.AddingBaseStation(GettingNewBaseStation());
+                    break;
 
-                    case Adding.Customer:    int id=bL.AddingCustomer(GettingNewCustomer());  
-                        Console.WriteLine("The process of adding a new customer has been completed." +
-                             " The adding was completed successfully. The id that was added is: " + id); 
-                        break;
-                    case Adding.Parcel: int numberOfOrder=bL.AddingParcel(GettingNewParcel());
+                case Adding.Drone:
+                    bL.AddingDrone(GettingNewDrone(out int stationId), stationId);
+                    break;
 
-                        Console.WriteLine("The process of creating a new package has been completed." +
-                            " The order was completed successfully. The order number is: "+ numberOfOrder);
-                        break;
-                        
-                    default:     break;
-                }
+                case Adding.Customer:
+                    int id = bL.AddingCustomer(GettingNewCustomer());
+                    Console.WriteLine("The process of adding a new customer has been completed." +
+                         " The adding was completed successfully. The id that was added is: " + id);
+                    break;
+
+                case Adding.Parcel:
+                    int numberOfOrder = bL.AddingParcel(GettingNewParcel());
+                    Console.WriteLine("The process of creating a new package has been completed." +
+                        " The order was completed successfully. The order number is: " + numberOfOrder);
+                    break;
+
+                default: break;
             }
-            catch (BL.IdIsNotExistException idIsNotExistException)
-            {
-                Console.WriteLine(idIsNotExistException);
-            }
-            catch (BL.IdIsAlreadyExistException idIsAlreadyExistException)
-            {
-                Console.WriteLine(idIsAlreadyExistException);
-            }
-            catch (BL.ListIsEmptyException listIsEmptyException)
-            {
-                Console.WriteLine(listIsEmptyException);
-            }
-            catch (BL.InValidActionException inValidActionException)
-            {
-                Console.WriteLine(inValidActionException);
-            }
+
 
             //catch (IdIsNotValidException exception)
             //{
@@ -68,11 +56,11 @@ namespace ConsoleUI_BL
         /// </summary>
         /// <returns>parcel ,type=bl</returns>
         private static Parcel GettingNewParcel()
-        {   
+        {
             Console.WriteLine("Enter the id of the sender of the new parcel: ");
-            int senderId = CheckValids.InputIdCustomerValidity(); 
+            int senderId = CheckValids.InputIdCustomerValidity();
             Console.WriteLine("Enter the id of the getter of the new parcel: ");
-            int getterId = CheckValids.InputIdCustomerValidity(); 
+            int getterId = CheckValids.InputIdCustomerValidity();
             Console.WriteLine("Enter the weight of the new parcel");
             tools.PrintEnum(typeof(WeightCategories));
             WeightCategories weight = (WeightCategories)CheckValids.InputValidOfEnum(typeof(WeightCategories));
@@ -83,7 +71,7 @@ namespace ConsoleUI_BL
 
             return new Parcel(senderId, getterId, weight, mPriority, DInParcel);
         }
-        
+
         /// <summary>
         /// A function that gets details from the user and create a new customer of bl and returns it.
         /// </summary>
@@ -104,10 +92,10 @@ namespace ConsoleUI_BL
             Location cLocation = new Location(longitude, latitude);
             //List<ParcelInCustomer> lFromCustomer;
             //List<ParcelInCustomer> LForCustomer
-        
+
             return new Customer(id, name, phone, cLocation);
         }
-        
+
         /// <summary>
         /// A function that gets details from the user and create a new Station of bl and returns it.
         /// </summary>
@@ -128,10 +116,10 @@ namespace ConsoleUI_BL
             ///●	מספר עמדות טעינה (פנויות) - כל העמדות פנויות בהוספה
             int numAvailablePositions = CheckValids.InputNumberValidity("number of positions");
             List<ChargingDrone> lBL_ChargingDrone = new List<ChargingDrone>();
-        
+
             return new Station(id, nameStation, sLocation, numAvailablePositions, lBL_ChargingDrone);
         }
-        
+
         /// <summary>
         /// A function that gets details from the user and create a new Drone of bl and returns it.
         /// </summary>
@@ -151,7 +139,7 @@ namespace ConsoleUI_BL
             DroneStatus droneStatus = default(DroneStatus);
             ParcelInTransfer pInTransfer = null;
             Location currLocation = null;
-        
+
             return new Drone(id, model, weight, batteryStatus,
                 droneStatus, pInTransfer, currLocation);
         }
