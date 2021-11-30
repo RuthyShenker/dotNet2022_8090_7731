@@ -42,13 +42,21 @@ namespace BL
         /// <param name="amountOfPositions"></param>
         public void UpdatingStationDetails(int stationId, string stationName, string amountOfPositions)
         {
-            var baseStation = dal.GetFromDalById<IDal.DO.BaseStation>(stationId);
-            if (!string.IsNullOrEmpty(stationName))
-                baseStation.NameStation = stationName;
-
-            if (!string.IsNullOrEmpty(amountOfPositions))
-                baseStation.NumberOfChargingPositions = int.Parse(amountOfPositions);
-            dal.UpdateBaseStation(stationId, baseStation);
+            try
+            {
+                var baseStation = dal.GetFromDalById<IDal.DO.BaseStation>(stationId);
+                
+                if (!string.IsNullOrEmpty(stationName))
+                    baseStation.NameStation = stationName;
+                if (!string.IsNullOrEmpty(amountOfPositions))
+                    baseStation.NumberOfChargingPositions = int.Parse(amountOfPositions);
+                
+                dal.UpdateBaseStation(stationId, baseStation);
+            }
+            catch (DalObject.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(IDal.DO.BaseStation),stationId);
+            }
         }
 
 

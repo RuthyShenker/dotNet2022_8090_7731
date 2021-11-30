@@ -74,9 +74,9 @@ namespace BL
             var parcel = dal.GetListFromDal<IDal.DO.Parcel>().FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
             if (!parcel.Equals(default(IDal.DO.Parcel)))
             {
-               return CalculateDroneInDelivery(nDrone, parcel);
+                return CalculateDroneInDelivery(nDrone, parcel);
             }
-            else 
+            else
             {
                 nDrone.NumOfParcel = null; // אולי לא צריך שורה זו
                 return CalculateUnDeliveryingDrone(nDrone);
@@ -147,7 +147,7 @@ namespace BL
                 var customersList = CustomersWithProvidedParcels();
                 nDrone.CurrLocation = customersList[Rand.Next(customersList.Count)].CLocation;
                 var closetStation = ClosestStation(nDrone.CurrLocation);
-                double distance = CalculateDistance( nDrone.CurrLocation, closetStation.SLocation);
+                double distance = CalculateDistance(nDrone.CurrLocation, closetStation.SLocation);
                 nDrone.BatteryStatus = Rand.NextDouble() * (100 - MinBattery(distance)) + MinBattery(distance);
             }
             return nDrone;
@@ -222,7 +222,14 @@ namespace BL
         /// the new object of CustomerInParcel</returns>
         private CustomerInParcel NewCustomerInParcel(int Id)
         {
-            return new CustomerInParcel(Id, dal.GetFromDalById<IDal.DO.Customer>(Id).Name);
+            try
+            {
+                return new CustomerInParcel(Id, dal.GetFromDalById<IDal.DO.Customer>(Id).Name);
+            }
+            catch (DalObject.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(IDal.DO.Customer), Id);
+            }
         }
 
         /// <summary>
@@ -251,9 +258,16 @@ namespace BL
         /// <returns>returns an object of BL type</returns>
         public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable
         {
-            dynamic wantedDal = dal.GetFromDalById<DL>(Id);
-            BL wantedBl= ConvertToBL(wantedDal);
-            return wantedBl;
+            try
+            {
+                dynamic wantedDal = dal.GetFromDalById<DL>(Id);
+                BL wantedBl = ConvertToBL(wantedDal);
+                return wantedBl;
+            }
+            catch (DalObject.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(DL), Id);
+            }
         }
 
         /// <summary>

@@ -37,33 +37,26 @@ namespace BL
         /// <param name="dId"></param>
         public void PickingUpParcel(int dId)
         {
-            try
+            FindDroneInList(dId);
+            var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
+            bool pickedUp = false;
+            foreach (var parcel in parcels)
             {
-                lDroneToList.Exists(drone => drone.Id == dId);
-                var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
-                bool pickedUp = false;
-                foreach (var parcel in parcels)
+                if (parcel.PickingUp == null)
                 {
-                    if (parcel.PickingUp == null)
-                    {
-                        var drone = lDroneToList.Find(drone => drone.Id == dId);
-                        Location senderLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
-                        drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, senderLocation));
-                        drone.CurrLocation = senderLocation;
-                        // לא היה כתוב לשנות status
-                        drone.DStatus = DroneStatus.Delivery;
-                        dal.PickingUpParcel(parcel.Id);
-                        pickedUp = true;
-                    }
-                }
-                if (!pickedUp)
-                {
-                    throw new InValidActionException("the drone had already picked up all the parcels ");
+                    var drone = lDroneToList.Find(drone => drone.Id == dId);
+                    Location senderLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
+                    drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, senderLocation));
+                    drone.CurrLocation = senderLocation;
+                    // לא היה כתוב לשנות status
+                    drone.DStatus = DroneStatus.Delivery;
+                    dal.PickingUpParcel(parcel.Id);
+                    pickedUp = true;
                 }
             }
-            catch (ArgumentNullException)
+            if (!pickedUp)
             {
-                throw new InValidActionException("there is no parcel matches to this drone");
+                throw new InValidActionException("the drone had already picked up all the parcels ");
             }
         }
 
@@ -77,34 +70,28 @@ namespace BL
         public void DeliveryPackage(int dId)
         {
             bool deliveryed = false;
-            try
+            FindDroneInList(dId);
+            var drone = lDroneToList.Find(drone => drone.Id == dId);
+
+            var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
+
+            foreach (var parcel in parcels)
             {
-                lDroneToList.Exists(drone => drone.Id == dId);
-                var drone = lDroneToList.Find(drone => drone.Id == dId);
-
-                var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
-
-                foreach (var parcel in parcels)
+                if (parcel.PickingUp != null && parcel.Arrival == null)
                 {
-                    if (parcel.PickingUp != null && parcel.Arrival == null)
-                    {
-                        Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.GetterId).CLocation;
-                        drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, getterLocation));
-                        drone.CurrLocation = getterLocation;
-                        drone.DStatus = DroneStatus.Free;
-                        dal.ProvidingPackage(parcel.Id);
-                        deliveryed = true;
-                    }
-                }
-                if (!deliveryed)
-                {
-                    throw new InValidActionException("parcels status doesnt match");
+                    Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.GetterId).CLocation;
+                    drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, getterLocation));
+                    drone.CurrLocation = getterLocation;
+                    drone.DStatus = DroneStatus.Free;
+                    dal.ProvidingPackage(parcel.Id);
+                    deliveryed = true;
                 }
             }
-            catch (ArgumentNullException)
+            if (!deliveryed)
             {
-                throw new IdIsNotExistException(typeof(Drone), dId);
+                throw new InValidActionException("parcels status doesnt match");
             }
+
         }
 
         /// <summary>
@@ -141,7 +128,7 @@ namespace BL
             );
             return nParcel;
         }
-        
+
         /// <summary>
         /// A function that gets an object of IDal.DO.Parcel
         /// and Expands it to a new object of 
@@ -158,7 +145,7 @@ namespace BL
                 dInParcel, parcel.MakingParcel, parcel.BelongParcel,
                 parcel.PickingUp, parcel.Arrival);
         }
-        
+
         /// <summary>
         /// A function that gets IDal.DO.Parcel object and returns its status
         /// </summary>

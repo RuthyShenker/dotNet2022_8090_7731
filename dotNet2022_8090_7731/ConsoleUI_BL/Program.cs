@@ -38,10 +38,6 @@ namespace ConsoleUI_BL
                 {
                     Console.WriteLine(idIsNotExistException);
                 }
-                catch (DalObject.IdIsNotExistException idIsNotExistException)
-                {
-                    Console.WriteLine(idIsNotExistException);
-                }
                 catch (BL.IdIsAlreadyExistException idIsAlreadyExistException)
                 {
                     Console.WriteLine(idIsAlreadyExistException);

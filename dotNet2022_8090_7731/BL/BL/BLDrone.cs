@@ -138,11 +138,7 @@ namespace BL
         /// <param name="dId"></param>
         public void BelongingParcel(int dId)
         {
-            if (!dal.IsIdExistInList<IDal.DO.Drone>(dId))
-            {
-                throw new IdIsAlreadyExistException(typeof(Drone), dId);
-            }
-            DroneToList droneToList = lDroneToList.Find(drone => drone.Id == dId);
+            DroneToList droneToList = FindDroneInList(dId);
             if (droneToList.DStatus != DroneStatus.Free)
             {
                 string dStatus = droneToList.DStatus.ToString();
@@ -192,36 +188,45 @@ namespace BL
         {
             if (dal.IsIdExistInList<IDal.DO.Drone>(bLDrone.Id))
             {
-                throw new DalObject.IdIsAlreadyExistException(typeof(IDal.DO.Drone), bLDrone.Id);
+                throw new IdIsAlreadyExistException(typeof(IDal.DO.Drone), bLDrone.Id);
             }
-            if (!dal.IsIdExistInList<IDal.DO.BaseStation>(StationId))
-            {
-                throw new DalObject.IdIsNotExistException(typeof(IDal.DO.BaseStation), StationId);
-            }
+            //if (!dal.IsIdExistInList<IDal.DO.BaseStation>(StationId))
+            //{
+            //    throw new DalObject.IdIsNotExistException(typeof(IDal.DO.BaseStation), StationId);
+            //}
             if (!dal.AreThereFreePositions(StationId))
             {
-                throw new DalObject.InValidActionException(typeof(IDal.DO.BaseStation), StationId, "There aren't free positions ");
+                throw new InValidActionException(typeof(IDal.DO.BaseStation), StationId, "There aren't free positions ");
             }
-            bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
-            bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
-            dal.AddingDroneToCharge(bLDrone.Id, StationId);
-            IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
-            DroneToList droneToList = new DroneToList(
-                bLDrone.Id,
-                bLDrone.Model,
-                bLDrone.Weight,
-                bLDrone.BatteryStatus,
-                bLDrone.DroneStatus,
-                new Location(station.Longitude, station.Latitude),
-                null);
-            lDroneToList.Add(droneToList);
-            IDal.DO.Drone drone = new IDal.DO.Drone()
+            try
             {
-                Id = bLDrone.Id,
-                MaxWeight = (IDal.DO.WeightCategories)bLDrone.Weight,
-                Model = bLDrone.Model
-            };
-            dal.AddingItemToDList(drone);
+                IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
+                
+                bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
+                bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
+                dal.AddingDroneToCharge(bLDrone.Id, StationId);
+                
+                lDroneToList.Add (new DroneToList(
+                    bLDrone.Id,
+                    bLDrone.Model,
+                    bLDrone.Weight,
+                    bLDrone.BatteryStatus,
+                    bLDrone.DroneStatus,
+                    new Location(station.Longitude, station.Latitude),
+                    null
+                    ));
+                
+                dal.AddingItemToDList(new IDal.DO.Drone()
+                {
+                    Id = bLDrone.Id,
+                    MaxWeight = (IDal.DO.WeightCategories)bLDrone.Weight,
+                    Model = bLDrone.Model
+                });
+            }
+            catch (DalObject.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(IDal.DO.BaseStation), StationId);
+            }
         }
 
         /// <summary>

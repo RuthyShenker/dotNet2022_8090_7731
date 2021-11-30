@@ -30,19 +30,19 @@ namespace DalObject
     }
 
     [Serializable]
-    public class IdIsNotExistException : IdException
+    public class IdIsNotExistException : Exception
     {
         public IdIsNotExistException() : base() { }
         public IdIsNotExistException(string message) : base(message) { }
         public IdIsNotExistException(string message, Exception inner) : base(message, inner) { }
         protected IdIsNotExistException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
-        public IdIsNotExistException(Type type, int id) : base(type, id) { }
+        //public IdIsNotExistException(Type type, int id) : base(type, id) { }
 
-        protected override string Message()
-        {
-            return $"Id {Id} is not exist in {Type.Name} list";
-        }
+        //protected override string Message()
+        //{
+        //    return $"Id {Id} is not exist in {Type.Name} list";
+        //}
     }
 
     [Serializable]

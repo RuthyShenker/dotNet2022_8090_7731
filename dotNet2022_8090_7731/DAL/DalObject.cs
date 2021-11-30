@@ -72,13 +72,9 @@ namespace DalObject
             {
                 return ((List<T>)data[typeof(T)]).First(item => item.Id == Id);
             }
-            catch (ArgumentNullException)
-            {
-                throw new ListIsEmptyException(typeof(T)); 
-            }
             catch(InvalidOperationException)
             {
-                throw new IdIsNotExistException(typeof(T), Id);
+                throw new IdIsNotExistException();
             }
         }
 

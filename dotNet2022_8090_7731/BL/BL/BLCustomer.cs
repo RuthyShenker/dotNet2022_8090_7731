@@ -145,16 +145,23 @@ namespace BL
         /// <param name="newPhone"></param>
         public void UpdatingCustomerDetails(int customerId, string newName, string newPhone)
         {
-            IDal.DO.Customer customer = dal.GetFromDalById<IDal.DO.Customer>(customerId);
-            if (!string.IsNullOrEmpty(newName))
+            try
             {
-                customer.Name = newName;
+                IDal.DO.Customer customer = dal.GetFromDalById<IDal.DO.Customer>(customerId);
+                if (!string.IsNullOrEmpty(newName))
+                {
+                    customer.Name = newName;
+                }
+                if (!string.IsNullOrEmpty(newPhone))
+                {
+                    customer.Phone = newPhone;
+                }
+                dal.UpdateCustomer(customerId, customer);
             }
-            if (!string.IsNullOrEmpty(newPhone))
+            catch (DalObject.IdIsNotExistException)
             {
-                customer.Phone = newPhone;
+                throw new IdIsNotExistException(typeof(IDal.DO.Customer), customerId);
             }
-            dal.UpdateCustomer(customerId, customer);
         }
     }
 }
