@@ -22,7 +22,7 @@ namespace ConsoleUI_BL
                     IEnumerable<StationToList> StationList = bL.GetListToList<IDal.DO.BaseStation,StationToList>();
                     foreach (StationToList baseStation in StationList)
                     {
-                        Console.WriteLine(Tools.ToString(baseStation));
+                        Console.WriteLine(Tools.ToStringProps(baseStation));
                     }
                     break;
                 
@@ -30,7 +30,7 @@ namespace ConsoleUI_BL
                     IEnumerable<DroneToList> DroneList = bL.GetListToList<IDal.DO.Drone, DroneToList>();
                     foreach (DroneToList drone in DroneList)
                     {
-                        Console.WriteLine(Tools.ToString(drone));
+                        Console.WriteLine(Tools.ToStringProps(drone));
                     }
                     break;
                 
@@ -38,7 +38,7 @@ namespace ConsoleUI_BL
                     IEnumerable<CustomerToList> CustomerList =bL.GetListToList<IDal.DO.Customer, CustomerToList>();
                     foreach (CustomerToList customer in CustomerList)
                     {
-                        Console.WriteLine(Tools.ToString(customer));
+                        Console.WriteLine(Tools.ToStringProps(customer));
                     }
                     break;
              
@@ -46,7 +46,7 @@ namespace ConsoleUI_BL
                     IEnumerable<ParcelToList> ParcelList = bL.GetListToList<IDal.DO.Parcel, ParcelToList>();
                     foreach (ParcelToList parcel in ParcelList)
                     {
-                        Console.WriteLine(Tools.ToString(parcel));
+                        Console.WriteLine(Tools.ToStringProps(parcel));
                     }
                     break;
                
@@ -54,7 +54,7 @@ namespace ConsoleUI_BL
                     IEnumerable<ParcelToList> UnbelongParcelsList = bL.GetUnbelongParcels();
                     foreach (ParcelToList parcel in UnbelongParcelsList)
                     {
-                        Console.WriteLine(Tools.ToString(parcel));
+                        Console.WriteLine(Tools.ToStringProps(parcel));
                     }
                     break;
                 
@@ -62,7 +62,7 @@ namespace ConsoleUI_BL
                     IEnumerable<StationToList> AvailableSlotsList = bL.AvailableSlots();
                     foreach (StationToList baseStation in AvailableSlotsList)
                     {
-                        Console.WriteLine(Tools.ToString(baseStation));
+                        Console.WriteLine(Tools.ToStringProps(baseStation));
                     }
                     break;
                 

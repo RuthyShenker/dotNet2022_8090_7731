@@ -194,13 +194,13 @@ namespace BL
             //{
             //    throw new DalObject.IdIsNotExistException(typeof(IDal.DO.BaseStation), StationId);
             //}
-            if (!dal.AreThereFreePositions(StationId))
-            {
-                throw new InValidActionException(typeof(IDal.DO.BaseStation), StationId, "There aren't free positions ");
-            }
             try
             {
                 IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
+                if (!dal.AreThereFreePositions(StationId))
+                {
+                    throw new InValidActionException(typeof(IDal.DO.BaseStation), StationId, "There aren't free positions ");
+                }
                 
                 bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
                 bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;

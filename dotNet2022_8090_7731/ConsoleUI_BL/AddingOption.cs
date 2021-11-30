@@ -133,7 +133,7 @@ namespace ConsoleUI_BL
             Console.WriteLine("Enter the max weight the drone can carry: ");
             tools.PrintEnum(typeof(WeightCategories));
             WeightCategories weight = (WeightCategories)CheckValids.InputValidOfEnum(typeof(WeightCategories));
-            Console.WriteLine("Enter the number of the station to charge the new drone for first charging:  ");
+            Console.WriteLine("Enter the station Id to charge the new drone for first charging:  ");
             stationId = CheckValids.InputNumberValidity("id");
             float batteryStatus = 0;
             DroneStatus droneStatus = default(DroneStatus);

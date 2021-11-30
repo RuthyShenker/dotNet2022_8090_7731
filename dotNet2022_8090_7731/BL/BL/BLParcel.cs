@@ -91,7 +91,6 @@ namespace BL
             {
                 throw new InValidActionException("parcels status doesnt match");
             }
-
         }
 
         /// <summary>
@@ -118,16 +117,13 @@ namespace BL
         /// <returns>returns ParcelToList object</returns>
         private ParcelToList ConvertToList(IDal.DO.Parcel parcel)
         {
-            try
-            {
-            }
             string senderName = dal.GetFromDalById<IDal.DO.Customer>(parcel.SenderId).Name;
-            string getterNmae = dal.GetFromDalById<IDal.DO.Customer>(parcel.GetterId).Name;
+            string getterName = dal.GetFromDalById<IDal.DO.Customer>(parcel.GetterId).Name;
 
             ParcelToList nParcel = new(
             parcel.Id,
-           senderName ,
-           getterNmae,
+            senderName,
+            getterName,
             (IBL.BO.WeightCategories)parcel.Weight,
             (Priority)parcel.MPriority,
             GetParcelStatus(parcel)

@@ -3,11 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BL;
 
-namespace BL
+namespace IBL.BO
 {
     public static class Extensions
     {
+
+        //public static StringBuilder ToStringProps<T>(this T obj)
+        //{
+        //    return obj.ToStringProps();
+        //}
+
+        //public static void ToString<T>(this T obj)
+        //{
+        //    Console.WriteLine(Extensions.ToStringProps(obj));
+        //}
         //public static Dictionary<Type, Type> matchBLObject = new()
         //{
         //    [typeof(IDal.DO.Drone)] = typeof(Drone),
