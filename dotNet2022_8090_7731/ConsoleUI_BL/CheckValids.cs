@@ -61,7 +61,7 @@ namespace ConsoleUI_BL
         public static string InputNameValidity()
         { 
             string name = Console.ReadLine();
-            while (!name.All(ch => char.IsLetter(ch)))
+            while (name.All(ch => char.IsDigit(ch)))
             {
                 Console.WriteLine("name must contains only letters, please enter again");
                 name = Console.ReadLine();
@@ -100,7 +100,7 @@ namespace ConsoleUI_BL
         {
            
             string phone = Console.ReadLine();
-            while ( phone.Length != 10 || phone.FirstOrDefault(ch=>char.IsLetter(ch))!=default(char))
+            while ( phone.Length != 10 || phone.FirstOrDefault(ch=>!char.IsDigit(ch))!=default(char))
             { 
                 Console.WriteLine("Phone number has to contain 10 numbers, please enter again ");
                 phone = Console.ReadLine();

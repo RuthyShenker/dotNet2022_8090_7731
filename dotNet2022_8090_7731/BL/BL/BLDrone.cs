@@ -144,8 +144,11 @@ namespace BL
                 string dStatus = droneToList.DStatus.ToString();
                 throw new InValidActionException(typeof(Drone), dId, $"status of drone is {dStatus} ");
             }
-            var optionParcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.Weight <= (IDal.DO.WeightCategories)droneToList.Weight)
-                .OrderByDescending(parcel => parcel.MPriority).ThenByDescending(parcel => parcel.Weight).ThenBy(parcel => GetDistance(droneToList.CurrLocation, parcel));
+            var optionParcels = dal.GetDalListByCondition<IDal.DO.Parcel>
+                (parcel => parcel.Weight <= (IDal.DO.WeightCategories)droneToList.Weight)
+                .OrderByDescending(parcel => parcel.MPriority)
+                .ThenByDescending(parcel => parcel.Weight).ThenBy(parcel =>
+                GetDistance(droneToList.CurrLocation, parcel));
             bool belonged = false;
             foreach (var parcel in optionParcels)
             {
@@ -194,14 +197,15 @@ namespace BL
             //{
             //    throw new DalObject.IdIsNotExistException(typeof(IDal.DO.BaseStation), StationId);
             //}
-            if (!dal.AreThereFreePositions(StationId))
-            {
-                throw new InValidActionException(typeof(IDal.DO.BaseStation), StationId, "There aren't free positions ");
-            }
+           
             try
             {
-                IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
                 
+                IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
+                if (!dal.AreThereFreePositions(StationId))
+                {
+                    throw new InValidActionException(typeof(IDal.DO.BaseStation), StationId, "There aren't free positions ");
+                }
                 bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
                 bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
                 dal.AddingDroneToCharge(bLDrone.Id, StationId);
