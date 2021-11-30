@@ -108,13 +108,13 @@ namespace DalObject
         /// <param name="dId"></param>
         public void ReleasingDrone(int dId)
         {
-            bool flag = false;
+     
              for (int i = 0; i < ChargingDroneList.Count; i++)
                 {
                     if (ChargingDroneList[i].DroneId == dId)
                     {
                         ChargingDroneList.RemoveAt(i);
-                        flag = true;
+
                         break;
                     }
                 }
