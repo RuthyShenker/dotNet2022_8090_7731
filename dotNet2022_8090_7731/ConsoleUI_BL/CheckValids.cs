@@ -98,9 +98,10 @@ namespace ConsoleUI_BL
         
         public static string InputPhoneValidity()
         {
+           
             string phone = Console.ReadLine();
-            while (!phone.All(ch => char.IsDigit(ch)) || phone.Length != 10)
-            {
+            while ( phone.Length != 10 || phone.FirstOrDefault(ch=>char.IsLetter(ch))!=default(char))
+            { 
                 Console.WriteLine("Phone number has to contain 10 numbers, please enter again ");
                 phone = Console.ReadLine();
             }
