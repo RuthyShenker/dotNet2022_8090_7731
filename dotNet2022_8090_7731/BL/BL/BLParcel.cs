@@ -53,14 +53,13 @@ namespace BL
         /// <param name="dId"></param>
         public void PickingUpParcel(int dId)
         {
-            try
-            {
+
                 var dalDrone=FindDroneInList(dId);
                 if (dalDrone.DStatus!=DroneStatus.Delivery)
                 {
                     throw new InValidActionException(typeof(IDal.DO.Drone), dId, $"status of drone is {dalDrone.DStatus} ");
                 }
-///================================================================
+
                 var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
                 bool pickedUp = false;
                 foreach (var parcel in parcels)
@@ -81,15 +80,7 @@ namespace BL
                 {
                     throw new InValidActionException("The drone had already picked up the parcel ");
                 }
-            }
-            catch(ListIsEmptyException)
-            {
-                throw new ;
-            }
-            catch (IdIsNotExistException)
-            {
-                throw new ;
-            }
+
         }
 
         /// <summary>
@@ -104,7 +95,15 @@ namespace BL
             bool deliveryed = false;
             FindDroneInList(dId);
             var drone = lDroneToList.Find(drone => drone.Id == dId);
-
+           
+            if (drone.NumOfParcel==null)
+            {
+                throw new InValidActionException($"The drone with id:{drone.Id} doesn't belonging a parcel");
+            }
+            if (drone.DStatus != DroneStatus.Delivery)
+            {
+                throw new InValidActionException(typeof(Drone), dId, $"status of drone is {drone.DStatus} ");
+            }
             var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
 
             foreach (var parcel in parcels)
