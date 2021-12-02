@@ -93,7 +93,15 @@ namespace BL
             bool deliveryed = false;
             FindDroneInList(dId);
             var drone = lDroneToList.Find(drone => drone.Id == dId);
-
+           
+            if (drone.NumOfParcel==null)
+            {
+                throw new InValidActionException($"The drone with id:{drone.Id} doesn't belonging a parcel");
+            }
+            if (drone.DStatus != DroneStatus.Delivery)
+            {
+                throw new InValidActionException(typeof(Drone), dId, $"status of drone is {drone.DStatus} ");
+            }
             var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
 
             foreach (var parcel in parcels)
