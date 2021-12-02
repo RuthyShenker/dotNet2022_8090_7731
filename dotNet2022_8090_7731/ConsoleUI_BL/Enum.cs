@@ -8,20 +8,26 @@ namespace ConsoleUI_BL
 {
     class MEnum
     {
-        public enum ProgramOptions { Adding = 1, 
+        public enum ProgramOptions 
+        { 
+            Adding = 1, 
             Updating, 
             DisplayingItem, 
             DisplayingList, 
             Exit 
         };
 
-        public enum Adding { BaseStation = 1, 
+        public enum Adding 
+        {
+            BaseStation = 1, 
             Drone, 
             Customer, 
             Parcel
         };
 
-        public enum Updating { DroneDetails = 1,
+        public enum Updating
+        {
+            DroneDetails = 1,
             StationDetails,
             CustomerDetails, 
             SendingDroneToChargingPosition,
@@ -31,13 +37,17 @@ namespace ConsoleUI_BL
             DeliveryParcelToDestination
         };
 
-        public enum DisplayingItem { BaseStation = 1, 
+        public enum DisplayingItem 
+        { 
+            BaseStation = 1, 
             Drone, 
             Customer, 
             Parcel 
         };
 
-        public enum DisplayingList { BaseStation = 1,
+        public enum DisplayingList 
+        {
+            BaseStation = 1,
             Drone,
             Customer,
             Parcel,
