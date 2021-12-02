@@ -160,9 +160,15 @@ namespace BL
                     break;
                 }
             }
+            var dalParcels = dal.GetListFromDal<IDal.DO.Parcel>();
+            if (dalParcels.Count()==0)
+            {
+                //====ruti 
+                throw new InValidActionException(typeof(Drone),dId, $"There is no parcel in the parcel list that the drone with id:{dId} can be belonged to it. ");
+            }
             if (!belonged)
             {
-                throw new InValidActionException("There is no match parcel to belong the drone");
+                throw new InValidActionException(typeof(Drone),dId,"There is no match parcel to belong the drone");
             }
         }
 

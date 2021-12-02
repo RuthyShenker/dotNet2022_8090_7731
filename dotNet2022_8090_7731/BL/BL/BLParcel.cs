@@ -96,7 +96,7 @@ namespace BL
            
             if (drone.NumOfParcel==null)
             {
-                throw new InValidActionException($"The drone with id:{drone.Id} doesn't belonging a parcel");
+                throw new InValidActionException(typeof(Drone), dId, $"Drone isn't belonged parcel ");
             }
             if (drone.DStatus != DroneStatus.Delivery)
             {
