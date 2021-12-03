@@ -102,24 +102,12 @@ namespace DalObject
         //}
 
         /// <summary>
-        /// A function that gets an id of drone and 
-        /// releasing this drone from charging,the function doesn't return anything.
+        /// the function realesing drone by deleting the match entity fron the list
         /// </summary>
         /// <param name="dId"></param>
         public void ReleasingDrone(int dId)
         {
-     
-             for (int i = 0; i < ChargingDroneList.Count; i++)
-                {
-                    if (ChargingDroneList[i].DroneId == dId)
-                    {
-                        ChargingDroneList.RemoveAt(i);
-
-                        break;
-                    }
-                }
-                //if(flag==false)
-                //    throw new ArgumentOutOfRangeException();
+            ChargingDroneList.Remove(ChargingDroneList.Find(drone => drone.DroneId== dId));
         }
 
         ///// <summary>

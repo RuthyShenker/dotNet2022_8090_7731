@@ -272,21 +272,58 @@ namespace BL
     }
 
     [Serializable]
-    public class ListIsEmptyException : Exception
+    public abstract class ListException : Exception
+    {
+        public ListException() : base() { }
+        public ListException(string message) : base(message) { }
+        public ListException(string message, Exception inner) : base(message, inner) { }
+        protected ListException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+
+        public Type Type { get; set; }
+        public ListException(Type type) : base()
+        {
+            Type = type;
+        }
+        protected abstract string Message();
+        override public string ToString()
+        {
+            return $"{GetType().Name}: {Message()}";
+        }
+    }
+
+    [Serializable]
+    public class ListIsEmptyException : ListException
     {
         public ListIsEmptyException() : base() { }
         public ListIsEmptyException(string message) : base(message) { }
         public ListIsEmptyException(string message, Exception inner) : base(message, inner) { }
         protected ListIsEmptyException(SerializationInfo info, StreamingContext context) : base(info, context) { }
        
-        public Type Type { get; set; }
-        public ListIsEmptyException(Type type) : base()
+        public ListIsEmptyException(Type type) : base(type) { }
+       
+        protected override string Message()
         {
-            Type = type;
+           return $"{Type.Name} list is empty"; 
         }
-        override public string ToString()
+    }
+
+    [Serializable]
+    public class ThereIsNoMatchObjectInList : ListException
+    {
+        public ThereIsNoMatchObjectInList() : base() { }
+        public ThereIsNoMatchObjectInList(string message) : base(message) { }
+        public ThereIsNoMatchObjectInList(string message, Exception inner) : base(message, inner) { }
+        protected ThereIsNoMatchObjectInList(SerializationInfo info, StreamingContext context) : base(info, context) { }
+
+        public ThereIsNoMatchObjectInList(Type type, string exceptionDetails) : base(type)
         {
-            return $"{GetType().Name}: {Type.Name} list is empty";
+            ExceptionDetails = exceptionDetails;
+        }
+        internal string ExceptionDetails { get; set; }
+
+        protected override string Message()
+        {
+            return $"{ExceptionDetails} {Type.Name.ToLower()} list";
         }
     }
 
@@ -306,7 +343,7 @@ namespace BL
 
         protected override string Message()
         {
-            return $"{GetType().Name}: The action couldn't be done. "+ ExceptionDetails + $"in {Type.Name} with Id {Id}";
+            return $"The action couldn't be done. "+ ExceptionDetails + $"in {Type.Name} with Id {Id}";
         }
     }
 }

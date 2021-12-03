@@ -30,29 +30,22 @@ namespace DalObject
         {
             parcel.DroneId = dId;
             parcel.BelongParcel = DateTime.Now;
-            for (int i = 0; i < ParceList.Count; i++)
-            {
-                if (ParceList[i].Id == parcel.Id)
-                {
-                    ParceList.RemoveAt(i);
-                    break;
-                }
-            }
+
+            ParceList.Remove(ParceList.Find(mParcel => mParcel.Id == parcel.Id));
             ParceList.Add(parcel);
         }
 
         /// <summary>
-        /// A function that gets an id of parcel and Picking Up this parcel to the drone.
+        /// Gets parcel's Id and picking it up to drone.
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="pId"></param>
         public void PickingUpParcel(int pId)
         {
             UpdateTimeAction(pId, "pickingUp");
         }
 
         /// <summary>
-        /// A function that gets an id of parcel and the drone that takes this parcel
-        /// brings the parcel to the destination.
+        /// Gets parcel's Id and providing it to destination.
         /// </summary>
         /// <param name = "pId" ></ param >
         public void ProvidingPackage(int pId)
@@ -65,7 +58,7 @@ namespace DalObject
         /// </summary>
         /// <param name="pId"></param>
         /// <param name="action"></param>
-        private void UpdateTimeAction(int pId, string action)
+        private static void UpdateTimeAction(int pId, string action)
         {
             // זה טוב או צריך להשתמש ב removeat
             Parcel tempParcel = ParceList.Find(parcel => parcel.Id == pId);
@@ -85,15 +78,8 @@ namespace DalObject
         /// <returns> returns copy parcels that aren't belonged to any drone.</returns>
         public IEnumerable<Parcel> GetUnbelongParcels()
         {
-            try
-            {
-                return ParceList.Where(parcel => parcel.DroneId == 0).ToList();
-            }
-            catch (ArgumentNullException)
-            {
-                throw new InValidActionException();
-            }
-}
+            return ParceList.Where(parcel => parcel.DroneId == 0).ToList();
+        }
     }
 
     //// יש פונקציות גנריות

@@ -96,6 +96,26 @@ namespace BL
         }
 
         /// <summary>
+        /// A function that gets id of customer and builds from it an object
+        /// of CustomerInParcel and Of course considering logic and returns 
+        /// the new object of CustomerInParcel.
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns>eturns 
+        /// the new object of CustomerInParcel</returns>
+        private CustomerInParcel NewCustomerInParcel(int Id)
+        {
+            try
+            {
+                string name = dal.GetFromDalById<IDal.DO.Customer>(Id).Name;
+                return new CustomerInParcel(Id, name);
+            }
+            catch (DalObject.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(IDal.DO.Customer), Id);
+            }
+        }
+        /// <summary>
         /// A function that 
         /// returns the list of customers that have packages delivered to them.
         /// </summary>

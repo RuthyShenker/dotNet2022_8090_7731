@@ -61,22 +61,24 @@ namespace DalObject
             [typeof(BaseStation)] = BaseStationList,
         };
 
-
-
         /// <summary>
         /// A class Config that contains :
         /// IndexParcel,chargingRate,heavyWeight,mediumWeight,lightWeight,available
         /// </summary>
         internal class Config
         {
-            static public double available;
-            static public double lightWeight;
-            static public double mediumWeight;
-            static public double heavyWeight;
+            static public double available = RandBetweenRange(0,10);
+            static public double lightWeight = RandBetweenRange(available,20);
+            static public double mediumWeight = RandBetweenRange(lightWeight,30);
+            static public double heavyWeight = RandBetweenRange(mediumWeight,40);
             
-            static public double chargingRate;
+            static public double chargingRate ;
             
             internal static int IndexParcel = 0;
+            private static double RandBetweenRange(double min, double max)
+            {
+                return Rand.NextDouble() * (max - min) + min;
+            }
         }
         /// <summary>
         /// A function that Initializes the program with

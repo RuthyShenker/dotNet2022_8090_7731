@@ -25,6 +25,25 @@ namespace BL
         }
 
         /// <summary>
+        /// A function that gets weight of drone
+        /// and distance and returns the minimum battery that 
+        /// the drone needs in order to flight.
+        /// Default value of weight=0.
+        /// </summary>
+        /// <param name="distance"></param>
+        /// <param name="weight"></param>
+        /// <returns>the minimum battery in double</returns>
+        private double MinBattery(double distance, WeightCategories weight = 0)
+        {
+            return weight switch
+            {
+                WeightCategories.Light => powerConsumptionLight * distance,
+                WeightCategories.Heavy => powerConsumptionHeavy * distance,
+                WeightCategories.Medium => powerConsumptionMedium * distance,
+                _ => powerConsumptionFree * distance,
+            };
+        }
+        /// <summary>
         /// A function that creates ParcelInTransferand
         /// Calculates bills for specific drone id 
         /// and returns this ParcelInTransfer.
@@ -57,40 +76,36 @@ namespace BL
         /// <param name="IdDrone"></param>
         public void SendingDroneToCharge(int IdDrone)
         {
-            try
+            DroneToList drone = FindDroneInList(IdDrone);
+            switch (drone.DStatus)
             {
-                DroneToList drone = FindDroneInList(IdDrone); 
-                switch (drone.DStatus)
-                {
-                    case DroneStatus.Maintenance:
-                        throw new InValidActionException(typeof(Drone), IdDrone, $"status of drone is Maintenance ");
-                    case DroneStatus.Delivery:
-                        throw new InValidActionException(typeof(Drone), IdDrone, $"status of drone is Delivery ");
-                    default:
-                        break;
-                }
-                Station closetdStation = ClosestStation(drone.CurrLocation);
-                if (closetdStation.NumAvailablePositions == 0)
-                {
-                    throw new InValidActionException("The closet Station doesnt have available positions!");
-                }
-                double distanceFromDroneToStation = CalculateDistance(closetdStation.SLocation, drone.CurrLocation);
-                double minBattery = MinBattery(distanceFromDroneToStation, drone.Weight);
-                if (drone.BatteryStatus - minBattery < 0)
-                {
-                    throw new InValidActionException("There isnt enough battery to the drone in order to go to the closet station to be charging");
-                }
-                drone.BatteryStatus = minBattery;
-                drone.CurrLocation = closetdStation.SLocation;
-                drone.DStatus = IBL.BO.DroneStatus.Maintenance;
-                //--closetBaseStation.NumAvailablePositions;
-                //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
-                dal.AddingDroneToCharge(drone.Id, closetdStation.Id);
+                case DroneStatus.Maintenance:
+                    throw new InValidActionException(typeof(Drone), IdDrone, $"status of drone is Maintenance ");
+                case DroneStatus.Delivery:
+                    throw new InValidActionException(typeof(Drone), IdDrone, $"status of drone is Delivery ");
+                default:
+                    break;
             }
-            catch (ArgumentNullException)
+         
+            Station closetdStation = ClosestStation(drone.CurrLocation, true);
+            if (!dal.AreThereFreePositions(closetdStation.Id))
             {
-                throw new ListIsEmptyException(typeof(Drone));
+                throw new InValidActionException("There ara no stations with available positions!");
             }
+            
+            double distanceFromDroneToStation = CalculateDistance(closetdStation.SLocation, drone.CurrLocation);
+            double minBattery = MinBattery(distanceFromDroneToStation, drone.Weight);
+            if (drone.BatteryStatus - minBattery < 0)
+            {
+                throw new InValidActionException("The drone has no enough battery in order to get to the closest charging station");
+            }
+            
+            drone.BatteryStatus = minBattery;
+            drone.CurrLocation = closetdStation.SLocation;
+            drone.DStatus = DroneStatus.Maintenance;
+            //--closetBaseStation.NumAvailablePositions;
+            //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
+            dal.AddingDroneToCharge(drone.Id, closetdStation.Id);
         }
 
         /// <summary>
@@ -147,12 +162,21 @@ namespace BL
             var optionParcels = dal.GetDalListByCondition<IDal.DO.Parcel>
                 (parcel => parcel.Weight <= (IDal.DO.WeightCategories)droneToList.Weight)
                 .OrderByDescending(parcel => parcel.MPriority)
-                .ThenByDescending(parcel => parcel.Weight).ThenBy(parcel =>
-                GetDistance(droneToList.CurrLocation, parcel));
+                .ThenByDescending(parcel => parcel.Weight)
+                .ThenBy(parcel =>GetDistance(droneToList.CurrLocation, parcel));
+            if (!optionParcels.Any())
+            {
+                if (!dal.GetListFromDal<IDal.DO.Parcel>().Any())
+                {
+                    throw new ListIsEmptyException(typeof(IDal.DO.Parcel));
+                }
+                throw new ThereIsNoMatchObjectInList(typeof(IDal.DO.Parcel), $"There is no parcels with match weight to drone with id {dId} in");
+            }
+            
             bool belonged = false;
             foreach (var parcel in optionParcels)
             {
-                if (droneToList.BatteryStatus >= MinBattery(GetDistance(droneToList.CurrLocation, parcel), (IBL.BO.WeightCategories)parcel.Weight))
+                if (droneToList.BatteryStatus >= MinBattery(GetDistance(droneToList.CurrLocation, parcel), (WeightCategories)parcel.Weight))
                 {
                     droneToList.DStatus = DroneStatus.Delivery;
                     dal.UpdateBelongedParcel(parcel, droneToList.Id);
@@ -160,15 +184,9 @@ namespace BL
                     break;
                 }
             }
-            var dalParcels = dal.GetListFromDal<IDal.DO.Parcel>();
-            if (dalParcels.Count()==0)
-            {
-                //====ruti 
-                throw new InValidActionException(typeof(Drone),dId, $"There is no parcel in the parcel list that the drone with id:{dId} can be belonged to it. ");
-            }
             if (!belonged)
             {
-                throw new InValidActionException(typeof(Drone),dId,"There is no match parcel to belong the drone");
+                throw new ThereIsNoMatchObjectInList(typeof(IDal.DO.Parcel), $"The battery status of drone with id {dId} is not enough to carry any parcel from");
             }
         }
 
@@ -199,10 +217,6 @@ namespace BL
             {
                 throw new IdIsAlreadyExistException(typeof(IDal.DO.Drone), bLDrone.Id);
             }
-            //if (!dal.IsIdExistInList<IDal.DO.BaseStation>(StationId))
-            //{
-            //    throw new DalObject.IdIsNotExistException(typeof(IDal.DO.BaseStation), StationId);
-            //}
             try
             {
                 IDal.DO.BaseStation station = dal.GetFromDalById<IDal.DO.BaseStation>(StationId);
@@ -210,12 +224,12 @@ namespace BL
                 {
                     throw new InValidActionException(typeof(IDal.DO.BaseStation), StationId, "There aren't free positions ");
                 }
-                
+
                 bLDrone.BatteryStatus = DalObject.DataSource.Rand.Next(20, 41);
                 bLDrone.DroneStatus = IBL.BO.DroneStatus.Maintenance;
                 dal.AddingDroneToCharge(bLDrone.Id, StationId);
-                
-                lDroneToList.Add (new DroneToList(
+
+                lDroneToList.Add(new DroneToList(
                     bLDrone.Id,
                     bLDrone.Model,
                     bLDrone.Weight,
@@ -224,7 +238,7 @@ namespace BL
                     new Location(station.Longitude, station.Latitude),
                     null
                     ));
-                
+
                 dal.AddingItemToDList(new IDal.DO.Drone()
                 {
                     Id = bLDrone.Id,

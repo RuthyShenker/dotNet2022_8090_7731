@@ -45,17 +45,17 @@ namespace BL
             try
             {
                 var baseStation = dal.GetFromDalById<IDal.DO.BaseStation>(stationId);
-                
+
                 if (!string.IsNullOrEmpty(stationName))
                     baseStation.NameStation = stationName;
                 if (!string.IsNullOrEmpty(amountOfPositions))
                     baseStation.NumberOfChargingPositions = int.Parse(amountOfPositions);
-                
+
                 dal.UpdateBaseStation(stationId, baseStation);
             }
             catch (DalObject.IdIsNotExistException)
             {
-                throw new IdIsNotExistException(typeof(IDal.DO.BaseStation),stationId);
+                throw new IdIsNotExistException(typeof(IDal.DO.BaseStation), stationId);
             }
         }
 
@@ -137,7 +137,7 @@ namespace BL
             int sumFullPositions = 0;
             foreach (var drone in lDroneToList)
             {
-                if (drone.DStatus == DroneStatus.Maintenance && equalLocations(drone.CurrLocation, stationLocation))
+                if (drone.DStatus == DroneStatus.Maintenance && EqualLocations(drone.CurrLocation, stationLocation))
                 {
                     ++sumFullPositions;
                 }
@@ -151,21 +151,33 @@ namespace BL
         /// </summary>
         /// <param name="location"></param>
         /// <returns>returns Station that closet to the location that the function gets.</returns>
-        private Station ClosestStation(Location location)
+        /// //
+        // return the station with the closest location to the gotten location
+        // if sending to charge is true- return the station with the closest location which is has free slots to charge in,
+        // otherwise the first station in the list.
+        private Station ClosestStation(Location location, bool sendingToCharge = false)
         {
             var stationDalList = dal.GetListFromDal<IDal.DO.BaseStation>();
             var cCoord = new GeoCoordinate(location.Latitude, location.Longitude);
             var sCoord = new GeoCoordinate(stationDalList.ElementAt(0).Latitude, stationDalList.ElementAt(0).Longitude);
             double currDistance, distance = sCoord.GetDistanceTo(cCoord);
             int index = 0;
-            for (int i = 1; i < stationDalList.Count(); i++)
+            for (int i = 1; i < stationDalList.Count(); ++i)
             {
                 sCoord = new GeoCoordinate(stationDalList.ElementAt(i).Latitude, stationDalList.ElementAt(i).Longitude);
                 currDistance = sCoord.GetDistanceTo(cCoord);
                 if (currDistance < distance)
                 {
-                    distance = currDistance;
-                    index = i;
+                    if (!sendingToCharge)
+                    {
+                        distance = currDistance;
+                        index = i;
+                    }
+                    else if (dal.AreThereFreePositions(stationDalList.ElementAt(i).Id))
+                    {
+                        distance = currDistance;
+                        index = i;
+                    }
                 }
             }
             return ConvertToBL(stationDalList.ElementAt(index));

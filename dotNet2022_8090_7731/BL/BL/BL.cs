@@ -42,7 +42,6 @@ namespace BL
             }
         }
 
-
         /// <summary>
         /// A function that Pulls out from that data base the data of the fields:
         /// powerConsumptionFree
@@ -70,8 +69,8 @@ namespace BL
         /// <returns></returns>
         private DroneToList ConvertToList(IDal.DO.Drone drone)
         {
-            DroneToList nDrone = copyCommon(drone);
-            var parcel = dal.GetListFromDal<IDal.DO.Parcel>().FirstOrDefault(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
+            DroneToList nDrone = CopyCommon(drone);
+            var parcel = dal.GetFromDalByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
             if (!parcel.Equals(default(IDal.DO.Parcel)))
             {
                 return CalculateDroneInDelivery(nDrone, parcel);
@@ -83,23 +82,21 @@ namespace BL
             }
         }
 
-
-
         /// <summary>
         /// A function that builds new DroneToList object and gets an object of IDal.DO.Drone
         /// and copies from the object-IDal.DO.Drone the common fields.
         /// </summary>
-        private DroneToList copyCommon(IDal.DO.Drone source)
+        private static DroneToList CopyCommon(IDal.DO.Drone source)
         {
-            DroneToList nDroneToList = new DroneToList(
+            return (new DroneToList(
             source.Id,
-           source.Model,
-           (IBL.BO.WeightCategories)source.MaxWeight);
-            return nDroneToList;
+            source.Model,
+            (WeightCategories)source.MaxWeight));
         }
 
         /// <summary>
-        /// ???????????????????????????????????????????????
+        /// Gets drone and parcel (which belonged to the drone)
+        /// Calculate the fields of drone, and return it. 
         /// </summary>
         /// <param name="nDrone"></param>
         /// <param name="parcel"></param>
@@ -128,7 +125,8 @@ namespace BL
         }
 
         /// <summary>
-        /// ?????????????????????????????????????????????
+        /// Get drone which his status is not 'Delivery'
+        /// Calculate his fields and returns it.
         /// </summary>
         /// <param name="nDrone"></param>
         /// <returns></returns>
@@ -151,31 +149,6 @@ namespace BL
                 nDrone.BatteryStatus = Rand.NextDouble() * (100 - MinBattery(distance)) + MinBattery(distance);
             }
             return nDrone;
-        }
-
-
-        /// <summary>
-        /// A function that gets weight of drone
-        /// and distance and returns the minimum battery that 
-        /// the drone needs in order to flight.
-        /// Default value of weight=0.
-        /// </summary>
-        /// <param name="distance"></param>
-        /// <param name="weight"></param>
-        /// <returns>the minimum battery in double</returns>
-        private double MinBattery(double distance, IBL.BO.WeightCategories weight = 0)
-        {
-            switch (weight)
-            {
-                case IBL.BO.WeightCategories.Light:
-                    return powerConsumptionLight * distance;
-                case IBL.BO.WeightCategories.Medium:
-                    return powerConsumptionMedium * distance;
-                case IBL.BO.WeightCategories.Heavy:
-                    return powerConsumptionHeavy * distance;
-                default:
-                    return powerConsumptionFree * distance;
-            }
         }
 
         /// <summary>
@@ -213,27 +186,6 @@ namespace BL
         }
 
         /// <summary>
-        /// A function that gets id of customer and builds from it an object
-        /// of CustomerInParcel and Of course considering logic and returns 
-        /// the new object of CustomerInParcel.
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns>eturns 
-        /// the new object of CustomerInParcel</returns>
-        private CustomerInParcel NewCustomerInParcel(int Id)
-        {
-            try
-            {
-                string name = dal.GetFromDalById<IDal.DO.Customer>(Id).Name;
-                return new CustomerInParcel(Id,name);
-            }
-            catch (DalObject.IdIsNotExistException)
-            {
-                throw new IdIsNotExistException(typeof(IDal.DO.Customer), Id);
-            }
-        }
-
-        /// <summary>
         /// A function that gets id of drone and bulids from it an object of 
         /// DroneInParcel and of course considering logic and returns 
         /// the new object of DroneInParcel.
@@ -245,6 +197,17 @@ namespace BL
         {
             var drone = lDroneToList.FirstOrDefault(drone => drone.Id == Id);
             return new DroneInParcel(Id, drone.BatteryStatus, drone.CurrLocation);
+        }
+
+        /// <summary>
+        /// A function that gets two locations and returns if they are the same or not.
+        /// </summary>
+        /// <param name="location1"></param>
+        /// <param name="location2"></param>
+        /// <returns>returns if they are the same or not</returns>
+        private static bool EqualLocations(Location location1, Location location2)
+        {
+            return location1.Longitude == location2.Longitude && location1.Latitude == location2.Latitude;
         }
 
         /// <summary>
@@ -270,18 +233,6 @@ namespace BL
                 throw new IdIsNotExistException(typeof(DL), Id);
             }
         }
-
-        /// <summary>
-        /// A function that gets two locations and returns if they are the same or not.
-        /// </summary>
-        /// <param name="location1"></param>
-        /// <param name="location2"></param>
-        /// <returns>returns if they are the same or not</returns>
-        private bool equalLocations(Location location1, Location location2)
-        {
-            return location1.Longitude == location2.Longitude && location1.Latitude == location2.Latitude;
-        }
-
 
         /// <summary>
         /// A function that gets two types: DL, BL and 
