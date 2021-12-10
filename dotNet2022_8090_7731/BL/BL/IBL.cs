@@ -61,10 +61,10 @@ namespace IBL
 
         //get lists
         IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable,IDal.DO.IDalObject;
-        IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
+        //IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
+        IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
         //list of: Available Slots
-        //TODO: 
-        IEnumerable<StationToList> AvailableSlots();
+        //IEnumerable<StationToList> AvailableSlots();
 
         // get specific
         BL GetBLById<DL, BL>(int Id) where DL: IDal.DO.IIdentifiable, IDal.DO.IDalObject;

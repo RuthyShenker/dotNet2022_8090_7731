@@ -47,7 +47,7 @@ namespace DalObject
         //    BaseStationList.Add(baseStation);
         //}
 
-        public void AddingItemToDList<T>(T item) where T : IIdentifiable
+        public void AddingItemToDList<T>(T item) where T : IIdentifiable,IDalObject
         {
             ((List<T>)data[typeof(T)]).Add(item);
         }

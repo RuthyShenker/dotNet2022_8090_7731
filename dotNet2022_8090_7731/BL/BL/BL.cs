@@ -220,7 +220,7 @@ namespace BL
         /// <typeparam name="BL"></typeparam>
         /// <param name="Id"></param>
         /// <returns>returns an object of BL type</returns>
-        public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable,IDal.DO.IDalObject
+        public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
         {
             try
             {
@@ -243,7 +243,7 @@ namespace BL
         /// <typeparam name="DL"></typeparam>
         /// <typeparam name="BL"></typeparam>
         /// <returns>returns list of data with type of BL. </returns>
-        public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable,IDal.DO.IDalObject
+        public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
         {
             var bLList = new List<BL>();
             var dalList = dal.GetListFromDal<DL>();
@@ -264,13 +264,14 @@ namespace BL
         /// <typeparam name="DL"></typeparam>
         /// <typeparam name="BLToList"></typeparam>
         /// <returns>returns list of data with the BLToList</returns>
-        public IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable,IDal.DO.IDalObject
+        public IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
         {
-            if (typeof(BLToList) == typeof(DroneToList))
+            if ( predicate==null && typeof(BLToList) == typeof(DroneToList))
             {
                 return (IEnumerable<BLToList>)lDroneToList;
             }
-            var dalList = dal.GetListFromDal<DL>();
+            List< DL> dalList;
+            _ = predicate == null ? dalList = (List<DL>)dal.GetListFromDal<DL>() : dalList = (List<DL>)dal.GetDalListByCondition<DL>(predicate);
             var listToList = new List<BLToList>();
             foreach (dynamic dalItem in dalList)
             {

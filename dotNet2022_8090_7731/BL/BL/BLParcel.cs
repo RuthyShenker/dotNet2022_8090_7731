@@ -143,7 +143,6 @@ namespace BL
             {
                 throw new InValidActionException("There is no unbelong parcel");
             }
-
         }
 
         /// <summary>

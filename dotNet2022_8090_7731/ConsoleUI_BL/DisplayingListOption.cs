@@ -59,7 +59,7 @@ namespace ConsoleUI_BL
                     break;
                 
                 case DisplayingList.StationsWithAvailablePositions:
-                    IEnumerable<StationToList> AvailableSlotsList = bL.AvailableSlots();
+                    IEnumerable<StationToList> AvailableSlotsList = bL.GetListToList<IDal.DO.BaseStation, StationToList>(baseStation => dal.AreThereFreePositions(baseStation.Id));
                     foreach (StationToList baseStation in AvailableSlotsList)
                     {
                         Console.WriteLine(Tools.ToStringProps(baseStation));
