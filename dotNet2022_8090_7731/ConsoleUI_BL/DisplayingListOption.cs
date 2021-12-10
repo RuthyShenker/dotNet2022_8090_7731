@@ -51,7 +51,7 @@ namespace ConsoleUI_BL
                     break;
                
                 case DisplayingList.PackageWhichArentBelongToDrone:
-                    IEnumerable<ParcelToList> UnbelongParcelsList = bL.GetUnbelongParcels();
+                    IEnumerable<ParcelToList> UnbelongParcelsList = bL.GetListToList<>();
                     foreach (ParcelToList parcel in UnbelongParcelsList)
                     {
                         Console.WriteLine(Tools.ToStringProps(parcel));
