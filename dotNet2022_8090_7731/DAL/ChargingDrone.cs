@@ -8,7 +8,7 @@ namespace IDal
         /// A struct of ChargingDrone, contains:
         /// Id of Station,Id of Drone.
         /// </summary>
-        public struct ChargingDrone
+        public struct ChargingDrone: IDalObject
         {
             /// <summary>
             /// A constructor of ChargingDrone with fields.

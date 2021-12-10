@@ -51,11 +51,11 @@ namespace DalObject
         /// <summary>
         /// A function that returns new list of all Charging Drone.
         /// </summary>
-        /// <returns>returns new list of all the Charging Drone  </returns>
-        public IEnumerable<ChargingDrone> GetChargingDrones()
-        {
-            return new List<ChargingDrone>(ChargingDroneList);
-        }
+        ///// <returns>returns new list of all the Charging Drone  </returns>
+        //public IEnumerable<ChargingDrone> GetChargingDrones()
+        //{
+        //    return new List<ChargingDrone>(ChargingDroneList);
+        //}
 
 
         /// <summary>

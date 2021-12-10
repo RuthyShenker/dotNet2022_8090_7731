@@ -220,7 +220,7 @@ namespace BL
         /// <typeparam name="BL"></typeparam>
         /// <param name="Id"></param>
         /// <returns>returns an object of BL type</returns>
-        public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable
+        public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable,IDal.DO.IDalObject
         {
             try
             {
@@ -243,7 +243,7 @@ namespace BL
         /// <typeparam name="DL"></typeparam>
         /// <typeparam name="BL"></typeparam>
         /// <returns>returns list of data with type of BL. </returns>
-        public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable
+        public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable,IDal.DO.IDalObject
         {
             var bLList = new List<BL>();
             var dalList = dal.GetListFromDal<DL>();
@@ -264,7 +264,7 @@ namespace BL
         /// <typeparam name="DL"></typeparam>
         /// <typeparam name="BLToList"></typeparam>
         /// <returns>returns list of data with the BLToList</returns>
-        public IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable
+        public IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable,IDal.DO.IDalObject
         {
             if (typeof(BLToList) == typeof(DroneToList))
             {

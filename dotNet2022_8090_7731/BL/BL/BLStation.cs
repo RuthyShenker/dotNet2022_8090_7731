@@ -100,7 +100,7 @@ namespace BL
         private List<ChargingDrone> ChargingDroneBLList(int sId)
         {
             var chargingDroneBLList = new List<ChargingDrone>();
-            var chargingDroneDalList = dal.GetChargingDrones().Where(charge => charge.StationId == sId);
+            var chargingDroneDalList = dal.GetDalListByCondition<IDal.DO.ChargingDrone>(charge => charge.StationId == sId);
             var chargingDrone = new ChargingDrone();
             foreach (var chargingPosition in chargingDroneDalList)
             {
@@ -117,7 +117,7 @@ namespace BL
         /// <returns> returns Available Slots</returns>
         public IEnumerable<StationToList> AvailableSlots()
         {
-            var stationsDalList = dal.AvailableSlots();
+            var stationsDalList = dal.GetDalListByCondition<IDal.DO.BaseStation>(baseStation => dal.AreThereFreePositions(baseStation.Id));
             var stationBalList = new List<StationToList>();
             foreach (var station in stationsDalList)
             {

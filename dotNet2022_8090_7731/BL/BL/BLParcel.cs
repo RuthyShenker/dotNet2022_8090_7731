@@ -130,7 +130,8 @@ namespace BL
         {
             try
             {
-                var unbelongParcelsList = dal.GetUnbelongParcels();
+                //var unbelongParcelsList = dal.GetUnbelongParcels();
+                var unbelongParcelsList = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == 0);
                 var bParcelList = new List<ParcelToList>();
                 foreach (var parcel in unbelongParcelsList)
                 {

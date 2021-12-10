@@ -60,13 +60,14 @@ namespace IBL
         void UpdatingCustomerDetails(int customerId, string newName, string newPhone);
 
         //get lists
-        IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable;
-        IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable;
+        IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable,IDal.DO.IDalObject;
+        IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
         //list of: Available Slots
+        //TODO: 
         IEnumerable<StationToList> AvailableSlots();
 
         // get specific
-        BL GetBLById<DL, BL>(int Id) where DL: IDal.DO.IIdentifiable;
+        BL GetBLById<DL, BL>(int Id) where DL: IDal.DO.IIdentifiable, IDal.DO.IDalObject;
         // GetListFromBL יש פונקציה גנרית
         // IEnumerable<StationToList> GetStations();
         // IEnumerable<DroneToList> GetDrones();
@@ -74,6 +75,7 @@ namespace IBL
         // IEnumerable<ParcelToList> GetParcels();
 
         //Get Unbelong Parcels
+        //TODO: 
         IEnumerable<ParcelToList> GetUnbelongParcels();
 
         // IEnumerable<StationToList> AvailableSlots();

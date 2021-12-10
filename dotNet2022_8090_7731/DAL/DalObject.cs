@@ -42,16 +42,16 @@ namespace DalObject
         //    Initialize();
         //}
 
-        public bool IsIdExistInList<T>(int Id) where T : IIdentifiable
+        public bool IsIdExistInList<T>(int Id) where T : IIdentifiable,IDalObject
         {
             return ((List<T>)data[typeof(T)]).Any(item => item.Id == Id);
         }
        
-        public T GetFromDalById<T>(int Id) where T : IIdentifiable
+        public T GetFromDalById<T>(int Id) where T : IDalObject,IIdentifiable
         {
             try
             {
-                return ((List<T>)data[typeof(T)]).First(item => item.Id == Id);
+                return GetFromDalByCondition<T>(item => item.Id == Id);
             }
             catch(InvalidOperationException)
             {
@@ -59,22 +59,22 @@ namespace DalObject
             }
         }
 
-        public T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IIdentifiable
+        public T GetFromDalByCondition<T>(Predicate<T> predicate) where T: IDalObject
         {
             return ((List<T>)data[typeof(T)]).Find(predicate);
         }
 
-        public IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IIdentifiable
+        public IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T: IDalObject
         {
             return new List<T>(((List<T>)data[typeof(T)]).FindAll(predicate));
         }
 
-        public IEnumerable<T> GetListFromDal<T>() where T:IIdentifiable
+        public IEnumerable<T> GetListFromDal<T>() where T:IDalObject
         {
             return new List<T>((List<T>)data[typeof(T)]);
         }
 
-        public bool IsExistInList<T>(List<T> list, Predicate<T> predicate)
+        public bool IsExistInList<T>(List<T> list, Predicate<T> predicate)where T:IDalObject
         {
             return list.Find(predicate).Equals(default(T));
         }

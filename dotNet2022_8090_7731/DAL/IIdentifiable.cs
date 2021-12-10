@@ -9,5 +9,9 @@
         {
             public int Id { get; init; }
         }
+        public interface IDalObject
+        {
+
+        }
     }
 }

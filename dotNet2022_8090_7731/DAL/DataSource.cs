@@ -59,6 +59,7 @@ namespace DalObject
             [typeof(Customer)] = CustomerList,
             [typeof(Parcel)] = ParceList,
             [typeof(BaseStation)] = BaseStationList,
+            [typeof(ChargingDrone)] = ChargingDroneList,
         };
 
         /// <summary>

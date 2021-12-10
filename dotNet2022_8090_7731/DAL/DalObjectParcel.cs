@@ -72,14 +72,15 @@ namespace DalObject
             ParceList.Add(tempParcel);
         }
 
-        /// <summary>
-        /// A function that returns copy parcels that aren't belonged to any drone.
-        /// </summary>
-        /// <returns> returns copy parcels that aren't belonged to any drone.</returns>
-        public IEnumerable<Parcel> GetUnbelongParcels()
-        {
-            return ParceList.Where(parcel => parcel.DroneId == 0).ToList();
-        }
+        ///// <summary>
+        ///// A function that returns copy parcels that aren't belonged to any drone.
+        ///// </summary>
+        ///// <returns> returns copy parcels that aren't belonged to any drone.</returns>
+        //public IEnumerable<Parcel> GetUnbelongParcels()
+        //{
+        //    return ParceList.Where(parcel => parcel.DroneId == 0).ToList();
+        //}
+        
     }
 
     //// יש פונקציות גנריות

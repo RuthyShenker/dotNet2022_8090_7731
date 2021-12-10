@@ -84,10 +84,10 @@ namespace DalObject
         /// that they have available charging positions.
         /// </summary>
         /// <returns>list of base stations that they have available charging positions</returns>
-        public IEnumerable<BaseStation> AvailableSlots()
-        {
-            return new List<BaseStation>(BaseStationList.Where(baseStation => AreThereFreePositions(baseStation.Id)));
-        }
+        //public IEnumerable<BaseStation> AvailableSlots()
+        //{
+        //    return new List<BaseStation>(BaseStationList.Where(baseStation => AreThereFreePositions(baseStation.Id)));
+        //}
 
         public bool AreThereFreePositions(int sId)
         {

@@ -13,7 +13,7 @@ namespace IDal
         /// A struct of Parcel contains:
         /// Id of Parcel, Id of Sender, Id of Getter, Weight, Status, Id of Drone.
         /// </summary>
-        public struct Parcel:IIdentifiable
+        public struct Parcel:IIdentifiable,IDalObject
         {
 
             /// <summary>
