@@ -266,19 +266,29 @@ namespace BL
         /// <returns>returns list of data with the BLToList</returns>
         public IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
         {
-            if ( predicate==null && typeof(BLToList) == typeof(DroneToList))
+            try
             {
-                return (IEnumerable<BLToList>)lDroneToList;
+
+                if (predicate == null && typeof(BLToList) == typeof(DroneToList))
+                {
+                    return (IEnumerable<BLToList>)lDroneToList;
+                }
+                List<DL> dalList;
+                _ = predicate == null ? dalList = (List<DL>)dal.GetListFromDal<DL>() : dalList = (List<DL>)dal.GetDalListByCondition<DL>(predicate);
+                var listToList = new List<BLToList>();
+                foreach (dynamic dalItem in dalList)
+                {
+                    var blToListItem = ConvertToList(dalItem);
+                    listToList.Add(blToListItem);
+                }
+                return listToList;
             }
-            List< DL> dalList;
-            _ = predicate == null ? dalList = (List<DL>)dal.GetListFromDal<DL>() : dalList = (List<DL>)dal.GetDalListByCondition<DL>(predicate);
-            var listToList = new List<BLToList>();
-            foreach (dynamic dalItem in dalList)
-            {
-                var blToListItem = ConvertToList(dalItem);
-                listToList.Add(blToListItem);
+            catch (DalObject.InValidActionException)
+            { 
+
+                throw new InValidActionException("There is no match object in the list ");
+
             }
-            return listToList;
         }
     }
 }

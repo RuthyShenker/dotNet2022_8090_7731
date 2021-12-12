@@ -62,7 +62,7 @@ namespace IBL
         //get lists
         IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable,IDal.DO.IDalObject;
         //IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
-        IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
+        IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate=null) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
         //list of: Available Slots
         //IEnumerable<StationToList> AvailableSlots();
 
@@ -74,9 +74,8 @@ namespace IBL
         // IEnumerable<CustomerToList> GetCustomers();
         // IEnumerable<ParcelToList> GetParcels();
 
-        //Get Unbelong Parcels
-        //TODO: 
-        IEnumerable<ParcelToList> GetUnbelongParcels();
+        //Get Unbelong Parcels 
+        //IEnumerable<ParcelToList> GetUnbelongParcels();
 
         // IEnumerable<StationToList> AvailableSlots();
 
