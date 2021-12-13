@@ -264,12 +264,34 @@ namespace BL
         /// <typeparam name="DL"></typeparam>
         /// <typeparam name="BLToList"></typeparam>
         /// <returns>returns list of data with the BLToList</returns>
-        public IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
+        //public IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
+        //{
+        //    try
+        //    {
+        //        if (predicate == null && typeof(BLToList) == typeof(DroneToList))
+        //        {
+        //            return (IEnumerable<BLToList>)lDroneToList;
+        //        }
+        //        List<DL> dalList;
+        //        _ = predicate == null ? dalList = (List<DL>)dal.GetListFromDal<DL>() : dalList = (List<DL>)dal.GetDalListByCondition<DL>(predicate);
+        //        var listToList = new List<BLToList>();
+        //        foreach (dynamic dalItem in dalList)
+        //        {
+        //            var blToListItem = ConvertToList(dalItem);
+        //            listToList.Add(blToListItem);
+        //        }
+        //        return listToList;
+        //    }
+        //    catch (DalObject.InValidActionException)
+        //    { 
+        //        throw new InValidActionException("There is no match object in the list ");
+        //    }
+        //}
+        public IEnumerable<BLToList> GetListToList<BLToList>() 
         {
             try
             {
-
-                if (predicate == null && typeof(BLToList) == typeof(DroneToList))
+                if (typeof(BLToList) == typeof(DroneToList))
                 {
                     return (IEnumerable<BLToList>)lDroneToList;
                 }
@@ -284,10 +306,8 @@ namespace BL
                 return listToList;
             }
             catch (DalObject.InValidActionException)
-            { 
-
+            {
                 throw new InValidActionException("There is no match object in the list ");
-
             }
         }
     }

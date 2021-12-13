@@ -51,7 +51,7 @@ namespace ConsoleUI_BL
                     break;
                
                 case DisplayingList.PackageWhichArentBelongToDrone:
-                    IEnumerable<ParcelToList> UnbelongParcelsList = bL.GetListToList<IDal.DO.Parcel,ParcelToList>(parcel => parcel.DroneId == 0);
+                    IEnumerable<ParcelToList> UnbelongParcelsList = bL.GetUnbelongParcels();
                     foreach (ParcelToList parcel in UnbelongParcelsList)
                     {
                         Console.WriteLine(Tools.ToStringProps(parcel));
@@ -59,7 +59,7 @@ namespace ConsoleUI_BL
                     break;
                 
                 case DisplayingList.StationsWithAvailablePositions:
-                    IEnumerable<StationToList> AvailableSlotsList = bL.GetListToList<IDal.DO.BaseStation, StationToList>(baseStation =>dal.AreThereFreePositions(baseStation.Id));
+                    IEnumerable<StationToList> AvailableSlotsList = bL.AvailableSlots();
                     foreach (StationToList baseStation in AvailableSlotsList)
                     {
                         Console.WriteLine(Tools.ToStringProps(baseStation));

@@ -63,8 +63,9 @@ namespace IBL
         IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable,IDal.DO.IDalObject;
         //IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
         IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate=null) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
+
         //list of: Available Slots
-        //IEnumerable<StationToList> AvailableSlots();
+        IEnumerable<StationToList> AvailableSlots();
 
         // get specific
         BL GetBLById<DL, BL>(int Id) where DL: IDal.DO.IIdentifiable, IDal.DO.IDalObject;
@@ -75,10 +76,9 @@ namespace IBL
         // IEnumerable<ParcelToList> GetParcels();
 
         //Get Unbelong Parcels 
-        //IEnumerable<ParcelToList> GetUnbelongParcels();
+        IEnumerable<ParcelToList> GetUnbelongParcels();
 
         // IEnumerable<StationToList> AvailableSlots();
-
         //  GetItemFromBLById יש פונקציה גנרית 
         // Station GetStation(int id);
         // Drone GetDrone(int Id);

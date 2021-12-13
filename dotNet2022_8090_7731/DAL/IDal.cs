@@ -52,7 +52,6 @@ namespace IDal
         //void AddingParcel(Parcel parcel);
 
         void AddingItemToDList<T>(T item) where T : IIdentifiable,IDalObject;
-
         void AddingDroneToCharge(int dId, int sId);
 
         // updating

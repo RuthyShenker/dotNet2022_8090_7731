@@ -25,8 +25,8 @@
                    HorizontalAlignment= "Stretch" VerticalAlignment="Stretch" Grid.Column="1"/>
             <Label Content="Label" Grid.Column="2" HorizontalAlignment="Center"
                    Margin="0,19,0,0" VerticalAlignment="Top"/>
-            <ComboBox Name="Weight" Grid.Column="3" HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch" Width="120"/>
+            <ComboBox Name="Weights" Grid.Column="3" HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" Width="120" SelectionChanged="Weight_SelectionChanged"/>
         </Grid>
         <ListView x:Name="DroneListView" Grid.Row="1" ItemsSource="{Binding }">
             <ListView.View>

@@ -25,7 +25,21 @@ namespace PL
         {
             InitializeComponent();
             this.bl = bl;
-            this.DataContext = bl.GetListToList<IDal.DO.Drone,DroneToList>();
+            DataContext = bl.GetListToList<IDal.DO.Drone,DroneToList>();
+            Weights.DataContext=
+        }
+
+        private void Weight_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Weights.SelectedItem == null)
+            {
+                DroneListView.ItemsSource = bl.GetListToList<IDal.DO.Drone,DroneToList>();
+            }
+            else
+            {
+                WeightCategories weight = (WeightCategories)Weights.SelectedItem;
+                DroneListView.ItemsSource = bl.GetListToList<IDal.DO.Drone, DroneToList>(drone => drone.MaxWeight==weight);
+            }
         }
     }
 }

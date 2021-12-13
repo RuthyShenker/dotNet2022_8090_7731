@@ -93,8 +93,8 @@ namespace BL
             bool deliveryed = false;
             FindDroneInList(dId);
             var drone = lDroneToList.Find(drone => drone.Id == dId);
-           
-            if (drone.NumOfParcel==null)
+
+            if (drone.NumOfParcel == null)
             {
                 throw new InValidActionException(typeof(Drone), dId, $"Drone isn't belonged parcel ");
             }
@@ -127,25 +127,25 @@ namespace BL
         /// A function that returns a list of unbelong parcels.
         /// </summary>
         /// <returns>returns a list of unbelong parcels.</returns>
-        ///public IEnumerable<ParcelToList> GetUnbelongParcels()
-        ///{
-        ///    try
-         ///   {
-         ///       //var unbelongParcelsList = dal.GetUnbelongParcels();
-         ///       var unbelongParcelsList = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == 0);
-          ///      var bParcelList = new List<ParcelToList>();
-         ///       foreach (var parcel in unbelongParcelsList)
-         ///       {
-         ///           bParcelList.Add(ConvertToList(parcel));
-          ///      }
-         ///       return bParcelList;
-         ///   }
-         ///   
-          ///  catch (DalObject.InValidActionException)
-          ///  {
-          ///      throw new InValidActionException("There is no match object in the list ");
-         ///   }
-      ///  }
+        public IEnumerable<ParcelToList> GetUnbelongParcels()
+        {
+            try
+            {
+                //var unbelongParcelsList = dal.GetUnbelongParcels();
+                var unbelongParcelsList = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == 0);
+                var bParcelList = new List<ParcelToList>();
+                foreach (var parcel in unbelongParcelsList)
+                {
+                    bParcelList.Add(ConvertToList(parcel));
+                }
+                return bParcelList;
+            }
+
+            catch (DalObject.InValidActionException)
+            {
+                throw new InValidActionException("There is no match object in the list ");
+            }
+        }
 
         /// <summary>
         /// A function that gets an object of IDal.DO.Parcel

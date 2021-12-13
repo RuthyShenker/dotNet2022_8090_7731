@@ -115,16 +115,16 @@ namespace BL
         /// A function that returns Available Slots by type of StationToList.
         /// </summary>
         /// <returns> returns Available Slots</returns>
-        //public IEnumerable<StationToList> AvailableSlots()
-        //{
-        //    var stationsDalList = dal.GetDalListByCondition<IDal.DO.BaseStation>(baseStation => dal.AreThereFreePositions(baseStation.Id));
-        //    var stationBalList = new List<StationToList>();
-        //    foreach (var station in stationsDalList)
-        //    {
-        //        stationBalList.Add(ConvertToList(station));
-        //    }
-        //    return stationBalList;
-        //}
+        public IEnumerable<StationToList> AvailableSlots()
+        {
+            var stationsDalList = dal.GetDalListByCondition<IDal.DO.BaseStation>(baseStation => dal.AreThereFreePositions(baseStation.Id));
+            var stationBalList = new List<StationToList>();
+            foreach (var station in stationsDalList)
+            {
+                stationBalList.Add(ConvertToList(station));
+            }
+            return stationBalList;
+        }
 
         /// <summary>
         /// A function that gets a location of station 
