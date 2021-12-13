@@ -11,6 +11,31 @@
             <RowDefinition Height="50*"/>
             <RowDefinition Height="400*"/>
         </Grid.RowDefinitions>
+        <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
+                VerticalAlignment="Stretch" Width="auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions >
+            <Label Content="Label" Grid.Column="0" HorizontalAlignment="Left"
+                   Margin="81,19,0,0" VerticalAlignment="Top"/>
+            <ComboBox Name="StatusSelector" Margin="0,19,0,0"  Width="120" 
+                   HorizontalAlignment= "Stretch" VerticalAlignment="Stretch" Grid.Column="1"/>
+            <Label Content="Label" Grid.Column="2" HorizontalAlignment="Center"
+                   Margin="0,19,0,0" VerticalAlignment="Top"/>
+            <ComboBox Name="Weight" Grid.Column="3" HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" Width="120"/>
+        </Grid>
+        <ListView x:Name="DroneListView" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
     </Grid>
 
 </Window>
