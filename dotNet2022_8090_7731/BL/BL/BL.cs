@@ -295,8 +295,8 @@ namespace BL
                 {
                     return (IEnumerable<BLToList>)lDroneToList;
                 }
-                List<DL> dalList;
-                _ = predicate == null ? dalList = (List<DL>)dal.GetListFromDal<DL>() : dalList = (List<DL>)dal.GetDalListByCondition<DL>(predicate);
+                Type type = Extensions.matchType[typeof(BLToList)];
+                List<type> dalList = (List<type>)dal.GetListFromDal<type>();
                 var listToList = new List<BLToList>();
                 foreach (dynamic dalItem in dalList)
                 {

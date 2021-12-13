@@ -15,13 +15,16 @@ using System.Windows.Shapes;
 namespace PL
 {
     /// <summary>
-    /// Interaction logic for DroneWindow.xaml
+    /// Interaction logic for AddDroneWindow.xaml
     /// </summary>
-    public partial class DroneWindow : Window
-    {
-        public DroneWindow()
+    public partial class AddDroneWindow : Window
+    { 
+        private IBL.IBL bl;
+
+        public AddDroneWindow(IBL.IBL bl)
         {
             InitializeComponent();
+            this.bl = bl;
         }
     }
 }

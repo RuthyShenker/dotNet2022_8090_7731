@@ -25,21 +25,52 @@ namespace PL
         {
             InitializeComponent();
             this.bl = bl;
-            DataContext = bl.GetListToList<IDal.DO.Drone,DroneToList>();
-            Weights.DataContext=
+            DroneListView.DataContext = bl.GetDrones();
+            DroneWeights.DataContext = Enum.GetValues(typeof(WeightCategories));
+            DroneStatuses.DataContext= Enum.GetValues(typeof(DroneStatus));
+            //.Cast<string>().Append("none");
         }
 
-        private void Weight_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DroneWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Weights.SelectedItem == null)
+            if (DroneWeights.SelectedItem == null)
             {
-                DroneListView.ItemsSource = bl.GetListToList<IDal.DO.Drone,DroneToList>();
+                DroneListView.ItemsSource = bl.GetDrones();
             }
             else
             {
-                WeightCategories weight = (WeightCategories)Weights.SelectedItem;
-                DroneListView.ItemsSource = bl.GetListToList<IDal.DO.Drone, DroneToList>(drone => drone.MaxWeight==weight);
+                WeightCategories weight = (WeightCategories)DroneWeights.SelectedItem;
+                DroneListView.ItemsSource = bl.GetDrones(drone => drone.Weight==weight);
             }
+        }
+
+        private void DroneStatuses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           
+            if (DroneStatuses.SelectedItem == null)
+            {
+                DroneListView.ItemsSource = bl.GetDrones();
+            }
+            else
+            {
+                DroneStatus status = (DroneStatus)DroneStatuses.SelectedItem;
+                DroneListView.ItemsSource = bl.GetDrones(drone=>drone.DStatus== status);
+            }
+        }
+
+        private void button_AddingDrone_Click(object sender, RoutedEventArgs e)
+        {
+            new AddDroneWindow(bl).Show();
+        }
+
+        private void button_Close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

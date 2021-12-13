@@ -270,6 +270,18 @@ namespace BL
             };
             dal.UpdateDrone(droneId, dalDrone);
         }
+        IEnumerable<DroneToList> GetDrones(Func<DroneToList, bool> predicate = null)
+        {
+            if (predicate == null)
+            {
+                return lDroneToList;
+            }
+            else
+            {
+                return lDroneToList.Where(predicate);
+            }
+
+        }
     }
 }
 

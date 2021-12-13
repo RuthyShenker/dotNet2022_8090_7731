@@ -78,6 +78,8 @@ namespace IBL
         //Get Unbelong Parcels 
         IEnumerable<ParcelToList> GetUnbelongParcels();
 
+        IEnumerable<DroneToList> GetDrones(Func<DroneToList, bool> predicate = null);
+
         // IEnumerable<StationToList> AvailableSlots();
         //  GetItemFromBLById יש פונקציה גנרית 
         // Station GetStation(int id);
