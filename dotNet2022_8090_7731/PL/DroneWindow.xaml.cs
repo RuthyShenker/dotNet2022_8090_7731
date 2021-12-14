@@ -29,7 +29,6 @@ namespace PL
             this.bl = bl;
             MaxWeightComboBox.DataContext = Enum.GetValues(typeof(WeightCategories));
             StatusComboBox.DataContext = Enum.GetValues(typeof(DroneStatus));
-
         }
         public DroneWindow(IBL.IBL bl,DroneToList selectedDrone)
         {

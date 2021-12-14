@@ -131,6 +131,7 @@ namespace DalObject
                 fillParcel.Weight = (WeightCategories)Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
                 fillParcel.MPriority = (UrgencyStatuses)Rand.Next(0, Enum.GetNames(typeof(UrgencyStatuses)).Length);
                 //fillParcel.DroneId = availableDrone();
+                //TODO:
                 fillParcel.DroneId = 0;
                 fillParcel.MakingParcel = DateTime.Now;
                 fillParcel.BelongParcel = fillParcel.DroneId == 0 ? new DateTime() : DateTime.Now;

@@ -41,7 +41,6 @@ namespace DalObject
         {
             //TODO:
             //Initialize();
-            
             data = new()
             {
                 [typeof(Drone)] = DroneList,
