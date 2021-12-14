@@ -37,7 +37,7 @@ namespace BL
                 lDroneToList.Add(ConvertToList(drone));
             }
             //TODO:
-            lDroneToList.Add(new DroneToList(1,"1",WeightCategories.Light,20,DroneStatus.Free,new Location(1,1),null));
+            lDroneToList.Add(new DroneToList(1, "1", WeightCategories.Light, 20, DroneStatus.Free, new Location(1, 1), null));
         }
 
         /// <summary>
@@ -141,7 +141,9 @@ namespace BL
             else // droneToList.DStatus == Free
             {
                 var customersList = CustomersWithProvidedParcels();
-                nDrone.CurrLocation = customersList[Rand.Next(customersList.Count)].CLocation;
+                nDrone.CurrLocation = customersList.Count == 0 ?
+                    new Location(RandBetweenRange(-180, 180), RandBetweenRange(-90,90)) :
+                    customersList[Rand.Next(customersList.Count)].CLocation;
                 var closetStation = ClosestStation(nDrone.CurrLocation);
                 double distance = CalculateDistance(nDrone.CurrLocation, closetStation.SLocation);
                 nDrone.BatteryStatus = Rand.NextDouble() * (100 - MinBattery(distance)) + MinBattery(distance);
@@ -300,9 +302,9 @@ namespace BL
         //}
 
 
-       
 
-       
+
+
 
     }
 }
