@@ -27,8 +27,7 @@ namespace PL
             this.bl = bl;
             DroneListView.DataContext = bl.GetDrones();
             DroneWeights.DataContext = Enum.GetValues(typeof(WeightCategories));
-            DroneStatuses.DataContext= Enum.GetValues(typeof(DroneStatus));
-            //.Cast<string>().Append("none");
+            DroneStatuses.DataContext = Enum.GetValues(typeof(DroneStatus));
         }
 
         private void DroneWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -60,7 +59,7 @@ namespace PL
 
         private void button_AddingDrone_Click(object sender, RoutedEventArgs e)
         {
-            new AddDroneWindow(bl).Show();
+            new DroneWindow(bl).Show();
         }
 
         private void button_Close_Click(object sender, RoutedEventArgs e)
@@ -68,9 +67,5 @@ namespace PL
             this.Close();
         }
 
-        private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }
