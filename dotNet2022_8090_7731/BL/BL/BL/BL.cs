@@ -25,6 +25,7 @@ namespace BL
         /// </summary>
         static double chargingRate;
 
+
         public BL()
         {
             rand = new Random();
