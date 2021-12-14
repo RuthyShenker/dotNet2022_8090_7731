@@ -170,8 +170,15 @@ namespace BL
 
         public Customer GetCustomer(int customerId)
         {
-            var dCustomer = dal.GetFromDalById<IDal.DO.Customer>(customerId);
-            return ConvertToBL(dCustomer);
+            try
+            {
+                var dCustomer = dal.GetFromDalById<IDal.DO.Customer>(customerId);
+                return ConvertToBL(dCustomer);
+            }
+            catch (DalObject.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(Customer), customerId);
+            }
         }
 
         /// <summary>

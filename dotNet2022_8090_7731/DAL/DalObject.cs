@@ -58,6 +58,7 @@ namespace DalObject
         {
             try
             {
+                ((List<T>)data[typeof(T)]).First(item => item.Id == Id);
                 return GetFromDalByCondition<T>(item => item.Id == Id);
             }
             catch(InvalidOperationException)

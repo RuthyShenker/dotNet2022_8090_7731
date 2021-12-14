@@ -16,33 +16,37 @@ namespace BL
         /// <param name="newParcel"></param>
         public int AddingParcel(Parcel newParcel)
         {
-            IDal.DO.Customer sender = default(IDal.DO.Customer);
-            IDal.DO.Customer getter = default(IDal.DO.Customer);
-
+            IDal.DO.Customer sender;
+            IDal.DO.Customer getter;
             try
             {
                 sender = dal.GetFromDalById<IDal.DO.Customer>(newParcel.Sender.Id);
-                getter = dal.GetFromDalById<IDal.DO.Customer>(newParcel.Getter.Id);
-                IDal.DO.Parcel parcel = new IDal.DO.Parcel(
-                    newParcel.Sender.Id,
-                    newParcel.Getter.Id,
-                    (IDal.DO.WeightCategories)newParcel.Weight,
-                    (IDal.DO.UrgencyStatuses)newParcel.MPriority,
-                    DateTime.Now,
-                    new DateTime(),
-                    new DateTime(),
-                    new DateTime());
-                dal.AddingToData(parcel);
-                return parcel.Id;
             }
             catch (DalObject.IdIsNotExistException)
             {
-                if (sender.Equals(default(IDal.DO.Customer)))
-                {
-                    throw new IdIsNotExistException(typeof(IDal.DO.Customer), newParcel.Sender.Id); ;
-                }
-                throw new IdIsNotExistException(typeof(IDal.DO.Customer), newParcel.Getter.Id); ;
+                throw new IdIsNotExistException(typeof(IDal.DO.Customer), newParcel.Sender.Id);
             }
+
+            try
+            {
+                getter = dal.GetFromDalById<IDal.DO.Customer>(newParcel.Getter.Id);
+            }
+            catch (DalObject.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(IDal.DO.Customer), newParcel.Getter.Id);
+            }
+
+            IDal.DO.Parcel parcel = new IDal.DO.Parcel(
+                newParcel.Sender.Id,
+                newParcel.Getter.Id,
+                (IDal.DO.WeightCategories)newParcel.Weight,
+                (IDal.DO.UrgencyStatuses)newParcel.MPriority,
+                DateTime.Now,
+                new DateTime(),
+                new DateTime(),
+                new DateTime());
+            dal.AddingToData(parcel);
+            return parcel.Id;
         }
 
         /// <summary>
@@ -54,7 +58,7 @@ namespace BL
         public void PickingUpParcel(int dId)
         {
             var drone = FindDroneInList(dId);
-            
+
             if (drone.DStatus != DroneStatus.Delivery)
             {
                 throw new InValidActionException(typeof(IDal.DO.Drone), dId, $"status of drone is {drone.DStatus} ");
@@ -217,8 +221,15 @@ namespace BL
 
         public Parcel GetParcel(int parcelId)
         {
-            var dParcel = dal.GetFromDalById<IDal.DO.Parcel>(parcelId);
-            return ConvertToBL(dParcel);
+            try
+            {
+                var dParcel = dal.GetFromDalById<IDal.DO.Parcel>(parcelId);
+                return ConvertToBL(dParcel);
+            }
+            catch (DalObject.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(Parcel), parcelId);
+            }
         }
 
 

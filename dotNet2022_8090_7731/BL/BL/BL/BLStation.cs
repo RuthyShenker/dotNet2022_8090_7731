@@ -58,7 +58,7 @@ namespace BL
             }
         }
 
-      
+
 
         /// <summary>
         /// A function that gets id of station and
@@ -80,7 +80,7 @@ namespace BL
             return chargingDroneBLList;
         }
 
-        
+
 
         /// <summary>
         /// A function that gets a location and retrns the
@@ -110,7 +110,7 @@ namespace BL
                         distance = currDistance;
                         index = i;
                     }
-                    else if (dal.AreThereFreePositions(stationDalList.ElementAt(i).Id)>0)
+                    else if (dal.AreThereFreePositions(stationDalList.ElementAt(i).Id) > 0)
                     {
                         distance = currDistance;
                         index = i;
@@ -124,6 +124,7 @@ namespace BL
 
         public IEnumerable<StationToList> GetStations()
         {
+
             var dList = dal.GetListFromDal<IDal.DO.BaseStation>();
             var bList = new List<StationToList>();
             foreach (dynamic station in bList)
@@ -131,6 +132,8 @@ namespace BL
                 bList.Add(ConvertToList(station));
             }
             return bList;
+
+
         }
 
         /// <summary>
@@ -167,8 +170,15 @@ namespace BL
 
         public Station GetStation(int stationId)
         {
-            var dStation = dal.GetFromDalById<IDal.DO.BaseStation>(stationId);
-            return ConvertToBL(dStation);
+            try
+            {
+                var dStation = dal.GetFromDalById<IDal.DO.BaseStation>(stationId);
+                return ConvertToBL(dStation);
+            }
+            catch (DalObject.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(Station), stationId);
+            }
         }
 
         /// <summary>
