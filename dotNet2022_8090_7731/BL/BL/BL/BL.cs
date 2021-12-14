@@ -1,5 +1,4 @@
 ﻿using DalObject;
-using IBL.BO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static DalObject.DataSource;
 using System.Device.Location;
+using BO;
 
 namespace BL
 {
@@ -34,10 +34,6 @@ namespace BL
             UpdatePConsumption();
             foreach (var drone in dal.GetListFromDal<IDal.DO.Drone>())
             {
-                if (lDroneToList.Count != 0 && lDroneToList.Exists(droneInList => droneInList.Id == drone.Id))
-                {
-                    lDroneToList.First(droneInList => droneInList.Id == drone.Id).NumOfParcel++;
-                }
                 lDroneToList.Add(ConvertToList(drone));
             }
         }
@@ -77,7 +73,7 @@ namespace BL
             }
             else
             {
-                nDrone.NumOfParcel = null; // אולי לא צריך שורה זו
+                //nDrone.NumOfParcel = null; // אולי לא צריך שורה זו
                 return CalculateUnDeliveryingDrone(nDrone);
             }
         }
@@ -115,12 +111,12 @@ namespace BL
                 nDrone.CurrLocation = new Location(sender.Longitude, sender.Latitude);
             }
             // battery Status
-            Location destination = GetBLById<IDal.DO.Customer, Customer>(parcel.GetterId).CLocation;
+            Location destination = GetCustomer(parcel.GetterId).CLocation;
             Location closestStation = ClosestStation(destination).SLocation;
             double distance = CalculateDistance(nDrone.CurrLocation, destination, closestStation);
             double minBattery = MinBattery(distance, (WeightCategories)parcel.Weight);
             nDrone.BatteryStatus = Rand.NextDouble() * (100 - minBattery) + minBattery;
-            nDrone.NumOfParcel++;
+            nDrone.DeliveredParcelId = parcel.Id;
             return nDrone;
         }
 
@@ -200,17 +196,6 @@ namespace BL
         }
 
         /// <summary>
-        /// A function that gets two locations and returns if they are the same or not.
-        /// </summary>
-        /// <param name="location1"></param>
-        /// <param name="location2"></param>
-        /// <returns>returns if they are the same or not</returns>
-        private static bool EqualLocations(Location location1, Location location2)
-        {
-            return location1.Longitude == location2.Longitude && location1.Latitude == location2.Latitude;
-        }
-
-        /// <summary>
         /// A generic function that gets two types: DL, BL and id and 
         /// pulls out from the dal the object that its type DL and its id is the
         /// same as the id that the function gets and Expands this object to new object
@@ -220,19 +205,19 @@ namespace BL
         /// <typeparam name="BL"></typeparam>
         /// <param name="Id"></param>
         /// <returns>returns an object of BL type</returns>
-        public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
-        {
-            try
-            {
-                dynamic wantedDal = dal.GetFromDalById<DL>(Id);
-                BL wantedBl = ConvertToBL(wantedDal);
-                return wantedBl;
-            }
-            catch (DalObject.IdIsNotExistException)
-            {
-                throw new IdIsNotExistException(typeof(DL), Id);
-            }
-        }
+        //public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
+        //{
+        //    try
+        //    {
+        //        dynamic wantedDal = dal.GetFromDalById<DL>(Id);
+        //        BL wantedBl = ConvertToBL(wantedDal);
+        //        return wantedBl;
+        //    }
+        //    catch (DalObject.IdIsNotExistException)
+        //    {
+        //        throw new IdIsNotExistException(typeof(DL), Id);
+        //    }
+        //}
 
         /// <summary>
         /// A function that gets two types: DL, BL and 
@@ -243,17 +228,17 @@ namespace BL
         /// <typeparam name="DL"></typeparam>
         /// <typeparam name="BL"></typeparam>
         /// <returns>returns list of data with type of BL. </returns>
-        public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
-        {
-            var bLList = new List<BL>();
-            var dalList = dal.GetListFromDal<DL>();
-            foreach (dynamic dlItem in dalList)
-            {
-                var blItem = ConvertToBL(dlItem);
-                bLList.Add(blItem);
-            }
-            return bLList;
-        }
+        //public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
+        //{
+        //    var bLList = new List<BL>();
+        //    var dalList = dal.GetListFromDal<DL>();
+        //    foreach (dynamic dlItem in dalList)
+        //    {
+        //        var blItem = ConvertToBL(dlItem);
+        //        bLList.Add(blItem);
+        //    }
+        //    return bLList;
+        //}
 
         /// <summary>
         /// A generic function that gets two types:DL, BLToList
@@ -283,32 +268,39 @@ namespace BL
         //        return listToList;
         //    }
         //    catch (DalObject.InValidActionException)
-        //    { 
+        //    {
         //        throw new InValidActionException("There is no match object in the list ");
         //    }
         //}
-        public IEnumerable<BLToList> GetListToList<BLToList>() 
-        {
-            try
-            {
-                if (typeof(BLToList) == typeof(DroneToList))
-                {
-                    return (IEnumerable<BLToList>)lDroneToList;
-                }
-                Type type = Extensions.matchType[typeof(BLToList)];
-                List<type> dalList = (List<type>)dal.GetListFromDal<type>();
-                var listToList = new List<BLToList>();
-                foreach (dynamic dalItem in dalList)
-                {
-                    var blToListItem = ConvertToList(dalItem);
-                    listToList.Add(blToListItem);
-                }
-                return listToList;
-            }
-            catch (DalObject.InValidActionException)
-            {
-                throw new InValidActionException("There is no match object in the list ");
-            }
-        }
+
+        //public IEnumerable<BLToList> GetListToList<BLToList>() 
+        //{
+        //    try
+        //    {
+        //        if (typeof(BLToList) == typeof(DroneToList))
+        //        {
+        //            return (IEnumerable<BLToList>)lDroneToList;
+        //        }
+        //        Type type = Extensions.matchType[typeof(BLToList)];
+        //        List<type> dalList = (List<type>)dal.GetListFromDal<type>();
+        //        var listToList = new List<BLToList>();
+        //        foreach (dynamic dalItem in dalList)
+        //        {
+        //            var blToListItem = ConvertToList(dalItem);
+        //            listToList.Add(blToListItem);
+        //        }
+        //        return listToList;
+        //    }
+        //    catch (DalObject.InValidActionException)
+        //    {
+        //        throw new InValidActionException("There is no match object in the list ");
+        //    }
+        //}
+
+
+       
+
+       
+
     }
 }

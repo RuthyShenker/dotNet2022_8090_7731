@@ -53,10 +53,10 @@ namespace DalObject
         //    return CustomerList.Select(customer => new Customer(customer)).ToList();
         //}
 
-        public void UpdateCustomer(int cId, Customer customer)
-        {
-            CustomerList.Remove(CustomerList.Find(customer => customer.Id == cId));
-            CustomerList.Add(customer);
-        }
+        //public void UpdateCustomer(int cId, Customer customer)
+        //{
+        //    CustomerList.Remove(CustomerList.Find(customer => customer.Id == cId));
+        //    CustomerList.Add(customer);
+        //}
     }
 }

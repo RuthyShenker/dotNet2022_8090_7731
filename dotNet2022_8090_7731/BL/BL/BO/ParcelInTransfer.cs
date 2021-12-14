@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace IBL.BO
+namespace BO
 {
     /// <summary>
     ///A class of ParcelInTransfer that contains:

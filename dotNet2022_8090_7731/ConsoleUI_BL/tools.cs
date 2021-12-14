@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using static BL.Tools;
 namespace ConsoleUI_BL
 {
     public static class tools
@@ -12,7 +12,7 @@ namespace ConsoleUI_BL
         {
             foreach (var option in Enum.GetValues(typeEnum))
             {
-                Console.WriteLine($"\t{(int)option} - {SeparateStringByUpperCase(option.ToString())}");
+                Console.WriteLine($"\t{(int)option} - {SeparateByUpperCase(option.ToString())}");
             }
         }
 
@@ -21,31 +21,12 @@ namespace ConsoleUI_BL
             Console.WriteLine("------------------------------------------------");
             foreach (var option in Enum.GetValues(typeEnum))
             {
-                Console.WriteLine($"  {(int)option} - {SeparateStringByUpperCase(option.ToString())}");
+                Console.WriteLine($"  {(int)option} - {SeparateByUpperCase(option.ToString())}");
             }
             Console.WriteLine("------------------------------------------------");
         }
 
-        public static string SeparateStringByUpperCase(string str)
-        {
-            var sb = new StringBuilder();
-            char previousChar = char.MinValue;
-            foreach (char c in str)
-            {
-                // If not the first character and previous character is not a space, insert a space before uppercase
-                if (char.IsUpper(c) && sb.Length != 0 && previousChar != ' ')
-                {
-                    sb.Append(' ');
-                    sb.Append(char.ToLower(c));
-                }
-                else
-                {
-                    sb.Append(c);
-                }
-                previousChar = c;
-            }
-            return sb.ToString();
-        }
+        
     }
 
 }

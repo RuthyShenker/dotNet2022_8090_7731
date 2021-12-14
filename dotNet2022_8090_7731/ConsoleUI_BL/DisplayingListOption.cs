@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BL;
-using IBL.BO;
+using BO;
 using static ConsoleUI_BL.MEnum;
 
 namespace ConsoleUI_BL
@@ -19,7 +19,7 @@ namespace ConsoleUI_BL
             switch ((DisplayingList)input)
             {
                 case DisplayingList.BaseStation:
-                    IEnumerable<StationToList> StationList = bL.GetListToList<IDal.DO.BaseStation, StationToList>();
+                    IEnumerable<StationToList> StationList = bL.GetStations();
                     foreach (StationToList baseStation in StationList) 
                     {
                         Console.WriteLine(Tools.ToStringProps(baseStation));
@@ -27,7 +27,7 @@ namespace ConsoleUI_BL
                     break;
                 
                 case DisplayingList.Drone:
-                    IEnumerable<DroneToList> DroneList = bL.GetListToList<IDal.DO.Drone, DroneToList>();
+                    IEnumerable<DroneToList> DroneList = bL.GetDrones();
                     foreach (DroneToList drone in DroneList)
                     {
                         Console.WriteLine(Tools.ToStringProps(drone));
@@ -35,7 +35,7 @@ namespace ConsoleUI_BL
                     break;
                 
                 case DisplayingList.Customer:
-                    IEnumerable<CustomerToList> CustomerList =bL.GetListToList<IDal.DO.Customer, CustomerToList>();
+                    IEnumerable<CustomerToList> CustomerList =bL.GetCustomers();
                     foreach (CustomerToList customer in CustomerList)
                     {
                         Console.WriteLine(Tools.ToStringProps(customer));
@@ -43,7 +43,7 @@ namespace ConsoleUI_BL
                     break;
              
                 case DisplayingList.Parcel:
-                    IEnumerable<ParcelToList> ParcelList = bL.GetListToList<IDal.DO.Parcel, ParcelToList>();
+                    IEnumerable<ParcelToList> ParcelList = bL.GetParcels();
                     foreach (ParcelToList parcel in ParcelList)
                     {
                         Console.WriteLine(Tools.ToStringProps(parcel));

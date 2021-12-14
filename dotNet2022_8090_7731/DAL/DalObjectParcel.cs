@@ -26,50 +26,66 @@ namespace DalObject
         /// </summary>
         /// <param name="parcel"></param>
         /// <param name="dId"></param>
-        public void UpdateBelongedParcel(Parcel parcel, int dId)
-        {
-            parcel.DroneId = dId;
-            parcel.BelongParcel = DateTime.Now;
+        //public void UpdateBelongedParcel(Parcel parcel, int dId)
+        //{
+        //    parcel.DroneId = dId;
+        //    parcel.BelongParcel = DateTime.Now;
 
-            ParceList.Remove(ParceList.Find(mParcel => mParcel.Id == parcel.Id));
-            ParceList.Add(parcel);
-        }
+        //    ParceList.Remove(ParceList.Find(mParcel => mParcel.Id == parcel.Id));
+        //    ParceList.Add(parcel);
+        //}
 
         /// <summary>
         /// Gets parcel's Id and picking it up to drone.
         /// </summary>
         /// <param name="pId"></param>
-        public void PickingUpParcel(int pId)
-        {
-            UpdateTimeAction(pId, "pickingUp");
-        }
+        //public void PickingUpParcel(int pId)
+        //{
+        //    UpdateTimeAction(pId, "pickingUp");
+        //}
 
         /// <summary>
         /// Gets parcel's Id and providing it to destination.
         /// </summary>
         /// <param name = "pId" ></ param >
-        public void ProvidingPackage(int pId)
-        {
-            UpdateTimeAction(pId, "providing");
-        }
+        //public void ProvidingPackage(int pId)
+        //{
+        //    UpdateTimeAction(pId, "providing");
+        //}
 
         /// <summary>
         /// A function that update Time of Action,the function doesn't return anything.
         /// </summary>
         /// <param name="pId"></param>
         /// <param name="action"></param>
-        private static void UpdateTimeAction(int pId, string action)
-        {
-            // זה טוב או צריך להשתמש ב removeat
-            Parcel tempParcel = ParceList.Find(parcel => parcel.Id == pId);
-            _ = action switch
-            {
-                var x when x == "pickingUp" => tempParcel.PickingUp = DateTime.Now,
-                _ => tempParcel.Arrival = DateTime.Now,
-            };
+        //private static void UpdateTimeAction(int pId, string action)
+        //{
+        //    // זה טוב או צריך להשתמש ב removeat
+        //    Parcel tempParcel = ParceList.Find(parcel => parcel.Id == pId);
+        //    _ = action switch
+        //    {
+        //        var x when x == "pickingUp" => tempParcel.PickingUp = DateTime.Now,
+        //        _ => tempParcel.Arrival = DateTime.Now,
+        //    };
 
-            ParceList.Remove(ParceList.Find(parcel => parcel.Id == pId));
-            ParceList.Add(tempParcel);
+        //    ParceList.Remove(ParceList.Find(parcel => parcel.Id == pId));
+        //    ParceList.Add(tempParcel);
+        //}
+
+        public void UpdatingInData<T>(int Id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
+        {
+            Type type = typeof(T);
+            var obj = data[type].Cast<T>().FirstOrDefault(item => item.Id == Id);
+            if (obj.Equals(default(T)))
+            {
+                throw new IdIsNotExistException();
+            }
+            data[type].Remove(obj);
+            if (newValue!=null)
+            {
+                type.GetProperty(propertyName).SetValue(obj, newValue);
+            }
+            data[type].Add(obj);
         }
 
         ///// <summary>
@@ -80,7 +96,7 @@ namespace DalObject
         //{
         //    return ParceList.Where(parcel => parcel.DroneId == 0).ToList();
         //}
-        
+
     }
 
     //// יש פונקציות גנריות

@@ -15,15 +15,38 @@ namespace BL
     /// 
     public static class Tools
     {
-        public static StringBuilder ToStringProps<T>(this T obj)
+        public static string ToStringProps<T>(this T obj)
         {
-            StringBuilder @string = new();
-            @string.Append(obj.GetType().Name);
-            foreach (PropertyInfo item in obj.GetType().GetProperties())
+            StringBuilder myString = new();
+            var type = obj.GetType();
+            myString.Append($" <{SeparateByUpperCase(type.Name)}> {{ ");
+            foreach (PropertyInfo item in type.GetProperties())
             {
-               @string.Append($"{item.Name}: {item.GetValue(obj)}, ");
+                myString.Append($"{SeparateByUpperCase(item.Name)}: {item.GetValue(obj)}, ");
             }
-            return @string;
+            string result = myString.ToString()+" }";
+            return result;
+        }
+
+        public static string SeparateByUpperCase(string str)
+        {
+            var sb = new StringBuilder();
+            char previousChar = char.MinValue;
+            foreach (char c in str)
+            {
+                // If not the first character and previous character is not a space, insert a space before uppercase
+                if (char.IsUpper(c) && sb.Length != 0 && previousChar != ' ')
+                {
+                    sb.Append(' ');
+                    sb.Append(char.ToLower(c));
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+                previousChar = c;
+            }
+            return sb.ToString();
         }
     }
 }

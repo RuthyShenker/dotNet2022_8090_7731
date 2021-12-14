@@ -44,6 +44,26 @@ namespace IDal
     /// </summary>
     public interface IDal
     {
+        void AddingToData<T>(T item) where T : IDalObject;
+
+        void UpdatingInData<T>(int Id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject;
+        void ReleasingDrone(int dId);
+       
+        T GetFromDalById<T>(int Id) where T : IDalObject, IIdentifiable;
+        T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IDalObject;
+
+        IEnumerable<T> GetListFromDal<T>() where T : IDalObject;
+        IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalObject;
+
+        bool IsIdExistInList<T>(int Id) where T : IIdentifiable, IDalObject;
+        int AreThereFreePositions(int sId);
+        double[] PowerConsumptionRequest();
+
+       
+        // שיניתי להרשאה פרטית
+        //int SumDronesInStation(int sId);
+
+        //bool IsExistInList<T>(List<T> list, Predicate<T> predicate) where T : IDalObject;
 
         //Adding:
         //void AddingBaseStation(BaseStation baseStation);
@@ -51,38 +71,18 @@ namespace IDal
         //void AddingCustomer(Customer customer);
         //void AddingParcel(Parcel parcel);
 
-        void AddingItemToDList<T>(T item) where T : IIdentifiable,IDalObject;
-        void AddingDroneToCharge(int dId, int sId);
 
         // updating
-        void UpdateBelongedParcel(Parcel parcel, int dId);
-        void PickingUpParcel(int Id);
-        void ProvidingPackage(int Id);
+        //void UpdateBelongedParcel(Parcel parcel, int dId);
+        //void PickingUpParcel(int Id);
+        //void ProvidingPackage(int Id);
 
-        //Releasing Drone:
-        void ReleasingDrone(int dId);
-        void UpdateDrone(int dId, Drone drone);
-        void UpdateBaseStation(int bId, BaseStation baseStation);
-        void UpdateCustomer(int cId, Customer customer);
-        int SumOfDronesInSpecificStation(int sId);
+        //void UpdateDrone(int dId, Drone drone);
+        //void UpdateBaseStation(int bId, BaseStation baseStation);
+        //void UpdateCustomer(int cId, Customer customer);
 
-        // get an item
-        //get by id:
-        T GetFromDalById<T>(int Id) where T : IDalObject, IIdentifiable;
-        T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IDalObject;
-
-        // get list
-
-        IEnumerable<T> GetListFromDal<T>() where T : IDalObject;
-        IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalObject;
         //IEnumerable<Parcel> GetUnbelongParcels();
         //IEnumerable<BaseStation> AvailableSlots();
         //IEnumerable<ChargingDrone> GetChargingDrones();
-
-        // bool functions
-        bool IsIdExistInList<T>(int Id) where T : IIdentifiable,IDalObject;
-        bool IsExistInList<T>(List<T> list, Predicate<T> predicate) where T : IDalObject;
-        bool AreThereFreePositions(int sId);
-        double[] PowerConsumptionRequest();
     }
 }

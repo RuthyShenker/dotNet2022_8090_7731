@@ -1,4 +1,4 @@
-﻿using IBL.BO;
+﻿using BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +32,7 @@ namespace BL
                     new DateTime(),
                     new DateTime(),
                     new DateTime());
-                dal.AddingItemToDList(parcel);
+                dal.AddingToData(parcel);
                 return parcel.Id;
             }
             catch (DalObject.IdIsNotExistException)
@@ -53,32 +53,38 @@ namespace BL
         /// <param name="dId"></param>
         public void PickingUpParcel(int dId)
         {
-            var dalDrone = FindDroneInList(dId);
-            if (dalDrone.DStatus != DroneStatus.Delivery)
+            var drone = FindDroneInList(dId);
+            
+            if (drone.DStatus != DroneStatus.Delivery)
             {
-                throw new InValidActionException(typeof(IDal.DO.Drone), dId, $"status of drone is {dalDrone.DStatus} ");
+                throw new InValidActionException(typeof(IDal.DO.Drone), dId, $"status of drone is {drone.DStatus} ");
             }
-            var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
-            bool pickedUp = false;
-            foreach (var parcel in parcels)
+            if (!drone.DeliveredParcelId.HasValue)
             {
-                if (parcel.PickingUp == null)
-                {
-                    var drone = lDroneToList.Find(drone => drone.Id == dId);
-                    Location senderLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.SenderId).CLocation;
-                    drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, senderLocation));
-                    drone.CurrLocation = senderLocation;
-                    // לא היה כתוב לשנות status
-                    drone.DStatus = DroneStatus.Delivery;
-                    dal.PickingUpParcel(parcel.Id);
-                    pickedUp = true;
-                }
-            }
-            if (!pickedUp)
-            {
-                throw new InValidActionException("The drone had already picked up the parcel ");
+                throw new InValidActionException(typeof(IDal.DO.Drone), dId, $"there is no assined parcel ");
             }
 
+            IDal.DO.Parcel parcel;
+            try
+            {
+                parcel = dal.GetFromDalById<IDal.DO.Parcel>(drone.DeliveredParcelId.Value);
+            }
+            catch (DalObject.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
+            }
+
+            if (parcel.PickingUp != null)
+            {
+                throw new InValidActionException("Parcel assigned to drone was already picked up");
+            }
+
+            Location senderLocation = GetCustomer(parcel.SenderId).CLocation;
+            drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, senderLocation));
+            drone.CurrLocation = senderLocation;
+            // לא היה כתוב לשנות status
+            drone.DStatus = DroneStatus.Delivery;
+            dal.UpdatingInData<IDal.DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.PickingUp));
         }
 
         /// <summary>
@@ -90,38 +96,77 @@ namespace BL
         /// <param name="dId"></param>
         public void DeliveryPackage(int dId)
         {
-            bool deliveryed = false;
-            FindDroneInList(dId);
-            var drone = lDroneToList.Find(drone => drone.Id == dId);
+            var drone = FindDroneInList(dId);
 
-            if (drone.NumOfParcel == null)
+            if (drone.DeliveredParcelId == null)
             {
-                throw new InValidActionException(typeof(Drone), dId, $"Drone isn't belonged parcel ");
+                throw new InValidActionException(typeof(Drone), dId, $"There is no assigned parcel ");
             }
             if (drone.DStatus != DroneStatus.Delivery)
             {
                 throw new InValidActionException(typeof(Drone), dId, $"status of drone is {drone.DStatus} ");
             }
-            var parcels = dal.GetDalListByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == dId);
 
-            foreach (var parcel in parcels)
+            IDal.DO.Parcel parcel;
+            try
             {
-                if (parcel.PickingUp != null && parcel.Arrival == null)
-                {
-                    Location getterLocation = GetBLById<IDal.DO.Customer, Customer>(parcel.GetterId).CLocation;
-                    drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, getterLocation));
-                    drone.CurrLocation = getterLocation;
-                    drone.DStatus = DroneStatus.Free;
-                    dal.ProvidingPackage(parcel.Id);
-                    deliveryed = true;
-                }
+                parcel = dal.GetFromDalById<IDal.DO.Parcel>(drone.DeliveredParcelId.Value);
             }
-            if (!deliveryed)
+            catch (DalObject.IdIsNotExistException)
             {
-                throw new InValidActionException("parcels status doesnt match");
+                throw new IdIsNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
             }
+
+            if (parcel.PickingUp == null)
+            {
+                throw new InValidActionException("Parcel assigned to drone had not been picked up yet");
+            }
+            if (parcel.Arrival != null)
+            {
+                throw new InValidActionException("Parcel assigned has already supplied to destination");
+            }
+
+            Location getterLocation = GetCustomer(parcel.GetterId).CLocation;
+            drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, getterLocation));
+            drone.CurrLocation = getterLocation;
+            drone.DStatus = DroneStatus.Free;
+            dal.UpdatingInData<IDal.DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
         }
 
+        /// <summary>
+        /// A function that gets IDal.DO.Parcel object and returns its status
+        /// </summary>
+        /// <param name="parcel"></param>
+        /// <returns>returns ParcelStatus of specific parcel </returns>
+        private ParcelStatus GetParcelStatus(IDal.DO.Parcel parcel)
+        {
+            if (parcel.Arrival.HasValue)
+            {
+                return ParcelStatus.InDestination;
+            }
+            if (parcel.PickingUp.HasValue)
+            {
+                return ParcelStatus.collected;
+            }
+            if (parcel.BelongParcel.HasValue)
+            {
+                return ParcelStatus.belonged;
+            }
+            return ParcelStatus.made;
+        }
+
+        //------Get-------------------------------------------------------
+
+        public IEnumerable<ParcelToList> GetParcels()
+        {
+            var dList = dal.GetListFromDal<IDal.DO.Parcel>();
+            var bList = new List<ParcelToList>();
+            foreach (dynamic parcel in bList)
+            {
+                bList.Add(ConvertToList(parcel));
+            }
+            return bList;
+        }
 
         /// <summary>
         /// A function that returns a list of unbelong parcels.
@@ -163,12 +208,19 @@ namespace BL
             parcel.Id,
             senderName,
             getterName,
-            (IBL.BO.WeightCategories)parcel.Weight,
+            (WeightCategories)parcel.Weight,
             (Priority)parcel.MPriority,
             GetParcelStatus(parcel)
             );
             return nParcel;
         }
+
+        public Parcel GetParcel(int parcelId)
+        {
+            var dParcel = dal.GetFromDalById<IDal.DO.Parcel>(parcelId);
+            return ConvertToBL(dParcel);
+        }
+
 
         /// <summary>
         /// A function that gets an object of IDal.DO.Parcel
@@ -185,28 +237,6 @@ namespace BL
                 (WeightCategories)parcel.Weight, (Priority)parcel.MPriority,
                 dInParcel, parcel.MakingParcel, parcel.BelongParcel,
                 parcel.PickingUp, parcel.Arrival);
-        }
-
-        /// <summary>
-        /// A function that gets IDal.DO.Parcel object and returns its status
-        /// </summary>
-        /// <param name="parcel"></param>
-        /// <returns>returns ParcelStatus of specific parcel </returns>
-        private ParcelStatus GetParcelStatus(IDal.DO.Parcel parcel)
-        {
-            if (parcel.Arrival.HasValue)
-            {
-                return ParcelStatus.InDestination;
-            }
-            if (parcel.PickingUp.HasValue)
-            {
-                return ParcelStatus.collected;
-            }
-            if (parcel.BelongParcel.HasValue)
-            {
-                return ParcelStatus.belonged;
-            }
-            return ParcelStatus.made;
         }
     }
 }

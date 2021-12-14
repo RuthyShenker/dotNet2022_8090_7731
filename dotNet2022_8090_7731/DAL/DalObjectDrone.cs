@@ -7,6 +7,7 @@ using static DalObject.DataSource.Config;
 using IDal.DO;
 using static DalObject.DataSource;
 using IDal.DO;
+using System.Collections;
 
 namespace DalObject
 {/// <summary>
@@ -14,6 +15,28 @@ namespace DalObject
 /// </summary>
     public partial class DalObject
     {
+        /// <summary>
+        /// A function that returnsthe data of : available, lightWeight,
+        ///mediumWeight, heavyWeight, chargingRate
+        /// </summary>
+        /// <returns>returns an array of double that contains:available, lightWeight,
+        ///mediumWeight, heavyWeight, chargingRate</returns>
+        public double[] PowerConsumptionRequest() => new double[5] { available, lightWeight,mediumWeight, heavyWeight, chargingRate };
+
+        /// <summary>
+        /// the function realesing drone by deleting the match entity fron the list
+        /// </summary>
+        /// <param name="dId"></param>
+        public void ReleasingDrone(int dId)
+        {
+            ChargingDroneList.Remove(ChargingDroneList.Find(drone => drone.DroneId== dId));
+        }
+
+        #region canErase?
+
+
+
+
         //public Drone this[int id]
         //{
         //    //set
@@ -43,10 +66,10 @@ namespace DalObject
         /// </summary>
         /// <param name="dId"></param>
         /// <param name="sId"></param>
-        public void AddingDroneToCharge(int dId, int sId)
-        {
-            ChargingDroneList.Add(new ChargingDrone(dId, sId));
-        }
+        //public void AddingDroneToCharge(int dId, int sId)
+        //{
+        //    ChargingDroneList.Add(new ChargingDrone(dId, sId));
+        //}
 
         /// <summary>
         /// A function that returns new list of all Charging Drone.
@@ -101,14 +124,6 @@ namespace DalObject
         //    throw new Exception("There Are No Available Positions");
         //}
 
-        /// <summary>
-        /// the function realesing drone by deleting the match entity fron the list
-        /// </summary>
-        /// <param name="dId"></param>
-        public void ReleasingDrone(int dId)
-        {
-            ChargingDroneList.Remove(ChargingDroneList.Find(drone => drone.DroneId== dId));
-        }
 
         ///// <summary>
         ///// A function that gets an id of drone and returns this drone-copied.
@@ -128,6 +143,7 @@ namespace DalObject
         //    //return DroneList.First(drone => drone.Id == Id).Clone();
         //}
 
+
         ///// <summary>
         ///// A function that returns the list of the drones
         ///// </summary>
@@ -137,23 +153,21 @@ namespace DalObject
         //    return DroneList.Select(drone => new Drone(drone)).ToList();
 
         //}
-        /// <summary>
-        /// A function that returnsthe data of : available, lightWeight,
-        ///mediumWeight, heavyWeight, chargingRate
-        /// </summary>
-        /// <returns>returns an array of double that contains:available, lightWeight,
-        ///mediumWeight, heavyWeight, chargingRate</returns>
-        public double[] PowerConsumptionRequest() => new double[5] { available, lightWeight,mediumWeight, heavyWeight, chargingRate };
+        //public IEnumerable<Parcel> GetParcels()
+        //{
+        //    return ParceList.Select(parcel => new Parcel(parcel)).ToList();
 
-        public int SumOfDronesInSpecificStation(int sId)
-        {
-            int count = 0;
-            for (int i = 0; i < ChargingDroneList.Count; i++)
-            {
-                if (ChargingDroneList[i].StationId == sId) count++;
-            }
-            return count;
-        }
+        //}
+        //public IEnumerable<Customer> GetCustomers()
+        //{
+        //    return CustomerList.Select(customer => new Customer(customer)).ToList();
+
+        //}
+        //public IEnumerable<Station> GetStations()
+        //{
+        //    return BaseStationList.Select(Station => new Station(Station)).ToList();
+
+        //}
         /// <summary>
         /// A function that gets an id of drone 
         /// and a drone and updates the data base to 
@@ -162,10 +176,12 @@ namespace DalObject
         /// </summary>
         /// <param name="dId"></param>
         /// <param name="drone"></param>
-        public void UpdateDrone(int dId, Drone drone)
-        {
-            DroneList.Remove(DroneList.Find(drone => drone.Id == dId));
-            DroneList.Add(drone);
-        }
+        //public void UpdateDrone(int dId, Drone drone)
+        //{
+        //    DroneList.Remove(DroneList.Find(drone => drone.Id == dId));
+        //    DroneList.Add(drone);
+        //}
+
+        #endregion
     }
 }

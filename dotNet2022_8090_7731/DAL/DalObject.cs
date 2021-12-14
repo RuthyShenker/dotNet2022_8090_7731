@@ -74,9 +74,9 @@ namespace DalObject
             return new List<T>((List<T>)data[typeof(T)]);
         }
 
-        public bool IsExistInList<T>(List<T> list, Predicate<T> predicate)where T:IDalObject
-        {
-            return list.Find(predicate).Equals(default(T));
-        }
+        //public bool IsExistInList<T>(List<T> list, Predicate<T> predicate)where T:IDalObject
+        //{
+        //    return list.Find(predicate).Equals(default(T));
+        //}
     }
 }

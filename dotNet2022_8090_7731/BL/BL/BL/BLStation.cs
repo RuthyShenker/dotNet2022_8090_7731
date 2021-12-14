@@ -4,7 +4,7 @@ using System.Device.Location;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IBL.BO;
+using BO;
 
 namespace BL
 {
@@ -29,7 +29,7 @@ namespace BL
                 NameStation = bLStation.NameStation,
                 NumberOfChargingPositions = bLStation.NumAvailablePositions
             };
-            dal.AddingItemToDList(station);
+            dal.AddingToData(station);
         }
 
         /// <summary>
@@ -47,11 +47,10 @@ namespace BL
                 var baseStation = dal.GetFromDalById<IDal.DO.BaseStation>(stationId);
 
                 if (!string.IsNullOrEmpty(stationName))
-                    baseStation.NameStation = stationName;
-                if (!string.IsNullOrEmpty(amountOfPositions))
-                    baseStation.NumberOfChargingPositions = int.Parse(amountOfPositions);
+                    dal.UpdatingInData<IDal.DO.BaseStation>(stationId, stationName, nameof(baseStation.NameStation));
 
-                dal.UpdateBaseStation(stationId, baseStation);
+                if (!string.IsNullOrEmpty(amountOfPositions))
+                    dal.UpdatingInData<IDal.DO.BaseStation>(stationId, int.Parse(amountOfPositions), nameof(baseStation.NumberOfChargingPositions));
             }
             catch (DalObject.IdIsNotExistException)
             {
@@ -59,37 +58,7 @@ namespace BL
             }
         }
 
-
-        /// <summary>
-        /// A function that gets an object of IDal.DO.BaseStation
-        /// and expands it to Station type and returns it.
-        /// </summary>
-        /// <param name="station"></param>
-        /// <returns>returns Station object</returns>
-        private Station ConvertToBL(IDal.DO.BaseStation station)
-        {
-            var nLocation = new Location(station.Longitude, station.Latitude);
-            var numAvailablePositions = station.NumberOfChargingPositions - MountOfFullPositions(nLocation);
-            var chargingDroneBList = ChargingDroneBLList(station.Id);
-            return new Station(station.Id, station.NameStation, nLocation, numAvailablePositions, chargingDroneBList);
-        }
-
-        /// <summary>
-        /// A function that gets an object of IDal.DO.BaseStation
-        /// and expands it to StationToList object and returns it.
-        /// </summary>
-        /// <param name="station"></param>
-        /// <returns>returns StationToList object</returns>
-        private StationToList ConvertToList(IDal.DO.BaseStation station)
-        {
-            var fullPositions = MountOfFullPositions(new Location(station.Longitude, station.Latitude));
-            StationToList nStation = new(
-            station.Id,
-            station.NameStation,
-            station.NumberOfChargingPositions - fullPositions,
-            fullPositions);
-            return nStation;
-        }
+      
 
         /// <summary>
         /// A function that gets id of station and
@@ -111,39 +80,7 @@ namespace BL
             return chargingDroneBLList;
         }
 
-        /// <summary>
-        /// A function that returns Available Slots by type of StationToList.
-        /// </summary>
-        /// <returns> returns Available Slots</returns>
-        public IEnumerable<StationToList> AvailableSlots()
-        {
-            var stationsDalList = dal.GetDalListByCondition<IDal.DO.BaseStation>(baseStation => dal.AreThereFreePositions(baseStation.Id));
-            var stationBalList = new List<StationToList>();
-            foreach (var station in stationsDalList)
-            {
-                stationBalList.Add(ConvertToList(station));
-            }
-            return stationBalList;
-        }
-
-        /// <summary>
-        /// A function that gets a location of station 
-        /// and returns Mount Of Full Positions of this station.
-        /// </summary>
-        /// <param name="stationLocation"></param>
-        /// <returns>ount Of Full Positions of specific station</returns>
-        private int MountOfFullPositions(Location stationLocation)
-        {
-            int sumFullPositions = 0;
-            foreach (var drone in lDroneToList)
-            {
-                if (drone.DStatus == DroneStatus.Maintenance && EqualLocations(drone.CurrLocation, stationLocation))
-                {
-                    ++sumFullPositions;
-                }
-            }
-            return sumFullPositions;
-        }
+        
 
         /// <summary>
         /// A function that gets a location and retrns the
@@ -173,7 +110,7 @@ namespace BL
                         distance = currDistance;
                         index = i;
                     }
-                    else if (dal.AreThereFreePositions(stationDalList.ElementAt(i).Id))
+                    else if (dal.AreThereFreePositions(stationDalList.ElementAt(i).Id)>0)
                     {
                         distance = currDistance;
                         index = i;
@@ -182,5 +119,71 @@ namespace BL
             }
             return ConvertToBL(stationDalList.ElementAt(index));
         }
+
+        //-----Get-----------------------------------------------
+
+        public IEnumerable<StationToList> GetStations()
+        {
+            var dList = dal.GetListFromDal<IDal.DO.BaseStation>();
+            var bList = new List<StationToList>();
+            foreach (dynamic station in bList)
+            {
+                bList.Add(ConvertToList(station));
+            }
+            return bList;
+        }
+
+        /// <summary>
+        /// A function that returns Available Slots by type of StationToList.
+        /// </summary>
+        /// <returns> returns Available Slots</returns>
+        public IEnumerable<StationToList> AvailableSlots()
+        {
+            var stationsDalList = dal.GetDalListByCondition<IDal.DO.BaseStation>(baseStation => dal.AreThereFreePositions(baseStation.Id) > 0);
+            var stationBalList = new List<StationToList>();
+            foreach (var station in stationsDalList)
+            {
+                stationBalList.Add(ConvertToList(station));
+            }
+            return stationBalList;
+        }
+
+        /// <summary>
+        /// A function that gets an object of IDal.DO.BaseStation
+        /// and expands it to StationToList object and returns it.
+        /// </summary>
+        /// <param name="station"></param>
+        /// <returns>returns StationToList object</returns>
+        private StationToList ConvertToList(IDal.DO.BaseStation station)
+        {
+            var fullPositions = station.NumberOfChargingPositions - dal.AreThereFreePositions(station.Id);
+            StationToList nStation = new(
+            station.Id,
+            station.NameStation,
+            station.NumberOfChargingPositions - fullPositions,
+            fullPositions);
+            return nStation;
+        }
+
+        public Station GetStation(int stationId)
+        {
+            var dStation = dal.GetFromDalById<IDal.DO.BaseStation>(stationId);
+            return ConvertToBL(dStation);
+        }
+
+        /// <summary>
+        /// A function that gets an object of IDal.DO.BaseStation
+        /// and expands it to Station type and returns it.
+        /// </summary>
+        /// <param name="station"></param>
+        /// <returns>returns Station object</returns>
+        private Station ConvertToBL(IDal.DO.BaseStation station)
+        {
+            var nLocation = new Location(station.Longitude, station.Latitude);
+            var numAvailablePositions = dal.AreThereFreePositions(station.Id);
+            var chargingDroneBList = ChargingDroneBLList(station.Id);
+            return new Station(station.Id, station.NameStation, nLocation, numAvailablePositions, chargingDroneBList);
+        }
+
     }
 }

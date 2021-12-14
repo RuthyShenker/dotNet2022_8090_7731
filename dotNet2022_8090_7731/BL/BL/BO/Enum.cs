@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL.BO
+namespace BO
 {
-    
-    
-        /// <summary>
-        /// An Enum of WeightCategories contains:
-        /// Light, Medium, Heavy.
-        /// </summary>
-        public enum WeightCategories { Light, Medium, Heavy };
+
+
+    /// <summary>
+    /// An Enum of WeightCategories contains:
+    /// Light, Medium, Heavy.
+    /// </summary>
+    public enum WeightCategories { Light, Medium, Heavy };
 
         /// <summary>
         /// An Enum of UrgencyStatuses contains:

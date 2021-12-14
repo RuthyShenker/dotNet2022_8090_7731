@@ -47,7 +47,7 @@ namespace DalObject
         //    BaseStationList.Add(baseStation);
         //}
 
-        public void AddingItemToDList<T>(T item) where T : IIdentifiable,IDalObject
+        public void AddingToData<T>(T item) where T : IDalObject
         {
             ((List<T>)data[typeof(T)]).Add(item);
         }
@@ -89,11 +89,16 @@ namespace DalObject
         //    return new List<BaseStation>(BaseStationList.Where(baseStation => AreThereFreePositions(baseStation.Id)));
         //}
 
-        public bool AreThereFreePositions(int sId)
+        public int AreThereFreePositions(int sId)
         {
-            return (BaseStationList.Find(baseStation => baseStation.Id == sId).NumberOfChargingPositions - SumOfDronesInSpecificStation(sId)) > 0;
+            return (BaseStationList.Find(baseStation => baseStation.Id == sId).NumberOfChargingPositions - SumDronesInStation(sId)) ;
         }
-        
+
+        private int SumDronesInStation(int sId)
+        {
+            return data[typeof(ChargingDrone)].Cast<ChargingDrone>().Where(station => station.StationId == sId).Count();
+        }
+
         /// <summary>
         /// A function that gets an id of base station and an 
         /// object of base station and changes
@@ -103,10 +108,10 @@ namespace DalObject
         /// </summary>
         /// <param name="bId"></param>
         /// <param name="baseStation"></param>
-        public void UpdateBaseStation(int bId, BaseStation baseStation)
-        {
-            BaseStationList.Remove(BaseStationList.Find(baseStation => baseStation.Id == bId));
-            BaseStationList.Add(baseStation);
-        }
+        //public void UpdateBaseStation(int bId, BaseStation baseStation)
+        //{
+        //    BaseStationList.Remove(BaseStationList.Find(baseStation => baseStation.Id == bId));
+        //    BaseStationList.Add(baseStation);
+        //}
     }
 }

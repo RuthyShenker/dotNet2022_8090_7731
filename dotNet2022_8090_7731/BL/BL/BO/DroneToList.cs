@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL.BO
+namespace BO
 {
     /// <summary>
     /// A class of DroneToList
@@ -28,7 +28,7 @@ namespace IBL.BO
             BatteryStatus = batteryStatus;
             DStatus = dStatus;
             CurrLocation = currLocation;
-            NumOfParcel = numOfParcel;
+            DeliveredParcelId = numOfParcel;
         }
         public DroneToList(int id, string model, WeightCategories weight):this(id,model,weight,0,0,null,0)
         {
@@ -42,7 +42,7 @@ namespace IBL.BO
         public double BatteryStatus { get; set; }
         public DroneStatus DStatus { get; set; }
         public Location CurrLocation { get; set; }
-        public int? NumOfParcel{ get; set; }
+        public int? DeliveredParcelId{ get; set; }
        
     }
 }
