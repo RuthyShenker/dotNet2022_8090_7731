@@ -10,7 +10,7 @@ namespace ConsoleUI_BL
 {
     partial class Program
     {
-        public static void AddingOption()
+        public static void AddingOption(IBL.IBL bL)
         {
             int input = 0;
             tools.PrintEnum(typeof(Adding));

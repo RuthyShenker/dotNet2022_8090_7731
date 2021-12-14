@@ -36,6 +36,8 @@ namespace BL
             {
                 lDroneToList.Add(ConvertToList(drone));
             }
+            //TODO:
+            lDroneToList.Add(new DroneToList(1,"1",WeightCategories.Light,20,DroneStatus.Free,new Location(1,1),null));
         }
 
         /// <summary>

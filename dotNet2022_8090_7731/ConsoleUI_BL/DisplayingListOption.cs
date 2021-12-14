@@ -11,7 +11,7 @@ namespace ConsoleUI_BL
 {
     partial class Program
     {
-        private static void DisplayingListOption()
+        private static void DisplayingListOption(IBL.IBL bL)
         {
             tools.PrintEnum(typeof(DisplayingList));
             

@@ -37,10 +37,20 @@ namespace DalObject
         /// <summary>
         /// A constructor of DalObject that activates the function Initialize
         /// </summary>
-        //public DalObject()
-        //{
-        //    Initialize();
-        //}
+        public DalObject()
+        {
+            //TODO:
+            //Initialize();
+            
+            data = new()
+            {
+                [typeof(Drone)] = DroneList,
+                [typeof(Customer)] = CustomerList,
+                [typeof(Parcel)] = ParceList,
+                [typeof(BaseStation)] = BaseStationList,
+                [typeof(ChargingDrone)] = ChargingDroneList,
+            };
+        }
 
         //Update Generic:
         //void Update<T>(int id, T obj) where T : IDalObject, IIdentifiable

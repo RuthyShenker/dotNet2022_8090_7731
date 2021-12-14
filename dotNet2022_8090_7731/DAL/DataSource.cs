@@ -45,7 +45,7 @@ namespace DalObject
         /// A list of Charging Drones.
         /// </summary>
         static internal List<ChargingDrone> ChargingDroneList = new List<ChargingDrone>();
-
+ 
         /// <summary>
         /// A dictionary contains:
         /// [typeof(Drone)] = DroneList,
@@ -53,14 +53,7 @@ namespace DalObject
         /// [typeof(Parcel)] = ParceList,
         /// [typeof(BaseStation)] = BaseStationList,
         /// </summary>
-        static internal Dictionary<Type, IList> data = new()
-        {
-            [typeof(Drone)] = DroneList,
-            [typeof(Customer)] = CustomerList,
-            [typeof(Parcel)] = ParceList,
-            [typeof(BaseStation)] = BaseStationList,
-            [typeof(ChargingDrone)] = ChargingDroneList,
-        };
+        static internal Dictionary<Type, IList> data; 
 
         /// <summary>
         /// A class Config that contains :
@@ -130,17 +123,19 @@ namespace DalObject
             for (int i = 0; i < INITIALIZE_PARCEL; ++i)
             {
                 fillParcel = new Parcel() { Id = ++Config.IndexParcel };
-                fillParcel.SenderId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
+                fillParcel.SenderId = CustomerList[Rand.Next(0, CustomerList.Count)].Id;
                 do
                 {
-                    fillParcel.GetterId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
+                    fillParcel.GetterId = CustomerList[Rand.Next(0, CustomerList.Count)].Id;
                 } while (fillParcel.GetterId == fillParcel.SenderId);
                 fillParcel.Weight = (WeightCategories)Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
-                fillParcel.Status = (UrgencyStatuses)Rand.Next(0, Enum.GetNames(typeof(UrgencyStatuses)).Length);
-                fillParcel.DroneId = availableDrone();
+                fillParcel.MPriority = (UrgencyStatuses)Rand.Next(0, Enum.GetNames(typeof(UrgencyStatuses)).Length);
+                //fillParcel.DroneId = availableDrone();
+                fillParcel.DroneId = 0;
                 fillParcel.MakingParcel = DateTime.Now;
                 fillParcel.BelongParcel = fillParcel.DroneId == 0 ? new DateTime() : DateTime.Now;
-                fillParcel.PickingUp = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.BelongParcel.AddDays(Rand.Next(0, 11));
+                //fillParcel.PickingUp = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.BelongParcel.AddDays(Rand.Next(0, 11));
+                fillParcel.PickingUp = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.BelongParcel.Value.AddDays(Rand.Next(0, 11));
                 //fillParcel.Arrival = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.PickingUp.AddDays(rand.Next(0, 11));
                 ParceList.Add(fillParcel);
             }
@@ -167,18 +162,6 @@ namespace DalObject
         }
 
 
-        //private static int availableDrone()
-        //{
-        //    foreach (Drone drone in DroneList)
-        //    {
-        //        if(drone.Status==DroneStatuses.Available)
-        //        {
-        //            return drone.Id;
-        //            DalObjectBaseStation dalObject = new DalObjectBaseStation();
-        //            dalObject.ChangeDroneStatus(drone.Id, DroneStatuses.Delivery);
-        //        }
-        //    }
-        //    return 0;
-        //}
-    }
+   
 }
+

@@ -6,9 +6,9 @@ namespace ConsoleUI_BL
 {
     partial class Program
     {
-        static IBL.IBL bL = new BL.BL();
         static void Main(string[] args)
         {
+            IBL.IBL bL = new BL.BL();
             int input = 0;
             while ((ProgramOptions)input != ProgramOptions.Exit)
             {
@@ -20,13 +20,13 @@ namespace ConsoleUI_BL
             
                     switch ((ProgramOptions)input)
                     {
-                        case ProgramOptions.Adding:             AddingOption();                     break;
+                        case ProgramOptions.Adding:             AddingOption(bL);                     break;
 
-                        case ProgramOptions.Updating:           UpdatingOption();                   break;
+                        case ProgramOptions.Updating:           UpdatingOption(bL);                   break;
 
-                        case ProgramOptions.DisplayingItem:     DisplayingItemOption();             break;
+                        case ProgramOptions.DisplayingItem:     DisplayingItemOption(bL);             break;
 
-                        case ProgramOptions.DisplayingList:     DisplayingListOption();             break;
+                        case ProgramOptions.DisplayingList:     DisplayingListOption(bL);             break;
 
                         case ProgramOptions.Exit:               Console.WriteLine("good bye!");     break;
 

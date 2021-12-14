@@ -91,7 +91,7 @@ namespace DalObject
 
         public int AreThereFreePositions(int sId)
         {
-            return (BaseStationList.Find(baseStation => baseStation.Id == sId).NumberOfChargingPositions - SumDronesInStation(sId)) ;
+            return BaseStationList.Find(baseStation => baseStation.Id == sId).NumberOfChargingPositions - SumDronesInStation(sId) ;
         }
 
         private int SumDronesInStation(int sId)
@@ -112,6 +112,20 @@ namespace DalObject
         //{
         //    BaseStationList.Remove(BaseStationList.Find(baseStation => baseStation.Id == bId));
         //    BaseStationList.Add(baseStation);
+        //}
+
+        //private int availableDrone()
+        //{
+        //    foreach (Drone drone in DroneList)
+        //    {
+        //        if (drone.Status == DroneStatuses.Available)
+        //        {
+        //            return drone.Id;
+        //            DalObjectBaseStation dalObject = new DalObjectBaseStation();
+        //            dalObject.ChangeDroneStatus(drone.Id, DroneStatuses.Delivery);
+        //        }
+        //    }
+        //    return 0;
         //}
     }
 }

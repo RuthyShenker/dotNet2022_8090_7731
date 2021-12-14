@@ -67,5 +67,10 @@ namespace PL
             this.Close();
         }
 
+        private void DroneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            new DroneWindow(bl,sender as DroneToList);
+        }
+
     }
 }
