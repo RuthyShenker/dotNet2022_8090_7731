@@ -83,7 +83,7 @@ namespace IBL
         //Get Unbelong Parcels 
 
 
-        // IEnumerable<StationToList> AvailableSlots();
+        //IEnumerable<StationToList> AvailableSlots();
         //  GetItemFromBLById יש פונקציה גנרית 
         // Station GetStation(int id);
         // Drone GetDrone(int Id);

@@ -42,6 +42,13 @@ namespace DalObject
         //    Initialize();
         //}
 
+        //Update Generic:
+        //void Update<T>(int id, T obj) where T : IDalObject, IIdentifiable
+        //{
+        //    data[typeof(T)].Remove(((List<T>)data[typeof(T)]).Find(Object => Object.Id == id));
+        //    data[typeof(T)].Add(obj);
+        //}
+
         public bool IsIdExistInList<T>(int Id) where T : IIdentifiable,IDalObject
         {
             return ((List<T>)data[typeof(T)]).Any(item => item.Id == Id);
