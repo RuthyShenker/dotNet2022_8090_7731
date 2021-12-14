@@ -108,5 +108,6 @@ namespace DalObject
             BaseStationList.Remove(BaseStationList.Find(baseStation => baseStation.Id == bId));
             BaseStationList.Add(baseStation);
         }
+
     }
 }

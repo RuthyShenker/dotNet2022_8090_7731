@@ -30,7 +30,6 @@ namespace DalObject
         {
             parcel.DroneId = dId;
             parcel.BelongParcel = DateTime.Now;
-
             ParceList.Remove(ParceList.Find(mParcel => mParcel.Id == parcel.Id));
             ParceList.Add(parcel);
         }

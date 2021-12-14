@@ -80,7 +80,7 @@ namespace IBL
 
         IEnumerable<DroneToList> GetDrones(Func<DroneToList, bool> predicate = null);
 
-        // IEnumerable<StationToList> AvailableSlots();
+        //IEnumerable<StationToList> AvailableSlots();
         //  GetItemFromBLById יש פונקציה גנרית 
         // Station GetStation(int id);
         // Drone GetDrone(int Id);

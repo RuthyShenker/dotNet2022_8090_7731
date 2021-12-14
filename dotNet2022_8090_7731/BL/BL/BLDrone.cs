@@ -179,6 +179,7 @@ namespace BL
                 if (droneToList.BatteryStatus >= MinBattery(GetDistance(droneToList.CurrLocation, parcel), (WeightCategories)parcel.Weight))
                 {
                     droneToList.DStatus = DroneStatus.Delivery;
+                   
                     dal.UpdateBelongedParcel(parcel, droneToList.Id);
                     belonged = true;
                     break;

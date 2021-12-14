@@ -177,6 +177,7 @@ namespace BL
                     customer.Phone = newPhone;
                 }
                 dal.UpdateCustomer(customerId, customer);
+               
             }
             catch (DalObject.IdIsNotExistException)
             {

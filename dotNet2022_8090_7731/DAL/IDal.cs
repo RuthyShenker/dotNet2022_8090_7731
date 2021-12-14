@@ -64,6 +64,8 @@ namespace IDal
         void UpdateDrone(int dId, Drone drone);
         void UpdateBaseStation(int bId, BaseStation baseStation);
         void UpdateCustomer(int cId, Customer customer);
+        //void Update<T>(int id, T obj) where T : IDalObject, IIdentifiable;
+ 
         int SumOfDronesInSpecificStation(int sId);
 
         // get an item
