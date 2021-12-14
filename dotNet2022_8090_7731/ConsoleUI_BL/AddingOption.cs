@@ -135,7 +135,7 @@ namespace ConsoleUI_BL
             WeightCategories weight = (WeightCategories)CheckValids.InputValidOfEnum(typeof(WeightCategories));
             Console.WriteLine("Enter the station Id to charge the new drone for first charging:  ");
             stationId = CheckValids.InputNumberValidity("id");
-            float batteryStatus = 0;
+            float batteryStatus = 100;
             DroneStatus droneStatus = default(DroneStatus);
             ParcelInTransfer pInTransfer = null;
             Location currLocation = null;

@@ -145,9 +145,10 @@ namespace DalObject
                 //fillParcel.DroneId = availableDrone();
 
                 fillParcel.MakingParcel = DateTime.Now;
-                
+
                 // rand assigning parcel
-                bool isAssigned = Rand.Next(2) == 0;
+                //bool isAssigned = Rand.Next(2) == 0;
+                bool isAssigned = i % 2 == 0;
                 fillParcel.DroneId = isAssigned ? DroneList[i].Id : 0;
                 fillParcel.BelongParcel = fillParcel.DroneId == 0 ? null : DateTime.Now;
                 
