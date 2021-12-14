@@ -16,6 +16,7 @@ namespace BL
             foreach (var drone in dal.GetListFromDal<IDAL.DO.Drone>())
                 lDroneToList.Add(ConvertToList(drone));
         }
+
         /// <summary>
         /// A function that gets an object of IDAL.DO.Drone and Expands it to object of 
         /// IBL.BO.DroneToList Considering of course with logic.
@@ -36,6 +37,7 @@ namespace BL
                 return CalculateUnDeliveryingDrone(nDrone);
             }
         }
+
         /// <summary>
         /// Gets drone and parcel (which belonged to the drone)
         /// Calculate the fields of drone, and return it. 
@@ -66,6 +68,7 @@ namespace BL
             nDrone.DeliveredParcelId = parcel.Id;
             return nDrone;
         }
+
         /// <summary>
         /// Get drone which his status is not 'Delivery'
         /// Calculate his fields and returns it.
@@ -96,6 +99,7 @@ namespace BL
             }
             return nDrone;
         }
+
         /// <summary>
         /// A function that builds new DroneToList object and gets an object of IDAL.DO.Drone
         /// and copies from the object-IDAL.DO.Drone the common fields.
@@ -107,6 +111,7 @@ namespace BL
             source.Model,
             (WeightCategories)source.MaxWeight);
         }
+
         /// <summary>
         ///  
         /// A function that gets an object of IDAL.DO.Drone

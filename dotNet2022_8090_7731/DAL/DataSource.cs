@@ -41,9 +41,6 @@ namespace DalObject
                 return Rand.NextDouble() * (max - min) + min;
             }
         }
-
-        const int INITIALIZE_DRONE = 5, INITIALIZE_CUSTOMER = 10,
-            INITIALIZE_BASE_STATION = 2, INITIALIZE_PARCEL = 2;
         /// <summary>
         /// an object of Random .
         /// </summary>

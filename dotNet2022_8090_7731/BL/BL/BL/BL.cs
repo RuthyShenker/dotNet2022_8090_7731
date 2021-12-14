@@ -53,95 +53,33 @@ namespace BL
             chargingRate = arrPCRequest[4];
         }
 
-        /// <summary>
-        /// A function that gets an object of IDal.DO.Drone and Expands it to object of 
-        /// IBL.BO.DroneToList Considering of course with logic.
-        /// </summary>
-        /// <param name="drone"></param>
-        /// <returns></returns>
-        private DroneToList ConvertToList(IDal.DO.Drone drone)
-        {
-            DroneToList nDrone = CopyCommon(drone);
-            var parcel = dal.GetFromDalByCondition<IDal.DO.Parcel>(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
-            if (!parcel.Equals(default(IDal.DO.Parcel)))
-            {
-                return CalculateDroneInDelivery(nDrone, parcel);
-            }
-            else
-            {
-                //nDrone.NumOfParcel = null; // אולי לא צריך שורה זו
-                return CalculateUnDeliveryingDrone(nDrone);
-            }
-        }
-
-        /// <summary>
-        /// A function that builds new DroneToList object and gets an object of IDal.DO.Drone
-        /// and copies from the object-IDal.DO.Drone the common fields.
-        /// </summary>
-        private static DroneToList CopyCommon(IDal.DO.Drone source)
-        {
-            return (new DroneToList(
-            source.Id,
-            source.Model,
-            (WeightCategories)source.MaxWeight));
-        }
-
-        /// <summary>
-        /// Gets drone and parcel (which belonged to the drone)
-        /// Calculate the fields of drone, and return it. 
-        /// </summary>
-        /// <param name="nDrone"></param>
-        /// <param name="parcel"></param>
-        /// <returns></returns>
-        private DroneToList CalculateDroneInDelivery(DroneToList nDrone, IDal.DO.Parcel parcel)
-        {
-            nDrone.DStatus = DroneStatus.Delivery;
-            //location
-            var sender = dal.GetFromDalByCondition<IDal.DO.Customer>(customer => customer.Id == parcel.SenderId);
-            if (parcel.BelongParcel != null && parcel.PickingUp == null)
-            {
-                nDrone.CurrLocation = ClosestStation(new Location(sender.Longitude, sender.Latitude)).SLocation;
-            }
-            else if (parcel.Arrival == null && parcel.PickingUp != null)
-            {
-                nDrone.CurrLocation = new Location(sender.Longitude, sender.Latitude);
-            }
-            // battery Status
-            Location destination = GetCustomer(parcel.GetterId).CLocation;
-            Location closestStation = ClosestStation(destination).SLocation;
-            double distance = CalculateDistance(nDrone.CurrLocation, destination, closestStation);
-            double minBattery = MinBattery(distance, (WeightCategories)parcel.Weight);
-            nDrone.BatteryStatus = Rand.NextDouble() * (100 - minBattery) + minBattery;
-            nDrone.DeliveredParcelId = parcel.Id;
-            return nDrone;
-        }
-
-        /// <summary>
-        /// Get drone which his status is not 'Delivery'
-        /// Calculate his fields and returns it.
-        /// </summary>
-        /// <param name="nDrone"></param>
-        /// <returns></returns>
-        private DroneToList CalculateUnDeliveryingDrone(DroneToList nDrone)
-        {
-            nDrone.DStatus = (DroneStatus)Rand.Next((int)DroneStatus.Free, (int)DroneStatus.Maintenance);
-            if (nDrone.DStatus == DroneStatus.Maintenance)
-            {
-                var stationDalList = dal.GetListFromDal<IDal.DO.BaseStation>();
-                var station = stationDalList.ElementAt(Rand.Next(stationDalList.Count()));
-                nDrone.CurrLocation = new Location(station.Longitude, station.Latitude);
-                nDrone.BatteryStatus = Rand.NextDouble() * 20;
-            }
-            else // droneToList.DStatus == Free
-            {
-                var customersList = CustomersWithProvidedParcels();
-                nDrone.CurrLocation = customersList[Rand.Next(customersList.Count)].CLocation;
-                var closetStation = ClosestStation(nDrone.CurrLocation);
-                double distance = CalculateDistance(nDrone.CurrLocation, closetStation.SLocation);
-                nDrone.BatteryStatus = Rand.NextDouble() * (100 - MinBattery(distance)) + MinBattery(distance);
-            }
-            return nDrone;
-        }
+        
+        ///// <summary>
+        ///// Get drone which his status is not 'Delivery'
+        ///// Calculate his fields and returns it.
+        ///// </summary>
+        ///// <param name="nDrone"></param>
+        ///// <returns></returns>
+        //private DroneToList CalculateUnDeliveryingDrone(DroneToList nDrone)
+        //{
+        //    nDrone.DStatus = (DroneStatus)rand.Next((int)DroneStatus.Free, (int)DroneStatus.Maintenance);
+        //    if (nDrone.DStatus == DroneStatus.Maintenance)
+        //    {
+        //        var stationDalList = dal.GetListFromDal<IDAL.DO.BaseStation>();
+        //        var station = stationDalList.ElementAt(rand.Next(stationDalList.Count()));
+        //        nDrone.CurrLocation = new Location(station.Longitude, station.Latitude);
+        //        nDrone.BatteryStatus = rand.NextDouble() * 20;
+        //    }
+        //    else // droneToList.DStatus == Free
+        //    {
+        //        var customersList = CustomersWithProvidedParcels();
+        //        nDrone.CurrLocation = customersList[rand.Next(customersList.Count)].Location;
+        //        var closetStation = ClosestStation(nDrone.CurrLocation);
+        //        double distance = CalculateDistance(nDrone.CurrLocation, closetStation.Location);
+        //        nDrone.BatteryStatus = rand.NextDouble() * (100 - MinBattery(distance)) + MinBattery(distance);
+        //    }
+        //    return nDrone;
+        //}
 
         /// <summary>
         /// A function that Calculates distance between all places in the array
