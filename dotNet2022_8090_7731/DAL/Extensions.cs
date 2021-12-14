@@ -6,10 +6,10 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using IDal.DO;
+using IDAL.DO;
 using System.Collections;
 
-namespace IDal.DO
+namespace IDAL.DO
 {
     /// <summary>
     /// A class of Extensions

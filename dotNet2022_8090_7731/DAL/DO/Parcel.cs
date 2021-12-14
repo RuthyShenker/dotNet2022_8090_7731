@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDal
+namespace IDAL
 {
     namespace DO
     {
@@ -15,7 +15,6 @@ namespace IDal
         /// </summary>
         public struct Parcel:IIdentifiable,IDalObject
         {
-
             /// <summary>
             /// A constructor of Parcel that gets parameters 
             /// and initalizes the new instance with this 
@@ -38,7 +37,7 @@ namespace IDal
                 Weight = weight;
                 MPriority = status;
                 DroneId = 0;
-                MakingParcel = makingParcel;
+                CreatedTime = makingParcel;
                 BelongParcel = belongParcel;
                 PickingUp = pickingUp;
                 Arrival = arrival;
@@ -58,7 +57,7 @@ namespace IDal
                 Weight = parcel.Weight;
                 MPriority = parcel.MPriority;
                 DroneId = parcel.DroneId;
-                MakingParcel = parcel.MakingParcel;
+                CreatedTime = parcel.CreatedTime;
                 BelongParcel = parcel.BelongParcel;
                 PickingUp = parcel.PickingUp;
                 Arrival = parcel.Arrival;
@@ -82,7 +81,7 @@ namespace IDal
             /// <summary>
             /// Time of creation a package to delivery
             /// </summary>
-            public DateTime MakingParcel { get; set; }
+            public DateTime CreatedTime { get; set; }
 
             /// <summary>
             /// Time of belonging A package to drone
@@ -108,30 +107,8 @@ namespace IDal
                 return $"Parcel Id: {Id}    SenderId: {SenderId}   " +
                     $" GetterId: {GetterId}  Parcel weight: {Weight} " +
                     $"Priority: {MPriority}    DroneId: {DroneId} " +
-                    $"Making parcel: {MakingParcel}  Belong parcel:{BelongParcel}   " +
+                    $"Created Time parcel: {CreatedTime}  Belong parcel:{BelongParcel}   " +
                     $"Picking up: {PickingUp}   Arrival: {Arrival} ";
-            }
-            /// <summary>
-            /// A function that returns a new parcel initalizes
-            /// with the parameters of the parcel thet the function worked on.
-            /// </summary>
-            /// <returns></returns>
-            public Parcel Clone()
-            {
-                return new Parcel()
-                {
-                    Id = Id,
-                    SenderId = SenderId,
-                    GetterId = GetterId,
-                    Weight = Weight,
-                    MPriority = MPriority,
-                    DroneId = DroneId,
-                    MakingParcel = MakingParcel,
-                    BelongParcel = BelongParcel,
-                    PickingUp = PickingUp,
-                    Arrival = Arrival
-
-                };
             }
         }
     }

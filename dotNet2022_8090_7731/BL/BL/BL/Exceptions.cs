@@ -232,10 +232,10 @@ namespace BL
             Type = type;
             Id = id;
         }
-        protected abstract string Message();
+        protected abstract string GetMessage();
         override public string ToString()
         {
-            return $"{GetType().Name}: {Message()}";
+            return $"{GetType().Name}: {GetMessage()}";
         }
     }
 
@@ -249,7 +249,7 @@ namespace BL
 
         public IdIsNotExistException(Type type, int id) :base(type,id) { }
         
-        protected override string Message()
+        protected override string GetMessage()
         {
             return $"Id {Id} is not exist in {Type.Name} list";
         }
@@ -265,7 +265,7 @@ namespace BL
 
         public IdIsAlreadyExistException(Type type, int id) : base(type, id) { }
 
-        protected override string Message()
+        protected override string GetMessage()
         {
             return $"Id {Id} is already exist in {Type.Name} list";
         }
@@ -284,10 +284,10 @@ namespace BL
         {
             Type = type;
         }
-        protected abstract string Message();
+        protected abstract string GetMessage();
         override public string ToString()
         {
-            return $"{GetType().Name}: {Message()}";
+            return $"{GetType().Name}: {GetMessage()}";
         }
     }
 
@@ -301,7 +301,7 @@ namespace BL
        
         public ListIsEmptyException(Type type) : base(type) { }
        
-        protected override string Message()
+        protected override string GetMessage()
         {
            return $"{Type.Name} list is empty"; 
         }
@@ -321,7 +321,7 @@ namespace BL
         }
         internal string ExceptionDetails { get; set; }
 
-        protected override string Message()
+        protected override string GetMessage()
         {
             return $"{ExceptionDetails} {Type.Name.ToLower()} list";
         }
@@ -341,7 +341,7 @@ namespace BL
         }
         internal string ExceptionDetails { get; set; }
 
-        protected override string Message()
+        protected override string GetMessage()
         {
             return $"The action couldn't be done. "+ ExceptionDetails + $"in {Type.Name} with Id {Id}";
         }

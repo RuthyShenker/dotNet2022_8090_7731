@@ -3,7 +3,7 @@
 //using System.Linq;
 //using System.Text;
 //using System.Threading.Tasks;
-//using IDal.DO;
+//using IDAL.DO;
 //using DalObject;
 
 //namespace ConsoleUI

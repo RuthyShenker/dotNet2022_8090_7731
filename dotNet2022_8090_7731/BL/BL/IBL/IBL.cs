@@ -33,9 +33,9 @@ namespace IBL
     public interface IBL : IBLCustomer, IBLDrone, IBLParcel, IBLStation
     {
 
-        //IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
-        //IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
-        //BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
+        //IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject;
+        //IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject;
+        //BL GetBLById<DL, BL>(int Id) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject;
 
 
 
@@ -66,7 +66,7 @@ namespace IBL
 
         //get lists
 
-        //IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject;
+        //IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject;
 
 
         //list of: Available Slots

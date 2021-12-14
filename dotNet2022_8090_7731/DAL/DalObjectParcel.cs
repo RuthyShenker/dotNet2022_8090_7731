@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDal.DO;
+using IDAL.DO;
 using static DalObject.DataSource;
 
 namespace DalObject
@@ -72,21 +72,7 @@ namespace DalObject
         //    ParceList.Add(tempParcel);
         //}
 
-        public void UpdatingInData<T>(int Id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
-        {
-            Type type = typeof(T);
-            var obj = data[type].Cast<T>().FirstOrDefault(item => item.Id == Id);
-            if (obj.Equals(default(T)))
-            {
-                throw new IdIsNotExistException();
-            }
-            data[type].Remove(obj);
-            if (newValue!=null)
-            {
-                type.GetProperty(propertyName).SetValue(obj, newValue);
-            }
-            data[type].Add(obj);
-        }
+        
 
         ///// <summary>
         ///// A function that returns copy parcels that aren't belonged to any drone.

@@ -1,11 +1,10 @@
-﻿using IDal.DO;
+﻿using IDAL.DO;
 using System;
 using static DalObject.DataSource;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDal.DO;
 
 namespace DalObject
 {

@@ -1,5 +1,5 @@
 ﻿using DalObject;
-using IDal.DO;
+using IDAL.DO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,57 +9,23 @@ using System.Threading.Tasks;
 
 namespace IDal
 {
-    /// <summary>
-    ///An interface of IDal 
-    ///contains:
-    ///AddingBaseStation
-    ///AddingDrone
-    ///AddingCustomer
-    ///AddingParcel
-    ///AddingDroneToCharge
-    ///BelongingParcel
-    ///PickingUpParcel
-    ///ProvidePackage
-    ///ReleasingDrone
-    ///GetUnbelongParcels
-    ///AvailableSlots
-    ///GetFromDalById<T>
-    ///GetFromDalByCondition<T>
-    ///GetDalListByCondition<T>
-    ///IsExistInList<T>
-    ///IsIdExistInList<T>
-    ///GetListFromDal<T>
-    ///UpdateDrone
-    ///UpdateBaseStation
-    ///UpdateCustomer
-    ///ExistsInBaseStation
-    ///ExistsInDroneList
-    ///ExistsInParcelList
-    ///ThereAreFreePositions
-    ///SumOfDronesInSpecificStation
-    ///ExistsInCustomerList
-    ///GetChargingDrones
-    ///PowerConsumptionRequest
-
     /// </summary>
     public interface IDal
     {
-        void AddingToData<T>(T item) where T : IDalObject;
 
-        void UpdatingInData<T>(int Id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject;
-        void ReleasingDrone(int dId);
-       
+        void Add<T>(T item) where T : IDalObject;
+        void Update<T>(int Id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject;
+        void Remove<T>(T item) where T : IDalObject;
+        bool IsIdExistInList<T>(int Id) where T : IIdentifiable, IDalObject;
         T GetFromDalById<T>(int Id) where T : IDalObject, IIdentifiable;
         T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IDalObject;
 
         IEnumerable<T> GetListFromDal<T>() where T : IDalObject;
         IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalObject;
 
-        bool IsIdExistInList<T>(int Id) where T : IIdentifiable, IDalObject;
-        int AreThereFreePositions(int sId);
         double[] PowerConsumptionRequest();
 
-       
+
         // שיניתי להרשאה פרטית
         //int SumDronesInStation(int sId);
 

@@ -9,7 +9,7 @@ namespace IBL
 {
     public interface IBLCustomer
     {
-        int AddingCustomer(Customer customer);
+        int Add(Customer customer);
         void UpdatingCustomerDetails(int customerId, string newName, string newPhone);
         IEnumerable<CustomerToList> GetCustomers();
         Customer GetCustomer(int customerId);

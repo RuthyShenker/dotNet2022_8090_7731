@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IDal
+namespace IDAL
 {
     namespace DO
     {

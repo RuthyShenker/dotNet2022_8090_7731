@@ -1,4 +1,4 @@
-﻿namespace IDal
+﻿namespace IDAL
 {
     namespace DO
     {
@@ -8,10 +8,6 @@
         public interface IIdentifiable
         {
             public int Id { get; init; }
-        }
-        public interface IDalObject
-        {
-
         }
     }
 }

@@ -22,10 +22,10 @@ namespace DalObject
             Type = type;
             Id = id;
         }
-        protected abstract string Message();
+        protected abstract string GetMessage();
         override public string ToString()
         {
-            return $"{GetType().Name}: {Message()}";
+            return $"{GetType().Name}: {GetMessage()}";
         }
     }
 
@@ -55,7 +55,7 @@ namespace DalObject
 
         public IdIsAlreadyExistException(Type type, int id) : base(type, id) { }
 
-        protected override string Message()
+        protected override string GetMessage()
         {
             return $"Id {Id} is already exist in {Type.Name} list";
         }
@@ -94,7 +94,7 @@ namespace DalObject
         }
         internal string ExceptionDetails { get; set; }
 
-        protected override string Message()
+        protected override string GetMessage()
         {
             return $"{GetType().Name}: The action couldn't be done. " + ExceptionDetails + $"in {Type.Name} with Id {Id}";
         }

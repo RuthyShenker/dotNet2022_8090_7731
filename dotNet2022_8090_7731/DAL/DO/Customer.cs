@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDal
+namespace IDAL
 {
     namespace DO
     {
@@ -12,7 +12,7 @@ namespace IDal
         /// A struct of Customer contains:
         /// Id,Name,Phone,Longitude,Latitude
         /// </summary>
-        public struct Customer:IIdentifiable,IDalObject
+        public struct Customer : IIdentifiable, IDalObject
         {
             /// <summary>
             /// A constructor of Customer that gets parameters 
@@ -64,23 +64,6 @@ namespace IDal
                 return $"Name: {Name}   Id: {Id}    Phone: {Phone}  " +
                     $"Longitude: {Longitude}    Latitude: {Latitude}";
             }
-            /// <summary>
-            /// A function that returns new customer initalizes
-            /// with the parameters of the instance that the function worked on.
-            /// </summary>
-            /// <returns></returns>
-            public Customer Clone()
-            {
-                return new Customer()
-                {
-                    Id = Id,
-                    Name=Name,
-                    Phone=Phone,
-                    Longitude=Longitude,
-                    Latitude=Latitude
-                };
-            }
-
         }
     }
 }

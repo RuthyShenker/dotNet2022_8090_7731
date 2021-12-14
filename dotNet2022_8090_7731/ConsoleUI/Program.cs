@@ -1,7 +1,7 @@
 ﻿//using System;
 //using System.Collections.Generic;
 //using DAL.DO;
-//using IDal.DO;
+//using IDAL.DO;
 
 //namespace ConsoleUI
 //{

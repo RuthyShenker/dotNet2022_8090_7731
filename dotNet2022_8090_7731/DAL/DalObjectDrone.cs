@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static DalObject.DataSource.Config;
-using IDal.DO;
+using IDAL.DO;
 using static DalObject.DataSource;
-using IDal.DO;
 using System.Collections;
 
 namespace DalObject
@@ -21,16 +20,7 @@ namespace DalObject
         /// </summary>
         /// <returns>returns an array of double that contains:available, lightWeight,
         ///mediumWeight, heavyWeight, chargingRate</returns>
-        public double[] PowerConsumptionRequest() => new double[5] { available, lightWeight,mediumWeight, heavyWeight, chargingRate };
-
-        /// <summary>
-        /// the function realesing drone by deleting the match entity fron the list
-        /// </summary>
-        /// <param name="dId"></param>
-        public void ReleasingDrone(int dId)
-        {
-            ChargingDroneList.Remove(ChargingDroneList.Find(drone => drone.DroneId== dId));
-        }
+        public double[] PowerConsumptionRequest() => new double[5] { Available, LightWeight,MediumWeight, HeavyWeight, ChargingRate };
 
         #region canErase?
 

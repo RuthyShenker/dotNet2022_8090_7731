@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDal.DO;
-using IDal.DO;
-using static DalObject.DataSource;
-using static DalObject.DataSource.Config;
+using IDAL.DO;
 
 namespace DalObject
 {
@@ -47,10 +44,7 @@ namespace DalObject
         //    BaseStationList.Add(baseStation);
         //}
 
-        public void AddingToData<T>(T item) where T : IDalObject
-        {
-            ((List<T>)data[typeof(T)]).Add(item);
-        }
+        
 
         ///// <summary>
         ///// A function that gets an id of base station and returns this base station-copied.
@@ -88,16 +82,6 @@ namespace DalObject
         //{
         //    return new List<BaseStation>(BaseStationList.Where(baseStation => AreThereFreePositions(baseStation.Id)));
         //}
-
-        public int AreThereFreePositions(int sId)
-        {
-            return BaseStationList.Find(baseStation => baseStation.Id == sId).NumberOfChargingPositions - SumDronesInStation(sId) ;
-        }
-
-        private int SumDronesInStation(int sId)
-        {
-            return data[typeof(ChargingDrone)].Cast<ChargingDrone>().Where(station => station.StationId == sId).Count();
-        }
 
         /// <summary>
         /// A function that gets an id of base station and an 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDal
+namespace IDAL
 {
     namespace DO
     {
@@ -47,6 +47,7 @@ namespace IDal
                 Longitude = baseStation.Longitude;
                 Latitude = baseStation.Latitude;
             }
+            
 
             /// <summary>
             /// this field is init
@@ -64,23 +65,6 @@ namespace IDal
             {
                 return $"Station name: {NameStation}     Id: {Id}   Longitude: {Longitude}  Latitude: {Latitude}    " +
                     $"Number of charging positions: {NumberOfChargingPositions}";
-            }
-            /// <summary>
-            /// A function that returns a new instance
-            /// of base station initalized with the parameters
-            /// of the instance that it works on.
-            /// </summary>
-            /// <returns></returns>
-            public BaseStation Clone()
-            {
-                return new BaseStation()
-                {
-                    Id = Id,
-                    NameStation = NameStation,
-                    NumberOfChargingPositions = NumberOfChargingPositions,
-                    Longitude = Longitude,
-                    Latitude = Latitude,
-                };
             }
         }
     }

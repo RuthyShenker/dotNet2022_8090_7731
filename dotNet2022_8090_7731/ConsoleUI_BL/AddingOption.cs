@@ -26,7 +26,7 @@ namespace ConsoleUI_BL
                     break;
 
                 case Adding.Customer:
-                    int id = bL.AddingCustomer(GettingNewCustomer());
+                    int id = bL.Add(GettingNewCustomer());
                     Console.WriteLine("The process of adding a new customer has been completed." +
                          " The adding was completed successfully. The id that was added is: " + id);
                     break;

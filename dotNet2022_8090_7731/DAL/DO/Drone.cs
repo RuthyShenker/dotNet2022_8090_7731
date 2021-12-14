@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDal
+namespace IDAL
 {
     namespace DO
     {
@@ -59,21 +59,6 @@ namespace IDal
             {
                 return $"Id: {Id}   Model: {Model}    MaxWeight: {MaxWeight}    ";
             }
-            /// <summary>
-            /// A function that returns a new drone initalizes 
-            /// with the drone that the function worked on.
-            ///</summary>
-            /// <returns></returns>
-            public Drone Clone()
-            {
-                return new Drone()
-                {
-                    Id = Id,
-                    Model = Model,
-                    MaxWeight = MaxWeight,
-                };
-            }
-
         }
     }
 }

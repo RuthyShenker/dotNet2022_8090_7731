@@ -4,4 +4,11 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="DalObjectBaseStation.cs" />
+    <Compile Remove="DalObjectCustomer.cs" />
+    <Compile Remove="DalObjectParcel.cs" />
+    <Compile Remove="Extensions.cs" />
+  </ItemGroup>
+
 </Project>

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDal
+namespace IDAL
 {
     namespace DO
     {
-        //למחוק הכל?
         ///// <summary>
         ///// An Enum of WeightCategories contains:
         ///// Light, Medium, Heavy.

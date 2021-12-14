@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static DalObject.DataSource;
 using System.Device.Location;
 using BO;
 
@@ -15,9 +14,8 @@ namespace BL
     public partial class BL : IBL.IBL
     {
         IDal.IDal dal;
-
         List<DroneToList> lDroneToList;
-
+        Random rand;
         static double powerConsumptionFree;
         static double powerConsumptionLight;
         static double powerConsumptionMedium;
@@ -29,15 +27,10 @@ namespace BL
 
         public BL()
         {
+            rand = new Random();
             dal = new DalObject.DalObject();
-            lDroneToList = new List<DroneToList>();
-            UpdatePConsumption();
-            foreach (var drone in dal.GetListFromDal<IDal.DO.Drone>())
-            {
-                lDroneToList.Add(ConvertToList(drone));
-            }
-            //TODO:
-            lDroneToList.Add(new DroneToList(1, "1", WeightCategories.Light, 20, DroneStatus.Free, new Location(1, 1), null));
+            InitializePowerConsumption();
+            InitializeDroneList();
         }
 
         /// <summary>
@@ -49,7 +42,7 @@ namespace BL
         //chargingRate
         //this function doesn't return any thing.
         /// </summary>
-        private void UpdatePConsumption()
+        private void InitializePowerConsumption()
         {
             double[] arrPCRequest = dal.PowerConsumptionRequest();
             powerConsumptionFree = arrPCRequest[0];
@@ -141,9 +134,7 @@ namespace BL
             else // droneToList.DStatus == Free
             {
                 var customersList = CustomersWithProvidedParcels();
-                nDrone.CurrLocation = customersList.Count == 0 ?
-                    new Location(RandBetweenRange(-180, 180), RandBetweenRange(-90,90)) :
-                    customersList[Rand.Next(customersList.Count)].CLocation;
+                nDrone.CurrLocation = customersList[Rand.Next(customersList.Count)].CLocation;
                 var closetStation = ClosestStation(nDrone.CurrLocation);
                 double distance = CalculateDistance(nDrone.CurrLocation, closetStation.SLocation);
                 nDrone.BatteryStatus = Rand.NextDouble() * (100 - MinBattery(distance)) + MinBattery(distance);
@@ -186,20 +177,6 @@ namespace BL
         }
 
         /// <summary>
-        /// A function that gets id of drone and bulids from it an object of 
-        /// DroneInParcel and of course considering logic and returns 
-        /// the new object of DroneInParcel.
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns>returns 
-        /// the new object of DroneInParcel</returns>
-        private DroneInParcel NewDroneInParcel(int Id)
-        {
-            var drone = lDroneToList.FirstOrDefault(drone => drone.Id == Id);
-            return new DroneInParcel(Id, drone.BatteryStatus, drone.CurrLocation);
-        }
-
-        /// <summary>
         /// A generic function that gets two types: DL, BL and id and 
         /// pulls out from the dal the object that its type DL and its id is the
         /// same as the id that the function gets and Expands this object to new object
@@ -209,7 +186,7 @@ namespace BL
         /// <typeparam name="BL"></typeparam>
         /// <param name="Id"></param>
         /// <returns>returns an object of BL type</returns>
-        //public BL GetBLById<DL, BL>(int Id) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
+        //public BL GetBLById<DL, BL>(int Id) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject
         //{
         //    try
         //    {
@@ -232,7 +209,7 @@ namespace BL
         /// <typeparam name="DL"></typeparam>
         /// <typeparam name="BL"></typeparam>
         /// <returns>returns list of data with type of BL. </returns>
-        //public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
+        //public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject
         //{
         //    var bLList = new List<BL>();
         //    var dalList = dal.GetListFromDal<DL>();
@@ -253,7 +230,7 @@ namespace BL
         /// <typeparam name="DL"></typeparam>
         /// <typeparam name="BLToList"></typeparam>
         /// <returns>returns list of data with the BLToList</returns>
-        //public IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDal.DO.IIdentifiable, IDal.DO.IDalObject
+        //public IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject
         //{
         //    try
         //    {
