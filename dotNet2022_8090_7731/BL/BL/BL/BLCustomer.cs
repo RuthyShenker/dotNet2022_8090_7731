@@ -9,8 +9,6 @@ namespace BL
 {
     partial class BL
     {
-       
-
         /// <summary>
         /// A function that gets an object of IDAL.DO.Parcel and creates
         /// a new object of ParcelInCustomerand 
@@ -101,7 +99,7 @@ namespace BL
             try
             {
                 IDAL.DO.Customer customer = dal.GetFromDalById<IDAL.DO.Customer>(customerId);
-               
+
                 if (!string.IsNullOrEmpty(newName))
                 {
                     dal.Update<IDAL.DO.Customer>(customerId, newName, nameof(customer.Name));
@@ -204,8 +202,6 @@ namespace BL
             }
             return nCustomer;
         }
-
-
     }
 }
 

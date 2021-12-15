@@ -81,39 +81,6 @@ namespace BL
         //    return nDrone;
         //}
 
-        /// <summary>
-        /// A function that Calculates distance between all places in the array
-        /// Places to be sent to function in the order of the flight
-        /// This is a fishing plane that takes a package that travels from a customer to a destination to a charging station
-        /// </summary>
-        /// <param name="locations"></param>
-        ///<returns>the function gets an array of locations and returns
-        /// the sum of the distance between them
-        /// in double.</returns>
-        private double CalculateDistance(params Location[] locations)
-        {
-            var locationCoords1 = geoCoordinate(locations[0]);
-            var locationCoords2 = locationCoords1;
-            double distance = 0;
-            for (int i = 1; i < locations.Length; i++)
-            {
-                locationCoords2 = geoCoordinate(locations[i]);
-                distance += locationCoords1.GetDistanceTo(locationCoords2);
-                locationCoords1 = locationCoords2;
-            }
-            return distance;
-        }
-
-        /// <summary>
-        /// A function that gets an object of Location and bulids from it an object of  
-        /// GeoCoordinate and returns it.
-        /// </summary>
-        /// <param name="location"></param>
-        /// <returns>returns an object of GeoCoordinate</returns>
-        private GeoCoordinate geoCoordinate(Location location)
-        {
-            return new GeoCoordinate(location.Latitude, location.Longitude);
-        }
 
         /// <summary>
         /// A generic function that gets two types: DL, BL and id and 

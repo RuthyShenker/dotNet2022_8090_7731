@@ -175,7 +175,7 @@ namespace BL
             try
             {
                 return dal.GetDalListByCondition<IDAL.DO.Parcel>(parcel => parcel.DroneId == 0)
-                    .Select(parcel=> ConvertToList(parcel));
+                    .Select(parcel => ConvertToList(parcel));
             }
 
             catch (DalObject.InValidActionException)
@@ -247,8 +247,16 @@ namespace BL
         /// the new object of DroneInParcel</returns>
         private DroneInParcel NewDroneInParcel(int Id)
         {
-            var drone = lDroneToList.FirstOrDefault(drone => drone.Id == Id);
-            return new DroneInParcel(Id, drone.BatteryStatus, drone.CurrLocation);
+            if (lDroneToList.FirstOrDefault(d => d.Id == Id) != null)
+            {
+                var drone = lDroneToList.FirstOrDefault(drone => drone.Id == Id);
+                return new DroneInParcel(Id, drone.BatteryStatus, drone.CurrLocation);
+            }
+            else
+            {
+                return new DroneInParcel(Id,0,null);
+            }
+
         }
     }
 }
