@@ -3,59 +3,42 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL"
+        
         mc:Ignorable="d"
         Title="DroneWindow" Height="450" Width="800">
+    <StackPanel>
+            <StackPanel x:Name="detailsOfDrone">
+               
+            <TextBlock   Text = "Id:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "IdTextBox"   Text = "{Binding Path=Id}" TextWrapping = "Wrap"/>
+            <TextBlock  Text = "Battery:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "BatteryTextBox"   Text = "{Binding Path=BatteyStatus}" TextWrapping = "Wrap" />
+            <TextBlock Text = "MaxWeight:" TextWrapping = "Wrap" />
+            <ComboBox x:Name = "MaxWeightComboBox" ItemsSource="{Binding}"  Height = "25" Width = "140"  />
+            <TextBlock  Text = "Model:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "ModelTextBox" Text = "{Binding Path=Model}" TextWrapping = "Wrap" />
+            <TextBlock  Text = "Status:" TextWrapping = "Wrap" />
+            <ComboBox x:Name = "StatusComboBox" ItemsSource="{Binding}" Height = "25" Width = "140" />
+            <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "DeliveryTextBox" Text = "{Binding Path=DeliveredParcelId}" TextWrapping = "Wrap" />
+            <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "LatitudeTextBox" Text = "{Binding Path=Latitude}" TextWrapping = "Wrap"/>
+            <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "LongitudeTextBox" Text = "{Binding Path=Longitude}" TextWrapping = "Wrap" />
+            </StackPanel>
 
-    <Grid >
-        <Grid.ColumnDefinitions >
-            <ColumnDefinition >
-            </ColumnDefinition >
-            <ColumnDefinition >
-            </ColumnDefinition >
-        </Grid.ColumnDefinitions >
-        <Grid.RowDefinitions >
-            <RowDefinition >
-            </RowDefinition >
-            <RowDefinition >
-            </RowDefinition >
-            <RowDefinition >
-            </RowDefinition >
-            <RowDefinition >
-            </RowDefinition >
-            <RowDefinition >
-            </RowDefinition >
-            <RowDefinition >
-            </RowDefinition >
-            <RowDefinition >
-            </RowDefinition >
-            <RowDefinition >
-            </RowDefinition >
-            <RowDefinition >
-            </RowDefinition >
-            <RowDefinition >
-            </RowDefinition >
-        </Grid.RowDefinitions >
-        <TextBlock HorizontalAlignment = "Left" Margin = "302,0,0,0" Grid.Row = "0"  TextWrapping = "Wrap" VerticalAlignment = "Center" />
-        <TextBlock HorizontalAlignment = "Left" Margin = "302,0,0,0"  Grid.Row = "1" Text = "Id:" TextWrapping = "Wrap" VerticalAlignment = "Center" />
-        <TextBlock HorizontalAlignment = "Left" Margin = "302,0,0,0" Grid.Row = "2" Text = "Battery:" TextWrapping = "Wrap" VerticalAlignment = "Center" />
-        <TextBlock HorizontalAlignment = "Left" Margin = "302,0,0,0" Grid.Row = "3" Text = "MaxWeight:" TextWrapping = "Wrap" VerticalAlignment = "Center" />
-        <TextBlock HorizontalAlignment = "Left" Margin = "302,0,0,0" Grid.Row = "4" Text = "Model:" TextWrapping = "Wrap" VerticalAlignment = "Center" />
-        <TextBlock HorizontalAlignment = "Left" Margin = "302,0,0,0" Grid.Row = "5" Text = "Status:" TextWrapping = "Wrap" VerticalAlignment = "Center" />
-        <TextBlock HorizontalAlignment = "Left" Margin = "302,0,0,0" Grid.Row = "6" Text = "Delivery:" TextWrapping = "Wrap" VerticalAlignment = "Center" />
-        <TextBlock HorizontalAlignment = "Left" Margin = "302,0,0,0" Grid.Row = "7" Text = "Latitude:" TextWrapping = "Wrap" VerticalAlignment = "Center" />
-        <TextBlock HorizontalAlignment = "Left" Margin = "302,0,0,0" Grid.Row = "8" Text = "Longitude:" TextWrapping = "Wrap" VerticalAlignment = "Center" />
-        <TextBlock HorizontalAlignment = "Left" Margin = "302,0,0,0" Grid.Row = "9"  TextWrapping = "Wrap" VerticalAlignment = "Center" />
-        <TextBox  x:Name = "IdTextBox" Grid.Column = "1" HorizontalAlignment = "Left"  Grid.Row = "1" Text = "" TextWrapping = "Wrap" VerticalAlignment = "Center" Width = "120" />
-        <TextBox  x:Name = "BatteryTextBox" Grid.Column = "1" HorizontalAlignment = "Left"  Grid.Row = "2" TextWrapping = "Wrap" VerticalAlignment = "Center" Width = "120" />
-        <ComboBox  x:Name = "MaxWeightComboBox" ItemsSource="{Binding}" Grid.Row = "3" Grid.Column = "1" Height = "25" Width = "140" HorizontalAlignment = "Left" />
-        <TextBox    x:Name = "ModelTextBox" Grid.Column = "1" HorizontalAlignment = "Left"  Grid.Row = "4" Text = "" TextWrapping = "Wrap" VerticalAlignment = "Center" Width = "120" />
-        <ComboBox x:Name = "StatusComboBox" Grid.Row = "5" ItemsSource="{Binding}" Grid.Column = "1" Height = "25" Width = "140" HorizontalAlignment = "Left" />
-        <TextBox  x:Name = "DeliveryTextBox" Grid.Column = "1" HorizontalAlignment = "Left"  Grid.Row = "6" Text = "" TextWrapping = "Wrap" VerticalAlignment = "Center" Width = "120" />
-        <TextBox x:Name = "LatitudeTextBox" Grid.Column = "1" HorizontalAlignment = "Left"  Grid.Row = "7" Text = "" TextWrapping = "Wrap" VerticalAlignment = "Center" Width = "120" />
-        <TextBox x:Name = "LongitudeTextBox"  Grid.Column = "1" HorizontalAlignment = "Left"  Grid.Row = "8" Text = "" TextWrapping = "Wrap" VerticalAlignment = "Center" Width = "120" />
-        <Button Content = "To be added" Grid.Column = "1" HorizontalAlignment = "Left" Margin = "285,6,0,0" Grid.Row = "9" VerticalAlignment = "Top" Click = "Button_Click_Of_Adding_New_Drone" />
-        <Button x:Name="Close_Drone_Window" Content="X" Click="Close_Drone_Window_Click" Margin="10,8,330,10" />
-    </Grid >
+            <StackPanel x:Name="GridOfAddDrone"  >
+                <Button  x:Name="OkAdd" Content = "OK" Click = "Button_Click_Of_Adding_New_Drone" />
+            </StackPanel>
+
+            <StackPanel x:Name="GridOfUpdateDrone">
+                <Button x:Name="UpdateModel" Content = "Update Model:"   />
+                <Button x:Name="SendOrReleaseDroneFromCharging" Content = "Send Drone To Charge:" Click = "Button_Click_Of_Adding_New_Drone" />
+                <Button x:Name="SendOrPickOrArrivalDrone" Content = "Send Drone To Delivery:"  Click = "Button_Click_Of_Adding_New_Drone"  />
+            </StackPanel>
+        <StackPanel x:Name="message">
+        </StackPanel>
+        
+        </StackPanel >
 </Window >
 

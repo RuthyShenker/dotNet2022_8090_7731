@@ -19,6 +19,10 @@ namespace BO
     /// </summary>
     public class DroneToList
     {
+        public DroneToList()
+        {
+
+        }
         public DroneToList(int id, string model, WeightCategories weight
             , double batteryStatus, DroneStatus dStatus, Location currLocation, int? numOfParcel)
         {

@@ -28,6 +28,7 @@ namespace PL
             DroneListView.DataContext = bl.GetDrones();
             DroneWeights.DataContext = Enum.GetValues(typeof(WeightCategories));
             DroneStatuses.DataContext = Enum.GetValues(typeof(DroneStatus));
+            
         }
 
         private void DroneWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -69,8 +70,8 @@ namespace PL
 
         private void DroneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            new DroneWindow(bl,sender as DroneToList);
+            MessageBox.Show($"{sender as ListView}");
+            new DroneWindow(bl,sender as DroneToList).Show();
         }
-
     }
 }

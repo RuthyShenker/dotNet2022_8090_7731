@@ -29,21 +29,24 @@ namespace PL
             this.bl = bl;
             MaxWeightComboBox.DataContext = Enum.GetValues(typeof(WeightCategories));
             StatusComboBox.DataContext = Enum.GetValues(typeof(DroneStatus));
+            GridOfAddDrone.Visibility = Visibility.Visible;
+            GridOfUpdateDrone.Visibility = Visibility.Collapsed;
+            detailsOfDrone.DataContext = new DroneToList();
         }
         public DroneWindow(IBL.IBL bl,DroneToList selectedDrone)
         {
-            selectedDrone.BatteryStatus = 30;
             InitializeComponent();
             this.bl = bl;
-            
-
+            MessageBox.Show($"{ selectedDrone.Id}", $"{selectedDrone.Model}");
+            GridOfAddDrone.Visibility = Visibility.Collapsed;
+            GridOfUpdateDrone.Visibility = Visibility.Visible;
         }
+
         private void Button_Click_Of_Adding_New_Drone(object sender, RoutedEventArgs e)
         {
-            ///exist?
-            ///בדיקת תקינות 
-            ///תחנה להטענה
-            ///delivery?
+
+            CheckValidDrone((DroneToList)detailsOfDrone.DataContext);
+ 
             int id;
             int.TryParse(IdTextBox.Text, out id);
             float batteryStatus;
@@ -56,10 +59,40 @@ namespace PL
             WeightCategories weight = (WeightCategories)MaxWeightComboBox.SelectedIndex;
             DroneStatus droneStatus = (DroneStatus)StatusComboBox.SelectedIndex;
             Drone newDrone = new Drone(id, model, weight, batteryStatus, droneStatus, null, new Location(longitude, latitude));
-            bl.AddingDrone(newDrone, 0);
+            //bl.AddingDrone(newDrone, 0);  
+            
+            ///תחנה להטענה
+            ///delivery?
         }
 
-        private void Close_Drone_Window_Click(object sender, RoutedEventArgs e)
+        private void CheckValidDrone(DroneToList drone)
+        {
+            bool check = bl.GetDrones().Any(d => d.Id == drone.Id);
+            if (check == true)
+            {
+                TextBlock TextBlock = new TextBlock();
+                TextBlock.Text= "Id is already exist";
+                message.Children.Add(TextBlock);
+            }
+            if (drone.BatteryStatus<0 ||drone.BatteryStatus>100)
+            {
+                TextBlock TextBlock = new TextBlock();
+                if(drone.BatteryStatus < 0)
+                    TextBlock.Text = "Battery Status is less than zero";
+                else TextBlock.Text = "Battery Status is more than hundred" ;
+
+                message.Children.Add(TextBlock);
+            }
+            if (!drone.Model.All(ch=>char.IsNumber(ch)))
+            {
+                TextBlock TextBlock = new TextBlock();
+                TextBlock.Text = "Id has to contain only numbers";
+                 message.Children.Add(TextBlock);
+            }
+
+        }
+
+            private void Close_Drone_Window_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
