@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using IDAL.DO;
@@ -93,10 +94,19 @@ namespace DalObject
             {
                 throw new IdIsNotExistException();
             }
+
+           
+
             DataSource.Data[type].Remove(oldItem);
             if (newValue != null)//TODO: //האם צרחך את הבדיקה הזאת?
             {
-                type.GetProperty(propertyName).SetValue(oldItem, newValue);
+                //type.GetProperty(propertyName).SetValue(oldItem, newValue);
+                T obj = oldItem;
+                PropertyInfo propertyInfo = typeof(T).GetProperty(propertyName);
+                object boxed = obj;
+                propertyInfo.SetValue(boxed, newValue, null);
+                obj = (T)boxed;
+                oldItem = obj;
             }
             DataSource.Data[type].Add(oldItem);
         }

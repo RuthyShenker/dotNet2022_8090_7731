@@ -43,7 +43,7 @@ namespace ConsoleUI_BL
                     case Updating.RealesingDroneFromChargingPosition:
                         double timeInCharging = 0;
                         GetDetailsOfRelesingDroneFromCharging(out droneId, out timeInCharging);
-                        bL.ReleasingDrone(droneId, timeInCharging);
+                        bL.ReleasingDrone(droneId);
                         break;
                     case Updating.BelongingParcelToDrone:       bL.BelongingParcel(GettingId("drone"));    break;
 

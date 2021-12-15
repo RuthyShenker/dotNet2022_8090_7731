@@ -25,10 +25,13 @@ namespace PL
         {
             InitializeComponent();
             this.bl = bl;
-            DroneListView.DataContext = bl.GetDrones();
+            InitializeDrones();
             DroneWeights.DataContext = Enum.GetValues(typeof(WeightCategories));
             DroneStatuses.DataContext = Enum.GetValues(typeof(DroneStatus));
-            
+        }
+        private void InitializeDrones()
+        {
+            DroneListView.DataContext = bl.GetDrones();
         }
 
         private void DroneWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -40,13 +43,13 @@ namespace PL
             else
             {
                 WeightCategories weight = (WeightCategories)DroneWeights.SelectedItem;
-                DroneListView.ItemsSource = bl.GetDrones(drone => drone.Weight==weight);
+                DroneListView.ItemsSource = bl.GetDrones(drone => drone.Weight == weight);
             }
         }
 
         private void DroneStatuses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
+
             if (DroneStatuses.SelectedItem == null)
             {
                 DroneListView.ItemsSource = bl.GetDrones();
@@ -54,13 +57,14 @@ namespace PL
             else
             {
                 DroneStatus status = (DroneStatus)DroneStatuses.SelectedItem;
-                DroneListView.ItemsSource = bl.GetDrones(drone=>drone.DStatus== status);
+                DroneListView.ItemsSource = bl.GetDrones(drone => drone.DStatus == status);
             }
         }
 
         private void button_AddingDrone_Click(object sender, RoutedEventArgs e)
         {
-            new DroneWindow(bl).Show();
+            new DroneWindow(bl, InitializeDrones)
+                .Show();
         }
 
         private void button_Close_Click(object sender, RoutedEventArgs e)
@@ -70,8 +74,9 @@ namespace PL
 
         private void DroneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show($"{sender as ListView}");
-            new DroneWindow(bl,sender as DroneToList).Show();
+            var selectedDrone = (e.OriginalSource as FrameworkElement).DataContext as DroneToList;
+            new DroneWindow(bl, InitializeDrones, selectedDrone)
+                .Show();
         }
     }
 }

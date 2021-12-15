@@ -2,6 +2,7 @@
 using DalObject;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -209,17 +210,18 @@ namespace BL
             drone.DStatus = DroneStatus.Maintenance;
             //--closetBaseStation.NumAvailablePositions;
             //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
-            dal.Add(new IDAL.DO.ChargingDrone(drone.Id, closetdStation.Id));
+            dal.Add(new IDAL.DO.ChargingDrone(drone.Id, closetdStation.Id, DateTime.Now));
         }
 
         /// <summary>
         /// A function that gets an id of drone and releasing it from charging.
         /// </summary>
         /// <param name="dId"></param>
-        /// <param name="timeInCharging"></param>
-        public void ReleasingDrone(int dId, double timeInCharging)
+        public void ReleasingDrone(int dId)
         {
             DroneToList drone = FindDroneInList(dId);
+            IDAL.DO.ChargingDrone chargingDrone = dal.GetFromDalByCondition<IDAL.DO.ChargingDrone>(d => d.DroneId == dId);
+            double timeInCharging = DateTime.Now.Subtract(chargingDrone.EnteranceTime).TotalMinutes;
 
             switch (drone.DStatus)
             {
@@ -324,7 +326,7 @@ namespace BL
 
                 bLDrone.BatteryStatus = rand.Next(20, 41);
                 bLDrone.DroneStatus = DroneStatus.Maintenance;
-                dal.Add(new IDAL.DO.ChargingDrone(bLDrone.Id, StationId));
+                dal.Add(new IDAL.DO.ChargingDrone(bLDrone.Id, StationId, DateTime.Now));
 
                 lDroneToList.Add(new DroneToList(
                     bLDrone.Id,
@@ -358,18 +360,15 @@ namespace BL
         public void UpdatingDroneName(int droneId, string newModel)
         {
             DroneToList droneToList = FindDroneInList(droneId);
-            droneToList.Model = newModel;
-
-            IDAL.DO.Drone dDrone;
             try
             {
-                dDrone = dal.GetFromDalById<IDAL.DO.Drone>(droneId);
+                dal.Update<IDAL.DO.Drone>(droneId, newModel, nameof(IDAL.DO.Drone.Model));
+                droneToList.Model = newModel;
             }
             catch (DalObject.IdIsNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Drone), droneId);
             }
-            dal.Update<IDAL.DO.Drone>(droneId, newModel, nameof(dDrone.Model));
         }
         public IEnumerable<DroneToList> GetDrones(Func<DroneToList, bool> predicate = null)
         {
@@ -391,9 +390,9 @@ namespace BL
                 var dDrone = dal.GetFromDalById<IDAL.DO.Drone>(droneId);
                 return ConvertToBL(dDrone);
             }
-            catch (DalObject.IdIsNotExistException) 
-            { 
-                throw new IdIsNotExistException(typeof(Drone), droneId); 
+            catch (DalObject.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(Drone), droneId);
             }
         }
     }

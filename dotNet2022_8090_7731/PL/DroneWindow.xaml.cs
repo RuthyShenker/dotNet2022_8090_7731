@@ -22,24 +22,48 @@ namespace PL
     {
 
         private IBL.IBL bl;
+        Action refreshDroneList;
 
-        public DroneWindow(IBL.IBL bl)
+        public DroneWindow(IBL.IBL bl, Action initializeDrones)
         {
-            InitializeComponent();
             this.bl = bl;
-            MaxWeightComboBox.DataContext = Enum.GetValues(typeof(WeightCategories));
-            StatusComboBox.DataContext = Enum.GetValues(typeof(DroneStatus));
+            refreshDroneList = initializeDrones;
+
+            InitializeComponent();
+
             GridOfAddDrone.Visibility = Visibility.Visible;
             GridOfUpdateDrone.Visibility = Visibility.Collapsed;
             detailsOfDrone.DataContext = new DroneToList();
         }
-        public DroneWindow(IBL.IBL bl,DroneToList selectedDrone)
-        {
-            InitializeComponent();
+        public DroneWindow(IBL.IBL bl, Action initializeDrones, DroneToList selectedDrone)
+        {            
             this.bl = bl;
-            MessageBox.Show($"{ selectedDrone.Id}", $"{selectedDrone.Model}");
+            refreshDroneList = initializeDrones;
+
+            InitializeComponent();
+           
+
+            detailsOfDrone.DataContext = selectedDrone;
+            EnableOfTextbox();
             GridOfAddDrone.Visibility = Visibility.Collapsed;
             GridOfUpdateDrone.Visibility = Visibility.Visible;
+            if (selectedDrone.DStatus == DroneStatus.Delivery)
+                SendOrReleaseDroneFromCharging.Visibility = Visibility.Collapsed;
+            else if (selectedDrone.DStatus == DroneStatus.Maintenance)
+                SendOrReleaseDroneFromCharging.DataContext = "ReleaseDronefromCharge:";
+            else SendOrReleaseDroneFromCharging.DataContext = "SendDroneToCharge";
+        }
+
+
+        private void EnableOfTextbox()
+        {
+            IdTextBox.IsEnabled = false;
+            BatteryTextBox.IsEnabled = false;
+            MaxWeightComboBox.IsEnabled = false;
+            StatusComboBox.IsEnabled = false;
+            DeliveryTextBox.IsEnabled = false;
+            LatitudeTextBox.IsEnabled = false;
+            LongitudeTextBox.IsEnabled = false;
         }
 
         private void Button_Click_Of_Adding_New_Drone(object sender, RoutedEventArgs e)
@@ -92,9 +116,33 @@ namespace PL
 
         }
 
-            private void Close_Drone_Window_Click(object sender, RoutedEventArgs e)
+        private void Close_Drone_Window_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void Update_Model_Click(object sender, RoutedEventArgs e)
+        {
+           DroneToList drone= detailsOfDrone.DataContext as DroneToList;
+            bl.UpdatingDroneName(drone.Id, drone.Model);
+            MessageBox.Show(bl.GetDrone(drone.Id).Model);
+            refreshDroneList();
+        }
+
+        private void Send_Or_Release_Drone_From_Charging(object sender, RoutedEventArgs e)
+        {
+            DroneToList drone=detailsOfDrone.DataContext as DroneToList;
+
+            if (drone.DStatus == DroneStatus.Free)
+            {
+                bl.SendingDroneToCharge(drone.Id);
+                SendOrReleaseDroneFromCharging.DataContext = "ReleaseDronefromCharge:";
+            }
+            else
+            {
+                bl.ReleasingDrone(drone.Id);
+                SendOrReleaseDroneFromCharging.DataContext = "SendDroneToCharge:";
+            }
         }
     }
 }
