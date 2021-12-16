@@ -3,56 +3,56 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:BO="clr-namespace:BO;assembly=BL"
         mc:Ignorable="d"
         Title="DroneWindow" Height="450" Width="800">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="BO:WeightCategories"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="DroneStatusEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="BO:DroneStatus"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
     <StackPanel>
         <StackPanel x:Name="detailsOfDrone">
-
-            <!--<TextBlock   Text = "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" TextWrapping = "Wrap" />
-            <TextBox PreviewTextInput="TextBox_OnPreviewTextInput" />
-            <TextBox Name = "NumberTextBox" PreviewTextInput = "NumberValidationTextBox" />-->
-
-            <TextBlock Text = "Id:" />
-            <TextBox x:Name = "IdTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Id, UpdateSourceTrigger=PropertyChanged}" />
-
-            <TextBlock Text = "Battery:" />
-            <TextBox x:Name = "BatteryTextBox" Text = "0" IsEnabled="False"/>
-
-            <TextBlock Text = "MaxWeight:" />
-            <ComboBox x:Name = "MaxWeightComboBox" ItemsSource="{Binding}" SelectionChanged="MaxWeightComboBox_SelectionChanged" />
-
-            <TextBlock Text = "Model:"/>
-            <TextBox x:Name = "ModelTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Model, UpdateSourceTrigger=PropertyChanged}" />
-
-            <TextBlock Text = "Status:" />
-            <ComboBox x:Name = "StatusComboBox" ItemsSource="{Binding}"/>
-
-            <TextBlock Text = "Deliery:"/>
-            <TextBox x:Name = "DeliveryTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=DeliveredParcelId, UpdateSourceTrigger=PropertyChanged}" />
-
-            <TextBlock Text = "Latitude:" />
-            <TextBox x:Name = "LatitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" />
-
-            <TextBlock Text = "Longitude:" />
-            <TextBox x:Name = "LongitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" TextWrapping = "Wrap" />
+            <TextBlock Text = "Id:" TextWrapping = "Wrap"  />
+            <TextBox x:Name = "IdTextBox"   Text = "{Binding Path=Id}" TextWrapping = "Wrap" IsEnabled="True"/>
+            <TextBlock  Text = "Battery:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "BatteryTextBox"   Text = "{Binding Path=BatteryStatus}" TextWrapping = "Wrap"  IsEnabled="True" />
+            <TextBlock Text = "MaxWeight:" TextWrapping = "Wrap" />
+            <ComboBox x:Name = "MaxWeightComboBox" ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" SelectedItem="{Binding Path=Weight}"  Height = "25" Width = "140"  IsEnabled="True" />
+            <TextBlock  Text = "Model:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "ModelTextBox" Text = "{Binding Path=Model}" TextWrapping = "Wrap"  IsEnabled="True" />
+            <TextBlock  Text = "Status:" TextWrapping = "Wrap" />
+            <ComboBox x:Name = "StatusComboBox" ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" SelectedItem="{Binding Path=DStatus}" Height = "25" Width = "140"  IsEnabled="True"/>
+            <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "DeliveryTextBox" Text = "{Binding Path=DeliveredParcelId}" TextWrapping = "Wrap"  IsEnabled="True" />
+            <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "LatitudeTextBox" Text = "{Binding Path=CurrLocation.Latitude}" TextWrapping = "Wrap"  IsEnabled="True"/>
+            <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "LongitudeTextBox" Text = "{Binding Path=CurrLocation.Longitude}" TextWrapping = "Wrap"  IsEnabled="True" />
         </StackPanel>
-        <!--Longitude
-Latitude-->
-
 
         <StackPanel x:Name="GridOfAddDrone"  >
             <Button  x:Name="OkAdd" Content = "OK" Click = "Button_Click_Of_Adding_New_Drone" />
         </StackPanel>
 
         <StackPanel x:Name="GridOfUpdateDrone">
-            <Button x:Name="UpdateModel" Content = "Update Model:"   />
-            <Button x:Name="SendOrReleaseDroneFromCharging" Content = "Send Drone To Charge:" Click = "Button_Click_Of_Adding_New_Drone" />
-            <Button x:Name="SendOrPickOrArrivalDrone" Content = "Send Drone To Delivery:"  Click = "Button_Click_Of_Adding_New_Drone"  />
+            <Button x:Name="UpdateModel" Content = "Update Model:" Click = "Update_Model_Click"  />
+            <Button x:Name="SendOrReleaseDroneFromCharging" Content = "{Binding}" Click = "Send_Or_Release_Drone_From_Charging" />
+            <Button x:Name="SendOrPickOrArrivalDrone" Content = "{Binding}"  Click = "Button_Click_Of_Adding_New_Drone"  />
         </StackPanel>
-        <StackPanel x:Name="message" >
+        <StackPanel x:Name="message">
         </StackPanel>
-        <TextBlock   Name="messageId"  />
+
     </StackPanel >
 </Window >
 
