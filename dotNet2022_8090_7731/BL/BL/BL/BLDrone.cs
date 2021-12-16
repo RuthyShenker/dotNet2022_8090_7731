@@ -373,20 +373,11 @@ namespace BL
         {
             if (predicate == null)
             {
-                return lDroneToList.Select(d => new DroneToList()
-                {
-                    Id=d.Id,
-                    Model=d.Model,
-                    BatteryStatus=d.BatteryStatus,
-                    CurrLocation=d.CurrLocation,
-                     DeliveredParcelId=d.DeliveredParcelId,
-                      DStatus=d.DStatus,
-                       Weight=d.Weight 
-                });
+                return lDroneToList.Select(d => new DroneToList(d));
             }
             else
             {
-                return lDroneToList.Where(predicate);
+                return lDroneToList.Where(predicate).Select(d=>new DroneToList(d));
             }
 
         }
