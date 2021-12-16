@@ -144,6 +144,7 @@ namespace PL
                 bl.SendingDroneToCharge(drone.Id);
             else
                 bl.ReleasingDrone(drone.Id);
+
         }
         private void Send_Or_pick_Or_Arrival_Drone_Click(object sender ,RoutedEventArgs e)
         {
