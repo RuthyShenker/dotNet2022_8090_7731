@@ -9,6 +9,7 @@
         mc:Ignorable="d"
         Title="DroneWindow" Height="450" Width="800">
     <Window.Resources>
+        
         <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -26,25 +27,35 @@
         <local:ConvertContentByDroneStatus x:Key="ConvertContentByDroneStatus" />
         
     </Window.Resources>
+    
     <StackPanel>
-        <StackPanel x:Name="detailsOfDrone">
-            <TextBlock Text = "Id:" TextWrapping = "Wrap"  />
-            <TextBox x:Name = "IdTextBox"   Text = "{Binding Path=Id}" TextWrapping = "Wrap" IsEnabled="True"/>
-            <TextBlock  Text = "Battery:" TextWrapping = "Wrap" />
-            <TextBox x:Name = "BatteryTextBox"   Text = "{Binding Path=BatteryStatus}" TextWrapping = "Wrap"  IsEnabled="True" />
-            <TextBlock Text = "MaxWeight:" TextWrapping = "Wrap" />
+        
+        <StackPanel x:Name="DetailsDroneGrid">
+            <TextBlock Text = "Id:"/>
+            <TextBox x:Name = "IdTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
+            
+            <TextBlock  Text = "Battery:" />
+            <TextBox x:Name = "BatteryTextBox"  Text = "{Binding Path=BatteryStatus}" IsEnabled="False" />
+           
+           
+            <TextBlock Text = "MaxWeight:" />
             <ComboBox x:Name = "MaxWeightComboBox" ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" SelectedItem="{Binding Path=Weight}"  Height = "25" Width = "140"  IsEnabled="True" />
-            <TextBlock  Text = "Model:" TextWrapping = "Wrap" />
-            <TextBox x:Name = "ModelTextBox" Text = "{Binding Path=Model}" TextWrapping = "Wrap"  IsEnabled="True" />
-            <TextBlock  Text = "Status:" TextWrapping = "Wrap" />
+            
+            <TextBlock  Text = "Model:" />
+            <TextBox x:Name = "ModelTextBox"  PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Model, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" />
+            
+            <TextBlock  Text = "Status:" />
             <ComboBox x:Name = "StatusComboBox" ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" SelectedItem="{Binding Path=DStatus}" Height = "25" Width = "140"  IsEnabled="True"/>
+           
             <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
-            <TextBox x:Name = "DeliveryTextBox" Text = "{Binding Path=DeliveredParcelId}" TextWrapping = "Wrap"  IsEnabled="True" />
+            <TextBox x:Name = "DeliveryTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=DeliveredParcelId, UpdateSourceTrigger=PropertyChanged}"  IsEnabled="True" />
+            
             <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
-            <TextBox x:Name = "LatitudeTextBox" Text = "{Binding Path=CurrLocation.Latitude}" TextWrapping = "Wrap"  IsEnabled="True"/>
+            <TextBox x:Name = "LatitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
+            
             <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
-            <TextBox x:Name = "LongitudeTextBox" Text = "{Binding Path=CurrLocation.Longitude}" TextWrapping = "Wrap"  IsEnabled="True" />
-        <!--</StackPanel>-->
+            <TextBox x:Name = "LongitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" />
+        </StackPanel>
 
         <!--<StackPanel x:Name="GridOfAddDrone"  >-->
             <Button  x:Name="OkAdd" Content = "OK" Click = "Button_Click_Of_Adding_New_Drone" />
