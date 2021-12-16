@@ -78,5 +78,7 @@ namespace PL
             new DroneWindow(bl, InitializeDrones, selectedDrone)
                 .Show();
         }
+
+
     }
 }

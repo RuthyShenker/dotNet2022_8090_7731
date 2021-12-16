@@ -13,7 +13,7 @@ namespace BL
     {
         private void InitializeDroneList()
         {
-            lDroneToList = new List<DroneToList>();
+            lDroneToList = new ObservableCollection<DroneToList>();
             foreach (var drone in dal.GetListFromDal<IDAL.DO.Drone>())
                 lDroneToList.Add(ConvertToList(drone));
         }
@@ -157,8 +157,7 @@ namespace BL
         /// <returns>returns ParcelInTransfer object.</returns>
         private ParcelInTransfer CalculateParcelInTransfer(int droneId)
         {
-            var parcelsDalList = dal.GetListFromDal<IDAL.DO.Parcel>();
-            var belongedParcel = parcelsDalList.FirstOrDefault(parcel => parcel.DroneId == droneId);
+            var belongedParcel = dal.GetFromDalByCondition<IDAL.DO.Parcel>(parcel => parcel.DroneId == droneId);
             if (belongedParcel.Equals(default(IDAL.DO.Parcel)))
             {
                 return new ParcelInTransfer();
@@ -374,7 +373,16 @@ namespace BL
         {
             if (predicate == null)
             {
-                return lDroneToList;
+                return lDroneToList.Select(d => new DroneToList()
+                {
+                    Id=d.Id,
+                    Model=d.Model,
+                    BatteryStatus=d.BatteryStatus,
+                    CurrLocation=d.CurrLocation,
+                     DeliveredParcelId=d.DeliveredParcelId,
+                      DStatus=d.DStatus,
+                       Weight=d.Weight 
+                });
             }
             else
             {

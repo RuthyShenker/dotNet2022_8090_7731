@@ -30,7 +30,6 @@ namespace PL
             refreshDroneList = initializeDrones;
 
             InitializeComponent();
-
             GridOfAddDrone.Visibility = Visibility.Visible;
             GridOfUpdateDrone.Visibility = Visibility.Collapsed;
             detailsOfDrone.DataContext = new DroneToList();
@@ -41,8 +40,7 @@ namespace PL
             refreshDroneList = initializeDrones;
 
             InitializeComponent();
-           
-
+            
             detailsOfDrone.DataContext = selectedDrone;
             EnableOfTextbox();
             GridOfAddDrone.Visibility = Visibility.Collapsed;
@@ -123,9 +121,15 @@ namespace PL
 
         private void Update_Model_Click(object sender, RoutedEventArgs e)
         {
-           DroneToList drone= detailsOfDrone.DataContext as DroneToList;
+            DroneToList drone= detailsOfDrone.DataContext as DroneToList;
+
+            // when we changed bl.GetDrones to return new list 
+            // before it changed ldronetolist and in the dal ?why??????????
+            //MessageBox.Show(bl.GetDrone(drone.Id).Model);
+            //MessageBox.Show(bl.GetDrones().First(d=>d.Id==drone.Id).Model);
             bl.UpdatingDroneName(drone.Id, drone.Model);
             MessageBox.Show(bl.GetDrone(drone.Id).Model);
+            MessageBox.Show(bl.GetDrones().First(d => d.Id == drone.Id).Model);
             refreshDroneList();
         }
 
