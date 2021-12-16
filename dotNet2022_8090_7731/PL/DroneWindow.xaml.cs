@@ -30,8 +30,8 @@ namespace PL
             refreshDroneList = initializeDrones;
 
             InitializeComponent();
-            GridOfAddDrone.Visibility = Visibility.Visible;
-            GridOfUpdateDrone.Visibility = Visibility.Collapsed;
+            //GridOfAddDrone.Visibility = Visibility.Visible;
+            //GridOfUpdateDrone.Visibility = Visibility.Collapsed;
             detailsOfDrone.DataContext = new DroneToList();
         }
         public DroneWindow(IBL.IBL bl, Action initializeDrones, DroneToList selectedDrone)
@@ -43,13 +43,8 @@ namespace PL
             
             detailsOfDrone.DataContext = selectedDrone;
             EnableOfTextbox();
-            GridOfAddDrone.Visibility = Visibility.Collapsed;
-            GridOfUpdateDrone.Visibility = Visibility.Visible;
-            if (selectedDrone.DStatus == DroneStatus.Delivery)
-                SendOrReleaseDroneFromCharging.Visibility = Visibility.Collapsed;
-            else if (selectedDrone.DStatus == DroneStatus.Maintenance)
-                SendOrReleaseDroneFromCharging.DataContext = "ReleaseDronefromCharge:";
-            else SendOrReleaseDroneFromCharging.DataContext = "SendDroneToCharge";
+            //GridOfAddDrone.Visibility = Visibility.Collapsed;
+            //GridOfUpdateDrone.Visibility = Visibility.Visible;
         }
 
 
@@ -125,12 +120,20 @@ namespace PL
 
             // when we changed bl.GetDrones to return new list 
             // before it changed ldronetolist and in the dal ?why??????????
-            //MessageBox.Show(bl.GetDrone(drone.Id).Model);
-            //MessageBox.Show(bl.GetDrones().First(d=>d.Id==drone.Id).Model);
+
+            if (MessageBox.Show($"Are You Sure You Want To Change The Model Of The Drone With Id:{drone.Id} ?",
+                   "Update Model",
+                   MessageBoxButton.YesNo,
+                   MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                 MessageBox.Show(bl.GetDrone(drone.Id).Model);
+            MessageBox.Show(bl.GetDrones().First(d=>d.Id==drone.Id).Model);
             bl.UpdatingDroneName(drone.Id, drone.Model);
             MessageBox.Show(bl.GetDrone(drone.Id).Model);
             MessageBox.Show(bl.GetDrones().First(d => d.Id == drone.Id).Model);
-            refreshDroneList();
+                refreshDroneList();
+            }
+           
         }
 
         private void Send_Or_Release_Drone_From_Charging(object sender, RoutedEventArgs e)
@@ -138,15 +141,18 @@ namespace PL
             DroneToList drone=detailsOfDrone.DataContext as DroneToList;
 
             if (drone.DStatus == DroneStatus.Free)
-            {
                 bl.SendingDroneToCharge(drone.Id);
-                SendOrReleaseDroneFromCharging.DataContext = "ReleaseDronefromCharge:";
-            }
             else
-            {
                 bl.ReleasingDrone(drone.Id);
-                SendOrReleaseDroneFromCharging.DataContext = "SendDroneToCharge:";
+        }
+        private void Send_Or_pick_Or_Arrival_Drone_Click(object sender ,RoutedEventArgs e)
+        {
+            DroneToList drone = detailsOfDrone.DataContext as DroneToList;
+            if (drone.DStatus==DroneStatus.Free)
+            {
+                bl.PickingUpParcel(drone.Id);            
             }
+
         }
     }
 }

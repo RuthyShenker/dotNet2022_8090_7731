@@ -10,7 +10,7 @@ namespace IBL
     public interface IBLParcel
     {
         int AddingParcel(Parcel parcel);
-        void BelongingParcel(int pId);
+        void BelongingParcel(int dId);
         void PickingUpParcel(int dId);
         void DeliveryPackage(int Id);
         IEnumerable<ParcelToList> GetParcels();

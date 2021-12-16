@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:BO="clr-namespace:BO;assembly=BL"
+        xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="DroneWindow" Height="450" Width="800">
     <Window.Resources>
@@ -20,6 +21,10 @@
                 <x:Type TypeName="BO:DroneStatus"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
+        <local:ConvertVisibilityByDroneStatus x:Key="ConvertVisibilityByDroneStatus" />
+        <local:ConvertContentByDroneStatus x:Key="ConvertContentByDroneStatus" />
+        
     </Window.Resources>
     <StackPanel>
         <StackPanel x:Name="detailsOfDrone">
@@ -39,20 +44,22 @@
             <TextBox x:Name = "LatitudeTextBox" Text = "{Binding Path=CurrLocation.Latitude}" TextWrapping = "Wrap"  IsEnabled="True"/>
             <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
             <TextBox x:Name = "LongitudeTextBox" Text = "{Binding Path=CurrLocation.Longitude}" TextWrapping = "Wrap"  IsEnabled="True" />
-        </StackPanel>
+        <!--</StackPanel>-->
 
-        <StackPanel x:Name="GridOfAddDrone"  >
+        <!--<StackPanel x:Name="GridOfAddDrone"  >-->
             <Button  x:Name="OkAdd" Content = "OK" Click = "Button_Click_Of_Adding_New_Drone" />
-        </StackPanel>
+        <!--</StackPanel>-->
 
-        <StackPanel x:Name="GridOfUpdateDrone">
+        <!--<StackPanel x:Name="GridOfUpdateDrone">-->
             <Button x:Name="UpdateModel" Content = "Update Model:" Click = "Update_Model_Click"  />
-            <Button x:Name="SendOrReleaseDroneFromCharging" Content = "{Binding}" Click = "Send_Or_Release_Drone_From_Charging" />
-            <Button x:Name="SendOrPickOrArrivalDrone" Content = "{Binding}"  Click = "Button_Click_Of_Adding_New_Drone"  />
-        </StackPanel>
-        <StackPanel x:Name="message">
-        </StackPanel>
-
+            <Button x:Name="SendOrReleaseDroneFromCharging" 
+                   Visibility="{Binding Path=DStatus ,Converter={StaticResource ConvertVisibilityByDroneStatus}}"  Height="50"
+                   Content="{Binding Path=DStatus ,Converter={StaticResource ConvertContentByDroneStatus}}" Click = "Send_Or_Release_Drone_From_Charging" />
+            <Button x:Name="SendOrPickOrArrivalDrone" Content =""  Click = "Send_Or_pick_Or_Arrival_Drone_Click"  />
+        <!--</StackPanel>-->
+            <StackPanel x:Name="message">
+            </StackPanel>
+        </StackPanel >
     </StackPanel >
 </Window >
 
