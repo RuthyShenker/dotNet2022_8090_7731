@@ -29,9 +29,6 @@ namespace PL
         public DroneWindow(IBL.IBL bl)
         {
             InitializeComponent();
-            this.bl = bl;
-            MaxWeightComboBox.DataContext = Enum.GetValues(typeof(WeightCategories));
-            StatusComboBox.DataContext = Enum.GetValues(typeof(DroneStatus));
             GridOfAddDrone.Visibility = Visibility.Visible;
             GridOfUpdateDrone.Visibility = Visibility.Collapsed;
             detailsOfDrone.DataContext = new DroneToList();
@@ -39,8 +36,9 @@ namespace PL
         public DroneWindow(IBL.IBL bl, DroneToList selectedDrone)
         {
             InitializeComponent();
-            this.bl = bl;
-            MessageBox.Show($"{ selectedDrone.Id}", $"{selectedDrone.Model}");
+            
+            detailsOfDrone.DataContext = selectedDrone;
+            EnableOfTextbox();
             GridOfAddDrone.Visibility = Visibility.Collapsed;
             GridOfUpdateDrone.Visibility = Visibility.Visible;
         }
@@ -113,6 +111,18 @@ namespace PL
                 toolTip.IsOpen = false;
                 timer = null;
             });
+        private void Update_Model_Click(object sender, RoutedEventArgs e)
+        {
+            DroneToList drone= detailsOfDrone.DataContext as DroneToList;
+
+            // when we changed bl.GetDrones to return new list 
+            // before it changed ldronetolist and in the dal ?why??????????
+            //MessageBox.Show(bl.GetDrone(drone.Id).Model);
+            //MessageBox.Show(bl.GetDrones().First(d=>d.Id==drone.Id).Model);
+            bl.UpdatingDroneName(drone.Id, drone.Model);
+            MessageBox.Show(bl.GetDrone(drone.Id).Model);
+            MessageBox.Show(bl.GetDrones().First(d => d.Id == drone.Id).Model);
+            refreshDroneList();
         }
 
         void TextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
