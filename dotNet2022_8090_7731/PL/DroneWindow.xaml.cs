@@ -32,18 +32,18 @@ namespace PL
             refreshDroneList = initializeDrones;
 
             InitializeComponent();
-            DetailsDroneGrid.Visibility = Visibility.Visible;
-            GridOfUpdateDrone.Visibility = Visibility.Collapsed;
-            DetailsDroneGrid.DataContext = new DroneToList();
+            DetailsDrone.Visibility = Visibility.Visible;
+            DetailsDrone.Visibility = Visibility.Collapsed;
+            DetailsDrone.DataContext = new DroneToList();
         }
         public DroneWindow(IBL.IBL bl, Action initializeDrones, DroneToList selectedDrone)
-        {            
+        {
             this.bl = bl;
             refreshDroneList = initializeDrones;
 
             InitializeComponent();
-            
-            DetailsDroneGrid.DataContext = selectedDrone;
+
+            DetailsDrone.DataContext = selectedDrone;
             EnableOfTextbox();
             //GridOfAddDrone.Visibility = Visibility.Collapsed;
             //GridOfUpdateDrone.Visibility = Visibility.Visible;
@@ -63,10 +63,10 @@ namespace PL
         private void Button_Click_Of_Adding_New_Drone(object sender, RoutedEventArgs e)
         {
             //DetailsDroneGrid.FindName
-            if (!string.IsNullOrWhiteSpace(IdTextBox.Text) ||!string.IsNullOrWhiteSpace(ModelTextBox.Text))
+            if (!string.IsNullOrWhiteSpace(IdTextBox.Text) || !string.IsNullOrWhiteSpace(ModelTextBox.Text))
             {
                 var a = (Button)sender;
-                
+
                 ToolTip toolTip = new ToolTip();
                 toolTip.Content = "field is not full";
                 toolTip.IsOpen = true;
@@ -74,24 +74,24 @@ namespace PL
                 return;
             }
 
-                                    CheckValidDrone((DroneToList)DetailsDroneGrid.DataContext, (Button)sender);
+            CheckValidDrone((DroneToList)DetailsDrone.DataContext, (Button)sender);
         }
 
-       
+
 
         private void CheckValidDrone(DroneToList drone, Button sender)
         {
-//            Id
-//WeightCategoriesEnum
-//DroneStatusEnum
-//DeliveredParcelId
+            //            Id
+            //WeightCategoriesEnum
+            //DroneStatusEnum
+            //DeliveredParcelId
 
 
             MessageBox.Show($"{drone.Model},{drone.CurrLocation.Longitude } {drone.CurrLocation}, {drone.CurrLocation.Latitude}");
             bool isExist = bl.GetDrones().Any(d => d.Id == drone.Id);
             if (isExist)
             {
-                var textBox = (TextBox)DetailsDroneGrid.FindName("IdTextBox");
+                var textBox = (TextBox)DetailsDrone.FindName("IdTextBox");
                 AddToolTip(textBox, " Id is not available ");
                 return;
             }
@@ -154,7 +154,7 @@ namespace PL
 
         private void Update_Model_Click(object sender, RoutedEventArgs e)
         {
-            DroneToList drone= DetailsDroneGrid.DataContext as DroneToList;
+            DroneToList drone = DetailsDroneGrid.DataContext as DroneToList;
 
             // when we changed bl.GetDrones to return new list 
             // before it changed ldronetolist and in the dal ?why??????????
@@ -164,19 +164,19 @@ namespace PL
                    MessageBoxButton.YesNo,
                    MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                 MessageBox.Show(bl.GetDrone(drone.Id).Model);
-            MessageBox.Show(bl.GetDrones().First(d=>d.Id==drone.Id).Model);
-            bl.UpdatingDroneName(drone.Id, drone.Model);
-            MessageBox.Show(bl.GetDrone(drone.Id).Model);
-            MessageBox.Show(bl.GetDrones().First(d => d.Id == drone.Id).Model);
+                MessageBox.Show(bl.GetDrone(drone.Id).Model);
+                MessageBox.Show(bl.GetDrones().First(d => d.Id == drone.Id).Model);
+                bl.UpdatingDroneName(drone.Id, drone.Model);
+                MessageBox.Show(bl.GetDrone(drone.Id).Model);
+                MessageBox.Show(bl.GetDrones().First(d => d.Id == drone.Id).Model);
                 refreshDroneList();
             }
-           
+
         }
 
         private void Send_Or_Release_Drone_From_Charging(object sender, RoutedEventArgs e)
         {
-            DroneToList drone= DetailsDroneGrid.DataContext as DroneToList;
+            DroneToList drone = DetailsDroneGrid.DataContext as DroneToList;
 
             if (drone.DStatus == DroneStatus.Free)
                 bl.SendingDroneToCharge(drone.Id);
@@ -184,12 +184,12 @@ namespace PL
                 bl.ReleasingDrone(drone.Id);
 
         }
-        private void Send_Or_pick_Or_Arrival_Drone_Click(object sender ,RoutedEventArgs e)
+        private void Send_Or_pick_Or_Arrival_Drone_Click(object sender, RoutedEventArgs e)
         {
             DroneToList drone = detailsOfDrone.DataContext as DroneToList;
-            if (drone.DStatus==DroneStatus.Free)
+            if (drone.DStatus == DroneStatus.Free)
             {
-                bl.PickingUpParcel(drone.Id);            
+                bl.PickingUpParcel(drone.Id);
             }
 
         }
