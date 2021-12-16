@@ -78,7 +78,8 @@ namespace BL
         /// <returns></returns>
         private DroneToList CalculateUnDeliveryingDrone(DroneToList nDrone)
         {
-            nDrone.DStatus = (DroneStatus)rand.Next((int)DroneStatus.Free, (int)DroneStatus.Maintenance);
+            //it rands free or maintance.
+            nDrone.DStatus = (DroneStatus)rand.Next((int)DroneStatus.Delivery);
             if (nDrone.DStatus == DroneStatus.Maintenance)
             {
                 var stationDalList = dal.GetListFromDal<IDAL.DO.BaseStation>();

@@ -45,13 +45,8 @@ namespace PL
             
             DetailsDroneGrid.DataContext = selectedDrone;
             EnableOfTextbox();
-            AddingDroneGrid.Visibility = Visibility.Collapsed;
-            GridOfUpdateDrone.Visibility = Visibility.Visible;
-            if (selectedDrone.DStatus == DroneStatus.Delivery)
-                SendOrReleaseDroneFromCharging.Visibility = Visibility.Collapsed;
-            else if (selectedDrone.DStatus == DroneStatus.Maintenance)
-                SendOrReleaseDroneFromCharging.DataContext = "ReleaseDronefromCharge:";
-            else SendOrReleaseDroneFromCharging.DataContext = "SendDroneToCharge";
+            //GridOfAddDrone.Visibility = Visibility.Collapsed;
+            //GridOfUpdateDrone.Visibility = Visibility.Visible;
         }
 
         private void EnableOfTextbox()
@@ -163,12 +158,20 @@ namespace PL
 
             // when we changed bl.GetDrones to return new list 
             // before it changed ldronetolist and in the dal ?why??????????
-            //MessageBox.Show(bl.GetDrone(drone.Id).Model);
-            //MessageBox.Show(bl.GetDrones().First(d=>d.Id==drone.Id).Model);
+
+            if (MessageBox.Show($"Are You Sure You Want To Change The Model Of The Drone With Id:{drone.Id} ?",
+                   "Update Model",
+                   MessageBoxButton.YesNo,
+                   MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                 MessageBox.Show(bl.GetDrone(drone.Id).Model);
+            MessageBox.Show(bl.GetDrones().First(d=>d.Id==drone.Id).Model);
             bl.UpdatingDroneName(drone.Id, drone.Model);
             MessageBox.Show(bl.GetDrone(drone.Id).Model);
             MessageBox.Show(bl.GetDrones().First(d => d.Id == drone.Id).Model);
-            refreshDroneList();
+                refreshDroneList();
+            }
+           
         }
 
         private void Send_Or_Release_Drone_From_Charging(object sender, RoutedEventArgs e)
@@ -176,15 +179,18 @@ namespace PL
             DroneToList drone= DetailsDroneGrid.DataContext as DroneToList;
 
             if (drone.DStatus == DroneStatus.Free)
-            {
                 bl.SendingDroneToCharge(drone.Id);
-                SendOrReleaseDroneFromCharging.DataContext = "ReleaseDronefromCharge:";
-            }
             else
-            {
                 bl.ReleasingDrone(drone.Id);
-                SendOrReleaseDroneFromCharging.DataContext = "SendDroneToCharge:";
+        }
+        private void Send_Or_pick_Or_Arrival_Drone_Click(object sender ,RoutedEventArgs e)
+        {
+            DroneToList drone = detailsOfDrone.DataContext as DroneToList;
+            if (drone.DStatus==DroneStatus.Free)
+            {
+                bl.PickingUpParcel(drone.Id);            
             }
+
         }
 
     }

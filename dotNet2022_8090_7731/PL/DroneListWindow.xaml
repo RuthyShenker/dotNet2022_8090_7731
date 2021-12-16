@@ -24,7 +24,7 @@
             <ComboBox Name="DroneStatuses" ItemsSource="{Binding}" Margin="40,9,40,10"  Width="120" Grid.Column="1" SelectionChanged="DroneStatuses_SelectionChanged"/>
             <Label Content="Drone Max Weight:" Grid.Column="2" HorizontalAlignment="Center"
                    Margin="0,19,0,0" VerticalAlignment="Top"/>
-            <ComboBox Name="DroneWeights" ItemsSource="{Binding}" Grid.Column="3" SelectionChanged="DroneWeight_SelectionChanged" Margin="39,9,39,11"/>
+            <ComboBox Name="DroneWeights" ItemsSource="{Binding}" Grid.Column="3" SelectionChanged="DroneWeight_SelectionChanged"  Margin="39,9,39,11"/>
         </Grid>
         <ListView x:Name="DroneListView" Grid.Row="1" ItemsSource="{Binding }" MouseDoubleClick="DroneListView_MouseDoubleClick" >
             <ListView.View>

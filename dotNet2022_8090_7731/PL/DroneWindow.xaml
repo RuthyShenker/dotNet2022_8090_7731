@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:BO="clr-namespace:BO;assembly=BL"
+        xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="DroneWindow" Height="450" Width="800">
     <Window.Resources>
@@ -21,6 +22,10 @@
                 <x:Type TypeName="BO:DroneStatus"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
+        <local:ConvertVisibilityByDroneStatus x:Key="ConvertVisibilityByDroneStatus" />
+        <local:ConvertContentByDroneStatus x:Key="ConvertContentByDroneStatus" />
+        
     </Window.Resources>
     
     <StackPanel>
@@ -52,41 +57,20 @@
             <TextBox x:Name = "LongitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" />
         </StackPanel>
 
-        <StackPanel x:Name="AddingDroneGrid"  >
-            <!--<TextBlock Text = "Id:" />
-            <TextBox x:Name = "IdTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Id, UpdateSourceTrigger=PropertyChanged}" />
+        <!--<StackPanel x:Name="GridOfAddDrone"  >-->
+            <Button  x:Name="OkAdd" Content = "OK" Click = "Button_Click_Of_Adding_New_Drone" />
+        <!--</StackPanel>-->
 
-            <TextBlock Text = "Battery:" />
-            <TextBox x:Name = "BatteryTextBox" Text = "0" IsEnabled="False"/>
-
-            <TextBlock Text = "MaxWeight:" />
-            <ComboBox x:Name = "MaxWeightComboBox" ItemsSource="{Binding}"/>
-
-            <TextBlock Text = "Model:"/>
-            <TextBox x:Name = "ModelTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Model, UpdateSourceTrigger=PropertyChanged}" />
-
-            <TextBlock Text = "Status:" />
-            <ComboBox x:Name = "StatusComboBox" ItemsSource="{Binding}"/>
-
-            <TextBlock Text = "Deliery:"/>
-            <TextBox x:Name = "DeliveryTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=DeliveredParcelId, UpdateSourceTrigger=PropertyChanged}" />
-
-            <TextBlock Text = "Latitude:" />
-            <TextBox x:Name = "LatitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" />
-
-            <TextBlock Text = "Longitude:" />
-            <TextBox x:Name = "LongitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" TextWrapping = "Wrap" />-->
-            <Button  x:Name="OkAdd" Content = "OK" Click="Button_Click_Of_Adding_New_Drone" IsEnabled="True" />
-        </StackPanel>
-
-        <StackPanel x:Name="GridOfUpdateDrone">
+        <!--<StackPanel x:Name="GridOfUpdateDrone">-->
             <Button x:Name="UpdateModel" Content = "Update Model:" Click = "Update_Model_Click"  />
-            <Button x:Name="SendOrReleaseDroneFromCharging" Content = "{Binding}" Click = "Send_Or_Release_Drone_From_Charging" />
-            <Button x:Name="SendOrPickOrArrivalDrone" Content = "{Binding}"  Click = "Button_Click_Of_Adding_New_Drone"  />
-        </StackPanel>
-        
-        <StackPanel x:Name="message">
-        </StackPanel>
+            <Button x:Name="SendOrReleaseDroneFromCharging" 
+                   Visibility="{Binding Path=DStatus ,Converter={StaticResource ConvertVisibilityByDroneStatus}}"  Height="50"
+                   Content="{Binding Path=DStatus ,Converter={StaticResource ConvertContentByDroneStatus}}" Click = "Send_Or_Release_Drone_From_Charging" />
+            <Button x:Name="SendOrPickOrArrivalDrone" Content =""  Click = "Send_Or_pick_Or_Arrival_Drone_Click"  />
+        <!--</StackPanel>-->
+            <StackPanel x:Name="message">
+            </StackPanel>
+        </StackPanel >
     </StackPanel >
 </Window >
 

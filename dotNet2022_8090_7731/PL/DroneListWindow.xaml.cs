@@ -25,45 +25,50 @@ namespace PL
         {
             InitializeComponent();
             this.bl = bl;
-            InitializeDrones();
+            FilterDroneListByCondition();
             DroneWeights.DataContext = Enum.GetValues(typeof(WeightCategories));
             DroneStatuses.DataContext = Enum.GetValues(typeof(DroneStatus));
         }
-        private void InitializeDrones()
-        {
-            DroneListView.DataContext = bl.GetDrones();
-        }
+
 
         private void DroneWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (DroneWeights.SelectedItem == null)
+            FilterDroneListByCondition();
+        }
+
+        private void FilterDroneListByCondition()
+        {
+            if (DroneWeights.SelectedItem == null && DroneStatuses.SelectedItem == null)
             {
-                DroneListView.ItemsSource = bl.GetDrones();
+                DroneListView.DataContext = bl.GetDrones();
+            }
+            else if (DroneStatuses.SelectedItem == null)
+            {
+                WeightCategories weight = (WeightCategories)DroneWeights.SelectedItem;
+                DroneListView.DataContext = bl.GetDrones(drone => drone.Weight == weight);
+            }
+            else if (DroneWeights.SelectedItem == null)
+            {
+                DroneStatus status = (DroneStatus)DroneStatuses.SelectedItem;
+                DroneListView.DataContext = bl.GetDrones(drone => drone.DStatus == status);
             }
             else
             {
                 WeightCategories weight = (WeightCategories)DroneWeights.SelectedItem;
-                DroneListView.ItemsSource = bl.GetDrones(drone => drone.Weight == weight);
+                DroneStatus status = (DroneStatus)DroneStatuses.SelectedItem;
+                DroneListView.DataContext = bl.GetDrones(drone => drone.DStatus == status && drone.Weight == weight);
             }
         }
 
         private void DroneStatuses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            if (DroneStatuses.SelectedItem == null)
-            {
-                DroneListView.ItemsSource = bl.GetDrones();
-            }
-            else
-            {
-                DroneStatus status = (DroneStatus)DroneStatuses.SelectedItem;
-                DroneListView.ItemsSource = bl.GetDrones(drone => drone.DStatus == status);
-            }
+            FilterDroneListByCondition();
         }
 
         private void button_AddingDrone_Click(object sender, RoutedEventArgs e)
         {
-            new DroneWindow(bl, InitializeDrones)
+            new DroneWindow(bl, FilterDroneListByCondition)
                 .Show();
         }
 
@@ -75,7 +80,7 @@ namespace PL
         private void DroneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var selectedDrone = (e.OriginalSource as FrameworkElement).DataContext as DroneToList;
-            new DroneWindow(bl, InitializeDrones, selectedDrone)
+            new DroneWindow(bl, FilterDroneListByCondition, selectedDrone)
                 .Show();
         }
 
