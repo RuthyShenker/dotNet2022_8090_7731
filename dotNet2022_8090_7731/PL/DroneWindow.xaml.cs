@@ -73,7 +73,7 @@ namespace PL
 
         private void Button_Click_Ok_Adding_New_Drone(object sender, RoutedEventArgs e)
         {
-            var drone = (DroneToList)DroneDetails.DataContext;
+            var drone = (Drone)DroneDetails.DataContext;
 
             var nDrone = new Drone(drone.Id, drone.Model, drone.Weight, DroneStatus.Maintenance); 
             bool IsCorrect = CheckValidDrone(nDrone, (Button)sender);
@@ -168,9 +168,9 @@ namespace PL
 
         private void Send_Or_Release_Drone_From_Charging(object sender, RoutedEventArgs e)
         {
-            DroneToList drone = DroneDetails.DataContext as DroneToList;
+            Drone drone = DroneDetails.DataContext as Drone;
 
-            if (drone.DStatus == DroneStatus.Free)
+            if (drone.DroneStatus == DroneStatus.Free)
                 bl.SendingDroneToCharge(drone.Id);
             else
                 bl.ReleasingDrone(drone.Id);
@@ -180,8 +180,8 @@ namespace PL
 
         private void Send_Or_pick_Or_Arrival_Drone_Click(object sender, RoutedEventArgs e)
         {
-            DroneToList drone = DroneDetails.DataContext as DroneToList;
-            if (drone.DStatus == DroneStatus.Free)
+            Drone drone = DroneDetails.DataContext as Drone;
+            if (drone.DroneStatus == DroneStatus.Free)
             {
                 bl.PickingUpParcel(drone.Id);
             }
