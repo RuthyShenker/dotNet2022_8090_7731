@@ -30,18 +30,28 @@ namespace PL
         {
             this.bl = bl;
             refreshDroneList = initializeDrones;
-
+            
             InitializeComponent();
             DroneDetails.DataContext = new DroneToList();
-            DroneDetails.Visibility = Visibility.Visible;
+            DeliveryComboBox.DataContext = bl.AvailableSlots();
+
+            ChangeVisibility(Visibility.Collapsed, BatteryContainer, StatusContainer, Location);
+          
         }
+        private void ChangeVisibility(Visibility visibility, params StackPanel[] stackPanels)
+        {
+            foreach (StackPanel item in stackPanels)
+            {
+                item.Visibility = visibility;
+            }
+        }
+
         public DroneWindow(IBL.IBL bl, Action initializeDrones, DroneToList selectedDrone)
         {
             this.bl = bl;
             refreshDroneList = initializeDrones;
 
             InitializeComponent();
-
             DroneDetails.DataContext = selectedDrone;
             EnableOfTextbox();
             //GridOfAddDrone.Visibility = Visibility.Collapsed;
@@ -54,31 +64,31 @@ namespace PL
             BatteryTextBox.IsEnabled = false;
             MaxWeightComboBox.IsEnabled = false;
             StatusComboBox.IsEnabled = false;
-            DeliveryTextBox.IsEnabled = false;
+            DeliveryComboBox.IsEnabled = false;
             LatitudeTextBox.IsEnabled = false;
             LongitudeTextBox.IsEnabled = false;
         }
 
-        private void Button_Click_Of_Adding_New_Drone(object sender, RoutedEventArgs e)
+        private void Button_Click_Ok_Adding_New_Drone(object sender, RoutedEventArgs e)
         {
-            //DetailsDroneGrid.FindName
-            if (!string.IsNullOrWhiteSpace(IdTextBox.Text) || !string.IsNullOrWhiteSpace(ModelTextBox.Text))
+            var drone = (DroneToList)DroneDetails.DataContext;
+
+            var nDrone = new Drone(drone.Id, drone.Model, drone.Weight, DroneStatus.Maintenance); 
+            bool IsCorrect = CheckValidDrone(nDrone, (Button)sender);
+            if (IsCorrect)
             {
-                var a = (Button)sender;
-
-                ToolTip toolTip = new ToolTip();
-                toolTip.Content = "field is not full";
-                toolTip.IsOpen = true;
-                a.ToolTip = toolTip;
-                return;
+                var a = bl.GetStations();
+                var b = a.First().Id;
+                bl.AddingDrone(nDrone, b);
+                refreshDroneList();
+                this.Close();
             }
-
-            CheckValidDrone((DroneToList)DroneDetails.DataContext, (Button)sender);
+            
         }
 
 
 
-        private void CheckValidDrone(DroneToList drone, Button sender)
+        private bool CheckValidDrone(Drone drone, Button sender)
         {
             //            Id
             //WeightCategoriesEnum
@@ -86,32 +96,14 @@ namespace PL
             //DeliveredParcelId
 
 
-            MessageBox.Show($"{drone.Model},{drone.CurrLocation.Longitude } {drone.CurrLocation}, {drone.CurrLocation.Latitude}");
             bool isExist = bl.GetDrones().Any(d => d.Id == drone.Id);
             if (isExist)
             {
                 var textBox = (TextBox)DroneDetails.FindName("IdTextBox");
                 AddToolTip(textBox, " Id is not available ");
-                return;
+                return false;
             }
-
-            //if (drone.CurrLocation.Longitude is < (-90) or > 90)
-            //{
-            //    var textBox = (TextBox)DetailsDroneGrid.FindName("Longitude");
-            //    AddToolTip(textBox, "InCorrect longitude (-90, 90) ");
-            //    return;
-            //}
-
-            //if (drone.CurrLocation.Latitude is < (-90) or > 90)
-            //{
-            //    var textBox = (TextBox)DetailsDroneGrid.FindName("Latitude");
-            //    AddToolTip(textBox, "InCorrect Latitude (-90, 90) ");
-            //    return;
-            //}
-
-
-
-            // to finish
+            return true;
         }
 
         void TextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)

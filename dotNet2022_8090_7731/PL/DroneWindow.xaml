@@ -24,6 +24,14 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
+
+        <ObjectDataProvider x:Key="AvailableSlots" MethodName="AvailableSlots"
+                            ObjectType="{x:Type System:Int16}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="BO:StationToList"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
         <local:ConvertVisibilityByDroneStatus x:Key="ConvertVisibilityByDroneStatus"/>
         <local:ConvertContentByDroneStatus x:Key="ConvertContentByDroneStatus"/>
         <local:HasAllTextConverter x:Key="HasAllTextConverter"/>
@@ -37,8 +45,12 @@
             <TextBlock  Text = "Drone Id:" />
             <TextBox Name = "IdTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
 
+
+            <StackPanel x:Name="BatteryContainer">
+
             <TextBlock  Text = "Battery:" />
             <TextBox x:Name = "BatteryTextBox"  Text = "{Binding Path=BatteryStatus}" IsEnabled="False" />
+            </StackPanel>
 
             <TextBlock Text = "MaxWeight:" />
             <ComboBox x:Name = "MaxWeightComboBox" ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" SelectedItem="{Binding Path=Weight}"  Height = "25" Width = "140"  IsEnabled="True" />
@@ -46,22 +58,26 @@
             <TextBlock  Text = "Model:" />
             <TextBox x:Name = "ModelTextBox"  PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Model, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" />
 
+            <StackPanel x:Name="StatusContainer">
             <TextBlock  Text = "Status:" />
-            <ComboBox x:Name = "StatusComboBox" ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" SelectedItem="{Binding Path=DStatus}" Height = "25" Width = "140"  IsEnabled="True"/>
-
-            <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
-            <TextBox x:Name = "DeliveryTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=DeliveredParcelId, UpdateSourceTrigger=PropertyChanged}"  IsEnabled="True" />
-
-            <StackPanel x:Name="Location" <!--Visibility="{Binding Path=}"-->>
-                
-            <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
-            <TextBox x:Name = "LatitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
+            <ComboBox x:Name = "StatusComboBox"   ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" SelectedItem="{Binding Path=DStatus}" Height = "25" Width = "140"  IsEnabled="True"/>
             </StackPanel>
 
-            <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
-            <TextBox x:Name = "LongitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" />
+            <StackPanel x:Name="DeliveryContainer">
+            <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
+            <ComboBox x:Name = "DeliveryComboBox" ItemsSource="{Binding Source={StaticResource AvailableSlots}, Path=Name}"  />
+                
+            </StackPanel>
 
-            <Button x:Name="OkAdd" Content = "OK" Click = "Button_Click_Of_Adding_New_Drone">
+            <StackPanel x:Name="Location">
+                <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
+                <TextBox x:Name = "LongitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" />
+
+                <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
+                <TextBox x:Name = "LatitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
+            </StackPanel>
+
+            <Button x:Name="OkAdd" Content = "OK" Click = "Button_Click_Ok_Adding_New_Drone">
                 <Button.IsEnabled>
                     <MultiBinding Converter="{StaticResource HasAllTextConverter}">
                         <Binding ElementName="IdTextBox" Path="Text" />

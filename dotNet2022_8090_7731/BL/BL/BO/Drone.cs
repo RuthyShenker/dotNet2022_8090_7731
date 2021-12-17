@@ -39,6 +39,10 @@ namespace BO
             PInTransfer = pInTransfer;
             CurrLocation = currLocation;
         }
+
+        public Drone(int id, string model, WeightCategories weight, DroneStatus droneStatus) :this(id, model, weight,0, droneStatus, null,null)
+        {
+        }
         /// <summary>
         /// this field is init.
         /// </summary>
