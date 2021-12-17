@@ -28,6 +28,7 @@ namespace PL
             FilterDroneListByCondition();
             DroneWeights.DataContext = Enum.GetValues(typeof(WeightCategories));
             DroneStatuses.DataContext = Enum.GetValues(typeof(DroneStatus));
+
         }
 
 
