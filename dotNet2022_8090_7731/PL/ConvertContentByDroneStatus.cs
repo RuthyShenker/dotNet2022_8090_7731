@@ -13,17 +13,16 @@ namespace PL
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             BO.DroneStatus status = (BO.DroneStatus)value;
-            object obj;
+            object obj="";
             if (status == BO.DroneStatus.Free)
             {
                  obj = "Send To Charge:";
-                return obj;
             }
-            else//status == BO.DroneStatus.Maintenance
+            else if(status == BO.DroneStatus.Maintenance)
             {
                  obj = "Release From Charge:";
-                return obj;
             }
+            return obj;
         }
 
 

@@ -15,7 +15,6 @@ namespace PL
             BO.DroneStatus status = (BO.DroneStatus)value;
             if (status==BO.DroneStatus.Free|| status == BO.DroneStatus.Maintenance)
             {
-
                 return Visibility.Visible;
             }
             else

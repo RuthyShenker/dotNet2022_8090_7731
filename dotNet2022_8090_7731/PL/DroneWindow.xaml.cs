@@ -152,17 +152,16 @@ namespace PL
 
             if (MessageBox.Show($"Are You Sure You Want To Change The Model Of The Drone With Id:{drone.Id} ?",
                    "Update Model",
-                   MessageBoxButton.YesNo,
-                   MessageBoxImage.Question) == MessageBoxResult.Yes)
+                   MessageBoxButton.OKCancel,
+                   MessageBoxImage.Question) == MessageBoxResult.OK)
             {
-                MessageBox.Show(bl.GetDrone(drone.Id).Model);
-                MessageBox.Show(bl.GetDrones().First(d => d.Id == drone.Id).Model);
+               
                 bl.UpdatingDroneName(drone.Id, drone.Model);
-                MessageBox.Show(bl.GetDrone(drone.Id).Model);
-                MessageBox.Show(bl.GetDrones().First(d => d.Id == drone.Id).Model);
+                MessageBox.Show($"Drone With Id:{drone.Id} Updated successfuly!",
+                   $" Model Updated Successly {MessageBoxImage.Information}");
                 refreshDroneList();
+                DroneDetails.DataContext = bl.GetDrone(drone.Id);
             }
-
         }
 
         private void Send_Or_Release_Drone_From_Charging(object sender, RoutedEventArgs e)
@@ -173,8 +172,9 @@ namespace PL
                 bl.SendingDroneToCharge(drone.Id);
             else
                 bl.ReleasingDrone(drone.Id);
-
+            refreshDroneList();
         }
+
         private void Send_Or_pick_Or_Arrival_Drone_Click(object sender, RoutedEventArgs e)
         {
             DroneToList drone = DroneDetails.DataContext as DroneToList;
