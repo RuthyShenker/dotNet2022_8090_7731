@@ -43,6 +43,11 @@ namespace BO
         public Drone(int id, string model, WeightCategories weight, DroneStatus droneStatus) :this(id, model, weight,0, droneStatus, null,null)
         {
         }
+
+        public Drone()
+        {
+        }
+
         /// <summary>
         /// this field is init.
         /// </summary>
