@@ -52,7 +52,7 @@
             <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
             <TextBox x:Name = "DeliveryTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=DeliveredParcelId, UpdateSourceTrigger=PropertyChanged}"  IsEnabled="True" />
 
-            <StackPanel x:Name="Location" <!--Visibility="{Binding Path=}"-->>
+            <StackPanel x:Name="Location" ><!--Visibility="{Binding Path=}"-->
                 
             <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
             <TextBox x:Name = "LatitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
@@ -75,7 +75,9 @@
                    Visibility="{Binding Path=DStatus ,Converter={StaticResource ConvertVisibilityByDroneStatus}}"  Height="50"
                    Content="{Binding Path=DStatus ,Converter={StaticResource ConvertContentByDroneStatus}}" Click = "Send_Or_Release_Drone_From_Charging" />
 
-            <Button x:Name="SendOrPickOrArrivalDrone" Content =""  Click = "Send_Or_pick_Or_Arrival_Drone_Click"  />
+            <Button x:Name="SendOrPickOrArrivalDrone"   Click = "Send_Or_pick_Or_Arrival_Drone_Click"
+                    Visibility="{Binding Path=DStatus ,Converter={StaticResource ConvertVisibilityByDroneStatus}}" 
+                    Content="{Binding Path=DStatus ,Converter={StaticResource ConvertContentByDroneStatus}}"/>
 
             <StackPanel x:Name="message">
             </StackPanel>
