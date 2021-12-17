@@ -280,6 +280,7 @@ namespace BL
                 {
                     throw new ListIsEmptyException(typeof(IDAL.DO.Parcel));
                 }
+               var a= dal.GetListFromDal<IDAL.DO.Parcel>();
                 throw new ThereIsNoMatchObjectInList(typeof(IDAL.DO.Parcel), $"There is no match parcels to drone with id {dId} in");
             }
 

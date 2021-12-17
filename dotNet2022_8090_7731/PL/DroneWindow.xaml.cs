@@ -1,18 +1,11 @@
 ﻿using BO;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace PL
@@ -47,11 +40,10 @@ namespace PL
         }
 
         public DroneWindow(IBL.IBL bl, Action initializeDrones, Drone selectedDrone)
-        {
+        { 
+            InitializeComponent();
             this.bl = bl;
             refreshDroneList = initializeDrones;
-
-            InitializeComponent();
 
             DroneDetails.DataContext = selectedDrone;
             MessageBox.Show($"{selectedDrone.PInTransfer.Getter}");
@@ -181,12 +173,29 @@ namespace PL
         private void Send_Or_pick_Or_Arrival_Drone_Click(object sender, RoutedEventArgs e)
         {
             Drone drone = DroneDetails.DataContext as Drone;
-            if (drone.DroneStatus == DroneStatus.Free)
+            ParcelInTransfer d1 = default(ParcelInTransfer);
+            if (drone.DroneStatus == DroneStatus.Free )
+            {
+                //if( drone.PInTransfer.Equals(default(ParcelInTransfer)))
+                try
+                {
+                    bl.BelongingParcel(drone.Id);
+                }
+                catch (BL.ThereIsNoMatchObjectInList exception)
+                {
+                    MessageBox.Show(exception.ToString(), "Error Belong Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
+            else if(drone.DroneStatus==DroneStatus.Delivery && !drone.PInTransfer.IsInWay && !drone.PInTransfer.Equals(default(ParcelInTransfer)))
             {
                 bl.PickingUpParcel(drone.Id);
             }
-
-            bl.GetDrone(drone.Id);
+            else if(drone.DroneStatus==DroneStatus.Delivery && drone.PInTransfer.IsInWay && !drone.PInTransfer.Equals(default(ParcelInTransfer)))
+            {
+                bl.DeliveryPackage(drone.Id);
+            }
+            DroneDetails.DataContext = bl.GetDrone(drone.Id);
         }
 
     }

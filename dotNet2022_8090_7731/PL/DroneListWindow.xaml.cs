@@ -41,25 +41,15 @@ namespace PL
         private void FilterDroneListByCondition()
         {
             if (DroneWeights.SelectedItem == null && DroneStatuses.SelectedItem == null)
-            {
                 DroneListView.DataContext = bl.GetDrones();
-            }
             else if (DroneStatuses.SelectedItem == null)
-            {
-                WeightCategories weight = (WeightCategories)DroneWeights.SelectedItem;
-                DroneListView.DataContext = bl.GetDrones(drone => drone.Weight == weight);
-            }
+                DroneListView.DataContext = bl.GetDrones(drone => drone.Weight == (WeightCategories)DroneWeights.SelectedItem);
             else if (DroneWeights.SelectedItem == null)
-            {
-                DroneStatus status = (DroneStatus)DroneStatuses.SelectedItem;
-                DroneListView.DataContext = bl.GetDrones(drone => drone.DStatus == status);
-            }
+                DroneListView.DataContext = bl.GetDrones(drone => drone.DStatus ==(DroneStatus)DroneStatuses.SelectedItem );
             else
-            {
-                WeightCategories weight = (WeightCategories)DroneWeights.SelectedItem;
-                DroneStatus status = (DroneStatus)DroneStatuses.SelectedItem;
-                DroneListView.DataContext = bl.GetDrones(drone => drone.DStatus == status && drone.Weight == weight);
-            }
+                DroneListView.DataContext = bl.GetDrones(drone => 
+                drone.DStatus == (DroneStatus)DroneStatuses.SelectedItem 
+                && drone.Weight == (WeightCategories)DroneWeights.SelectedItem);
         }
 
         private void DroneStatuses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -76,7 +66,7 @@ namespace PL
 
         private void button_Close_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void DroneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)

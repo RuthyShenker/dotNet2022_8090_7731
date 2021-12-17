@@ -25,17 +25,18 @@
         </ObjectDataProvider>
 
 
-        <ObjectDataProvider x:Key="AvailableSlots" MethodName="AvailableSlots"
+        <!--<ObjectDataProvider x:Key="AvailableSlots" MethodName="AvailableSlots"
                             ObjectType="{x:Type System:Int16}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="BO:StationToList"/>
             </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
+        </ObjectDataProvider>-->
 
         <local:ConvertVisibilityByDroneStatus x:Key="ConvertVisibilityByDroneStatus"/>
         <local:ConvertContentByDroneStatus x:Key="ConvertContentByDroneStatus"/>
         <local:HasAllTextConverter x:Key="HasAllTextConverter"/>
-
+        <local:ConvertContentByDroneStatusBelongOrPickOrDeliveryParcel x:Key="ConvertContentByDroneStatusBelongOrPickOrDeliveryParcel"/>
+        <local:ConvertVisibilityByDroneToBelongOrPickOrArrivalParcel x:Key="ConvertVisibilityByDroneToBelongOrPickOrArrivalParcel"/>
     </Window.Resources>
 
     <StackPanel>
@@ -151,9 +152,10 @@
                    Visibility="{Binding Path=DroneStatus ,Converter={StaticResource ConvertVisibilityByDroneStatus}}"  Height="50"
                    Content="{Binding Path=DroneStatus ,Converter={StaticResource ConvertContentByDroneStatus}}" Click = "Send_Or_Release_Drone_From_Charging" />
 
-            <!--<Button x:Name="SendOrPickOrArrivalDrone"   Click = "Send_Or_pick_Or_Arrival_Drone_Click"
-                    Visibility="{Binding Path=DStatus ,Converter={StaticResource ConvertVisibilityByDroneStatus}}" 
-                    Content="{Binding Path=DStatus ,Converter={StaticResource ConvertContentByDroneStatus}}"/>-->
+            <Button x:Name="SendOrPickOrArrivalDrone"   Click = "Send_Or_pick_Or_Arrival_Drone_Click"
+                    Visibility="{Binding  Converter={StaticResource ConvertVisibilityByDroneToBelongOrPickOrArrivalParcel }}" 
+                    Content="{Binding  Converter={StaticResource ConvertContentByDroneStatusBelongOrPickOrDeliveryParcel}}"
+                    Height="50"/>
 
             <StackPanel x:Name="message">
             </StackPanel>
