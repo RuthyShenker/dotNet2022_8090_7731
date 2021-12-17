@@ -33,7 +33,7 @@ namespace PL
             
             InitializeComponent();
             DroneDetails.DataContext = new DroneToList();
-            DeliveryComboBox.DataContext = bl.AvailableSlots();
+            //DeliveryComboBox.DataContext = bl.AvailableSlots();
 
             ChangeVisibility(Visibility.Collapsed, BatteryContainer, StatusContainer, Location);
           
@@ -46,13 +46,15 @@ namespace PL
             }
         }
 
-        public DroneWindow(IBL.IBL bl, Action initializeDrones, DroneToList selectedDrone)
+        public DroneWindow(IBL.IBL bl, Action initializeDrones, Drone selectedDrone)
         {
             this.bl = bl;
             refreshDroneList = initializeDrones;
 
             InitializeComponent();
+
             DroneDetails.DataContext = selectedDrone;
+            MessageBox.Show($"{selectedDrone.PInTransfer.Getter}");
             EnableOfTextbox();
             //GridOfAddDrone.Visibility = Visibility.Collapsed;
             //GridOfUpdateDrone.Visibility = Visibility.Visible;
@@ -64,7 +66,7 @@ namespace PL
             BatteryTextBox.IsEnabled = false;
             MaxWeightComboBox.IsEnabled = false;
             StatusComboBox.IsEnabled = false;
-            DeliveryComboBox.IsEnabled = false;
+            //DeliveryComboBox.IsEnabled = false;
             LatitudeTextBox.IsEnabled = false;
             LongitudeTextBox.IsEnabled = false;
         }
@@ -172,7 +174,8 @@ namespace PL
                 bl.SendingDroneToCharge(drone.Id);
             else
                 bl.ReleasingDrone(drone.Id);
-            refreshDroneList();
+            refreshDroneList(); 
+            DroneDetails.DataContext = bl.GetDrone(drone.Id);
         }
 
         private void Send_Or_pick_Or_Arrival_Drone_Click(object sender, RoutedEventArgs e)

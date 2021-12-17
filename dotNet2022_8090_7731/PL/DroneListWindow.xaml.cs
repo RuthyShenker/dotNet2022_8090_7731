@@ -82,7 +82,8 @@ namespace PL
         private void DroneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var selectedDrone = (e.OriginalSource as FrameworkElement).DataContext as DroneToList;
-            new DroneWindow(bl, FilterDroneListByCondition, selectedDrone)
+            var drone=bl.GetDrone(selectedDrone.Id);
+            new DroneWindow(bl, FilterDroneListByCondition, drone)
                 .Show();
         }
 
