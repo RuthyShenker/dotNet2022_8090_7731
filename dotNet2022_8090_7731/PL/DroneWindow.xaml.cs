@@ -186,6 +186,7 @@ namespace PL
                 bl.PickingUpParcel(drone.Id);
             }
 
+            bl.GetDrone(drone.Id);
         }
 
     }
