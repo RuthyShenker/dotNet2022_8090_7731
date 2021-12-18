@@ -6,6 +6,21 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="DroneListWindow" Height="640" Width="800">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="BO:WeightCategories"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="DroneStatusEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="BO:DroneStatus"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="50*"/>
@@ -21,10 +36,12 @@
             </Grid.ColumnDefinitions >
             <Label Content="Drone Status:" Grid.Column="0" HorizontalAlignment="Left"
                    Margin="81,19,0,0" VerticalAlignment="Top"/>
-            <ComboBox Name="DroneStatuses" ItemsSource="{Binding}" Margin="40,9,40,10"  Width="120" Grid.Column="1" SelectionChanged="DroneStatuses_SelectionChanged"/>
+            <ComboBox Name="DroneStatuses" ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" Margin="40,9,40,10"  Width="120" Grid.Column="1" SelectionChanged="DroneStatuses_SelectionChanged"/>
             <Label Content="Drone Max Weight:" Grid.Column="2" HorizontalAlignment="Center"
                    Margin="0,19,0,0" VerticalAlignment="Top"/>
-            <ComboBox Name="DroneWeights" ItemsSource="{Binding}" Grid.Column="3" SelectionChanged="DroneWeight_SelectionChanged"  Margin="39,9,39,11"/>
+            <ComboBox Name="DroneWeights" ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}"
+
+ Grid.Column="3" SelectionChanged="DroneWeight_SelectionChanged"  Margin="39,9,39,11"/>
         </Grid>
         <ListView x:Name="DroneListView" Grid.Row="1" ItemsSource="{Binding }" MouseDoubleClick="DroneListView_MouseDoubleClick" >
             <ListView.View>
