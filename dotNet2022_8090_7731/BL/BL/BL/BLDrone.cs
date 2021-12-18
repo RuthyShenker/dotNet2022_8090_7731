@@ -1,5 +1,6 @@
-﻿using BO;
+﻿
 using DalObject;
+using IBL.BO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +15,7 @@ namespace BL
     {
         private void InitializeDroneList()
         {
-            lDroneToList = new ObservableCollection<DroneToList>();
+            lDroneToList = new List<DroneToList>();
             foreach (var drone in dal.GetListFromDal<IDAL.DO.Drone>())
                 lDroneToList.Add(ConvertToList(drone));
         }
@@ -169,7 +170,7 @@ namespace BL
             var belongedParcel = dal.GetFromDalByCondition<IDAL.DO.Parcel>(parcel => parcel.DroneId == droneId);
             if (belongedParcel.Equals(default(IDAL.DO.Parcel)))
             {
-                return new ParcelInTransfer();
+                return null;
             }
             else
             {
@@ -193,9 +194,9 @@ namespace BL
             switch (drone.DStatus)
             {
                 case DroneStatus.Maintenance:
-                    throw new InValidActionException(typeof(Drone), IdDrone, $"status of drone is Maintenance ");
+                    throw new IBL.BO.InValidActionException(typeof(Drone), IdDrone, $"status of drone is Maintenance ");
                 case DroneStatus.Delivery:
-                    throw new InValidActionException(typeof(Drone), IdDrone, $"status of drone is Delivery ");
+                    throw new IBL.BO.InValidActionException(typeof(Drone), IdDrone, $"status of drone is Delivery ");
                 default:
                     break;
             }
@@ -203,14 +204,14 @@ namespace BL
             Station closetdStation = ClosestStation(drone.CurrLocation, true);
             if (GetNumOfAvailablePositionsInStation(closetdStation.Id) == 0)
             {
-                throw new InValidActionException("There ara no stations with available positions!");
+                throw new IBL.BO.InValidActionException("There ara no stations with available positions!");
             }
 
             double distanceFromDroneToStation = Extensions.CalculateDistance(closetdStation.Location, drone.CurrLocation);
             double minBattery = MinBattery(distanceFromDroneToStation, drone.Weight);
             if (drone.BatteryStatus - minBattery < 0)
             {
-                throw new InValidActionException("The drone has no enough battery in order to get to the closest charging station");
+                throw new IBL.BO.InValidActionException("The drone has no enough battery in order to get to the closest charging station");
             }
 
             drone.BatteryStatus = minBattery;
@@ -234,9 +235,9 @@ namespace BL
             switch (drone.DStatus)
             {
                 case DroneStatus.Free:
-                    throw new InValidActionException(typeof(Drone), dId, $"status of drone is Free ");
+                    throw new IBL.BO.InValidActionException(typeof(Drone), dId, $"status of drone is Free ");
                 case DroneStatus.Delivery:
-                    throw new InValidActionException(typeof(Drone), dId, $"status of drone is Delivery ");
+                    throw new IBL.BO.InValidActionException(typeof(Drone), dId, $"status of drone is Delivery ");
                 default:
                     drone.DStatus = DroneStatus.Free;
                     drone.BatteryStatus += timeInCharging * chargingRate;
@@ -254,11 +255,11 @@ namespace BL
             }
             catch (ArgumentNullException)
             {
-                throw new ListIsEmptyException(typeof(Drone));
+                throw new IBL.BO.ListIsEmptyException(typeof(Drone));
             }
             catch (InvalidOperationException)
             {
-                throw new IdIsNotExistException(typeof(Drone), dId);
+                throw new IBL.BO.IdIsNotExistException(typeof(Drone), dId);
             }
         }
 
@@ -272,7 +273,7 @@ namespace BL
             if (droneToList.DStatus != DroneStatus.Free)
             {
                 string dStatus = droneToList.DStatus.ToString();
-                throw new InValidActionException(typeof(Drone), dId, $"status of drone is {dStatus} ");
+                throw new IBL.BO.InValidActionException(typeof(Drone), dId, $"status of drone is {dStatus} ");
             }
             var optionParcels = dal.GetDalListByCondition<IDAL.DO.Parcel>
                 (parcel => parcel.Weight <= (IDAL.DO.WeightCategories)droneToList.Weight &&
@@ -286,10 +287,9 @@ namespace BL
             {
                 if (!dal.GetListFromDal<IDAL.DO.Parcel>().Any())
                 {
-                    throw new ListIsEmptyException(typeof(IDAL.DO.Parcel));
+                    throw new IBL.BO.ListIsEmptyException(typeof(IDAL.DO.Parcel));
                 }
-                var a = dal.GetListFromDal<IDAL.DO.Parcel>();
-                throw new ThereIsNoMatchObjectInList(typeof(IDAL.DO.Parcel), $"There is no match parcels to drone with id {dId} in");
+                throw new ThereIsNoMatchObjectInListException(typeof(IDAL.DO.Parcel), $"There is no match parcels to drone with id {dId} in");
             }
 
             droneToList.DStatus = DroneStatus.Delivery;
@@ -323,14 +323,14 @@ namespace BL
         {
             if (dal.IsIdExistInList<IDAL.DO.Drone>(bLDrone.Id))
             {
-                throw new IdIsAlreadyExistException(typeof(IDAL.DO.Drone), bLDrone.Id);
+                throw new IBL.BO.IdIsAlreadyExistException(typeof(IDAL.DO.Drone), bLDrone.Id);
             }
             try
             {
                 IDAL.DO.BaseStation station = dal.GetFromDalById<IDAL.DO.BaseStation>(StationId);
                 if (GetNumOfAvailablePositionsInStation(StationId) == 0)
                 {
-                    throw new InValidActionException(typeof(IDAL.DO.BaseStation), StationId, "There aren't free positions ");
+                    throw new IBL.BO.InValidActionException(typeof(IDAL.DO.BaseStation), StationId, "There aren't free positions ");
                 }
 
                 bLDrone.BatteryStatus = 0;
@@ -357,7 +357,7 @@ namespace BL
             }
             catch (DalObject.IdIsNotExistException)
             {
-                throw new IdIsNotExistException(typeof(IDAL.DO.BaseStation), StationId);
+                throw new IBL.BO.IdIsNotExistException(typeof(IDAL.DO.BaseStation), StationId);
             }
         }
 
@@ -377,7 +377,7 @@ namespace BL
             }
             catch (DalObject.IdIsNotExistException)
             {
-                throw new IdIsNotExistException(typeof(Drone), droneId);
+                throw new IBL.BO.IdIsNotExistException(typeof(Drone), droneId);
             }
         }
         public IEnumerable<DroneToList> GetDrones(Func<DroneToList, bool> predicate = null)
@@ -409,7 +409,7 @@ namespace BL
             }
             catch (DalObject.IdIsNotExistException)
             {
-                throw new IdIsNotExistException(typeof(Drone), droneId);
+                throw new IBL.BO.IdIsNotExistException(typeof(Drone), droneId);
             }
         }
     }

@@ -36,7 +36,7 @@ namespace IDAL
                 GetterId = getterId;
                 Weight = weight;
                 MPriority = status;
-                DroneId = 0;
+                DroneId = null;
                 CreatedTime = makingParcel;
                 BelongParcel = belongParcel;
                 PickingUp = pickingUp;
@@ -76,7 +76,7 @@ namespace IDAL
 
             public UrgencyStatuses MPriority { get; set; }
 
-            public int DroneId { get; set; }
+            public int? DroneId { get; set; }
 
             /// <summary>
             /// Time of creation a package to delivery

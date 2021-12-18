@@ -7,15 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Device.Location;
-using BO;
+
 using System.Collections.ObjectModel;
+using IBL.BO;
 
 namespace BL
 {
     public partial class BL : IBL.IBL
     {
         IDal.IDal dal;
-        ObservableCollection<DroneToList> lDroneToList;
+        List<DroneToList> lDroneToList;
         Random rand;
         static double powerConsumptionFree;
         static double powerConsumptionLight;

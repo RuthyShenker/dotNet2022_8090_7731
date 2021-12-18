@@ -5,8 +5,7 @@
 //using System.Text;
 //using System.Threading.Tasks;
 //using BL;
-
-using BO;
+using IBL.BO;
 using System.Device.Location;
 
 namespace BL

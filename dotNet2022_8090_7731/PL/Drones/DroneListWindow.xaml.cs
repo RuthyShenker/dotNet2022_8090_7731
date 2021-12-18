@@ -1,4 +1,5 @@
-﻿using BO;
+﻿
+using IBL.BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PL
+namespace PL.Drones
 {
     /// <summary>
     /// Interaction logic for DroneListWindow.xaml
@@ -45,10 +46,10 @@ namespace PL
             else if (DroneStatuses.SelectedItem == null)
                 DroneListView.DataContext = bl.GetDrones(drone => drone.Weight == (WeightCategories)DroneWeights.SelectedItem);
             else if (DroneWeights.SelectedItem == null)
-                DroneListView.DataContext = bl.GetDrones(drone => drone.DStatus ==(DroneStatus)DroneStatuses.SelectedItem );
+                DroneListView.DataContext = bl.GetDrones(drone => drone.DStatus == (DroneStatus)DroneStatuses.SelectedItem);
             else
-                DroneListView.DataContext = bl.GetDrones(drone => 
-                drone.DStatus == (DroneStatus)DroneStatuses.SelectedItem 
+                DroneListView.DataContext = bl.GetDrones(drone =>
+                drone.DStatus == (DroneStatus)DroneStatuses.SelectedItem
                 && drone.Weight == (WeightCategories)DroneWeights.SelectedItem);
         }
 
@@ -69,14 +70,16 @@ namespace PL
             Close();
         }
 
-        private void DroneListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var selectedDrone = (e.OriginalSource as FrameworkElement).DataContext as DroneToList;
-            var drone=bl.GetDrone(selectedDrone.Id);
+            var selectedDrone = (sender as ContentControl).DataContext as DroneToList;
+            var drone = bl.GetDrone(selectedDrone.Id);
             new DroneWindow(bl, FilterDroneListByCondition, drone)
                 .Show();
         }
-
-
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+        }
     }
 }

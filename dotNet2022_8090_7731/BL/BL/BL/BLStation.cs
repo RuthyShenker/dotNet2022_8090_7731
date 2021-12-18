@@ -4,7 +4,7 @@ using System.Device.Location;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BO;
+using IBL.BO;
 
 namespace BL
 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IBL.BO;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -6,24 +7,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace PL
+namespace PL.Converters
 {
-    public class ConvertContentByDroneStatusBelongOrPickOrDeliveryParcel : IValueConverter
+    public class ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter : IValueConverter
     {
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            BO.Drone drone = (BO.Drone)value;
-            if (drone == null)
-            {
-                return "";
-            }
-            
-            if (drone.DroneStatus == BO.DroneStatus.Free)
+            Drone drone = (Drone)value;
+
+            if (drone.DroneStatus == DroneStatus.Free)
                 return "Belong Parcel";
-            else if (drone.DroneStatus == BO.DroneStatus.Delivery && !drone.PInTransfer.IsInWay)
+            else if (drone.DroneStatus == DroneStatus.Delivery && !drone.PInTransfer.IsInWay)
                 return "Pick parcel";
-            else if(drone.DroneStatus == BO.DroneStatus.Delivery && drone.PInTransfer.IsInWay)
+            else if(drone.DroneStatus == DroneStatus.Delivery && drone.PInTransfer.IsInWay)
                 return "Delivery Parcel";
             return ""; 
         }

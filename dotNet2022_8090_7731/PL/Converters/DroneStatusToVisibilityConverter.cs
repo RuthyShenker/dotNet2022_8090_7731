@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-namespace PL
+using IBL.BO;
+
+namespace PL.Converters
 {
-    public class ConvertVisibilityByDroneStatus : IValueConverter
+    public class DroneStatusToVisibilityConverter : IValueConverter
     {
         public object Convert(object value,Type targetType,object parameter,CultureInfo culture)
         {
-            BO.DroneStatus status = (BO.DroneStatus)value;
-            if (status==BO.DroneStatus.Free|| status == BO.DroneStatus.Maintenance)
+            DroneStatus status = (DroneStatus)value;
+            if (status==DroneStatus.Free|| status == DroneStatus.Maintenance)
             {
                 return Visibility.Visible;
             }

@@ -4,30 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BO
+namespace IBL
 {
-    /// <summary>
-    /// A class of ChargingDrone that contains:
-    /// DroneId
-    ///BatteryStatus
-    /// </summary>
-    public class ChargingDrone
+    namespace BO
     {
         /// <summary>
-        /// A constructor of ChargingDrone with fields.
+        /// A class of ChargingDrone that contains:
+        /// DroneId
+        ///BatteryStatus
         /// </summary>
-        /// <param name="droneId"></param>
-        /// <param name="batteryStatus"></param>
-        public ChargingDrone(int droneId,double batteryStatus)
+        public class ChargingDrone
         {
-            DroneId = droneId;
-            BatteryStatus = batteryStatus;
+            /// <summary>
+            /// A constructor of ChargingDrone with fields.
+            /// </summary>
+            /// <param name="droneId"></param>
+            /// <param name="batteryStatus"></param>
+            public ChargingDrone(int droneId, double batteryStatus)
+            {
+                DroneId = droneId;
+                BatteryStatus = batteryStatus;
+            }
+            public ChargingDrone()
+            {
+
+            }
+            public int DroneId { get; set; }
+            public double BatteryStatus { get; set; }
         }
-        public ChargingDrone()
-        {
-           
-        }
-        public int DroneId { get; set; }
-        public double BatteryStatus { get; set; }
     }
 }

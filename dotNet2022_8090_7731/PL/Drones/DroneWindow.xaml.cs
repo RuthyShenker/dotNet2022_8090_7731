@@ -26,18 +26,18 @@ namespace PL.Drones
             this.bl = bl;
             refreshDroneList = initializeDrones;
             InitializeComponent();
-            DroneView.DataContext = new AddNewDroneView(bl, initializeDrones, this.Close);
+            DroneView.DataContext = new AddNewDroneView(bl, initializeDrones,this.Close);
         }
-
+      
         public DroneWindow(IBL.IBL bl, Action initializeDrones, Drone selectedDrone)
         {
             InitializeComponent();
             this.bl = bl;
             refreshDroneList = initializeDrones;
-            DroneView.DataContext = new EditDroneView(bl, initializeDrones, selectedDrone);
+            DroneView.DataContext= new EditDroneView(bl, initializeDrones, selectedDrone);
         }
 
-
+        
         //private void ChangeVisibility(Visibility visibility, params StackPanel[] stackPanels)
         //{
         //    foreach (StackPanel item in stackPanels)
@@ -57,3 +57,5 @@ namespace PL.Drones
         }
     }
 }
+
+
