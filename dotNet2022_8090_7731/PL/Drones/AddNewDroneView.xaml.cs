@@ -40,20 +40,30 @@ namespace PL.Drones
         }
         private void Button_Click_Ok_Adding_New_Drone(object sender, RoutedEventArgs e)
         {
-            var stationId = (int)StationIdComboBox.SelectedValue;
+            var stationId =(int)StationIdComboBox.SelectedValue;
             //var a = stationId.GetType().GetProperty("Id").GetValue("")
             var drone = (Drone)AddNewDronePanel.DataContext;
 
             //var nDrone = new Drone(drone.Id, drone.Model, drone.Weight, DroneStatus.Maintenance);
-            bool IsCorrect = CheckValidDrone(drone, (Button)sender);
-            if (IsCorrect)
-            {
-                //var a = bl.GetStations();
-                //var b = a.First().Id;
-                bl.AddingDrone(drone, stationId);
+            //bool IsCorrect = CheckValidDrone(drone, (Button)sender);
+            //if (IsCorrect)
+            //{
+            //var a = bl.GetStations();
+            //var b = a.First().Id;
+            try
+                {
+                    bl.AddingDrone(drone, stationId);
                 refreshDroneList();
                 this.closeWindow();
-            }
+                }
+            catch (IBL.BO.IdIsAlreadyExistException exception)
+            {
+                MessageBox.Show(exception.Message, " Id is not available ", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                var textBox = (TextBox)AddNewDronePanel.FindName("IdAddingTextBox");
+                    AddToolTip(textBox, " Id is not available ");
+                } 
+            //}
         }
         private bool CheckValidDrone(Drone drone, Button sender)
         {
@@ -66,7 +76,7 @@ namespace PL.Drones
             bool isExist = bl.GetDrones().Any(d => d.Id == drone.Id);
             if (isExist)
             {
-                var textBox = (TextBox)AddNewDronePanel.FindName("IdTextBox");
+                var textBox = (TextBox)AddNewDronePanel.FindName("IdAddingTextBox");
                 AddToolTip(textBox, " Id is not available ");
                 return false;
             }

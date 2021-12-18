@@ -34,7 +34,7 @@ namespace PL.Drones
             InitializeComponent();
             this.bl = bl;
             refreshDroneList = initializeDrones;
-            DroneView.DataContext= new EditDroneView(bl, initializeDrones, selectedDrone);
+            DroneView.DataContext= new EditDroneView(bl, initializeDrones, selectedDrone, this.Close);
         }
 
         
@@ -53,7 +53,7 @@ namespace PL.Drones
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel = true;
+            //e.Cancel = true;
         }
     }
 }

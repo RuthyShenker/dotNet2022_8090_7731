@@ -28,8 +28,7 @@ namespace PL.Drones
             this.bl = bl;
             FilterDroneListByCondition();
 
-            DroneWeights.DataContext = Enum.GetValues(typeof(WeightCategories));
-            DroneStatuses.DataContext = Enum.GetValues(typeof(DroneStatus));
+
 
         }
 
@@ -59,6 +58,8 @@ namespace PL.Drones
             FilterDroneListByCondition();
         }
 
+
+
         private void button_AddingDrone_Click(object sender, RoutedEventArgs e)
         {
             new DroneWindow(bl, FilterDroneListByCondition)
@@ -67,6 +68,7 @@ namespace PL.Drones
 
         private void button_Close_Click(object sender, RoutedEventArgs e)
         {
+            
             Close();
         }
 
@@ -79,7 +81,7 @@ namespace PL.Drones
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel = true;
+            //e.Cancel = true;
         }
     }
 }

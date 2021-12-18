@@ -323,7 +323,7 @@ namespace BL
         {
             if (dal.IsIdExistInList<IDAL.DO.Drone>(bLDrone.Id))
             {
-                throw new IBL.BO.IdIsAlreadyExistException(typeof(IDAL.DO.Drone), bLDrone.Id);
+                throw new IBL.BO.IdIsAlreadyExistException(typeof(Drone), bLDrone.Id);
             }
             try
             {

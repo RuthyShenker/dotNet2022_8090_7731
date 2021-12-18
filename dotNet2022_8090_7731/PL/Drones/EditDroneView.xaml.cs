@@ -23,15 +23,16 @@ namespace PL.Drones
     /// </summary>
     public partial class EditDroneView : UserControl
     {
-        private IBL.IBL bl;
-        Action refreshDroneList;
+        IBL.IBL bl;
+        Action refreshDroneList,close;
 
-        public EditDroneView(IBL.IBL bl, Action initializeDrones, Drone selectedDrone)
+        public EditDroneView(IBL.IBL bl, Action initializeDrones, Drone selectedDrone, Action closeWindow)
         {
             InitializeComponent();
             this.bl = bl;
             refreshDroneList = initializeDrones;
             EditDronePanel.DataContext = selectedDrone;
+            close = closeWindow;
         }
 
         private void Update_Model_Click(object sender, RoutedEventArgs e)
