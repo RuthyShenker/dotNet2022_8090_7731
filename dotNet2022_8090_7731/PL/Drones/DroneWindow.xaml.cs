@@ -26,7 +26,7 @@ namespace PL.Drones
             this.bl = bl;
             refreshDroneList = initializeDrones;
             InitializeComponent();
-            DroneView.DataContext = new AddNewDroneView(bl, initializeDrones,this.Close);
+            DroneView.DataContext = new AddNewDroneView(bl, initializeDrones,Close);
         }
       
         public DroneWindow(IBL.IBL bl, Action initializeDrones, Drone selectedDrone)
@@ -34,7 +34,7 @@ namespace PL.Drones
             InitializeComponent();
             this.bl = bl;
             refreshDroneList = initializeDrones;
-            DroneView.DataContext= new EditDroneView(bl, initializeDrones, selectedDrone, this.Close);
+            DroneView.DataContext= new EditDroneView(bl, initializeDrones, selectedDrone,Close);
         }
 
         
@@ -46,15 +46,12 @@ namespace PL.Drones
         //    }
         //}
 
-        private void button_Close_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            //e.Cancel = true;
-        }
+        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        //{ 
+        //    e.Cancel = true;
+        //}
     }
 }
 

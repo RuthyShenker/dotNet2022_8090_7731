@@ -32,7 +32,6 @@ namespace PL.Drones
 
         }
 
-
         private void DroneWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FilterDroneListByCondition();

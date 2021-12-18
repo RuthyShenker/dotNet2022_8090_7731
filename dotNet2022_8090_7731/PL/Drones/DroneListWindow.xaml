@@ -7,7 +7,7 @@
         xmlns:BO="clr-namespace:IBL.BO;assembly=BL"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="DroneListWindow" Height="640" Width="800" Closing="Window_Closing">
+        Title="DroneListWindow" Height="640" Width="800" ><!--Closing="Window_Closing"-->
     <Window.Resources>
         <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
@@ -16,7 +16,7 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
-        <ObjectDataProvider x:Key="DroneStatusEnum" MethodName="GetValues"
+        <ObjectDataProvider x:Key="DroneStatusEnum" MethodName="GetValues" 
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="BO:DroneStatus"/>

@@ -388,10 +388,8 @@ namespace BL
             }
             else
             {
-
                 return lDroneToList.Where(predicate).Select(d => new DroneToList(d));
             }
-
         }
 
         public bool IsDroneExist(int Id)

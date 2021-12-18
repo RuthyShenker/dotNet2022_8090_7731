@@ -147,6 +147,7 @@
                     Visibility="{Binding  Converter={StaticResource VisibilityByDroneToBelongOrPickOrArrivalParcelConverter }}" 
                     Content="{Binding  Converter={StaticResource ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter}}"
                     Height="50"/>
+        <Button Content="X" Click="Close_Window_Click"></Button>
 
         <StackPanel x:Name="message">
         </StackPanel>

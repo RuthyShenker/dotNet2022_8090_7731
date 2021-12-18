@@ -1,4 +1,4 @@
-﻿using BO;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,44 +15,44 @@ namespace ConsoleUI_BL
             tools.PrintEnum(typeof(Updating));
             int input = 0;
             CheckValids.CheckValid(1, 8, out input);
-           switch ((Updating)input)
-                {
-                    case Updating.DroneDetails:
-                        int droneId = 0;
-                        string newModel;
-                        GetDetailsOfDrone(out droneId, out newModel);
-                        bL.UpdatingDroneName(droneId, newModel);
-                        break;
-                    case Updating.StationDetails:
-                        int stationId = 0;
-                        string stationName;
-                        string amountOfPositions;
-                        GetDetailsOfStation(out stationId, out stationName, out amountOfPositions);
-                        bL.UpdatingStationDetails(stationId, stationName, amountOfPositions);
-                        break;
-                    case Updating.CustomerDetails:
-                        int customerId;
-                        string newName;
-                        string newPhone;
-                        GetDetailsOfCustomer(out customerId, out newName, out newPhone);
-                        bL.UpdatingCustomerDetails(customerId, newName, newPhone);
-                        break;
-                    case Updating.SendingDroneToChargingPosition:
-                        bL.SendingDroneToCharge(GettingId("Drone"));
-                        break;
-                    case Updating.RealesingDroneFromChargingPosition:
-                        double timeInCharging = 0;
-                        GetDetailsOfRelesingDroneFromCharging(out droneId, out timeInCharging);
-                        bL.ReleasingDrone(droneId);
-                        break;
-                    case Updating.BelongingParcelToDrone:       bL.BelongingParcel(GettingId("drone"));    break;
+            switch ((Updating)input)
+            {
+                case Updating.DroneDetails:
+                    int droneId = 0;
+                    string newModel;
+                    GetDetailsOfDrone(out droneId, out newModel);
+                    bL.UpdatingDroneName(droneId, newModel);
+                    break;
+                case Updating.StationDetails:
+                    int stationId = 0;
+                    string stationName;
+                    string amountOfPositions;
+                    GetDetailsOfStation(out stationId, out stationName, out amountOfPositions);
+                    bL.UpdatingStationDetails(stationId, stationName, amountOfPositions);
+                    break;
+                case Updating.CustomerDetails:
+                    int customerId;
+                    string newName;
+                    string newPhone;
+                    GetDetailsOfCustomer(out customerId, out newName, out newPhone);
+                    bL.UpdatingCustomerDetails(customerId, newName, newPhone);
+                    break;
+                case Updating.SendingDroneToChargingPosition:
+                    bL.SendingDroneToCharge(GettingId("Drone"));
+                    break;
+                case Updating.RealesingDroneFromChargingPosition:
+                    double timeInCharging = 0;
+                    GetDetailsOfRelesingDroneFromCharging(out droneId, out timeInCharging);
+                    bL.ReleasingDrone(droneId);
+                    break;
+                case Updating.BelongingParcelToDrone: bL.BelongingParcel(GettingId("drone")); break;
 
-                    case Updating.PickingParcelByDrone:         bL.PickingUpParcel(GettingId("Drone"));    break;
-                       
-                    case Updating.DeliveryParcelToDestination:  bL.DeliveryPackage(GettingId("Drone"));    break;
-                       
-                    default:    break;
-                }
+                case Updating.PickingParcelByDrone: bL.PickingUpParcel(GettingId("Drone")); break;
+
+                case Updating.DeliveryParcelToDestination: bL.DeliveryPackage(GettingId("Drone")); break;
+
+                default: break;
+            }
             #region MyRegion
             //    catch (UpdatingFailedIdNotExistsException exception)
             //    {

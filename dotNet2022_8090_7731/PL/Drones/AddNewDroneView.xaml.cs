@@ -96,6 +96,12 @@ namespace PL.Drones
                 textBox.Background = Brushes.White;
             }
         }
+
+        private void Close_Window_Click(object sender, RoutedEventArgs e)
+        {
+            closeWindow();
+        }
+
         private void AddToolTip(TextBox textBox, string str)
         {
 

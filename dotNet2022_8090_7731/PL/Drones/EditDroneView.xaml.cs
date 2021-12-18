@@ -31,6 +31,7 @@ namespace PL.Drones
             InitializeComponent();
             this.bl = bl;
             refreshDroneList = initializeDrones;
+            close = closeWindow;
             EditDronePanel.DataContext = selectedDrone;
             close = closeWindow;
         }
@@ -131,6 +132,11 @@ namespace PL.Drones
         {
             refreshDroneList();
             EditDronePanel.DataContext = bl.GetDrone(drone.Id);
+        }
+
+        private void Close_Window_Click(object sender, RoutedEventArgs e)
+        {
+            close();
         }
     }
 }
