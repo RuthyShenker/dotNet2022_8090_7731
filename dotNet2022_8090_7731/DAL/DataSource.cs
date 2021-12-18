@@ -38,7 +38,7 @@ namespace DalObject
 
             private static double RandBetweenRange(double min, double max)
             {
-                return Rand.NextDouble() * (max - min) + min;
+                return (Rand.NextDouble() * (max - min)) + min;
             }
         }
         /// <summary>

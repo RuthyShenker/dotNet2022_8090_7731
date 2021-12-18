@@ -30,12 +30,14 @@ namespace PL
         {
             this.bl = bl;
             refreshDroneList = initializeDrones;
-            
-            InitializeComponent();
-            DroneDetails.DataContext = new DroneToList();
-            //DeliveryComboBox.DataContext = bl.AvailableSlots();
 
-            ChangeVisibility(Visibility.Collapsed, BatteryContainer, StatusContainer, Location);
+            InitializeComponent();
+            AddingDrone.DataContext = new Drone();
+            //DeliveryComboBox.DataContext = bl.AvailableSlots();
+            ChooseMaxWeight.DataContext = Enum.GetValues(typeof(WeightCategories));
+            StationIdComboBox.DataContext = bl.AvailableSlots().Select(slot => slot.Id);
+            DroneDetails.Visibility = Visibility.Hidden;
+            //ChangeVisibility(Visibility.Collapsed, BatteryContainer, StatusContainer, Location);
           
         }
         private void ChangeVisibility(Visibility visibility, params StackPanel[] stackPanels)
@@ -44,6 +46,25 @@ namespace PL
             {
                 item.Visibility = visibility;
             }
+        }
+
+        private void Button_Click_Ok_Adding_New_Drone(object sender, RoutedEventArgs e)
+        {
+            var stationId = (int)StationIdComboBox.SelectedValue;
+            //var a = stationId.GetType().GetProperty("Id").GetValue("")
+            var drone = (Drone)AddingDrone.DataContext;
+
+            //var nDrone = new Drone(drone.Id, drone.Model, drone.Weight, DroneStatus.Maintenance);
+            bool IsCorrect = CheckValidDrone(drone, (Button)sender);
+            if (IsCorrect)
+            {
+                //var a = bl.GetStations();
+                //var b = a.First().Id;
+                bl.AddingDrone(drone, stationId);
+                refreshDroneList();
+                this.Close();
+            }
+
         }
 
         public DroneWindow(IBL.IBL bl, Action initializeDrones, Drone selectedDrone)
@@ -66,27 +87,12 @@ namespace PL
             BatteryTextBox.IsEnabled = false;
             MaxWeightComboBox.IsEnabled = false;
             StatusComboBox.IsEnabled = false;
-            //DeliveryComboBox.IsEnabled = false;
+            DeliveryComboBox.IsEnabled = false;
             LatitudeTextBox.IsEnabled = false;
             LongitudeTextBox.IsEnabled = false;
         }
 
-        private void Button_Click_Ok_Adding_New_Drone(object sender, RoutedEventArgs e)
-        {
-            var drone = (DroneToList)DroneDetails.DataContext;
-
-            var nDrone = new Drone(drone.Id, drone.Model, drone.Weight, DroneStatus.Maintenance); 
-            bool IsCorrect = CheckValidDrone(nDrone, (Button)sender);
-            if (IsCorrect)
-            {
-                var a = bl.GetStations();
-                var b = a.First().Id;
-                bl.AddingDrone(nDrone, b);
-                refreshDroneList();
-                this.Close();
-            }
-            
-        }
+        
 
 
 

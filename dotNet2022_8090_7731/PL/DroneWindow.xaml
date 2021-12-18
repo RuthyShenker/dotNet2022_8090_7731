@@ -40,122 +40,141 @@
 
     <StackPanel>
 
-        <StackPanel x:Name="DroneDetails">
+        <StackPanel x:Name="AddingDrone">
 
             <TextBlock  Text = "Drone Id:" />
-            <TextBox Name = "IdTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
-
-            <StackPanel x:Name="BatteryContainer">
-                <TextBlock  Text = "Battery:" />
-                <TextBox x:Name = "BatteryTextBox"  Text = "{Binding Path=BatteryStatus}" IsEnabled="False" />
-            </StackPanel>
+            <TextBox Name = "IdAddingTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
 
             <TextBlock Text = "MaxWeight:" />
-            <ComboBox x:Name = "MaxWeightComboBox" ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" SelectedItem="{Binding Path=Weight}"  Height = "25" Width = "140"  IsEnabled="True" />
+            <ComboBox x:Name = "ChooseMaxWeight" ItemsSource="{Binding }" Text="Choose max weight" IsEditable="True" IsReadOnly="True" />
 
             <TextBlock  Text = "Model:" />
-            <TextBox x:Name = "ModelTextBox"  PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Model, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" />
+            <TextBox x:Name = "ModelAddingTextBox"  PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Model, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" />
 
-            <StackPanel x:Name="StatusContainer">
-                <TextBlock  Text = "Status:" />
-                <ComboBox x:Name = "StatusComboBox"   ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" SelectedItem="{Binding Path=DroneStatus}" Height = "25" Width = "140"  IsEnabled="True"/>
-            </StackPanel>
-
-            <!--<StackPanel x:Name="DeliveryContainer">
-                <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
-                <ComboBox x:Name = "DeliveryComboBox" ItemsSource="{Binding Source={StaticResource AvailableSlots}, Path=Name}"  />
-
-            </StackPanel>-->
-
-            <StackPanel x:Name="Location">
-                <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
-                <TextBox x:Name = "LongitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" />
-
-                <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
-                <TextBox x:Name = "LatitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
-            </StackPanel>
-
-
-            <Expander Header="Parcel in transfer">
-                <StackPanel x:Name="PInTransfer">
-                    <TextBlock x:Name="PInTransferPId" Text = "PInTransfer.PId" IsEnabled="True" TextWrapping="Wrap"/>
-                    <TextBox x:Name="PInTransferPIdTextBox" Text = "{Binding Path=PInTransfer.PId, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
-
-                    <TextBlock x:Name="PInTransferIsInWay" Text = "PInTransfer.IsInWay" IsEnabled="True" TextWrapping="Wrap"/>
-                    <TextBox x:Name="PInTransferIsInWayTextBox" Text = "{Binding Path=PInTransfer.IsInWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
-
-                    <TextBlock x:Name="PInTransferMPriority" Text = "PInTransfer.MPriority" IsEnabled="True" TextWrapping="Wrap"/>
-                    <TextBox x:Name="PInTransferMPriorityTextBox" Text = "{Binding Path=PInTransfer.MPriority, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
-
-                    <TextBlock x:Name="PInTransferWeight" Text = "PInTransfer.Weight" IsEnabled="True" TextWrapping="Wrap"/>
-                    <TextBox x:Name="PInTransferWeightTextBox" Text = "{Binding Path=PInTransfer.Weight, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
-
-                    <Expander x:Name="ParInTransferSender" >
-                        <StackPanel x:Name="PInTransferSenderTextBox">
-                            <TextBlock  Text = "Id:" TextWrapping = "Wrap"/>
-                            <TextBox x:Name="PInTransferSenderId" Text = "{Binding Path=PInTransfer.Sender.Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/> 
-                            
-                            <TextBlock  Text = "Name:" TextWrapping = "Wrap" />
-                            <TextBox x:Name="PInTransferSenderName" Text = "{Binding Path=PInTransfer.Sender.Name, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </Expander>
-
-                    <Expander x:Name="ParInTransferGetter" >
-                        <StackPanel  x:Name="PInTransferGetterTextBox">
-                            <TextBlock  Text = "Id:" TextWrapping = "Wrap"/>
-                            <TextBox x:Name="PInTransferGetterIdTextBox" Text = "{Binding Path=PInTransfer.Getter.Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
-
-                            <TextBlock  Text = "Name:" TextWrapping = "Wrap" />
-                            <TextBox x:Name="PInTransferGetterNameTextBox" Text = "{Binding Path=PInTransfer.Getter.Name, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </Expander>
-
-
-                    <Expander Header="Parcel In Transfer Collection Location">
-                        <StackPanel x:Name="PInTransferCollectionLocation">
-                            <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
-                            <TextBox x:Name = "PInTransferCollectionLongitudeLocationTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=PInTransfer.CollectionLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"  TextWrapping="Wrap"/>
-
-                            <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
-                            <TextBox x:Name = "PInTransferCollectionLatitudeLocationTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=PInTransfer.CollectionLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </Expander>
-
-
-                    <Expander Header="Parcel In Transfer Delivery Location">
-                        <StackPanel x:Name="PInTransferDeliveryLocation">
-                            <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
-                            <TextBox x:Name = "PInTransferDeliveryLocationLongitudeLocationTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=PInTransfer.CollectionLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
-
-                            <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
-                            <TextBox x:Name = "PInTransferDeliveryLocationLatitudeLocationTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=PInTransfer.CollectionLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </Expander>
-                    <TextBlock  Text = "TransDistance:" TextWrapping = "Wrap" ></TextBlock>
-                    <TextBox x:Name="PInTransferTransDistanceTextBox" Text = "{Binding Path=PInTransfer.TransDistance, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
-                </StackPanel>
-            </Expander>
-
+            <TextBlock  Text = "Station Id:" TextWrapping = "Wrap" />
+            <ComboBox x:Name = "StationIdComboBox" ItemsSource="{Binding}" Text="Choose station Id to charge in" IsEditable="True" IsReadOnly="True" />
 
             <Button x:Name="OkAdd" Content = "OK" Click = "Button_Click_Ok_Adding_New_Drone">
                 <Button.IsEnabled>
                     <MultiBinding Converter="{StaticResource HasAllTextConverter}">
-                        <Binding ElementName="IdTextBox" Path="Text" />
-                        <Binding ElementName="ModelTextBox" Path="Text" />
+                        <Binding ElementName="StationIdComboBox" Path="SelectedItem" />
+                        <Binding ElementName="ChooseMaxWeight" Path="SelectedItem" />
+                        <Binding ElementName="IdAddingTextBox" Path="Text" />
+                        <Binding ElementName="ModelAddingTextBox" Path="Text" />
                     </MultiBinding>
                 </Button.IsEnabled>
             </Button>
+        </StackPanel>
 
-            <Button x:Name="UpdateModel" Content = "Update Model:" Click = "Update_Model_Click"  />
-            <Button x:Name="SendOrReleaseDroneFromCharging" 
+        <StackPanel>
+
+            <StackPanel x:Name="DroneDetails">
+
+                <TextBlock  Text = "Drone Id:" />
+                <TextBox Name = "IdTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
+
+                <StackPanel x:Name="BatteryContainer">
+                    <TextBlock  Text = "Battery:" />
+                    <TextBox x:Name = "BatteryTextBox"  Text = "{Binding Path=BatteryStatus}" IsEnabled="False" />
+                </StackPanel>
+
+                <TextBlock Text = "MaxWeight:" />
+                <ComboBox x:Name = "MaxWeightComboBox" ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" SelectedItem="{Binding Path=Weight}"  Height = "25" Width = "140"  IsEnabled="True" />
+
+                <TextBlock  Text = "Model:" />
+                <TextBox x:Name = "ModelTextBox"  PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Model, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" />
+
+                <StackPanel x:Name="StatusContainer">
+                    <TextBlock  Text = "Status:" />
+                    <ComboBox x:Name = "StatusComboBox"   ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" SelectedItem="{Binding Path=DroneStatus}" Height = "25" Width = "140"  IsEnabled="True"/>
+                </StackPanel>
+
+                <StackPanel x:Name="DeliveryContainer">
+                    <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
+                    <ComboBox x:Name = "DeliveryComboBox" ItemsSource="{Binding Source={StaticResource AvailableSlots}, Path=Name}"  />
+
+                </StackPanel>
+
+                <StackPanel x:Name="Location">
+                    <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
+                    <TextBox x:Name = "LongitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" />
+
+                    <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
+                    <TextBox x:Name = "LatitudeTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=CurrLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
+                </StackPanel>
+
+
+                <Expander Header="Parcel in transfer">
+                    <StackPanel x:Name="PInTransfer">
+                        <TextBlock x:Name="PInTransferPId" Text = "PInTransfer.PId" IsEnabled="True" TextWrapping="Wrap"/>
+                        <TextBox x:Name="PInTransferPIdTextBox" Text = "{Binding Path=PInTransfer.PId, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
+
+                        <TextBlock x:Name="PInTransferIsInWay" Text = "PInTransfer.IsInWay" IsEnabled="True" TextWrapping="Wrap"/>
+                        <TextBox x:Name="PInTransferIsInWayTextBox" Text = "{Binding Path=PInTransfer.IsInWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
+
+                        <TextBlock x:Name="PInTransferMPriority" Text = "PInTransfer.MPriority" IsEnabled="True" TextWrapping="Wrap"/>
+                        <TextBox x:Name="PInTransferMPriorityTextBox" Text = "{Binding Path=PInTransfer.MPriority, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
+
+                        <TextBlock x:Name="PInTransferWeight" Text = "PInTransfer.Weight" IsEnabled="True" TextWrapping="Wrap"/>
+                        <TextBox x:Name="PInTransferWeightTextBox" Text = "{Binding Path=PInTransfer.Weight, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
+
+                        <Expander x:Name="ParInTransferSender" >
+                            <StackPanel x:Name="PInTransferSenderTextBox">
+                                <TextBlock  Text = "Id:" TextWrapping = "Wrap"/>
+                                <TextBox x:Name="PInTransferSenderId" Text = "{Binding Path=PInTransfer.Sender.Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
+
+                                <TextBlock  Text = "Name:" TextWrapping = "Wrap" />
+                                <TextBox x:Name="PInTransferSenderName" Text = "{Binding Path=PInTransfer.Sender.Name, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Expander>
+
+                        <Expander x:Name="ParInTransferGetter" >
+                            <StackPanel  x:Name="PInTransferGetterTextBox">
+                                <TextBlock  Text = "Id:" TextWrapping = "Wrap"/>
+                                <TextBox x:Name="PInTransferGetterIdTextBox" Text = "{Binding Path=PInTransfer.Getter.Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
+
+                                <TextBlock  Text = "Name:" TextWrapping = "Wrap" />
+                                <TextBox x:Name="PInTransferGetterNameTextBox" Text = "{Binding Path=PInTransfer.Getter.Name, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Expander>
+
+
+                        <Expander Header="Parcel In Transfer Collection Location">
+                            <StackPanel x:Name="PInTransferCollectionLocation">
+                                <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
+                                <TextBox x:Name = "PInTransferCollectionLongitudeLocationTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=PInTransfer.CollectionLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"  TextWrapping="Wrap"/>
+
+                                <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
+                                <TextBox x:Name = "PInTransferCollectionLatitudeLocationTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=PInTransfer.CollectionLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Expander>
+
+
+                        <Expander Header="Parcel In Transfer Delivery Location">
+                            <StackPanel x:Name="PInTransferDeliveryLocation">
+                                <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
+                                <TextBox x:Name = "PInTransferDeliveryLocationLongitudeLocationTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=PInTransfer.CollectionLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
+
+                                <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
+                                <TextBox x:Name = "PInTransferDeliveryLocationLatitudeLocationTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=PInTransfer.CollectionLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Expander>
+                        <TextBlock  Text = "TransDistance:" TextWrapping = "Wrap" ></TextBlock>
+                        <TextBox x:Name="PInTransferTransDistanceTextBox" Text = "{Binding Path=PInTransfer.TransDistance, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
+                    </StackPanel>
+                </Expander>
+
+                <Button x:Name="UpdateModel" Content = "Update Model:" Click = "Update_Model_Click"  />
+                <Button x:Name="SendOrReleaseDroneFromCharging" 
                    Visibility="{Binding Path=DroneStatus ,Converter={StaticResource ConvertVisibilityByDroneStatus}}"  Height="50"
                    Content="{Binding Path=DroneStatus ,Converter={StaticResource ConvertContentByDroneStatus}}" Click = "Send_Or_Release_Drone_From_Charging" />
 
-            <!--<Button x:Name="SendOrPickOrArrivalDrone"   Click = "Send_Or_pick_Or_Arrival_Drone_Click"
+                <Button x:Name="SendOrPickOrArrivalDrone"   Click = "Send_Or_pick_Or_Arrival_Drone_Click"
                     Visibility="{Binding Path=DStatus ,Converter={StaticResource ConvertVisibilityByDroneStatus}}" 
-                    Content="{Binding Path=DStatus ,Converter={StaticResource ConvertContentByDroneStatus}}"/>-->
+                    Content="{Binding Path=DStatus ,Converter={StaticResource ConvertContentByDroneStatus}}"/>
 
-            <StackPanel x:Name="message">
+                <StackPanel x:Name="message">
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </StackPanel>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace PL
@@ -15,7 +16,14 @@ namespace PL
 
             foreach (object val in values)
             {
-                if (string.IsNullOrEmpty(val as string))
+                if (val is string)
+                {
+                    if (string.IsNullOrEmpty(val as string))
+                    {
+                        res = false;
+                    }
+                }
+                else if (val == null)
                 {
                     res = false;
                 }

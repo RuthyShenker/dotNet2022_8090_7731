@@ -27,6 +27,8 @@ namespace BL
         private DroneToList ConvertToList(IDAL.DO.Drone drone)
         {
             DroneToList nDrone = CopyCommon(drone);
+
+            // return parcel which the drone has to delivery, otherwise- default(IDAL.DO.Parcel)
             var parcel = dal.GetFromDalByCondition<IDAL.DO.Parcel>(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
             if (!parcel.Equals(default(IDAL.DO.Parcel)))
             {
@@ -40,7 +42,7 @@ namespace BL
         }
 
         /// <summary>
-        /// Gets drone and parcel (which belonged to the drone)
+        /// Gets drone and parcel (which assigned to the drone)
         /// Calculate the fields of drone, and return it. 
         /// </summary>
         /// <param name="nDrone"></param>
@@ -65,7 +67,7 @@ namespace BL
             Location closestStationLocation = ClosestStation(destinationLocation).Location;
             double distance = Extensions.CalculateDistance(nDrone.CurrLocation, destinationLocation, closestStationLocation);
             double minBattery = MinBattery(distance, (WeightCategories)parcel.Weight);
-            nDrone.BatteryStatus = rand.NextDouble() * (100 - minBattery) + minBattery;
+            nDrone.BatteryStatus = (rand.NextDouble() * (100 - minBattery)) + minBattery;
             nDrone.DeliveredParcelId = parcel.Id;
             return nDrone;
         }
@@ -324,7 +326,8 @@ namespace BL
                     throw new InValidActionException(typeof(IDAL.DO.BaseStation), StationId, "There aren't free positions ");
                 }
 
-                bLDrone.BatteryStatus = rand.Next(20, 41);
+                bLDrone.BatteryStatus = 0;
+                //bLDrone.BatteryStatus = rand.Next(20, 41);
                 bLDrone.DroneStatus = DroneStatus.Maintenance;
                 dal.Add(new IDAL.DO.ChargingDrone(bLDrone.Id, StationId, DateTime.Now));
 
