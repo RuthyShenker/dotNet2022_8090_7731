@@ -12,7 +12,7 @@ namespace IBL
         int AddingParcel(Parcel parcel);
         void BelongingParcel(int dId);
         void PickingUpParcel(int dId);
-        void DeliveryPackage(int Id);
+        void DeliveryPackage(int dId);
         IEnumerable<ParcelToList> GetParcels();
         IEnumerable<ParcelToList> GetUnbelongParcels();
         Parcel GetParcel(int parcelId);
