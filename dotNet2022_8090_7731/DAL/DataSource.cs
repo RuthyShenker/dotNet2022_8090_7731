@@ -29,11 +29,11 @@ namespace DalObject
         /// </summary>
         internal class Config
         {
-            static public double Available = RandBetweenRange(0, 0.1);
-            static public double LightWeight = RandBetweenRange(Available, 0.2);
-            static public double MediumWeight = RandBetweenRange(LightWeight, 0.3);
-            static public double HeavyWeight = RandBetweenRange(MediumWeight, 0.4);
-            static public double ChargingRate;//TODO לאתחל
+            static public double Available = RandBetweenRange(0, 0.001);
+            static public double LightWeight = RandBetweenRange(Available, 0.002);
+            static public double MediumWeight = RandBetweenRange(LightWeight, 0.003);
+            static public double HeavyWeight = RandBetweenRange(MediumWeight, 0.004);
+            static public double ChargingRate =20;//TODO לאתחל
             internal static int IndexParcel = 0;
 
             private static double RandBetweenRange(double min, double max)

@@ -47,7 +47,7 @@
             <TextBox Name = "IdAddingTextBox" PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
 
             <TextBlock Text = "MaxWeight:" />
-            <ComboBox x:Name = "ChooseMaxWeight" ItemsSource="{Binding }" Text="Choose max weight" IsEditable="True" IsReadOnly="True" />
+            <ComboBox x:Name = "ChooseMaxWeight" ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" Text="Choose max weight" IsEditable="True" IsReadOnly="True" />
 
             <TextBlock  Text = "Model:" />
             <TextBox x:Name = "ModelAddingTextBox"  PreviewTextInput="TextBox_OnPreviewTextInput" Text = "{Binding Path=Model, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" />
@@ -92,7 +92,7 @@
 
                 <StackPanel x:Name="DeliveryContainer">
                     <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
-                    <ComboBox x:Name = "DeliveryComboBox" ItemsSource="{Binding Source={StaticResource AvailableSlots}, Path=Name}"  />
+                    <ComboBox x:Name = "DeliveryComboBox" ItemsSource="{Binding Path=Name}"  />
 
                 </StackPanel>
 

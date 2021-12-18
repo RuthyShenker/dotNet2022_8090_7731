@@ -1,5 +1,6 @@
 ﻿using BO;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -26,10 +27,9 @@ namespace PL
 
             InitializeComponent();
             AddingDrone.DataContext = new Drone();
-            //DeliveryComboBox.DataContext = bl.AvailableSlots();
-            ChooseMaxWeight.DataContext = Enum.GetValues(typeof(WeightCategories));
+            //ChooseMaxWeight.DataContext = Enum.GetValues(typeof(WeightCategories));
             StationIdComboBox.DataContext = bl.AvailableSlots().Select(slot => slot.Id);
-            DroneDetails.Visibility = Visibility.Hidden;
+            DroneDetails.Visibility = Visibility.Collapsed;
             //ChangeVisibility(Visibility.Collapsed, BatteryContainer, StatusContainer, Location);
           
         }
@@ -77,7 +77,7 @@ namespace PL
         {
             IdTextBox.IsEnabled = false;
             BatteryTextBox.IsEnabled = false;
-            MaxWeightComboBox.IsEnabled = false;
+            //MaxWeightComboBox.IsEnabled = false;
             StatusComboBox.IsEnabled = false;
             DeliveryComboBox.IsEnabled = false;
             LatitudeTextBox.IsEnabled = false;
@@ -94,9 +94,8 @@ namespace PL
             //WeightCategoriesEnum
             //DroneStatusEnum
             //DeliveredParcelId
-
-
-            bool isExist = bl.GetDrones().Any(d => d.Id == drone.Id);
+            
+            bool isExist = bl.IsDroneExist(drone.Id);
             if (isExist)
             {
                 var textBox = (TextBox)DroneDetails.FindName("IdTextBox");

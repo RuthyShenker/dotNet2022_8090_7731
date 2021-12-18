@@ -14,7 +14,11 @@ namespace PL
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             BO.Drone drone = (BO.Drone)value;
-
+            if (drone == null)
+            {
+                return "";
+            }
+            
             if (drone.DroneStatus == BO.DroneStatus.Free)
                 return "Belong Parcel";
             else if (drone.DroneStatus == BO.DroneStatus.Delivery && !drone.PInTransfer.IsInWay)

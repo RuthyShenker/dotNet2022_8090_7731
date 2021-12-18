@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BL.Extensions;
 
 namespace BL
 {
@@ -62,14 +63,21 @@ namespace BL
             {
                 nDrone.CurrLocation = new Location(sender.Longitude, sender.Latitude);
             }
+
             // battery Status:
-            Location destinationLocation = GetCustomer(parcel.GetterId).Location;
-            Location closestStationLocation = ClosestStation(destinationLocation).Location;
-            double distance = Extensions.CalculateDistance(nDrone.CurrLocation, destinationLocation, closestStationLocation);
-            double minBattery = MinBattery(distance, (WeightCategories)parcel.Weight);
-            nDrone.BatteryStatus = (rand.NextDouble() * (100 - minBattery)) + minBattery;
+            Location destination = GetCustomer(parcel.GetterId).Location;
+            Location nearestDestinationStation = ClosestStation(destination).Location;
+            double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, destination), (WeightCategories)parcel.Weight) +
+                MinBattery(CalculateDistance(destination, nearestDestinationStation));
+            nDrone.BatteryStatus = RandBetweenRange(minBattry, 100);
+
             nDrone.DeliveredParcelId = parcel.Id;
             return nDrone;
+        }
+
+        private double RandBetweenRange(double min, double max)
+        {
+            return (rand.NextDouble() * (max - min)) + min;
         }
 
         /// <summary>
@@ -82,24 +90,22 @@ namespace BL
         {
             //it rands free or maintance.
             nDrone.DStatus = (DroneStatus)rand.Next((int)DroneStatus.Delivery);
-            if (nDrone.DStatus == DroneStatus.Maintenance)
+            
+            var customersList = CustomersWithProvidedParcels();
+            
+            if (nDrone.DStatus == DroneStatus.Maintenance || customersList.Count == 0)
             {
-                var stationDalList = dal.GetListFromDal<IDAL.DO.BaseStation>();
-                var station = stationDalList.ElementAt(rand.Next(stationDalList.Count()));
-                nDrone.CurrLocation = new Location(station.Longitude, station.Latitude);
+                var availableSlotsList = AvailableSlots();
+                var station = availableSlotsList.ElementAt(rand.Next(availableSlotsList.Count()));
+                nDrone.CurrLocation = GetStation(station.Id).Location;
                 nDrone.BatteryStatus = rand.NextDouble() * 20;
             }
-            else // droneToList.DStatus == Free
+            else
             {
-                var customersList = CustomersWithProvidedParcels();
-                if (customersList.Count > 0)
-                {
-                    nDrone.CurrLocation = customersList[rand.Next(customersList.Count)].Location;
-                    var closetStation = ClosestStation(nDrone.CurrLocation);
-                    double distance = Extensions.CalculateDistance(nDrone.CurrLocation, closetStation.Location);
-                    nDrone.BatteryStatus = rand.NextDouble() * (100 - MinBattery(distance)) + MinBattery(distance);
-                }
-                //מה אם אין לקוחות שסופקו להם חבילות.
+                nDrone.CurrLocation = customersList[rand.Next(customersList.Count)].Location;
+                var closetStation = ClosestStation(nDrone.CurrLocation);
+                double minBattery = MinBattery(CalculateDistance(nDrone.CurrLocation, closetStation.Location));
+                nDrone.BatteryStatus = RandBetweenRange(minBattery, 100);
             }
             return nDrone;
         }
@@ -282,7 +288,7 @@ namespace BL
                 {
                     throw new ListIsEmptyException(typeof(IDAL.DO.Parcel));
                 }
-               var a= dal.GetListFromDal<IDAL.DO.Parcel>();
+                var a = dal.GetListFromDal<IDAL.DO.Parcel>();
                 throw new ThereIsNoMatchObjectInList(typeof(IDAL.DO.Parcel), $"There is no match parcels to drone with id {dId} in");
             }
 
@@ -382,15 +388,22 @@ namespace BL
             }
             else
             {
-                return lDroneToList.Where(predicate).Select(d=>new DroneToList(d));
+
+                return lDroneToList.Where(predicate).Select(d => new DroneToList(d));
             }
 
+        }
+
+        public bool IsDroneExist(int Id)
+        {
+            return lDroneToList.Any(drone => drone.Id == Id);
         }
 
         public Drone GetDrone(int droneId)
         {
             try
             {
+
                 var dDrone = dal.GetFromDalById<IDAL.DO.Drone>(droneId);
                 return ConvertToBL(dDrone);
             }

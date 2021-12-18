@@ -89,6 +89,5 @@ namespace IBL
         // Drone GetDrone(int Id);
         // Customer GetCustomer(string Id);
         // Parcel GetParcel(int Id);
-
     }
 }

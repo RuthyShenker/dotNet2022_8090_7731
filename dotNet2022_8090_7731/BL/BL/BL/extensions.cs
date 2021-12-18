@@ -44,6 +44,8 @@ namespace BL
         {
             return new GeoCoordinate(location.Latitude, location.Longitude);
         }
+
+      
         //        static internal Dictionary<Type, Type> matchType = new()
         //        {
         //            [typeof(IDAL.DO.Drone)] = typeof(DroneToList),

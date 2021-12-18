@@ -15,5 +15,7 @@ namespace IBL
         void ReleasingDrone(int dId);
         IEnumerable<DroneToList> GetDrones(Func<DroneToList, bool> predicate = null);
         Drone GetDrone(int droneId);
+        bool IsDroneExist(int id);
+
     }
 }
