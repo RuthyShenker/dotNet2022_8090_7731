@@ -156,13 +156,13 @@ namespace DalObject
             for (int i = 0; i < INITIALIZE_PARCEL; ++i)
             {
                 newParcel = new Parcel() { Id = ++Config.IndexParcel };
-                newParcel.SenderId = CustomerList[Rand.Next(0, CustomerList.Count)].Id;
+                newParcel.SenderId = CustomerList[Rand.Next(CustomerList.Count)].Id;
                 do
                 {
-                    newParcel.GetterId = CustomerList[Rand.Next(0, CustomerList.Count)].Id;
+                    newParcel.GetterId = CustomerList[Rand.Next(CustomerList.Count)].Id;
                 } while (newParcel.GetterId == newParcel.SenderId);
-                newParcel.Weight = (WeightCategories)Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
-                newParcel.MPriority = (UrgencyStatuses)Rand.Next(0, Enum.GetNames(typeof(UrgencyStatuses)).Length);
+                newParcel.Weight = (WeightCategories)Rand.Next(Enum.GetNames(typeof(WeightCategories)).Length);
+                newParcel.MPriority = (UrgencyStatuses)Rand.Next(Enum.GetNames(typeof(UrgencyStatuses)).Length);
                 newParcel.CreatedTime = DateTime.Now;
                 if (i % 2 == 0)
                 {

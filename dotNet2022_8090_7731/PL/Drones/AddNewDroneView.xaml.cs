@@ -51,11 +51,11 @@ namespace PL.Drones
             //var a = bl.GetStations();
             //var b = a.First().Id;
             try
-                {
-                    bl.AddingDrone(drone, stationId);
+            {
+                bl.AddingDrone(drone, stationId);
                 refreshDroneList();
                 this.closeWindow();
-                }
+            }
             catch (IBL.BO.IdIsAlreadyExistException exception)
             {
                 MessageBox.Show(exception.Message, " Id is not available ", MessageBoxButton.OK, MessageBoxImage.Error);
