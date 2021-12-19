@@ -277,7 +277,7 @@ namespace BL
             }
             var optionParcels = dal.GetDalListByCondition<IDAL.DO.Parcel>
                 (parcel => parcel.Weight <= (IDAL.DO.WeightCategories)droneToList.Weight &&
-                droneToList.BatteryStatus >= MinBattery(GetDistance(droneToList.CurrLocation, parcel), (WeightCategories)parcel.Weight))
+                droneToList.BatteryStatus >= MinBattery(GetDistance(droneToList.CurrLocation, parcel),(WeightCategories)parcel.Weight))
                 .OrderByDescending(parcel => parcel.MPriority)
                 .ThenByDescending(parcel => parcel.Weight)
                 .ThenBy(parcel => GetDistance(droneToList.CurrLocation, parcel));

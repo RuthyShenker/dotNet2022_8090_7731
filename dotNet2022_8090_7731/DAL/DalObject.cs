@@ -56,6 +56,7 @@ namespace DalObject
         public T GetFromDalById<T>(int Id) where T : IDalObject, IIdentifiable
         {
             var item = GetFromDalByCondition<T>(item => item.Id == Id);
+            
             if (item.Equals(default(T)))
                 throw new IdIsNotExistException();
             else
