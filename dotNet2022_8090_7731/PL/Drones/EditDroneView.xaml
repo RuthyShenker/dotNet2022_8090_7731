@@ -40,7 +40,7 @@
         <Converters:VisibilityByDroneToBelongOrPickOrArrivalParcelConverter x:Key="VisibilityByDroneToBelongOrPickOrArrivalParcelConverter"/>
         <Converters:ParcelInTransferVisibilityConverter x:Key="ParcelInTransferVisibilityConverter"/>
     </UserControl.Resources>
-    
+
     <StackPanel x:Name="EditDronePanel">
 
         <TextBlock  Text = "Drone Id:" />
@@ -80,59 +80,61 @@
         <Expander Header="Parcel in transfer">
             <StackPanel x:Name="PInTransfer"
                         Visibility="{Binding Converter={StaticResource ParcelInTransferVisibilityConverter}}">
-                <TextBlock x:Name="PInTransferPId" Text = "PInTransfer.PId" IsEnabled="True" TextWrapping="Wrap"/>
+                <TextBlock x:Name="PInTransferPId" Text = "Id" IsEnabled="True" TextWrapping="Wrap"/>
                 <TextBox x:Name="PInTransferPIdTextBox" Text = "{Binding Path=PInTransfer.PId, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
 
-                <TextBlock x:Name="PInTransferIsInWay" Text = "PInTransfer.IsInWay" IsEnabled="True" TextWrapping="Wrap"/>
+                <TextBlock x:Name="PInTransferIsInWay" Text = "Is picked up?" IsEnabled="True" TextWrapping="Wrap"/>
                 <TextBox x:Name="PInTransferIsInWayTextBox" Text = "{Binding Path=PInTransfer.IsInWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
 
-                <TextBlock x:Name="PInTransferMPriority" Text = "PInTransfer.MPriority" IsEnabled="True" TextWrapping="Wrap"/>
+                <TextBlock x:Name="PInTransferMPriority" Text = "Priority" IsEnabled="True" TextWrapping="Wrap"/>
                 <TextBox x:Name="PInTransferMPriorityTextBox" Text = "{Binding Path=PInTransfer.MPriority, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
 
-                <TextBlock x:Name="PInTransferWeight" Text = "PInTransfer.Weight" IsEnabled="True" TextWrapping="Wrap"/>
+                <TextBlock x:Name="PInTransferWeight" Text = "Weight" IsEnabled="True" TextWrapping="Wrap"/>
                 <TextBox x:Name="PInTransferWeightTextBox" Text = "{Binding Path=PInTransfer.Weight, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
 
-                <Expander x:Name="ParInTransferSender" >
-                    <StackPanel x:Name="PInTransferSenderTextBox">
+                <Expander x:Name="ParInTransferSender" Header="Sender">
+                    <StackPanel x:Name="PInTransferSenderContainer">
                         <TextBlock  Text = "Id:" TextWrapping = "Wrap"/>
                         <TextBox x:Name="PInTransferSenderId" Text = "{Binding Path=PInTransfer.Sender.Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
 
-                        <TextBlock  Text = "Name:" TextWrapping = "Wrap" />
+                        <TextBlock Text = "Name:" TextWrapping = "Wrap" />
                         <TextBox x:Name="PInTransferSenderName" Text = "{Binding Path=PInTransfer.Sender.Name, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+
+                        <Expander Header="Location">
+                            <StackPanel x:Name="PInTransferCollectionLocation">
+                                <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
+                                <TextBox x:Name = "PInTransferCollectionLongitudeLocationTextBox" Text = "{Binding Path=PInTransfer.CollectionLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"  TextWrapping="Wrap"/>
+
+                                <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
+                                <TextBox x:Name = "PInTransferCollectionLatitudeLocationTextBox" Text = "{Binding Path=PInTransfer.CollectionLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Expander>
+                        
                     </StackPanel>
                 </Expander>
 
-                <Expander x:Name="ParInTransferGetter" >
-                    <StackPanel  x:Name="PInTransferGetterTextBox">
+                <Expander x:Name="ParInTransferGetter" Header="Getter">
+                    <StackPanel  x:Name="PInTransferGetterContainer">
                         <TextBlock  Text = "Id:" TextWrapping = "Wrap"/>
                         <TextBox x:Name="PInTransferGetterIdTextBox" Text = "{Binding Path=PInTransfer.Getter.Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
 
                         <TextBlock  Text = "Name:" TextWrapping = "Wrap" />
                         <TextBox x:Name="PInTransferGetterNameTextBox" Text = "{Binding Path=PInTransfer.Getter.Name, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+                       
+                        <Expander Header="Location">
+                            <StackPanel x:Name="PInTransferDeliveryLocation">
+                                <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
+                                <TextBox x:Name = "PInTransferDeliveryLocationLongitudeLocationTextBox" Text = "{Binding Path=PInTransfer.CollectionLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+
+                                <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
+                                <TextBox x:Name = "PInTransferDeliveryLocationLatitudeLocationTextBox" Text = "{Binding Path=PInTransfer.CollectionLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Expander>
+                        
                     </StackPanel>
                 </Expander>
 
 
-                <Expander Header="Parcel In Transfer Collection Location">
-                    <StackPanel x:Name="PInTransferCollectionLocation">
-                        <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
-                        <TextBox x:Name = "PInTransferCollectionLongitudeLocationTextBox" Text = "{Binding Path=PInTransfer.CollectionLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"  TextWrapping="Wrap"/>
-
-                        <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
-                        <TextBox x:Name = "PInTransferCollectionLatitudeLocationTextBox" Text = "{Binding Path=PInTransfer.CollectionLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-                    </StackPanel>
-                </Expander>
-
-
-                <Expander Header="Parcel In Transfer Delivery Location">
-                    <StackPanel x:Name="PInTransferDeliveryLocation">
-                        <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
-                        <TextBox x:Name = "PInTransferDeliveryLocationLongitudeLocationTextBox" Text = "{Binding Path=PInTransfer.CollectionLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-
-                        <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
-                        <TextBox x:Name = "PInTransferDeliveryLocationLatitudeLocationTextBox" Text = "{Binding Path=PInTransfer.CollectionLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-                    </StackPanel>
-                </Expander>
                 <TextBlock  Text = "TransDistance:" TextWrapping = "Wrap" ></TextBlock>
                 <TextBox x:Name="PInTransferTransDistanceTextBox" Text = "{Binding Path=PInTransfer.TransDistance, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
             </StackPanel>

@@ -77,7 +77,7 @@ namespace PL.Drones
 
         private void button_Close_Click(object sender, RoutedEventArgs e)
         {
-            Hide();
+            //Hide();
         }
 
         private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -89,8 +89,7 @@ namespace PL.Drones
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
-            e.Cancel = true;
+            //e.Cancel = true;
             MessageBox.Show($"You can press close:)",
                "Canceled Action",
                MessageBoxButton.OK,

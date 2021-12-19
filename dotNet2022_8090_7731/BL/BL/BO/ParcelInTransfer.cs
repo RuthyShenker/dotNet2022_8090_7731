@@ -46,7 +46,7 @@ namespace IBL
                 MPriority = mPriority;
                 Weight = weight;
                 Sender = sender;
-                Getter = Getter;
+                Getter = getter;
                 CollectionLocation = collectionLocation;
                 DeliveryLocation = deliveryLocation;
                 TransDistance = transDistance;
