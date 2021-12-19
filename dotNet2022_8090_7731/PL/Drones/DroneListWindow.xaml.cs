@@ -61,14 +61,23 @@ namespace PL.Drones
 
         private void button_AddingDrone_Click(object sender, RoutedEventArgs e)
         {
-            new DroneWindow(bl, FilterDroneListByCondition)
+            if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
+            {
+
+                new DroneWindow(bl, FilterDroneListByCondition)
                 .Show();
+            }
+            else
+            {
+                //MessageBox.Show("Error there is no available slots to charge in");
+                MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
         }
 
         private void button_Close_Click(object sender, RoutedEventArgs e)
         {
-            
-            Close();
+            Hide();
         }
 
         private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -80,7 +89,12 @@ namespace PL.Drones
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //e.Cancel = true;
+
+            e.Cancel = true;
+            MessageBox.Show($"You can press close:)",
+               "Canceled Action",
+               MessageBoxButton.OK,
+               MessageBoxImage.Information);
         }
     }
 }

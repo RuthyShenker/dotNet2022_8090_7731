@@ -30,71 +30,46 @@ namespace PL.Drones
         public AddNewDroneView(IBL.IBL bl, Action refreshDroneList, Action closeWindow)
         {
             InitializeComponent();
+
             this.bl = bl;
             this.refreshDroneList = refreshDroneList;
             this.closeWindow = closeWindow;
+
             AddNewDronePanel.DataContext = new Drone();
-            //DeliveryComboBox.DataContext = bl.AvailableSlots();
             StationIdComboBox.DataContext = bl.AvailableSlots().Select(slot => slot.Id);
             //ChangeVisibility(Visibility.Collapsed, BatteryContainer, StatusContainer, Location);
         }
+
         private void Button_Click_Ok_Adding_New_Drone(object sender, RoutedEventArgs e)
         {
-            var stationId =(int)StationIdComboBox.SelectedValue;
-            //var a = stationId.GetType().GetProperty("Id").GetValue("")
-            var drone = (Drone)AddNewDronePanel.DataContext;
-
-            //var nDrone = new Drone(drone.Id, drone.Model, drone.Weight, DroneStatus.Maintenance);
-            //bool IsCorrect = CheckValidDrone(drone, (Button)sender);
-            //if (IsCorrect)
-            //{
-            //var a = bl.GetStations();
-            //var b = a.First().Id;
             try
-                {
-                    bl.AddingDrone(drone, stationId);
+            {
+                var stationId = (int)StationIdComboBox.SelectedValue;
+                var drone = (Drone)AddNewDronePanel.DataContext;
+
+                bl.AddingDrone(drone, stationId);
                 refreshDroneList();
-                this.closeWindow();
+
+                if (MessageBox.Show($"Succesfuly Adding!",
+                   "New drone",
+                   MessageBoxButton.OK,
+                   MessageBoxImage.Information) == MessageBoxResult.OK)
+                {
+                    closeWindow();
                 }
-            catch (IBL.BO.IdIsAlreadyExistException exception)
-            {
-                MessageBox.Show(exception.Message, " Id is not available ", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                var textBox = (TextBox)AddNewDronePanel.FindName("IdAddingTextBox");
-                    AddToolTip(textBox, " Id is not available ");
-                } 
-            //}
-        }
-        private bool CheckValidDrone(Drone drone, Button sender)
-        {
-            //            Id
-            //WeightCategoriesEnum
-            //DroneStatusEnum
-            //DeliveredParcelId
-
-            //רק בדיקות מבחנת פורמט ןלא בדיקות תקינות
-            bool isExist = bl.GetDrones().Any(d => d.Id == drone.Id);
-            if (isExist)
-            {
-                var textBox = (TextBox)AddNewDronePanel.FindName("IdAddingTextBox");
-                AddToolTip(textBox, " Id is not available ");
-                return false;
             }
-            return true;
+            catch (IdIsAlreadyExistException)
+            {
+                //MessageBox.Show(exception.Message, " Id is not available ", MessageBoxButton.OK, MessageBoxImage.Error);
+                var textBox = (TextBox)AddNewDronePanel.FindName("IdAddingTextBox");
+                InternalClass.AddToolTip(textBox, " Id is not available ");
+                textBox.Background = Brushes.SteelBlue;
+            }
         }
+
         void TextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var textBox = (TextBox)sender;
-            if (e.Handled = new Regex("[^0-9]+").IsMatch(e.Text))
-            {
-                textBox.Background = Brushes.Gray;
-                ToolTip toolTip = new ToolTip();
-                AddToolTip(textBox, " Input has to contain only digits ");
-            }
-            else
-            {
-                textBox.Background = Brushes.White;
-            }
+            InternalClass.TextBox_OnPreviewTextInputt(sender, e);
         }
 
         private void Close_Window_Click(object sender, RoutedEventArgs e)
@@ -102,22 +77,9 @@ namespace PL.Drones
             closeWindow();
         }
 
-        private void AddToolTip(TextBox textBox, string str)
-        {
+        //private bool CheckValidDrone(Drone drone, Button sender)
+        //{
 
-            ToolTip toolTip = new ToolTip();
-            toolTip.Content = str;
-            toolTip.IsOpen = true;
-            textBox.ToolTip = toolTip;
-
-            // Turn off ToolTip
-            DispatcherTimer timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 1), IsEnabled = true };
-            timer.Tick += new EventHandler(delegate (object timerSender, EventArgs timerArgs)
-            {
-                toolTip.IsOpen = false;
-                timer = null;
-            });
-        }
-
+        //}
     }
 }

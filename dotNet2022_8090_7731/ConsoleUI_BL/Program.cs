@@ -34,19 +34,19 @@ namespace ConsoleUI_BL
 
                     }
                 }
-                catch (BL.IdIsNotExistException idIsNotExistException)
+                catch (IBL.BO.IdIsNotExistException idIsNotExistException)
                 {
                     Console.WriteLine(idIsNotExistException);
                 }
-                catch (BL.IdIsAlreadyExistException idIsAlreadyExistException)
+                catch (IBL.BO.IdIsAlreadyExistException idIsAlreadyExistException)
                 {
                     Console.WriteLine(idIsAlreadyExistException);
                 }
-                catch (BL.ListIsEmptyException listIsEmptyException)
+                catch (IBL.BO.ListIsEmptyException listIsEmptyException)
                 {
                     Console.WriteLine(listIsEmptyException);
                 }
-                catch (BL.InValidActionException inValidActionException)
+                catch (IBL.BO.InValidActionException inValidActionException)
                 {
                     Console.WriteLine(inValidActionException);
                 }

@@ -33,7 +33,7 @@ namespace DalObject
             static public double LightWeight = RandBetweenRange(Available, 0.002);
             static public double MediumWeight = RandBetweenRange(LightWeight, 0.003);
             static public double HeavyWeight = RandBetweenRange(MediumWeight, 0.004);
-            static public double ChargingRate =20;//TODO לאתחל
+            static public double ChargingRate = 20;//TODO לאתחל
             internal static int IndexParcel = 0;
 
             private static double RandBetweenRange(double min, double max)
@@ -109,47 +109,51 @@ namespace DalObject
 
         private static void InitializeDrones()
         {
-            Drone fillDrone;
             for (int i = 0; i < INITIALIZE_DRONE; ++i)
             {
-                fillDrone = new Drone() { Id = Rand.Next(100000000, 1000000000) };
-                fillDrone.Model = $"Boing{Rand.Next(1000, 10000)}";
-                fillDrone.MaxWeight = (WeightCategories)Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
-                DroneList.Add(fillDrone);
+                DroneList.Add(new Drone()
+                {
+                    Id = Rand.Next(100000000, 1000000000),
+                    Model = $"Boing{Rand.Next(1000, 10000)}",
+                    MaxWeight = (WeightCategories)Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length),
+                });
             }
         }
 
         private static void InitializeCustomers()
         {
-            Customer fillCustomer;
             string[] initNames = { "Uria", "Aviad", "Odel", "Natan", "Or", "Keren" };
             string[] initDigitsPhone = { "0556", "0548", "0583", "0533", "0527", "0522", "0505", "0584" };
             for (int i = 0; i < INITIALIZE_CUSTOMER; i++)
             {
-                fillCustomer = new Customer() { Id = Rand.Next(100000000, 1000000000) };
-                fillCustomer.Name = initNames[Rand.Next(0, initNames.Length)];
-                fillCustomer.Phone = initDigitsPhone[Rand.Next(0, initDigitsPhone.Length)];
-                fillCustomer.Phone += Rand.Next(100000, 1000000).ToString();
-                fillCustomer.Longitude = Rand.Next(-90, 90) + Rand.NextDouble();
-                fillCustomer.Latitude = Rand.Next(-90, 90) + Rand.NextDouble();
-                CustomerList.Add(fillCustomer);
+                CustomerList.Add(new Customer()
+                {
+                    Id = Rand.Next(100000000, 1000000000),
+                    Name = initNames[Rand.Next(0, initNames.Length)],
+                    Phone = initDigitsPhone[Rand.Next(0, initDigitsPhone.Length)] += Rand.Next(100000, 1000000).ToString(),
+                    Longitude = Rand.Next(-90, 90) + Rand.NextDouble(),
+                    Latitude = Rand.Next(-90, 90) + Rand.NextDouble(),
+                });
+
             }
         }
 
         private static void InitializeBaseStations()
         {
-            BaseStation newBaseStation;
             string[] initNameStation = { "Tel-Tzion", "Tel-Aviv", "Rahanana", "Eilat", "Jerusalem" };
             for (int i = 0; i < INITIALIZE_BASE_STATION; ++i)
             {
-                newBaseStation = new BaseStation() { Id = Rand.Next(100000000, 1000000000) };
-                newBaseStation.NameStation = initNameStation[Rand.Next(0, initNameStation.Length)];
-                newBaseStation.NumberOfChargingPositions = Rand.Next(0, 50);
-                newBaseStation.Longitude = Rand.Next(-90, 90) + Rand.NextDouble();
-                newBaseStation.Latitude = Rand.Next(-90, 90) + Rand.NextDouble();
-                BaseStationList.Add(newBaseStation);
+                BaseStationList.Add(new BaseStation()
+                {
+                    Id = Rand.Next(100000000, 1000000000),
+                    NameStation = initNameStation[Rand.Next(0, initNameStation.Length)],
+                    NumberOfChargingPositions = Rand.Next(0, 50),
+                    Longitude = Rand.Next(-90, 90) + Rand.NextDouble(),
+                    Latitude = Rand.Next(-90, 90) + Rand.NextDouble(),
+                });
             }
         }
+
         private static void InitializeParcels()
         {
             Parcel newParcel;
@@ -180,27 +184,27 @@ namespace DalObject
             }
         }
 
-    //    Parcel fillParcel;
-    //        for (int i = 0; i<INITIALIZE_PARCEL; ++i)
-    //        {
-    //            fillParcel = new Parcel() { ParcelId = ++Config.IndexParcel };
-    //    fillParcel.SenderId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
-    //            do
-    //            {
-    //                fillParcel.GetterId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
-    //            } while (fillParcel.GetterId == fillParcel.SenderId);
-    //            fillParcel.Weight = (WeightCategories) Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
-    //            fillParcel.Status = (UrgencyStatuses) Rand.Next(0, Enum.GetNames(typeof(UrgencyStatuses)).Length);
-    //            fillParcel.DroneId = availableDrone();
-    //fillParcel.MakingParcel = DateTime.Now;
-    //            fillParcel.BelongParcel = fillParcel.DroneId == 0 ? new DateTime() :DateTime.Now;
-    //            fillParcel.PickingUp = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.BelongParcel.AddDays(Rand.Next(0, 11));
-    //            //fillParcel.Arrival = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.PickingUp.AddDays(rand.Next(0, 11));
-    //            ParceList.Add(fillParcel);
-    //        }
-        }
+        //    Parcel fillParcel;
+        //        for (int i = 0; i<INITIALIZE_PARCEL; ++i)
+        //        {
+        //            fillParcel = new Parcel() { ParcelId = ++Config.IndexParcel };
+        //    fillParcel.SenderId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
+        //            do
+        //            {
+        //                fillParcel.GetterId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
+        //            } while (fillParcel.GetterId == fillParcel.SenderId);
+        //            fillParcel.Weight = (WeightCategories) Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
+        //            fillParcel.Status = (UrgencyStatuses) Rand.Next(0, Enum.GetNames(typeof(UrgencyStatuses)).Length);
+        //            fillParcel.DroneId = availableDrone();
+        //fillParcel.MakingParcel = DateTime.Now;
+        //            fillParcel.BelongParcel = fillParcel.DroneId == 0 ? new DateTime() :DateTime.Now;
+        //            fillParcel.PickingUp = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.BelongParcel.AddDays(Rand.Next(0, 11));
+        //            //fillParcel.Arrival = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.PickingUp.AddDays(rand.Next(0, 11));
+        //            ParceList.Add(fillParcel);
+        //        }
+    }
 
 
-   
+
 }
 

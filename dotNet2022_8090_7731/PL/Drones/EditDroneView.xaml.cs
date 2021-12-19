@@ -36,6 +36,11 @@ namespace PL.Drones
             close = closeWindow;
         }
 
+        void TextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            InternalClass.TextBox_OnPreviewTextInputt(sender, e);
+        }
+
         private void Update_Model_Click(object sender, RoutedEventArgs e)
         {
             Drone drone = EditDronePanel.DataContext as Drone;
