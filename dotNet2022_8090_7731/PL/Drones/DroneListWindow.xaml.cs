@@ -1,5 +1,4 @@
-﻿
-using IBL.BO;
+﻿using IBL.BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +26,6 @@ namespace PL.Drones
             InitializeComponent();
             this.bl = bl;
             FilterDroneListByCondition();
-
-
-
         }
 
         private void DroneWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -57,8 +53,6 @@ namespace PL.Drones
             FilterDroneListByCondition();
         }
 
-
-
         private void button_AddingDrone_Click(object sender, RoutedEventArgs e)
         {
             if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
@@ -71,7 +65,6 @@ namespace PL.Drones
             {
                 //MessageBox.Show("Error there is no available slots to charge in");
                 MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
             }
         }
 
@@ -87,6 +80,7 @@ namespace PL.Drones
             new DroneWindow(bl, FilterDroneListByCondition, drone)
                 .Show();
         }
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
