@@ -17,7 +17,9 @@ namespace BL
         {
             lDroneToList = new List<DroneToList>();
             foreach (var drone in dal.GetListFromDal<IDAL.DO.Drone>())
+            {
                 lDroneToList.Add(ConvertToList(drone));
+            }
         }
 
         /// <summary>
@@ -100,6 +102,7 @@ namespace BL
                 var station = availableSlotsList.ElementAt(rand.Next(availableSlotsList.Count()));
                 nDrone.CurrLocation = GetStation(station.Id).Location;
                 nDrone.BatteryStatus = rand.NextDouble() * 20;
+                // what if availableSlotsList.Count()==0?
             }
             else
             {
@@ -149,7 +152,6 @@ namespace BL
         /// <returns>the minimum battery in double</returns>
         private double MinBattery(double distance, WeightCategories weight = 0)
         {
-            //TODO:האם ככה מחשבים דרך מבחינת אחוזים וכו...
             return weight switch
             {
                 WeightCategories.Light => powerConsumptionLight * distance,

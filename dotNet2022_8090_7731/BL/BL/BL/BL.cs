@@ -28,7 +28,6 @@ namespace BL
         /// </summary>
         static double chargingRate;
 
-
         private BL()
         {
             rand = new Random();
@@ -56,7 +55,6 @@ namespace BL
             chargingRate = arrPCRequest[4];
         }
 
-        
         ///// <summary>
         ///// Get drone which his status is not 'Delivery'
         ///// Calculate his fields and returns it.
