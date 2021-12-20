@@ -5,13 +5,15 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using IDAL.DO;
+using Singleton;
 
 namespace DalObject
 {
     /// <summary>
     /// partial class of DalObject:IDal
     /// </summary>
-    public partial class DalObject : IDal.IDal
+    public sealed partial class DalObject : Singleton<DalObject>, IDal.IDal
+
     /// <summary>
     /// A class that contains:
     /// Add
@@ -36,10 +38,11 @@ namespace DalObject
         /// <summary>
         /// A constructor of DalObject that activates the function Initialize
         /// </summary>
-        public DalObject()
-        {
-            DataSource.Initialize();
-        }
+
+        private DalObject() { }
+
+        //DataSource.Initialize();
+
 
         //Update Generic:
         //void Update<T>(int id, T obj) where T : IDalObject, IIdentifiable
@@ -87,6 +90,7 @@ namespace DalObject
             //TODO: בדיקת תקינות
             ((List<T>)DataSource.Data[typeof(T)]).Add(item);
         }
+
         public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
         {
             Type type = typeof(T);
@@ -95,8 +99,6 @@ namespace DalObject
             {
                 throw new IdIsNotExistException();
             }
-
-           
 
             DataSource.Data[type].Remove(oldItem);
             if (newValue != null)//TODO: //האם צרחך את הבדיקה הזאת?

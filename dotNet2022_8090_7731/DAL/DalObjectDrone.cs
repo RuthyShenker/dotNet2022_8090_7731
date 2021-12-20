@@ -12,7 +12,7 @@ namespace DalObject
 {/// <summary>
 /// partial class of DalObject:IDal
 /// </summary>
-    public partial class DalObject
+    public sealed partial class DalObject
     {
         /// <summary>
         /// A function that returnsthe data of : available, lightWeight,

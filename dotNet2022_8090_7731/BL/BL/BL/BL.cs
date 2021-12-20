@@ -10,10 +10,11 @@ using System.Device.Location;
 
 using System.Collections.ObjectModel;
 using IBL.BO;
+using Singleton;
 
 namespace BL
 {
-    public partial class BL : IBL.IBL
+    public sealed partial class BL : Singleton<BL>, IBL.IBL
     {
         IDal.IDal dal;
         List<DroneToList> lDroneToList;
@@ -31,7 +32,7 @@ namespace BL
         public BL()
         {
             rand = new Random();
-            dal = new DalObject.DalObject();
+            dal = DalObject.DalObject.Instance;
             InitializePowerConsumption();
             InitializeDroneList();
         }
