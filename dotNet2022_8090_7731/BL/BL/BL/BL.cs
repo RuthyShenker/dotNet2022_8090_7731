@@ -29,7 +29,7 @@ namespace BL
         static double chargingRate;
 
 
-        public BL()
+        private BL()
         {
             rand = new Random();
             dal = DalObject.DalObject.Instance;

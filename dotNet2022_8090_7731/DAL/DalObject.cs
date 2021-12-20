@@ -39,10 +39,10 @@ namespace DalObject
         /// A constructor of DalObject that activates the function Initialize
         /// </summary>
 
-        private DalObject() { }
-
-        //DataSource.Initialize();
-
+        private DalObject()
+        {
+            DataSource.Initialize();
+        }
 
         //Update Generic:
         //void Update<T>(int id, T obj) where T : IDalObject, IIdentifiable
@@ -59,7 +59,7 @@ namespace DalObject
         public T GetFromDalById<T>(int Id) where T : IDalObject, IIdentifiable
         {
             var item = GetFromDalByCondition<T>(item => item.Id == Id);
-            
+
             if (item.Equals(default(T)))
                 throw new IdIsNotExistException();
             else
