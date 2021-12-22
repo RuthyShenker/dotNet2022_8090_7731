@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BL;
-using IBL.BO;
+using BO;
 using static ConsoleUI_BL.MEnum;
 
 namespace ConsoleUI_BL
 {
     partial class Program
     {
-        private static void DisplayingListOption(IBL.IBL bL)
+        private static void DisplayingListOption(BlApi.IBL bL)
         {
             tools.PrintEnum(typeof(DisplayingList));
             

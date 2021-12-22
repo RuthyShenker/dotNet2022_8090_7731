@@ -1,5 +1,5 @@
 ﻿using BL;
-using IDAL.DO;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace ConsoleUI_BL
 {
     partial class Program
     {
-        private static void DisplayingItemOption(IBL.IBL bL)
+        private static void DisplayingItemOption(BlApi.IBL bL)
         {
             tools.PrintEnum(typeof(DisplayingItem));
 

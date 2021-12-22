@@ -10,7 +10,7 @@ namespace ConsoleUI_BL
 {
     partial class Program
     {
-        private static void UpdatingOption(IBL.IBL bL)
+        private static void UpdatingOption(BlApi.IBL bL)
         {
             tools.PrintEnum(typeof(Updating));
             int input = 0;

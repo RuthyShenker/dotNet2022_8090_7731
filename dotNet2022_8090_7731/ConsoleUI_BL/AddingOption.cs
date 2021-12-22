@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using IBL.BO;
 using static ConsoleUI_BL.MEnum;
-
+using BO;
 namespace ConsoleUI_BL
 {
     partial class Program
     {
-        public static void AddingOption(IBL.IBL bL)
+        public static void AddingOption(BlApi.IBL bL)
         {
             int input = 0;
             tools.PrintEnum(typeof(Adding));

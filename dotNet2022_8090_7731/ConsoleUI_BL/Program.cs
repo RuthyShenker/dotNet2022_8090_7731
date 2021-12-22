@@ -8,7 +8,7 @@ namespace ConsoleUI_BL
     {
         static void Main(string[] args)
         {
-            IBL.IBL bL = new BL.BL();
+            BlApi.IBL bL = BlApi.BlFactory.GetBl();
             int input = 0;
             while ((ProgramOptions)input != ProgramOptions.Exit)
             {
@@ -34,19 +34,19 @@ namespace ConsoleUI_BL
 
                     }
                 }
-                catch (IBL.BO.IdIsNotExistException idIsNotExistException)
+                catch (BO.IdIsNotExistException idIsNotExistException)
                 {
                     Console.WriteLine(idIsNotExistException);
                 }
-                catch (IBL.BO.IdIsAlreadyExistException idIsAlreadyExistException)
+                catch (BO.IdIsAlreadyExistException idIsAlreadyExistException)
                 {
                     Console.WriteLine(idIsAlreadyExistException);
                 }
-                catch (IBL.BO.ListIsEmptyException listIsEmptyException)
+                catch (BO.ListIsEmptyException listIsEmptyException)
                 {
                     Console.WriteLine(listIsEmptyException);
                 }
-                catch (IBL.BO.InValidActionException inValidActionException)
+                catch (BO.InValidActionException inValidActionException)
                 {
                     Console.WriteLine(inValidActionException);
                 }
