@@ -50,10 +50,10 @@ namespace BL
         /// returns the list of customers that have packages delivered to them.
         /// </summary>
         /// <returns>returns the list of customers that have packages delivered to them. </returns>
-        private IList<Customer> CustomersWithProvidedParcels()
+        private IEnumerable<Customer> CustomersWithProvidedParcels()
         {
             DO.Customer customer;
-            var wantedCustomersList = new List<Customer>();
+            var wantedCustomersList = Enumerable.Empty<Customer>();
             var customersDalList = dal.GetListFromDal<DO.Customer>();
             var parcelsDalList = dal.GetListFromDal<DO.Parcel>();
             foreach (var parcel in parcelsDalList)
@@ -61,7 +61,7 @@ namespace BL
                 if (parcel.Arrival.HasValue)
                 {
                     customer = customersDalList.First(customer => customer.Id == parcel.GetterId);
-                    wantedCustomersList.Add(ConvertToBL(customer));
+                    wantedCustomersList.Append(ConvertToBL(customer));
                 }
             }
             return wantedCustomersList;
@@ -192,12 +192,12 @@ namespace BL
                 if (parcel.SenderId == nCustomer.Id)
                 {
                     parcelInCustomer = CopyCommon(parcel, parcel.GetterId);
-                    nCustomer.LFromCustomer.Add(parcelInCustomer);
+                    nCustomer.LFromCustomer.Append(parcelInCustomer);
                 }
                 else if (parcel.GetterId == nCustomer.Id)
                 {
                     parcelInCustomer = CopyCommon(parcel, parcel.SenderId);
-                    nCustomer.LForCustomer.Add(parcelInCustomer);
+                    nCustomer.LForCustomer.Append(parcelInCustomer);
                 }
             }
             return nCustomer;

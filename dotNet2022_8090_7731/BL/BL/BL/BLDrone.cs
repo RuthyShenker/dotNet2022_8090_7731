@@ -94,7 +94,7 @@ namespace BL
             
             var customersList = CustomersWithProvidedParcels();
             
-            if (nDrone.DStatus == DroneStatus.Maintenance || customersList.Count == 0)
+            if (nDrone.DStatus == DroneStatus.Maintenance || customersList.Count() == 0)
             {
                 var availableSlotsList = AvailableSlots();
                 var station = availableSlotsList.ElementAt(rand.Next(availableSlotsList.Count()));
@@ -104,7 +104,7 @@ namespace BL
             }
             else
             {
-                nDrone.CurrLocation = customersList[rand.Next(customersList.Count)].Location;
+                nDrone.CurrLocation = customersList.ElementAt(rand.Next(customersList.Count())).Location;
                 var closetStation = ClosestStation(nDrone.CurrLocation);
                 double minBattery = MinBattery(CalculateDistance(nDrone.CurrLocation, closetStation.Location));
                 nDrone.BatteryStatus = RandBetweenRange(minBattery, 100);

@@ -13,7 +13,7 @@ namespace PL.Drones
 {
     internal class InternalClass
     {
-       public static void TextBox_OnPreviewTextInputt(object sender, TextCompositionEventArgs e)
+        public static void TextBox_OnPreviewTextInputt(object sender, TextCompositionEventArgs e)
         {
             var textBox = (TextBox)sender;
             if (e.Handled = new Regex("[^0-9]+").IsMatch(e.Text))
@@ -28,7 +28,7 @@ namespace PL.Drones
             }
         }
         public static  void AddToolTip(TextBox textBox, string str)
-        {
+            {
             ToolTip toolTip = new ToolTip();
             toolTip.Content = str;
             toolTip.IsOpen = true;

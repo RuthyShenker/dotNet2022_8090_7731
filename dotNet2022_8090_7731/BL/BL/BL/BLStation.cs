@@ -66,21 +66,20 @@ namespace BL
         /// </summary>
         /// <param name="sId"></param>
         /// <returns>a new list of charging drone of BL of specific station</returns>
-        private List<ChargingDrone> ChargingDroneBLList(int sId)
+        private IEnumerable<ChargingDrone> ChargingDroneBLList(int sId)
         {
-            var chargingDroneBLList = new List<ChargingDrone>();
+           
+            var chargingDroneBLList =  Enumerable.Empty<ChargingDrone>();
             var chargingDroneDalList = dal.GetDalListByCondition<DO.ChargingDrone>(charge => charge.StationId == sId);
             var chargingDrone = new ChargingDrone();
             foreach (var chargingPosition in chargingDroneDalList)
             {
                 chargingDrone.DroneId = chargingPosition.DroneId;
                 chargingDrone.BatteryStatus = lDroneToList.FirstOrDefault(drone => drone.Id == chargingDrone.DroneId).BatteryStatus;
-                chargingDroneBLList.Add(chargingDrone);
+                chargingDroneBLList.Append(chargingDrone);
             }
             return chargingDroneBLList;
         }
-
-
 
         /// <summary>
         /// A function that gets a location and retrns the

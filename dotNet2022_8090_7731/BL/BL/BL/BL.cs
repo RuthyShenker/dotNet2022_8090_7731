@@ -12,7 +12,7 @@ using Singleton;
 
 namespace BL
 {
-    public sealed partial class BL : Singleton<BL>, BlApi.IBL
+    internal sealed partial class BL : Singleton<BL>, BlApi.IBL
     {
         DalApi.IDal dal;
         List<DroneToList> lDroneToList;
