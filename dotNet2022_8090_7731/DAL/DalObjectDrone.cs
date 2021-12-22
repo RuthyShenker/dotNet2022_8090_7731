@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static DalObject.DataSource.Config;
-using IDAL.DO;
-using static DalObject.DataSource;
+using static Dal.DataSource.Config;
+using DO;
+using static Dal.DataSource;
 using System.Collections;
 
-namespace DalObject
+namespace Dal
 {/// <summary>
-/// partial class of DalObject:IDal
-/// </summary>
-    public sealed partial class DalObject
+ /// partial class of DalObject:IDal
+ /// </summary>
+    public partial class DalObject
     {
         /// <summary>
         /// A function that returnsthe data of : available, lightWeight,

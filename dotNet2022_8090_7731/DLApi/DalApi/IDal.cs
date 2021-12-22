@@ -1,13 +1,12 @@
-﻿using DalObject;
-using IDAL.DO;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DO;
 
-namespace IDal
+namespace DalApi
 {
     /// </summary>
     public interface IDal
@@ -24,6 +23,7 @@ namespace IDal
         IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalObject;
 
         double[] PowerConsumptionRequest();
+        int GetIndexParcel();
 
 
         // שיניתי להרשאה פרטית

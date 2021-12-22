@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL.DO;
+using DO;
 
-namespace DalObject
+namespace Dal
 {
     /// <summary>
     /// A class that contains:
@@ -41,6 +41,9 @@ namespace DalObject
                 return (Rand.NextDouble() * (max - min)) + min;
             }
         }
+
+        
+
         /// <summary>
         /// an object of Random .
         /// </summary>
@@ -93,6 +96,7 @@ namespace DalObject
                 [typeof(ChargingDrone)] = ChargingDroneList,
             };
         }
+
         /// <summary>
         /// innitialize drones, customers,base stations, parcels.
         /// </summary>

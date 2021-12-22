@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using IBL.BO;
+using BO;
 
 namespace BL
 {
@@ -19,7 +18,7 @@ namespace BL
         /// <param name="parcel"></param>
         /// <param name="Id"></param>
         /// <returns>returns an object of ParcelInCustomer</returns>
-        private ParcelInCustomer CopyCommon(IDAL.DO.Parcel parcel, int Id)
+        private ParcelInCustomer CopyCommon(DO.Parcel parcel, int Id)
         {
             var PStatus = GetParcelStatus(parcel);
             var OnTheOtherHand = NewCustomerInParcel(Id);
@@ -38,12 +37,12 @@ namespace BL
         {
             try
             {
-                string name = dal.GetFromDalById<IDAL.DO.Customer>(Id).Name;
+                string name = dal.GetFromDalById<DO.Customer>(Id).Name;
                 return new CustomerInParcel(Id, name);
             }
-            catch (DalObject.IdIsNotExistException)
+            catch (DO.IdIsNotExistException)
             {
-                throw new IdIsNotExistException(typeof(IDAL.DO.Customer), Id);
+                throw new IdIsNotExistException(typeof(DO.Customer), Id);
             }
         }
         /// <summary>
@@ -53,10 +52,10 @@ namespace BL
         /// <returns>returns the list of customers that have packages delivered to them. </returns>
         private IList<Customer> CustomersWithProvidedParcels()
         {
-            IDAL.DO.Customer customer;
+            DO.Customer customer;
             var wantedCustomersList = new List<Customer>();
-            var customersDalList = dal.GetListFromDal<IDAL.DO.Customer>();
-            var parcelsDalList = dal.GetListFromDal<IDAL.DO.Parcel>();
+            var customersDalList = dal.GetListFromDal<DO.Customer>();
+            var parcelsDalList = dal.GetListFromDal<DO.Parcel>();
             foreach (var parcel in parcelsDalList)
             {
                 if (parcel.Arrival.HasValue)
@@ -75,12 +74,12 @@ namespace BL
         /// <param name="bLCustomer"></param>
         public int Add(Customer bLCustomer)
         {
-            if (dal.IsIdExistInList<IDAL.DO.Customer>(bLCustomer.Id))
+            if (dal.IsIdExistInList<DO.Customer>(bLCustomer.Id))
             {
-                throw new IdIsAlreadyExistException(typeof(IDAL.DO.Customer), bLCustomer.Id);
+                throw new IdIsAlreadyExistException(typeof(DO.Customer), bLCustomer.Id);
             }
 
-            var newCustomer = new IDAL.DO.Customer(bLCustomer.Id, bLCustomer.Name,
+            var newCustomer = new DO.Customer(bLCustomer.Id, bLCustomer.Name,
             bLCustomer.Phone, bLCustomer.Location.Longitude, bLCustomer.Location.Latitude);
             dal.Add(newCustomer);
             return bLCustomer.Id;
@@ -99,26 +98,26 @@ namespace BL
         {
             try
             {
-                IDAL.DO.Customer customer = dal.GetFromDalById<IDAL.DO.Customer>(customerId);
+                DO.Customer customer = dal.GetFromDalById<DO.Customer>(customerId);
 
                 if (!string.IsNullOrEmpty(newName))
                 {
-                    dal.Update<IDAL.DO.Customer>(customerId, newName, nameof(customer.Name));
+                    dal.Update<DO.Customer>(customerId, newName, nameof(customer.Name));
                 }
                 if (!string.IsNullOrEmpty(newPhone))
                 {
-                    dal.Update<IDAL.DO.Customer>(customerId, newPhone, nameof(customer.Phone));
+                    dal.Update<DO.Customer>(customerId, newPhone, nameof(customer.Phone));
                 }
             }
-            catch (DalObject.IdIsNotExistException)
+            catch (DO.IdIsNotExistException)
             {
-                throw new IdIsNotExistException(typeof(IDAL.DO.Customer), customerId);
+                throw new IdIsNotExistException(typeof(DO.Customer), customerId);
             }
         }
 
         public IEnumerable<CustomerToList> GetCustomers()
         {
-            return dal.GetListFromDal<IDAL.DO.Customer>()
+            return dal.GetListFromDal<DO.Customer>()
                 .Select(s => ConvertToList(s));
         }
 
@@ -128,10 +127,10 @@ namespace BL
         /// </summary>
         /// <param name="customer"></param>
         /// <returns>returns CustomerToList object </returns>
-        private CustomerToList ConvertToList(IDAL.DO.Customer customer)
+        private CustomerToList ConvertToList(DO.Customer customer)
         {
             CustomerToList nCustomer = new(customer.Id, customer.Name, customer.Phone);
-            var dParcelslist = dal.GetListFromDal<IDAL.DO.Parcel>();
+            var dParcelslist = dal.GetListFromDal<DO.Parcel>();
             foreach (var parcel in dParcelslist)
             {
                 if (parcel.SenderId == nCustomer.Id)
@@ -167,10 +166,10 @@ namespace BL
         {
             try
             {
-                var dCustomer = dal.GetFromDalById<IDAL.DO.Customer>(customerId);
+                var dCustomer = dal.GetFromDalById<DO.Customer>(customerId);
                 return ConvertToBL(dCustomer);
             }
-            catch (DalObject.IdIsNotExistException)
+            catch (DO.IdIsNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Customer), customerId);
             }
@@ -182,12 +181,12 @@ namespace BL
         /// </summary>
         /// <param name="customer"></param>
         /// <returns>returns Customer object </returns>
-        private Customer ConvertToBL(IDAL.DO.Customer customer)
+        private Customer ConvertToBL(DO.Customer customer)
         {
             var nLocation = new Location(customer.Longitude, customer.Latitude);
             Customer nCustomer = new Customer(customer.Id, customer.Name, customer.Phone, nLocation);
             ParcelInCustomer parcelInCustomer;
-            var dParcelslist = dal.GetListFromDal<IDAL.DO.Parcel>();
+            var dParcelslist = dal.GetListFromDal<DO.Parcel>();
             foreach (var parcel in dParcelslist)
             {
                 if (parcel.SenderId == nCustomer.Id)

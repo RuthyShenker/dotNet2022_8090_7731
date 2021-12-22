@@ -1,5 +1,4 @@
-﻿
-using IBL.BO;
+﻿using BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,40 +13,46 @@ namespace BL
         /// A function that gets a parcel and adds it to the data base,the function
         /// doesn't return anything.
         /// </summary>
-        /// <param name="newParcel"></param>
-        public int AddingParcel(Parcel newParcel)
+        /// <param name="parcel"></param>
+        public int AddingParcel(Parcel parcel)
         {
-            IDAL.DO.Customer sender;
-            IDAL.DO.Customer getter;
+            DO.Customer sender;
+            DO.Customer getter;
             try
             {
-                sender = dal.GetFromDalById<IDAL.DO.Customer>(newParcel.Sender.Id);
+                sender = dal.GetFromDalById<DO.Customer>(parcel.Sender.Id);
             }
-            catch (DalObject.IdIsNotExistException)
+            catch (DO.IdIsNotExistException)
             {
-                throw new IdIsNotExistException(typeof(IDAL.DO.Customer), newParcel.Sender.Id);
+                throw new IdIsNotExistException(typeof(DO.Customer), parcel.Sender.Id);
             }
 
             try
             {
-                getter = dal.GetFromDalById<IDAL.DO.Customer>(newParcel.Getter.Id);
+                getter = dal.GetFromDalById<DO.Customer>(parcel.Getter.Id);
             }
-            catch (DalObject.IdIsNotExistException)
+            catch (DO.IdIsNotExistException)
             {
-                throw new IdIsNotExistException(typeof(IDAL.DO.Customer), newParcel.Getter.Id);
+                throw new IdIsNotExistException(typeof(DO.Customer), parcel.Getter.Id);
             }
 
-            IDAL.DO.Parcel parcel = new IDAL.DO.Parcel(
-                newParcel.Sender.Id,
-                newParcel.Getter.Id,
-                (IDAL.DO.WeightCategories)newParcel.Weight,
-                (IDAL.DO.UrgencyStatuses)newParcel.MPriority,
-                DateTime.Now,
-                new DateTime(),
-                new DateTime(),
-                new DateTime());
-            dal.Add(parcel);
-            return parcel.Id;
+            int parcelId = dal.GetIndexParcel();
+            
+            dal.Add( new DO.Parcel()
+            {
+                Id = parcelId,
+                SenderId = parcel.Sender.Id,
+                GetterId = parcel.Getter.Id,
+                Weight = (DO.WeightCategories)parcel.Weight,
+                MPriority = (DO.UrgencyStatuses)parcel.MPriority,
+                DroneId = null,
+                CreatedTime = DateTime.Now,
+                BelongParcel = null,
+                PickingUp = null,
+                Arrival = null,
+            });
+            
+            return parcelId;
         }
 
         /// <summary>
@@ -62,19 +67,19 @@ namespace BL
 
             if (drone.DStatus != DroneStatus.Delivery)
             {
-                throw new InValidActionException(typeof(IDAL.DO.Drone), dId, $"status of drone is {drone.DStatus} ");
+                throw new InValidActionException(typeof(DO.Drone), dId, $"status of drone is {drone.DStatus} ");
             }
             if (!drone.DeliveredParcelId.HasValue)
             {
-                throw new InValidActionException(typeof(IDAL.DO.Drone), dId, $"there is no assined parcel ");
+                throw new InValidActionException(typeof(DO.Drone), dId, $"there is no assined parcel ");
             }
 
-            IDAL.DO.Parcel parcel;
+            DO.Parcel parcel;
             try
             {
-                parcel = dal.GetFromDalById<IDAL.DO.Parcel>(drone.DeliveredParcelId.Value);
+                parcel = dal.GetFromDalById<DO.Parcel>(drone.DeliveredParcelId.Value);
             }
-            catch (DalObject.IdIsNotExistException)
+            catch (DO.IdIsNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
             }
@@ -89,7 +94,7 @@ namespace BL
             drone.CurrLocation = senderLocation;
             // לא היה כתוב לשנות status
             drone.DStatus = DroneStatus.Delivery;
-            dal.Update<IDAL.DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.PickingUp));
+            dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.PickingUp));
         }
 
         /// <summary>
@@ -112,12 +117,12 @@ namespace BL
                 throw new InValidActionException(typeof(Drone), dId, $"status of drone is {drone.DStatus} ");
             }
 
-            IDAL.DO.Parcel parcel;
+            DO.Parcel parcel;
             try
             {
-                parcel = dal.GetFromDalById<IDAL.DO.Parcel>(drone.DeliveredParcelId.Value);
+                parcel = dal.GetFromDalById<DO.Parcel>(drone.DeliveredParcelId.Value);
             }
-            catch (DalObject.IdIsNotExistException)
+            catch (DO.IdIsNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
             }
@@ -136,8 +141,8 @@ namespace BL
             drone.CurrLocation = getterLocation;
             drone.DStatus = DroneStatus.Free;
             drone.DeliveredParcelId = null;
-            dal.Update<IDAL.DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
-            dal.Update<IDAL.DO.Parcel>(parcel.Id, 0, nameof(parcel.DroneId));
+            dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
+            dal.Update<DO.Parcel>(parcel.Id, 0, nameof(parcel.DroneId));
 
         }
 
@@ -146,7 +151,7 @@ namespace BL
         /// </summary>
         /// <param name="parcel"></param>
         /// <returns>returns ParcelStatus of specific parcel </returns>
-        private ParcelStatus GetParcelStatus(IDAL.DO.Parcel parcel)
+        private ParcelStatus GetParcelStatus(DO.Parcel parcel)
         {
             if (parcel.Arrival.HasValue)
             {
@@ -167,7 +172,7 @@ namespace BL
 
         public IEnumerable<ParcelToList> GetParcels()
         {
-            return dal.GetListFromDal<IDAL.DO.Parcel>().Select(s => ConvertToList(s));
+            return dal.GetListFromDal<DO.Parcel>().Select(s => ConvertToList(s));
         }
 
         /// <summary>
@@ -178,11 +183,11 @@ namespace BL
         {
             try
             {
-                return dal.GetDalListByCondition<IDAL.DO.Parcel>(parcel => parcel.DroneId == 0)
+                return dal.GetDalListByCondition<DO.Parcel>(parcel => parcel.DroneId == 0)
                     .Select(parcel => ConvertToList(parcel));
             }
 
-            catch (DalObject.InValidActionException)
+            catch (DO.InValidActionException)
             {
                 throw new InValidActionException("There is no match object in the list ");
             }
@@ -195,10 +200,10 @@ namespace BL
         /// </summary>
         /// <param name="parcel"></param>
         /// <returns>returns ParcelToList object</returns>
-        private ParcelToList ConvertToList(IDAL.DO.Parcel parcel)
+        private ParcelToList ConvertToList(DO.Parcel parcel)
         {
-            string senderName = dal.GetFromDalById<IDAL.DO.Customer>(parcel.SenderId).Name;
-            string getterName = dal.GetFromDalById<IDAL.DO.Customer>(parcel.GetterId).Name;
+            string senderName = dal.GetFromDalById<DO.Customer>(parcel.SenderId).Name;
+            string getterName = dal.GetFromDalById<DO.Customer>(parcel.GetterId).Name;
 
             ParcelToList nParcel = new(
             parcel.Id,
@@ -215,10 +220,10 @@ namespace BL
         {
             try
             {
-                var dParcel = dal.GetFromDalById<IDAL.DO.Parcel>(parcelId);
+                var dParcel = dal.GetFromDalById<DO.Parcel>(parcelId);
                 return ConvertToBL(dParcel);
             }
-            catch (DalObject.IdIsNotExistException)
+            catch (DO.IdIsNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Parcel), parcelId);
             }
@@ -230,7 +235,7 @@ namespace BL
         /// Parcel and returns it.
         /// <param name="parcel"></param>
         /// <returns>returns Parcel object</returns>
-        private Parcel ConvertToBL(IDAL.DO.Parcel parcel)
+        private Parcel ConvertToBL(DO.Parcel parcel)
         {
             CustomerInParcel sender = NewCustomerInParcel(parcel.SenderId);
             CustomerInParcel getter = NewCustomerInParcel(parcel.GetterId);

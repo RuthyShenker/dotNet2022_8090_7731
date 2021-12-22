@@ -4,15 +4,15 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL.DO;
+using DO;
 using Singleton;
 
-namespace DalObject
+namespace Dal
 {
     /// <summary>
-    /// partial class of DalObject:IDal
+    /// sealed partial class of DalObject:IDal
     /// </summary>
-    public sealed partial class DalObject : Singleton<DalObject>, IDal.IDal
+    public sealed partial class DalObject : Singleton<DalObject>, DalApi.IDal
 
     /// <summary>
     /// A class that contains:
@@ -38,18 +38,10 @@ namespace DalObject
         /// <summary>
         /// A constructor of DalObject that activates the function Initialize
         /// </summary>
-
         private DalObject()
         {
             DataSource.Initialize();
         }
-
-        //Update Generic:
-        //void Update<T>(int id, T obj) where T : IDalObject, IIdentifiable
-        //{
-        //    data[typeof(T)].Remove(((List<T>)data[typeof(T)]).Find(Object => Object.Id == id));
-        //    data[typeof(T)].Add(obj);
-        //}
 
         public bool IsIdExistInList<T>(int Id) where T : IIdentifiable, IDalObject
         {
@@ -113,9 +105,16 @@ namespace DalObject
             }
             DataSource.Data[type].Add(oldItem);
         }
+
         public void Remove<T>(T item) where T : IDalObject
         {
             DataSource.Data[typeof(T)].Remove(item);
+        }
+
+        //TOdo is it ok?
+        public int GetIndexParcel()
+        {
+            return DataSource.Config.IndexParcel;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-using IBL.BO;
+using BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +24,10 @@ namespace PL.Drones
     /// </summary>
     public partial class AddNewDroneView : UserControl
     {
-        IBL.IBL bl;
+        BlApi.IBL bl;
         Action refreshDroneList, closeWindow;
 
-        public AddNewDroneView(IBL.IBL bl, Action refreshDroneList, Action closeWindow)
+        public AddNewDroneView(BlApi.IBL bl, Action refreshDroneList, Action closeWindow)
         {
             InitializeComponent();
 

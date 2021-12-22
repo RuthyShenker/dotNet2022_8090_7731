@@ -1,5 +1,5 @@
 ﻿
-using IBL.BO;
+using BO;
 using PL.Drones;
 using System;
 using System.Linq;
@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
+
 namespace PL.Drones
 {
     /// <summary>
@@ -18,10 +19,10 @@ namespace PL.Drones
     public partial class DroneWindow : Window
     {
 
-        private IBL.IBL bl;
+        private BlApi.IBL bl;
         Action refreshDroneList;
 
-        public DroneWindow(IBL.IBL bl, Action initializeDrones)
+        public DroneWindow(BlApi.IBL bl, Action initializeDrones)
         {
             this.bl = bl;
             refreshDroneList = initializeDrones;
@@ -29,7 +30,7 @@ namespace PL.Drones
             DroneView.DataContext = new AddNewDroneView(bl, initializeDrones,Close);
         }
       
-        public DroneWindow(IBL.IBL bl, Action initializeDrones, Drone selectedDrone)
+        public DroneWindow(BlApi.IBL bl, Action initializeDrones, Drone selectedDrone)
         {
             InitializeComponent();
             this.bl = bl;

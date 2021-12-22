@@ -1,11 +1,11 @@
-﻿//using System;
-//using System.Collections;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using BL;
-using IBL.BO;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BL;
+using BO;
 using System.Device.Location;
 
 namespace BL
@@ -43,55 +43,57 @@ namespace BL
         {
             return new GeoCoordinate(location.Latitude, location.Longitude);
         }
-
-      
-        //        static internal Dictionary<Type, Type> matchType = new()
-        //        {
-        //            [typeof(IDAL.DO.Drone)] = typeof(DroneToList),
-        //            [typeof(IDAL.DO.Customer)] = typeof(CustomerToList),
-        //            [typeof(IDAL.DO.Parcel)] = typeof(ParcelToList),
-        //            [typeof(IDAL.DO.BaseStation)] = typeof(StationToList),
-        //        };
-        //        //public static StringBuilder ToStringProps<T>(this T obj)
-        //        //{
-        //        //    return obj.ToStringProps();
-        //        //}
-
-        //        //public static void ToString<T>(this T obj)
-        //        //{
-        //        //    Console.WriteLine(Extensions.ToStringProps(obj));
-        //        //}
-        //        public static List<IDAL.DO.Drone> D = new();
-        //        public static List<IDAL.DO.Customer> C = new();
-        //        public static List<IDAL.DO.Parcel> P = new();
-        //        public static List<IDAL.DO.BaseStation> B = new();
-
-        //        public static List<DroneToList> Dr = new();
-        //        public static List<CustomerToList> Cu = new();
-        //        public static List<ParcelToList> Pa = new();
-        //        public static List<StationToList> St = new();
-
-        //        public static Dictionary<Type, IList> matchBL = new()
-        //        {
-        //            [typeof(Drone)] = D,
-        //            [typeof(Customer)] = C,
-        //            [typeof(Parcel)] = P,
-        //            [typeof(Station)] = B,
-        //        };
-
-        //        public static Dictionary<Type, IList> matchBLToList = new()
-        //        {
-        //            [typeof(Drone)] = Dr,
-        //            [typeof(Customer)] = Cu,
-        //            [typeof(Parcel)] = Pa,
-        //            [typeof(Station)] = St,
-        //        };
-        //        // public static Dictionary<Type, Type> matchBLToListObject = new()
-        //        //{
-        //        //    [typeof(IDAL.DO.Drone)] = typeof(DroneToList),
-        //        //    [typeof(IDAL.DO.Customer)] = typeof(CustomerToList),
-        //        //    [typeof(IDAL.DO.Parcel)] =typeof (ParcelToList),
-        //        //    [typeof(IDAL.DO.BaseStation)] = typeof(StationToList),
-        //        //};
     }
 }
+//#region Erase?
+
+
+
+//        static internal Dictionary<Type, Type> matchType = new()
+//        {
+//            [typeof(IDAL.DO.Drone)] = typeof(DroneToList),
+//            [typeof(IDAL.DO.Customer)] = typeof(CustomerToList),
+//            [typeof(IDAL.DO.Parcel)] = typeof(ParcelToList),
+//            [typeof(IDAL.DO.BaseStation)] = typeof(StationToList),
+//        };
+//        //public static StringBuilder ToStringProps<T>(this T obj)
+//        //{
+//        //    return obj.ToStringProps();
+//        //}
+//        //public static void ToString<T>(this T obj)
+//        //{
+//        //    Console.WriteLine(Extensions.ToStringProps(obj));
+//        //}
+//        public static List<IDAL.DO.Drone> D = new();
+//        public static List<IDAL.DO.Customer> C = new();
+//        public static List<IDAL.DO.Parcel> P = new();
+//        public static List<IDAL.DO.BaseStation> B = new();
+
+//        public static List<DroneToList> Dr = new();
+//        public static List<CustomerToList> Cu = new();
+//        public static List<ParcelToList> Pa = new();
+//        public static List<StationToList> St = new();
+
+//        public static Dictionary<Type, IList> matchBL = new()
+//        {
+//            [typeof(Drone)] = D,
+//            [typeof(Customer)] = C,
+//            [typeof(Parcel)] = P,
+//            [typeof(Station)] = B,
+//        };
+
+//        public static Dictionary<Type, IList> matchBLToList = new()
+//        {
+//            [typeof(Drone)] = Dr,
+//            [typeof(Customer)] = Cu,
+//            [typeof(Parcel)] = Pa,
+//            [typeof(Station)] = St,
+//        };
+//        // public static Dictionary<Type, Type> matchBLToListObject = new()
+//        //{
+//        //    [typeof(IDAL.DO.Drone)] = typeof(DroneToList),
+//        //    [typeof(IDAL.DO.Customer)] = typeof(CustomerToList),
+//        //    [typeof(IDAL.DO.Parcel)] =typeof (ParcelToList),
+//        //    [typeof(IDAL.DO.BaseStation)] = typeof(StationToList),
+//        //};
+//#endregion

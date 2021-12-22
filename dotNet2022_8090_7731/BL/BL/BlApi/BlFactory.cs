@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDAL
-{
-    namespace DO
+namespace BlApi 
+{ 
+    public static class BlFactory
     {
-        public interface IDalObject
-        {
-        }
+        public static IBL GetBl() => BL.BL.Instance;
+
     }
 }

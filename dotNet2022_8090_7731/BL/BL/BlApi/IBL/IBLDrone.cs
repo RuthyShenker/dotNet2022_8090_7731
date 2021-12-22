@@ -1,12 +1,11 @@
-﻿
-using IBL.BO;
+﻿using BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL
+namespace BlApi
 {
     public interface IBLDrone
     {
@@ -17,6 +16,5 @@ namespace IBL
         IEnumerable<DroneToList> GetDrones(Func<DroneToList, bool> predicate = null);
         Drone GetDrone(int droneId);
         bool IsDroneExist(int id);
-
     }
 }

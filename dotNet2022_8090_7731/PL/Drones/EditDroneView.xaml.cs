@@ -1,4 +1,4 @@
-﻿using IBL.BO;
+﻿using BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +23,10 @@ namespace PL.Drones
     /// </summary>
     public partial class EditDroneView : UserControl
     {
-        IBL.IBL bl;
+        BlApi.IBL bl;
         Action refreshDroneList,close;
 
-        public EditDroneView(IBL.IBL bl, Action initializeDrones, Drone selectedDrone, Action closeWindow)
+        public EditDroneView(BlApi.IBL bl, Action initializeDrones, Drone selectedDrone, Action closeWindow)
         {
             InitializeComponent();
             this.bl = bl;
@@ -95,7 +95,7 @@ namespace PL.Drones
                 bl.DeliveryPackage(drone.Id);
                 RefreshDrone(drone);
             }
-            catch (IBL.BO.InValidActionException exception)
+            catch (InValidActionException exception)
             {
                 MessageBox.Show(exception.Message, "Error Delivery Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -108,7 +108,7 @@ namespace PL.Drones
                 bl.PickingUpParcel(drone.Id);
                 RefreshDrone(drone);
             }
-            catch (IBL.BO.InValidActionException exception)
+            catch (InValidActionException exception)
             {
                 MessageBox.Show(exception.Message, "Error Pick Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -122,12 +122,12 @@ namespace PL.Drones
                 bl.BelongingParcel(drone.Id);
                 RefreshDrone(drone);
             }
-            catch (IBL.BO.ThereIsNoMatchObjectInListException exception)
+            catch (ThereIsNoMatchObjectInListException exception)
             {
                 MessageBox.Show(exception.ExceptionDetails, "Error Belong Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            catch (IBL.BO.ListIsEmptyException ex)
+            catch (ListIsEmptyException ex)
             {
                 MessageBox.Show(ex.Message, "Error Belong Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
             }
