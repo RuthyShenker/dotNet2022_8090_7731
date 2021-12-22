@@ -12,28 +12,7 @@ namespace DO
     /// Id of Parcel, Id of Sender, Id of Getter, Weight, Status, Id of Drone.
     /// </summary>
     public struct Parcel : IIdentifiable, IDalObject
-    {
-       
-        /// <summary>
-        /// A constructor of parcel that gets 
-        /// an instance parcel and initalizes
-        /// the new instance with the parameters of this instance.
-        /// </summary>
-        /// <param name="parcel">an object</param>
-        public Parcel(Parcel parcel)
-        {
-            Id = parcel.Id;
-            SenderId = parcel.SenderId;
-            GetterId = parcel.GetterId;
-            Weight = parcel.Weight;
-            MPriority = parcel.MPriority;
-            DroneId = parcel.DroneId;
-            CreatedTime = parcel.CreatedTime;
-            BelongParcel = parcel.BelongParcel;
-            PickingUp = parcel.PickingUp;
-            Arrival = parcel.Arrival;
-        }
-
+    {       
         /// <summary>
         /// this field is init
         /// </summary>

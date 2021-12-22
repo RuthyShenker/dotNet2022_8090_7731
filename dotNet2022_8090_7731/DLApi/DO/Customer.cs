@@ -31,20 +31,7 @@ namespace DO
             Longitude = longitude;
             Latitude = latitude;
         }
-        /// <summary>
-        /// A constructor of Custoner that gets 
-        /// an instance of Customer and initalizes
-        /// the new instance with the parameters of this instance.
-        /// </summary>
-        /// <param name="customer"></param>
-        public Customer(Customer customer)
-        {
-            Id = customer.Id;
-            Name = customer.Name;
-            Phone = customer.Phone;
-            Longitude = customer.Longitude;
-            Latitude = customer.Latitude;
-        }
+        
         /// <summary>
         /// this field is init.
         /// </summary>

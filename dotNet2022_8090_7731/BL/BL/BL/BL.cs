@@ -45,12 +45,13 @@ namespace BL
         /// </summary>
         private void InitializePowerConsumption()
         {
-            double[] arrPCRequest = dal.PowerConsumptionRequest();
-            powerConsumptionFree = arrPCRequest[0];
-            powerConsumptionLight = arrPCRequest[1];
-            powerConsumptionMedium = arrPCRequest[2];
-            powerConsumptionHeavy = arrPCRequest[3];
-            chargingRate = arrPCRequest[4];
+            (
+                powerConsumptionFree,
+                powerConsumptionLight,
+                powerConsumptionMedium,
+                powerConsumptionHeavy,
+                chargingRate
+            ) = dal.PowerConsumptionRequest();
         }
     }
 }

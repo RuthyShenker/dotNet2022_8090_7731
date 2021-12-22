@@ -20,7 +20,7 @@ namespace Dal
         /// </summary>
         /// <returns>returns an array of double that contains:available, lightWeight,
         ///mediumWeight, heavyWeight, chargingRate</returns>
-        public double[] PowerConsumptionRequest() => new double[5] { Available, LightWeight,MediumWeight, HeavyWeight, ChargingRate };
+        public (double, double, double, double, double)PowerConsumptionRequest() =>( Available, LightWeight,MediumWeight, HeavyWeight, ChargingRate );
 
         #region canErase?
 

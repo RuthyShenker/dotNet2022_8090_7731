@@ -79,19 +79,20 @@ namespace Dal
         //}
         public void Add<T>(T item) where T : IDalObject
         {
-            //TODO: בדיקת תקינות
+            Type type = typeof(T);
+            if (DoesExistInList(item))
+            {
+                throw new InValidActionException($" This item already exists in list {type}");
+            }
             ((List<T>)DataSource.Data[typeof(T)]).Add(item);
         }
 
         public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
         {
             Type type = typeof(T);
-            var oldItem = ((List<T>)DataSource.Data[type]).FirstOrDefault(item => item.Id == id);
-            if (oldItem.Equals(default(T)))
-            {
-                throw new IdIsNotExistException();
-            }
-
+            
+            var oldItem = GetFromDalById<T>(id);
+           
             DataSource.Data[type].Remove(oldItem);
             if (newValue != null)//TODO: //האם צרחך את הבדיקה הזאת?
             {
@@ -108,7 +109,15 @@ namespace Dal
 
         public void Remove<T>(T item) where T : IDalObject
         {
-            DataSource.Data[typeof(T)].Remove(item);
+            if (DoesExistInList(item))
+            {
+                DataSource.Data[typeof(T)].Remove(item);
+            }
+        }
+
+        private bool DoesExistInList<T>(T item) where T : IDalObject
+        {
+            return ((List<T>)DataSource.Data[typeof(T)]).Any(i => i.Equals(item));
         }
 
         //TOdo is it ok?

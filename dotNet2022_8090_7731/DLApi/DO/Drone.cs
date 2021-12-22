@@ -14,34 +14,6 @@ namespace DO
     public struct Drone : IIdentifiable, IDalObject
     {
         /// <summary>
-        /// A constructor of Drone that gets parameters 
-        /// and initalizes the new instance with this 
-        /// parameters.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="model"></param>
-        /// <param name="maxWeight"></param>
-
-        public Drone(int id, string model, WeightCategories maxWeight)
-        {
-            Id = id;
-            Model = model;
-            MaxWeight = maxWeight;
-        }
-
-        /// <summary>
-        /// A constuctor of Drone that gets 
-        /// an instance of Drone and initalizes
-        /// the new instance with the parameters of this instance.
-        /// </summary>
-        /// <param name="drone"></param>
-        public Drone(Drone drone)
-        {
-            Id = drone.Id;
-            Model = drone.Model;
-            MaxWeight = drone.MaxWeight;
-        }
-        /// <summary>
         /// this field is init
         /// </summary>
         public int Id { get; init; }

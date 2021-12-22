@@ -13,41 +13,7 @@ namespace DO
     /// </summary>
     public struct BaseStation : IIdentifiable, IDalObject
     {
-        /// <summary>
-        /// A constructor of base station that gets parameters 
-        /// and initalizes the new instance with this 
-        /// parameters.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="nameStation"></param>
-        /// <param name="numberOfChargingStations"></param>
-        /// <param name="longitude"></param>
-        /// <param name="latitude"></param>
-        public BaseStation(int id, string nameStation, int numberOfChargingStations,
-            double longitude, double latitude)
-        {
-            Id = id;
-            NameStation = nameStation;
-            NumberOfChargingPositions = numberOfChargingStations;
-            Longitude = longitude;
-            Latitude = latitude;
-        }
-        /// <summary>
-        /// A constructor of base station that gets 
-        /// an instance of base station and initalizes
-        /// the new instance with the parameters of this instance.
-        /// </summary>
-        /// <param name="baseStation"></param>
-        public BaseStation(BaseStation baseStation)
-        {
-            Id = baseStation.Id;
-            NameStation = baseStation.NameStation;
-            NumberOfChargingPositions = baseStation.NumberOfChargingPositions;
-            Longitude = baseStation.Longitude;
-            Latitude = baseStation.Latitude;
-        }
-
-
+        
         /// <summary>
         /// this field is init
         /// </summary>

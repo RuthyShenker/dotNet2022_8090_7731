@@ -26,8 +26,9 @@ namespace PL
         {
             bl = BL.BL.Instance;
             InitializeComponent();
+        TabItem t=new TabItem();
+        T.C
         }
-
         private void btn_DroneListView_Click(object sender, RoutedEventArgs e)
         {
             new DroneListWindow(bl).Show();

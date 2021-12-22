@@ -22,7 +22,8 @@ namespace DalApi
         IEnumerable<T> GetListFromDal<T>() where T : IDalObject;
         IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalObject;
 
-        double[] PowerConsumptionRequest();
+        // ToDo this function public?
+        (double,double,double,double,double) PowerConsumptionRequest();
         int GetIndexParcel();
 
 
