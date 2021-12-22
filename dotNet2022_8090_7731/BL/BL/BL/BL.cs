@@ -45,11 +45,13 @@ namespace BL
         /// </summary>
         private void InitializePowerConsumption()
         {
-            {powerConsumptionFree,
-            powerConsumptionLight,
-            powerConsumptionMedium,
-            powerConsumptionHeavy,
-            chargingRate } = dal.PowerConsumptionRequest();
+            (
+                powerConsumptionFree,
+                powerConsumptionLight,
+                powerConsumptionMedium,
+                powerConsumptionHeavy,
+                chargingRate 
+            ) = dal.PowerConsumptionRequest();
         }
     }
 }
