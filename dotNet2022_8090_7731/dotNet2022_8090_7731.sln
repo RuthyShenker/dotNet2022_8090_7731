@@ -8,7 +8,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BF8A3A7-3BAC-42C7-81C4-B267886137AD}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		BL\BL\BLParcel.cs = BL\BL\BLParcel.cs
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
@@ -24,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PL", "PL\PL.csproj", "{EB4F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Singleton", "Singleton\Singleton.csproj", "{5CE07B38-2C77-4AF8-9F1F-6980297FDF70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalApi", "DLApi\DalApi.csproj", "{6DABC9FD-DCBD-4651-B3A6-E4689C053B2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalApi", "DLApi\DalApi.csproj", "{6DABC9FD-DCBD-4651-B3A6-E4689C053B2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using DalApi;
 using DO;
 using Singleton;
 using static Dal.DataSource.Config;
@@ -13,8 +14,7 @@ namespace Dal
     /// <summary>
     /// sealed partial class of DalObject:IDal
     /// </summary>
-    public sealed partial class DalObject : Singleton<DalObject>, DalApi.IDal
-
+    internal sealed partial class DalObject : Singleton<DalObject>, DalApi.IDal
     /// <summary>
     /// A class that contains:
     /// Add
@@ -126,8 +126,10 @@ namespace Dal
             return ++DataSource.Config.IndexParcel;
         }
 
-        public double[] PowerConsumptionRequest() => new double[5] { Available, LightWeight, MediumWeight, HeavyWeight, ChargingRate };
+        public (double, double, double, double, double) PowerConsumptionRequest()
+        {
+            return (Available, LightWeight, MediumWeight, HeavyWeight, ChargingRate);
 
-
+        }
     }
 }

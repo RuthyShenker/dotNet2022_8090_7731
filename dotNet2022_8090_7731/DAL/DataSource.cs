@@ -136,9 +136,8 @@ namespace Dal
                     Name = initNames[Rand.Next(0, initNames.Length)],
                     Phone = initDigitsPhone[Rand.Next(0, initDigitsPhone.Length)] += Rand.Next(100000, 1000000).ToString(),
                     Longitude = Rand.Next(-90, 90) + Rand.NextDouble(),
-                    Latitude = Rand.Next(-90, 90) + Rand.NextDouble(),
+                    Latitude = Rand.Next(-90, 90) + Rand.NextDouble()
                 });
-
             }
         }
 
@@ -153,7 +152,7 @@ namespace Dal
                     NameStation = initNameStation[Rand.Next(0, initNameStation.Length)],
                     NumberOfChargingPositions = Rand.Next(0, 50),
                     Longitude = Rand.Next(-90, 90) + Rand.NextDouble(),
-                    Latitude = Rand.Next(-90, 90) + Rand.NextDouble(),
+                    Latitude = Rand.Next(-90, 90) + Rand.NextDouble()
                 });
             }
         }
@@ -207,8 +206,5 @@ namespace Dal
         //            ParceList.Add(fillParcel);
         //        }
     }
-
-
-
 }
 
