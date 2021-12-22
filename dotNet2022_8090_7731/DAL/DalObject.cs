@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DO;
 using Singleton;
-
+using static Dal.DataSource.Config;
+using static Dal.DataSource;
 namespace Dal
 {
     /// <summary>
@@ -90,9 +91,9 @@ namespace Dal
         public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
         {
             Type type = typeof(T);
-            
+
             var oldItem = GetFromDalById<T>(id);
-           
+
             DataSource.Data[type].Remove(oldItem);
             if (newValue != null)//TODO: //האם צרחך את הבדיקה הזאת?
             {
@@ -120,10 +121,13 @@ namespace Dal
             return ((List<T>)DataSource.Data[typeof(T)]).Any(i => i.Equals(item));
         }
 
-        //TOdo is it ok?
         public int GetIndexParcel()
         {
-            return DataSource.Config.IndexParcel;
+            return ++DataSource.Config.IndexParcel;
         }
+
+        public double[] PowerConsumptionRequest() => new double[5] { Available, LightWeight, MediumWeight, HeavyWeight, ChargingRate };
+
+
     }
 }

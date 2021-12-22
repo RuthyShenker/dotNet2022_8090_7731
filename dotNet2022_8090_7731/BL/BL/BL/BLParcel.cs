@@ -37,21 +37,23 @@ namespace BL
             }
 
             int parcelId = dal.GetIndexParcel();
-            
-            dal.Add( new DO.Parcel()
+            if (!dal.IsIdExistInList<DO.Parcel>(parcelId))
             {
-                Id = parcelId,
-                SenderId = parcel.Sender.Id,
-                GetterId = parcel.Getter.Id,
-                Weight = (DO.WeightCategories)parcel.Weight,
-                MPriority = (DO.UrgencyStatuses)parcel.MPriority,
-                DroneId = null,
-                CreatedTime = DateTime.Now,
-                BelongParcel = null,
-                PickingUp = null,
-                Arrival = null,
-            });
-            
+                dal.Add(new DO.Parcel()
+                {
+                    Id = parcelId,
+                    SenderId = parcel.Sender.Id,
+                    GetterId = parcel.Getter.Id,
+                    Weight = (DO.WeightCategories)parcel.Weight,
+                    MPriority = (DO.UrgencyStatuses)parcel.MPriority,
+                    DroneId = null,
+                    CreatedTime = DateTime.Now,
+                    BelongParcel = null,
+                    PickingUp = null,
+                    Arrival = null,
+                });
+            }
+
             return parcelId;
         }
 
