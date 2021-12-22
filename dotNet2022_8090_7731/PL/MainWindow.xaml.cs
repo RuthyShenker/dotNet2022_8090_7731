@@ -26,8 +26,7 @@ namespace PL
         {
             bl = BlApi.BlFactory.GetBl();
             InitializeComponent();
-        TabItem t=new TabItem();
-        T.C
+
         }
         private void btn_DroneListView_Click(object sender, RoutedEventArgs e)
         {
