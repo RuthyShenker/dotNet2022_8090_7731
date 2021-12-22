@@ -24,9 +24,9 @@ namespace PL
         BlApi.IBL bl;
         public MainWindow()
         {
-            bl = BL.BL.Instance;
+            bl = BlApi.BlFactory.GetBl();
             InitializeComponent();
-       
+
         }
         private void btn_DroneListView_Click(object sender, RoutedEventArgs e)
         {

@@ -32,8 +32,8 @@ namespace BO
             Name = name;
             Phone = phone;
             Location = location;
-            LFromCustomer = new List<ParcelInCustomer>();
-            LForCustomer = new List<ParcelInCustomer>();
+            LFromCustomer = Enumerable.Empty<ParcelInCustomer>();
+            LForCustomer = Enumerable.Empty<ParcelInCustomer>();
         }
         /// <summary>
         /// this field is init.
@@ -43,8 +43,8 @@ namespace BO
         public string Phone { get; set; }
         public Location Location { get; set; }
         // two lists
-        public List<ParcelInCustomer> LFromCustomer { get; set; }
-        public List<ParcelInCustomer> LForCustomer { get; set; }
+        public IEnumerable<ParcelInCustomer> LFromCustomer { get; set; }
+        public IEnumerable<ParcelInCustomer> LForCustomer { get; set; }
     }
 }
 

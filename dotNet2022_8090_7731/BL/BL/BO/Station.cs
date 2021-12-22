@@ -24,7 +24,7 @@ namespace BO
         /// <param name="location"></param>
         /// <param name="numAvailablePositions"></param>
         /// <param name="lBL_ChargingDrone"></param>
-        public Station(int id, string nameStation, Location location, int numAvailablePositions, List<ChargingDrone> lBL_ChargingDrone)
+        public Station(int id, string nameStation, Location location, int numAvailablePositions, IEnumerable<ChargingDrone> lBL_ChargingDrone)
         {
             Id = id;
             NameStation = nameStation;
@@ -40,6 +40,6 @@ namespace BO
         public Location Location { get; set; }
         public int NumAvailablePositions { get; set; }
         //  רשימת רחפנם בטעינה
-        public List<ChargingDrone> LBL_ChargingDrone { get; set; }
+        public IEnumerable<ChargingDrone> LBL_ChargingDrone { get; set; }
     }
 }
