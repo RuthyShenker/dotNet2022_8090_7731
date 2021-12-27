@@ -16,6 +16,16 @@ namespace BO
     /// </summary>
     public class Station
     {
+        private Location sLocation;
+
+        public Station(int id, string nameStation, Location sLocation, int numAvailablePositions)
+        {
+            Id = id;
+            NameStation = nameStation;
+            this.sLocation = sLocation;
+            NumAvailablePositions = numAvailablePositions;
+        }
+
         /// <summary>
         /// A constructor of Station with fields.
         /// </summary>
@@ -32,6 +42,7 @@ namespace BO
             NumAvailablePositions = numAvailablePositions;
             LBL_ChargingDrone = lBL_ChargingDrone;
         }
+
         /// <summary>
         /// this field is init.
         /// </summary>

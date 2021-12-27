@@ -7,9 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" >
     <Grid>
-        <Button x:Name="btn_DroneListView" Content="DroneList:" HorizontalAlignment="Left" Margin="164,97,0,0" VerticalAlignment="Top"
+        <ContentControl x:Name="DroneView" Content="{Binding }" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+
+        <Button x:Name="btn_DroneListView" Content="DroneList:" VerticalAlignment="Top"
                 Height="46" Width="92" Click="btn_DroneListView_Click"/>
-        
+        <Button VerticalAlignment="Bottom" Content="station"
+                Height="46" Width="92" Click="StationClick"/>
     </Grid>
 
 </Window>

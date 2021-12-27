@@ -30,7 +30,16 @@ namespace PL
         }
         private void btn_DroneListView_Click(object sender, RoutedEventArgs e)
         {
+            //this.DataContext = new AddDroneView();
+
             new DroneListWindow(bl).Show();
+        }
+
+        private void StationClick(object sender, RoutedEventArgs e)
+        {
+            new Station().Show();
+
+
         }
     }
 }
