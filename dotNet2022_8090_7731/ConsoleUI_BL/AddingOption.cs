@@ -114,9 +114,8 @@ namespace ConsoleUI_BL
             Console.WriteLine("Enter the number of positions of the new base station: ");
             ///●	מספר עמדות טעינה (פנויות) - כל העמדות פנויות בהוספה
             int numAvailablePositions = CheckValids.InputNumberValidity("number of positions");
-            List<ChargingDrone> lBL_ChargingDrone = new List<ChargingDrone>();
 
-            return new Station(id, nameStation, sLocation, numAvailablePositions, lBL_ChargingDrone);
+            return new Station(id, nameStation, sLocation, numAvailablePositions);
         }
 
         /// <summary>

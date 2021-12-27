@@ -57,7 +57,7 @@ namespace PL.Drones
         {
             if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
             {
-
+                
                 new DroneWindow(bl, FilterDroneListByCondition)
                 .Show();
             }
@@ -70,24 +70,25 @@ namespace PL.Drones
 
         private void button_Close_Click(object sender, RoutedEventArgs e)
         {
-            Hide();
+            //Hide();
         }
 
         private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var selectedDrone = (sender as ContentControl).DataContext as DroneToList;
-            var drone = bl.GetDrone(selectedDrone.Id);
-            new DroneWindow(bl, FilterDroneListByCondition, drone)
-                .Show();
+            //ed.data
+            //var selectedDrone = (sender as ContentControl).DataContext as DroneToList;
+            //var drone = bl.GetDrone(selectedDrone.Id);
+            //new DroneWindow(bl, FilterDroneListByCondition, drone)
+            //    .Show();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel = true;
-            MessageBox.Show($"You can press close:)",
-               "Canceled Action",
-               MessageBoxButton.OK,
-               MessageBoxImage.Information);
+            //e.Cancel = true;
+            //MessageBox.Show($"You can press close:)",
+            //   "Canceled Action",
+            //   MessageBoxButton.OK,
+            //   MessageBoxImage.Information);
         }
     }
 }
