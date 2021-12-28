@@ -1,6 +1,7 @@
 ﻿
 using BO;
 using PL.Drones;
+using PL.View;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -19,27 +20,22 @@ namespace PL.Drones
     public partial class DroneWindow : Window
     {
 
-        private BlApi.IBL bl;
-        Action refreshDroneList;
-
-        public DroneWindow(BlApi.IBL bl, Action initializeDrones)
+        public DroneWindow(BlApi.IBL bl, Action refreshDroneList)
         {
-            this.bl = bl;
-            refreshDroneList = initializeDrones;
             InitializeComponent();
-          //  DroneView.DataContext = new AddNewDroneView(bl, initializeDrones,Close);
+            //DroneView.DataContext = new AddNewDroneView(bl, refreshDroneList,Close);
             DroneView.DataContext = new DroneView();
         }
-      
-        public DroneWindow(BlApi.IBL bl, Action initializeDrones, Drone selectedDrone)
+
+        public DroneWindow(BlApi.IBL bl, Action refreshDrones, Drone selectedDrone)
         {
             InitializeComponent();
-            this.bl = bl;
-            refreshDroneList = initializeDrones;
-            DroneView.DataContext= new EditDroneView(bl, initializeDrones, selectedDrone,Close);
+            //DroneView.DataContext= new EditDroneView(bl, initializeDrones, selectedDrone,Close);
+            var viewModel = new EditDroneViewModel(bl, selectedDrone, refreshDrones);
+            DroneView.DataContext = new EditDroneView(viewModel);
         }
 
-        
+
         //private void ChangeVisibility(Visibility visibility, params StackPanel[] stackPanels)
         //{
         //    foreach (StackPanel item in stackPanels)
@@ -48,7 +44,7 @@ namespace PL.Drones
         //    }
         //}
 
-        
+
 
         //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         //{ 

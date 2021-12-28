@@ -1,4 +1,6 @@
 ﻿using PL.Drones;
+using PL.View;
+using PL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +32,7 @@ namespace PL
         }
         private void btn_DroneListView_Click(object sender, RoutedEventArgs e)
         {
-            //this.DataContext = new AddDroneView();
-
-            new DroneListWindow(bl).Show();
+            new DroneListView(new DroneListWindowViewModel(bl)).Show();
         }
 
         private void StationClick(object sender, RoutedEventArgs e)

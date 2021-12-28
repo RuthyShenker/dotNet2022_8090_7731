@@ -1,0 +1,158 @@
+﻿<UserControl x:Class="PL.View.EditDroneView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+      xmlns:BO="clr-namespace:BO;assembly=BL"
+             xmlns:Converters="clr-namespace:PL.Converters"
+             xmlns:local="clr-namespace:PL.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+
+        <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="BO:WeightCategories"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="DroneStatusEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="BO:DroneStatus"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <Converters:DroneStatusToVisibilityConverter x:Key="DroneStatusToVisibilityConverter"/>
+        <Converters:ContentByDroneStatusConverter x:Key="ContentByDroneStatusConverter"/>
+        <Converters:HasAllTextConverter x:Key="HasAllTextConverter"/>
+        <Converters:ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter x:Key="ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter"/>
+        <Converters:VisibilityByDroneToBelongOrPickOrArrivalParcelConverter x:Key="VisibilityByDroneToBelongOrPickOrArrivalParcelConverter"/>
+        <Converters:ParcelInTransferVisibilityConverter x:Key="ParcelInTransferVisibilityConverter"/>
+    </UserControl.Resources>
+    <StackPanel>
+        <TextBlock  Text = "Drone Id:" />
+        <TextBox Name = "IdTextBox" Text = "{Binding Drone.Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+
+        <StackPanel x:Name="BatteryContainer">
+            <TextBlock  Text = "Battery:" />
+            <TextBox x:Name = "BatteryTextBox"  Text = "{Binding Drone.BatteryStatus}" IsEnabled="False" />
+        </StackPanel>
+
+        <TextBlock Text = "MaxWeight:" />
+        <ComboBox x:Name = "MaxWeightComboBox" 
+                  ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" 
+                  SelectedItem="{Binding Drone.Weight}"  
+                  Height = "25" Width = "140"  IsEnabled="False" />
+
+        <TextBlock  Text = "Model:" />
+        <TextBox x:Name = "ModelTextBox" Text = "{Binding Drone.Model, UpdateSourceTrigger=LostFocus}" />
+
+        <StackPanel x:Name="StatusContainer">
+            <TextBlock  Text = "Status:" />
+            <ComboBox x:Name = "StatusComboBox"   
+                      ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" 
+                      SelectedItem="{Binding Drone.Status}" 
+                      Height = "25" Width = "140"  IsEnabled="False"/>
+        </StackPanel>
+
+        <!--<StackPanel x:Name="DeliveryContainer">
+                    <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
+                    <ComboBox x:Name = "DeliveryComboBox" ItemsSource="{Binding Source={StaticResource AvailableSlots}, Path=Name}"  />
+
+                </StackPanel>-->
+
+        <StackPanel x:Name="Location">
+            <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "LongitudeTextBox" Text = "{Binding Drone.Location.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" />
+
+            <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
+            <TextBox x:Name = "LatitudeTextBox" Text = "{Binding Drone.Location.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+        </StackPanel>
+
+
+        <Expander Header="Parcel in transfer">
+            <StackPanel x:Name="PInTransfer"
+                        Visibility="{Binding Drone,Converter={StaticResource ParcelInTransferVisibilityConverter}}">
+                
+                <TextBlock x:Name="PInTransferPId" Text = "Id" IsEnabled="True" TextWrapping="Wrap"/>
+                <TextBox x:Name="PInTransferPIdTextBox" Text = "{Binding Drone.ParcelInTransfer.PId, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+
+                <TextBlock x:Name="PInTransferIsInWay" Text = "Is picked up?" IsEnabled="True" TextWrapping="Wrap"/>
+                <TextBox x:Name="PInTransferIsInWayTextBox" Text = "{Binding Drone.ParcelInTransfer.IsInWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+
+                <TextBlock x:Name="PInTransferMPriority" Text = "Priority" IsEnabled="True" TextWrapping="Wrap"/>
+                <TextBox x:Name="PInTransferMPriorityTextBox" Text = "{Binding Drone.ParcelInTransfer.MPriority, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+
+                <TextBlock x:Name="PInTransferWeight" Text = "Weight" IsEnabled="True" TextWrapping="Wrap"/>
+                <TextBox x:Name="PInTransferWeightTextBox" Text = "{Binding Drone.ParcelInTransfer.Weight, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+
+                <Expander x:Name="ParInTransferSender" Header="Sender">
+                    <StackPanel x:Name="PInTransferSenderContainer">
+                        <TextBlock  Text = "Id:" TextWrapping = "Wrap"/>
+                        <TextBox x:Name="PInTransferSenderId" Text = "{Binding Drone.ParcelInTransfer.Sender.Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+
+                        <TextBlock Text = "Name:" TextWrapping = "Wrap" />
+                        <TextBox x:Name="PInTransferSenderName" Text = "{Binding Drone.ParcelInTransfer.Sender.Name, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+
+                        <Expander Header="Location">
+                            <StackPanel x:Name="PInTransferCollectionLocation">
+                                <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
+                                <TextBox x:Name = "PInTransferCollectionLongitudeLocationTextBox" Text = "{Binding Drone.ParcelInTransfer.CollectionLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"  TextWrapping="Wrap"/>
+
+                                <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
+                                <TextBox x:Name = "PInTransferCollectionLatitudeLocationTextBox" Text = "{Binding Drone.ParcelInTransfer.CollectionLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Expander>
+
+                    </StackPanel>
+                </Expander>
+
+                <Expander x:Name="ParInTransferGetter" Header="Getter">
+                    <StackPanel  x:Name="PInTransferGetterContainer">
+                        <TextBlock  Text = "Id:" TextWrapping = "Wrap"/>
+                        <TextBox x:Name="PInTransferGetterIdTextBox" 
+                                 Text = "{Binding Drone.ParcelInTransfer.Getter.Id, UpdateSourceTrigger=PropertyChanged}" 
+                                 IsEnabled="False" TextWrapping="Wrap"/>
+
+                        <TextBlock  Text = "Name:" TextWrapping = "Wrap" />
+                        <TextBox x:Name="PInTransferGetterNameTextBox" Text = "{Binding Drone.ParcelInTransfer.Getter.Name, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+
+                        <Expander Header="Location">
+                            <StackPanel x:Name="PInTransferDeliveryLocation">
+                                <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
+                                <TextBox x:Name = "PInTransferDeliveryLocationLongitudeLocationTextBox" Text = "{Binding Drone.ParcelInTransfer.CollectionLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+
+                                <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
+                                <TextBox x:Name = "PInTransferDeliveryLocationLatitudeLocationTextBox" Text = "{Binding Drone.ParcelInTransfer.CollectionLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Expander>
+
+                    </StackPanel>
+                </Expander>
+
+
+                <TextBlock  Text = "TransDistance:" TextWrapping = "Wrap" ></TextBlock>
+                <TextBox x:Name="PInTransferTransDistanceTextBox" Text = "{Binding Drone.ParcelInTransfer.TransDistance, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+            </StackPanel>
+        </Expander>
+
+        <Button Content = "Update Model:" Command="{Binding UpdateModelOfDroneCommand }"  />
+        <Button x:Name="SendOrReleaseDroneFromCharging" 
+                   Visibility="{Binding Drone.Status ,Converter={StaticResource DroneStatusToVisibilityConverter}}"  Height="50"
+                   Content="{Binding Drone.Status ,Converter={StaticResource ContentByDroneStatusConverter}}" Command="{Binding ChargeDroneCommand}" />
+
+        <Button x:Name="SendOrPickOrArrivalDrone" Command="{Binding AssignParcelToDroneCommand}"
+                    Visibility="{Binding Drone,  Converter={StaticResource VisibilityByDroneToBelongOrPickOrArrivalParcelConverter }}" 
+                    Content="{Binding Drone,  Converter={StaticResource ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter}}"
+                    Height="50"/>
+        <Button x:Name="close_window" Content="close" Command="{Binding CloseWindowCommand }" CommandParameter="{Binding ElementName=close_window}"></Button>
+        <!--<Button x:Name="close_window_button" Content="close" Command="{Binding CloseWindowCommand }" CommandParameter="{Binding RelativeSource=self}"></Button>-->
+        <!--<Button x:Name="close_window_button" Content="close" Command="{x:Static}"  CommandParameter="{Binding RelativeSource=self}"></Button>-->
+
+        <StackPanel x:Name="message">
+        </StackPanel>
+    </StackPanel>
+</UserControl>

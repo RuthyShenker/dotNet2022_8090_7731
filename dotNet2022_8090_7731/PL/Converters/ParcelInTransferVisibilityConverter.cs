@@ -1,4 +1,4 @@
-﻿using BO;
+﻿using PO;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,9 +14,9 @@ namespace PL.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Drone drone)
+            if (value is EditDrone drone)
             {
-                if (drone.PInTransfer!=null)
+                if (drone.ParcelInTransfer != null)
                     return Visibility.Visible;
             }
             return Visibility.Collapsed;

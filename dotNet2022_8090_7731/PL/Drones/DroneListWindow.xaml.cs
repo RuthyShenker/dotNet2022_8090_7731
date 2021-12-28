@@ -1,4 +1,5 @@
 ﻿using BO;
+using PL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,67 +21,66 @@ namespace PL.Drones
     /// </summary>
     public partial class DroneListWindow : Window
     {
-        BlApi.IBL bl;
-        public DroneListWindow(BlApi.IBL bl)
+        public DroneListWindow(DroneListWindowViewModel droneListWindowViewModel)
         {
             InitializeComponent();
-            this.bl = bl;
-            FilterDroneListByCondition();
+            this.DataContext = droneListWindowViewModel;
+            //FilterDroneListByCondition();
         }
 
-        private void DroneWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            FilterDroneListByCondition();
-        }
+        //private void DroneWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    FilterDroneListByCondition();
+        //}
 
-        private void FilterDroneListByCondition()
-        {
-            if (DroneWeights.SelectedItem == null && DroneStatuses.SelectedItem == null)
-                DroneListView.DataContext = bl.GetDrones();
-            else if (DroneStatuses.SelectedItem == null)
-                DroneListView.DataContext = bl.GetDrones(drone => drone.Weight == (WeightCategories)DroneWeights.SelectedItem);
-            else if (DroneWeights.SelectedItem == null)
-                DroneListView.DataContext = bl.GetDrones(drone => drone.DStatus == (DroneStatus)DroneStatuses.SelectedItem);
-            else
-                DroneListView.DataContext = bl.GetDrones(drone =>
-                drone.DStatus == (DroneStatus)DroneStatuses.SelectedItem
-                && drone.Weight == (WeightCategories)DroneWeights.SelectedItem);
-        }
+        //private void FilterDroneListByCondition()
+        //{
+        //    if (DroneWeights.SelectedItem == null && DroneStatuses.SelectedItem == null)
+        //        DroneListView.DataContext = bl.GetDrones();
+        //    else if (DroneStatuses.SelectedItem == null)
+        //        DroneListView.DataContext = bl.GetDrones(drone => drone.Weight == (WeightCategories)DroneWeights.SelectedItem);
+        //    else if (DroneWeights.SelectedItem == null)
+        //        DroneListView.DataContext = bl.GetDrones(drone => drone.DStatus == (DroneStatus)DroneStatuses.SelectedItem);
+        //    else
+        //        DroneListView.DataContext = bl.GetDrones(drone =>
+        //        drone.DStatus == (DroneStatus)DroneStatuses.SelectedItem
+        //        && drone.Weight == (WeightCategories)DroneWeights.SelectedItem);
+        //}
 
-        private void DroneStatuses_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        //private void DroneStatuses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
 
-            FilterDroneListByCondition();
-        }
+        //    FilterDroneListByCondition();
+        //}
 
-        private void button_AddingDrone_Click(object sender, RoutedEventArgs e)
-        {
-            if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
-            {
-                
-                new DroneWindow(bl, FilterDroneListByCondition)
-                .Show();
-            }
-            else
-            {
-                //MessageBox.Show("Error there is no available slots to charge in");
-                MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+        //private void button_AddingDrone_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
+        //    {
 
-        private void button_Close_Click(object sender, RoutedEventArgs e)
-        {
-            //Hide();
-        }
+        //        new DroneWindow(bl, FilterDroneListByCondition)
+        //        .Show();
+        //    }
+        //    else
+        //    {
+        //        //MessageBox.Show("Error there is no available slots to charge in");
+        //        MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
 
-        private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            //ed.data
-            //var selectedDrone = (sender as ContentControl).DataContext as DroneToList;
-            //var drone = bl.GetDrone(selectedDrone.Id);
-            //new DroneWindow(bl, FilterDroneListByCondition, drone)
-            //    .Show();
-        }
+        //private void button_Close_Click(object sender, RoutedEventArgs e)
+        //{
+        //    //Hide();
+        //}
+
+        //private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        //{
+
+        //    var selectedDrone = (sender as ContentControl).DataContext as DroneToList;
+        //    var drone = bl.GetDrone(selectedDrone.Id);
+        //    new DroneWindow(bl, FilterDroneListByCondition, drone)
+        //        .Show();
+        //}
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
