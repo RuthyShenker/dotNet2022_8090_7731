@@ -1,4 +1,5 @@
 ﻿using BO;
+using PL.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,7 +18,7 @@ namespace PL.ViewModels
         public IEnumerable<DroneToList> droneList;
         public RelayCommand<object> AddDroneCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
-
+        public RelayCommand<object> MouseDoubleCommand { get; set; }
         public DroneListWindowViewModel(BlApi.IBL bl)
         {
             this.bl = bl;
@@ -25,6 +26,7 @@ namespace PL.ViewModels
             FilterDroneListByCondition();
             AddDroneCommand = new RelayCommand<object>(AddingDrone);
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
+            MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
         }
 
         private void FilterDroneListByCondition()
@@ -81,7 +83,7 @@ namespace PL.ViewModels
         {
             if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
             {
-                var viewModel = new AddDroneViewModel(/*bl,*/FilterDroneListByCondition);
+                var viewModel = new AddDroneViewModel(bl,FilterDroneListByCondition);
 
                 //new DroneView(/*bl,*/FilterDroneListByCondition).Show();
             }
@@ -97,14 +99,13 @@ namespace PL.ViewModels
         //}
 
         //TODOTODO:
-        //private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-
-        //    var selectedDrone = (sender as ContentControl).DataContext as DroneToList;
-        //    var drone = bl.GetDrone(selectedDrone.Id);
-        //    new DroneWindow(bl, FilterDroneListByCondition, drone)
-        //        .Show();
-        //}
+        private void MouseDoubleClick(object sender)
+        {
+            var selectedDrone = sender as DroneToList;
+            var drone = bl.GetDrone(selectedDrone.Id);
+            new DroneView(bl, FilterDroneListByCondition, drone)
+                .Show();
+        }
 
         //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         //{
