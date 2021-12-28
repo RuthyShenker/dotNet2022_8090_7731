@@ -13,7 +13,7 @@ namespace PL
     {
         BlApi.IBL bl;
         Action refreshDrones;
-        private EditDrone drone;
+        EditDrone drone;
 
         public EditDroneViewModel(BlApi.IBL bl, BO.Drone drone, Action refreshDrones)
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PO
 {
-    class DroneToAdd : INotifyPropertyChanged, IDataErrorInfo
+    public class DroneToAdd : INotifyPropertyChanged, IDataErrorInfo
     {
         private int? _id;
         public int Id
