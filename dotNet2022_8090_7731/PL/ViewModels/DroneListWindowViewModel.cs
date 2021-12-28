@@ -14,13 +14,14 @@ namespace PL.ViewModels
         BlApi.IBL bl;
         WeightCategories weightSelectedItem;
         DroneStatus statusSelectedItem;
-        IEnumerable<DroneToList> droneList;
+        public IEnumerable<DroneToList> droneList;
         public RelayCommand<object> AddDroneCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
 
         public DroneListWindowViewModel(BlApi.IBL bl)
         {
             this.bl = bl;
+            droneList = Enumerable.Empty<DroneToList>();
             FilterDroneListByCondition();
             AddDroneCommand = new RelayCommand<object>(AddingDrone);
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
