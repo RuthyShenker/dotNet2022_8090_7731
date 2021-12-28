@@ -8,19 +8,19 @@ using System.Windows;
 
 namespace PL
 {
-    public class AddDroneViewModel
+     class AddDroneViewModel
     {
-        public DroneToAdd Drone { get; set; }
+        public DroneToAdd Drone { get; set; } 
         BlApi.IBL bl;
         Action refreshDrones;
         public Array WeightOptions { get; set; } = Enum.GetValues(typeof(BO.WeightCategories));
         public List<int> StationOptions { get; set; }
         public RelayCommand<object> AddDroneCommand { get; set; }
 
-        public AddDroneViewModel(BlApi.IBL bl, Action refreshDrones)
+        public AddDroneViewModel(/*BlApi.IBL bl,*/ Action refreshDrones)
         {
             Drone = new();
-            this.bl = bl;
+            //this.bl = bl;
             this.refreshDrones = refreshDrones;
             StationOptions = bl.AvailableSlots().Select(station => station.Id).ToList();
             AddDroneCommand = new RelayCommand<object>(AddDrone, param => Drone.Error != "");

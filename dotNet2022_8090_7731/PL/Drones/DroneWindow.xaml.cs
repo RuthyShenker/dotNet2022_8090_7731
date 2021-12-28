@@ -24,7 +24,7 @@ namespace PL.Drones
         {
             InitializeComponent();
             //DroneView.DataContext = new AddNewDroneView(bl, refreshDroneList,Close);
-            DroneView.DataContext = new DroneView();
+            //DroneView.DataContext = new DroneView();
         }
 
         public DroneWindow(BlApi.IBL bl, Action refreshDrones, Drone selectedDrone)
