@@ -7,7 +7,8 @@
         xmlns:BO="clr-namespace:BO;assembly=BL"  
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="DroneListView" Height="450" Width="800" ><!--Closing="Window_Closing"-->
+        Title="DroneListView" Height="450" Width="800" >
+    <!--Closing="Window_Closing"-->
     <Window.Resources>
         <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
@@ -24,30 +25,32 @@
         </ObjectDataProvider>
     </Window.Resources>
     <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50*"/>
-                <RowDefinition Height="400*"/>
-            </Grid.RowDefinitions>
-            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="400*"/>
+        </Grid.RowDefinitions>
+        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
                 VerticalAlignment="Stretch" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions >
-                <Label Content="Drone Status:" Grid.Column="0" HorizontalAlignment="Left"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions >
+            <Label Content="Drone Status:" Grid.Column="0" HorizontalAlignment="Left"
                    Margin="81,19,0,0" VerticalAlignment="Top"/>
-                <ComboBox  
+            <ComboBox  
                       ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" 
                       SelectedItem="{Binding StatusSelectedItem}"
                       Margin="40,9,40,10"  Width="120" Grid.Column="1" />
-                <Label Content="Drone Max Weight:" Grid.Column="2" HorizontalAlignment="Center"
+            <Label Content="Drone Max Weight:" Grid.Column="2" HorizontalAlignment="Center"
                    Margin="0,19,0,0" VerticalAlignment="Top"/>
-                <ComboBox  ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}"
+            <ComboBox  ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}"
                     SelectedItem="{Binding WeightSelectedItem}"
                     Grid.Column="3" Margin="39,9,39,11"/>
-            </Grid>
+        </Grid>
         <ListView  Grid.Row="1" ItemsSource="{Binding DroneList}">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -57,9 +60,8 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Content="AddDrone:" Margin="645,451,45,47" Grid.Row="1" Command="{Binding AddDroneCommand}">
+        <Button Content="AddDrone:"  Grid.Column="5"  Grid.Row="1" Width="1000" Command="{Binding AddDroneCommand}" />
+        <Button x:Name="close_window" Content="close" Width="90"  Grid.Column="2"  Grid.Row="2" Command="{Binding CloseWindowCommand }" CommandParameter="{Binding ElementName=close_window}">
         </Button>
-        <Button x:Name="close_window" Content="close" Margin="486,451,203,47" Grid.Row="1" Command="{Binding CloseWindowCommand }" CommandParameter="{Binding ElementName=close_window}">
-        </Button>
-        </Grid>
+    </Grid>
 </Window>
