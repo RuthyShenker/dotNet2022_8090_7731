@@ -38,23 +38,28 @@
             </Grid.ColumnDefinitions >
             <Label Content="Drone Status:" Grid.Column="0" HorizontalAlignment="Left"
                    Margin="81,19,0,0" VerticalAlignment="Top"/>
-            <ComboBox Name="DroneStatuses" ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" Margin="40,9,40,10"  Width="120" Grid.Column="1" SelectionChanged="DroneStatuses_SelectionChanged"/>
+            <ComboBox Name="DroneStatuses" 
+                      ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" 
+                      SelectedItem="{Binding StatusSelectedItem}"
+                      Margin="40,9,40,10"  Width="120" Grid.Column="1" />
             <Label Content="Drone Max Weight:" Grid.Column="2" HorizontalAlignment="Center"
                    Margin="0,19,0,0" VerticalAlignment="Top"/>
             <ComboBox Name="DroneWeights" ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}"
-
-                 Grid.Column="3" SelectionChanged="DroneWeight_SelectionChanged"  Margin="39,9,39,11"/>
+SelectedItem="{Binding WeightSelectedItem}"
+                 Grid.Column="3"  Margin="39,9,39,11"/>
         </Grid>
-        <ListView x:Name="DroneListView" Grid.Row="1" ItemsSource="{Binding }">
+        <ListView x:Name="DroneListView" Grid.Row="1" ItemsSource="{Binding DroneList}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ContentControl Content="{Binding }" MouseDoubleClick="ContentControl_MouseDoubleClick"/>
+                    <ContentControl Content="{Binding }" />
+
+                    <!--<ContentControl Content="{Binding }" MouseDoubleClick="ContentControl_MouseDoubleClick"/>-->
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Content="AddDrone:" Margin="645,451,45,47" Grid.Row="1" Click="button_AddingDrone_Click">
+        <!--<Button Content="AddDrone:" Margin="645,451,45,47" Grid.Row="1" Click="button_AddingDrone_Click">
         </Button>
         <Button Content="close" Margin="486,451,203,47" Grid.Row="1" Click="button_Close_Click">
-        </Button>
+        </Button>-->
     </Grid>
 </Window>

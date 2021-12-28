@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,16 +11,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 namespace PL.View
 {
     /// <summary>
-    /// Interaction logic for DroneView.xaml
+    /// Interaction logic for DroneListView.xaml
     /// </summary>
-    public partial class AddDroneView : UserControl
+    public partial class DroneListView : Window
     {
-        public AddDroneView(AddDroneViewModel viewModel)
+        public DroneListView(DroneListWindowViewModel viewModel)
         {
             InitializeComponent();
             this.DataContext = viewModel;

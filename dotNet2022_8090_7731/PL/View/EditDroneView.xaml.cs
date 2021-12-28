@@ -12,14 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 namespace PL.View
 {
     /// <summary>
-    /// Interaction logic for DroneView.xaml
+    /// Interaction logic for UpdateDroneView.xaml
     /// </summary>
-    public partial class AddDroneView : UserControl
+    public partial class EditDroneView : UserControl
     {
-        public AddDroneView(AddDroneViewModel viewModel)
+        public EditDroneView(EditDroneViewModel viewModel)
         {
             InitializeComponent();
             this.DataContext = viewModel;

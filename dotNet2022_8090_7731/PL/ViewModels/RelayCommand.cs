@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace PL
 {
-    class RelayCommand<T> : ICommand
+    public class RelayCommand<T> : ICommand
     {
         readonly Action<object> _execute;
         readonly Predicate<object> _canExecute;

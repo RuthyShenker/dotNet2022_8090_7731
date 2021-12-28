@@ -1,4 +1,5 @@
 ﻿using BO;
+using PO;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,14 +15,15 @@ namespace PL.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Drone drone = (Drone)value;
-
-            if (drone.DroneStatus == DroneStatus.Free)
-                return "Belong Parcel";
-            else if (drone.DroneStatus == DroneStatus.Delivery && !drone.PInTransfer.IsInWay)
-                return "Pick parcel";
-            else if(drone.DroneStatus == DroneStatus.Delivery && drone.PInTransfer.IsInWay)
-                return "Delivery Parcel";
+            if (value is EditDrone drone)
+            {
+                if (drone.Status == DroneStatus.Free)
+                    return "Belong Parcel";
+                else if (drone.Status == DroneStatus.Delivery && !drone.ParcelInTransfer.IsInWay)
+                    return "Pick parcel";
+                else if (drone.Status == DroneStatus.Delivery && drone.ParcelInTransfer.IsInWay)
+                    return "Delivery Parcel";
+            }
             return ""; 
         }
 
