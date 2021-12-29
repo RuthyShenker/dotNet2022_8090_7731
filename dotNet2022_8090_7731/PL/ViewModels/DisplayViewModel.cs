@@ -11,10 +11,10 @@ namespace PL.ViewModels
     public class DisplayViewModel
     {
         BlApi.IBL bl;
-        public RelayCommand<object> CustomerListViewCommand;
-        public RelayCommand<object> DroneListViewCommand;
-        public RelayCommand<object> StationListViewCommand;
-        public RelayCommand<object> ParcelListViewCommand;
+        public RelayCommand<object> CustomerListViewCommand { get; set; }
+        public RelayCommand<object> DroneListViewCommand { get; set; }
+        public RelayCommand<object> StationListViewCommand { get; set; }
+        public RelayCommand<object> ParcelListViewCommand { get; set; }
         public DisplayViewModel()
         {
             bl = BlApi.BlFactory.GetBl();

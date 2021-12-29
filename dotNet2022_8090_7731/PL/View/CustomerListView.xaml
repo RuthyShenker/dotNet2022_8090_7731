@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="CustomerListView" Height="450" Width="800">
     <Grid>
-        <ListView x:Name="CustomerList"  ItemsSource="{Binding CustomerList}">
+        <ListView x:Name="CustomerList" ItemsSource="{Binding CustomerList}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 
@@ -16,5 +16,8 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ListView>
+        <Button Content="Add Customer:" Command="{Binding AddCustomerCommand}"/>
+        <Button Content="Close:"  Command="{Binding CloseWindowCommand }" 
+                CommandParameter="{Binding ElementName=close_window}"/>
     </Grid>
 </Window>

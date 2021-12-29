@@ -19,7 +19,7 @@
 
         <Button Content="stationList:" VerticalAlignment="Bottom"
                 Height="46" Width="92" 
-                Command="{Binding StationlistViewCommand}"/>
+                Command="{Binding StationListViewCommand}"/>
 
         <Button Content="CustomerList:" VerticalAlignment="Top"
                  Height="46" Width="92" 
