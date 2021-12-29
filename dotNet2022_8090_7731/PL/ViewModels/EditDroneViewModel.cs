@@ -44,7 +44,6 @@ namespace PL
                    MessageBoxButton.OKCancel,
                    MessageBoxImage.Question) == MessageBoxResult.OK)
             {
-
                 bl.UpdatingDroneName(Drone.Id, Drone.Model);
                 MessageBox.Show($"Drone With Id:{Drone.Id} Updated successfuly!",
                    $" Model Updated Successly {MessageBoxImage.Information}");

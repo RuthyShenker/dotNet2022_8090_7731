@@ -14,6 +14,7 @@ namespace PL.ViewModels
         BlApi.IBL bl;
         Action refreshCustomers;
         EditCustomer customer;
+        public RelayCommand<object> CloseWindowCommand { get; set; }
 
         public EditCustomerViewModel(BlApi.IBL bl, BO.Customer customer, Action refreshCustomers)
         {
@@ -23,17 +24,16 @@ namespace PL.ViewModels
             CloseWindowCommand = new RelayCommand<object>(Close_Window);
         }
 
-        public RelayCommand<object> CloseWindowCommand { get; set; }
-       
         //private void RefreshCustomer()
         //{
         //    refreshCustomers();
         //    Customer = Map(bl.GetCustomer(Customer.Id));
         //}
 
-        private EditCustomer Map(BO.Customer drone)
+        private EditCustomer Map(BO.Customer customer)
         {
-            return new EditCustomer();
+            return new EditCustomer(customer.Id,customer.Name,customer.Phone,customer.Location,
+                customer.LFromCustomer,customer.LForCustomer);
         }
 
         public EditCustomer Customer

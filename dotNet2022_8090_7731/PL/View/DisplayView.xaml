@@ -1,16 +1,15 @@
-﻿<Window x:Class="PL.MainWindow"
+﻿<Window x:Class="PL.View.DisplayView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL"
+        xmlns:local="clr-namespace:PL.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-   
+        Title="DisplayView" Height="450" Width="800">
     <Grid>
         <!--<ContentControl x:Name="DroneView" Content="{Binding }" ScrollViewer.VerticalScrollBarVisibility="Auto"/>-->
 
-        <!--<Button Content="ParcelList:" VerticalAlignment="Stretch"
+        <Button Content="ParcelList:" VerticalAlignment="Stretch"
                 Height="46" Width="92" 
                 Command="{Binding ParcelListViewCommand}"/>
 
@@ -24,7 +23,6 @@
 
         <Button Content="CustomerList:" VerticalAlignment="Top"
                  Height="46" Width="92" 
-                Command="{Binding CustomerListViewCommand}" Margin="0,90,0,0" />-->
+                Command="{Binding CustomerListViewCommand}" Margin="0,90,0,0" />
     </Grid>
-
 </Window>

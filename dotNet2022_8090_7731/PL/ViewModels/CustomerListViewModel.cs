@@ -19,6 +19,7 @@ namespace PL.ViewModels
         {
             this.bl = bl;
             customerList = Enumerable.Empty<CustomerToList>();
+            RefreshCustomerList();
             AddCustomerCommand = new RelayCommand<object>(AddingCustomer);
             MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
         }
