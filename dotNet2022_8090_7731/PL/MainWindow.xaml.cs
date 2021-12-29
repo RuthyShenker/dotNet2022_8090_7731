@@ -30,17 +30,17 @@ namespace PL
         //public RelayCommand<object> ParcelListViewCommand;
         public MainWindow()
         {
-            //bl = BlApi.BlFactory.GetBl();
-            //mDroneView.DataContext = new DisplayViewModel();
-            //new DisplayView(new DisplayViewModel()).Show();
             InitializeComponent();
+            this.DataContext = new MainWindowViewModel();
+            //mDroneView.DataContext = new DisplayViewModel();
+
             //CustomerListViewCommand = new RelayCommand<object>(ShowCustomerListView);
             //DroneListViewCommand = new RelayCommand<object>(ShowDroneListView);
             //StationListViewCommand = new RelayCommand<object>(ShowStationListView);
             //ParcelListViewCommand = new RelayCommand<object>(ShowParcelListView);
 
         }
-
+        
         //private void ShowParcelListView(object obj)
         //{
         //    new ParcelListView(new ParcelListViewModel(bl)).Show();

@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL.View" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="CustomerListView" Height="450" Width="800">
-    <Grid>
-        <ListView x:Name="CustomerList" ItemsSource="{Binding CustomerList}">
+    <StackPanel Orientation="Vertical">
+        <ListView x:Name="CustomerList" ItemsSource="{Binding CustomerList}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 
@@ -16,8 +16,13 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ListView>
-        <Button Content="Add Customer:" Command="{Binding AddCustomerCommand}"/>
-        <Button Content="Close:"  Command="{Binding CloseWindowCommand }" 
+
+            <Button Content="AddCustomer:" Command="{Binding AddCustomerCommand}" HorizontalAlignment="Left"
+                Height="90" Width="70"/>
+            <Button x:Name="close_window" Content="Close:" 
+                Height="90" Width="70"  HorizontalAlignment="Right"
+                Command="{Binding CloseWindowCommand }" 
                 CommandParameter="{Binding ElementName=close_window}"/>
-    </Grid>
+
+    </StackPanel>
 </Window>

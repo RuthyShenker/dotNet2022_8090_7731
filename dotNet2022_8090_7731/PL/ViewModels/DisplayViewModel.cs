@@ -20,7 +20,7 @@ namespace PL
         public RelayCommand<object> DroneListViewCommand { get; set; }
         public RelayCommand<object> StationListViewCommand { get; set; }
         public RelayCommand<object> ParcelListViewCommand { get; set; }
-        public DisplayViewModel()
+        public DisplayViewModel(BlApi.IBL bl)
         {
             bl = BlApi.BlFactory.GetBl();
             AddStationCommand = new RelayCommand<object>(AddingStation);

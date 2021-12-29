@@ -127,7 +127,7 @@ namespace PL
         private EditDrone Map(Drone drone)
         {
             return new EditDrone(drone.Id, drone.Model, drone.Weight, drone.BatteryStatus,
-                drone.DroneStatus, drone.CurrLocation, drone.PInTransfer);
+                drone.DroneStatus, new PO.Location(drone.CurrLocation), drone.PInTransfer);
         }
 
         public EditDrone Drone

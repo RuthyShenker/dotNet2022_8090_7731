@@ -29,6 +29,11 @@ namespace BO
         public string Name { get; set; }
         public int AvailablePositions { get; set; }
         public int FullPositions { get; set; }
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
+
     }
 }
 

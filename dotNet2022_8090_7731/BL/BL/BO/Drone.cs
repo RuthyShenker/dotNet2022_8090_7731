@@ -58,6 +58,11 @@ namespace BO
         public DroneStatus DroneStatus { get; set; }
         public ParcelInTransfer PInTransfer { get; set; }
         public Location CurrLocation { get; set; }
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
+
     }
 }
 

@@ -41,6 +41,10 @@ namespace BO
         public ParcelStatus PStatus { get; set; }
         //	לקוח במשלוח - המקור\היעד 
         public CustomerInParcel OnTheOtherHand { get; set; }
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
     }
 }
 

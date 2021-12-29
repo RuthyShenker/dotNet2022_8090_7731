@@ -4,9 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PL.Model
+namespace PO
 {
     public class CustomerToAdd
     {
+        public CustomerToAdd()
+        {
+            Location = new();
+        }
+        public int Id { get; init; }
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public PO.Location Location { get; set; }
     }
 }

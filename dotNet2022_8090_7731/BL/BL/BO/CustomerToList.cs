@@ -40,5 +40,9 @@ namespace BO
         public int SentNotSupplied { get; set; }
         public int Got { get; set; }
         public int InWayToCustomer { get; set; }
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
     }
 }

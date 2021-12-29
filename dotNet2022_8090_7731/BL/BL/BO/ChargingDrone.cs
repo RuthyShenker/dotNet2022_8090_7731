@@ -29,6 +29,11 @@ namespace BO
         }
         public int DroneId { get; set; }
         public double BatteryStatus { get; set; }
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
+
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,17 +13,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 namespace PL.View
 {
     /// <summary>
-    /// Interaction logic for DroneView.xaml
+    /// Interaction logic for EditParcelView.xaml
     /// </summary>
-    public partial class AddDroneView : UserControl
+    public partial class EditParcelView : UserControl
     {
-        public AddDroneView(/*AddDroneViewModel viewModel*/)
+        public EditParcelView(EditParcelViewModel viewModel)
         {
             InitializeComponent();
-            //this.DataContext = viewModel;
+            this.DataContext = viewModel;
         }
     }
 }

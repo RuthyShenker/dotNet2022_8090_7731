@@ -32,6 +32,11 @@ namespace BO
         public int Id { get; init; }
         public double BatteryStatus { get; set; }
         public Location CurrLocation { get; set; }
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
+
 
     }
 }

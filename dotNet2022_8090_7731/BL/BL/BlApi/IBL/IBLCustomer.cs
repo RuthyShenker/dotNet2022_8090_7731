@@ -9,7 +9,7 @@ namespace BlApi
 {
     public interface IBLCustomer
     {
-        int Add(Customer customer);
+        int AddCustomer(Customer customer);
         void UpdatingCustomerDetails(int customerId, string newName, string newPhone);
         IEnumerable<CustomerToList> GetCustomers();
         Customer GetCustomer(int customerId);

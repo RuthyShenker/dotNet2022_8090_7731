@@ -52,5 +52,10 @@ namespace BO
         public int NumAvailablePositions { get; set; }
         //  רשימת רחפנם בטעינה
         public IEnumerable<ChargingDrone> LBL_ChargingDrone { get; set; }
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
+
     }
 }

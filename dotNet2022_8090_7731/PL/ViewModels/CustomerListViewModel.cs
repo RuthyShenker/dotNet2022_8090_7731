@@ -13,7 +13,7 @@ namespace PL.ViewModels
     public class CustomerListViewModel : INotifyPropertyChanged
     {
         BlApi.IBL bl;
-        public IEnumerable<CustomerToList> customerList;
+        public IEnumerable<CustomerToList> customerList ;
         public RelayCommand<object> AddCustomerCommand { get; set; }
         public RelayCommand<object> MouseDoubleCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }

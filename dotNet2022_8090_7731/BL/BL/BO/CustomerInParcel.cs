@@ -29,6 +29,11 @@ namespace BO
         /// </summary>
         public int Id { get; init; }
         public string Name { get; set; }
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
+
     }
 }
 
