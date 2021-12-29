@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PO
 {
     class StationToAdd : INotifyPropertyChanged, IDataErrorInfo
     {
-        const int ID_LENGTH = 8;
-        
-        private int _id;
+        const int ID_LENGTH = 4;
 
-        public int Id
+        private int? id;
+
+        public object Id
         {
-            get => _id;
+            get => id == null ? null : id;
             set
             {
-                _id = value;
+                id = (value == "" || value == null) ? null : Convert.ToInt32(value);
                 RaisePropertyChanged("Id");
-                validityMessages["Id"] = IdMessage(value, ID_LENGTH);
+                validityMessages["Id"] = IdMessage(id, ID_LENGTH);
             }
         }
 
@@ -29,6 +30,7 @@ namespace PO
         public string Name
         {
             get => name;
+            
             set
             {
                 name = value;
@@ -37,90 +39,125 @@ namespace PO
             }
         }
 
-        private string longitude;
+        private double? longitude;
         const int MIN_LONGITUDE = -180;
         const int MAX_LONGITUDE = 180;
-        public string Longitude
+        public object Longitude
         {
-            get => longitude;
+            get => longitude == null ? null : longitude;
             set
             {
-                name = value;
+
+                //!((string)value).All(c =>( char.IsDigit(c)||c.Equals('.')) 
+
+                //if (value.GetType().IsValueType)
+                //{
+                //    var a = 5;
+                //}
+                longitude = (value is "" or null) ? null : (double)Convert.ToDecimal(value);
                 RaisePropertyChanged("Longitude");
-                validityMessages["Longitude"] = LocationMessage(value, MIN_LONGITUDE, MAX_LONGITUDE);
+                validityMessages["Longitude"] = LocationMessage(longitude, MIN_LONGITUDE, MAX_LONGITUDE);
             }
         }
 
-        private string latitude;
+        private double? latitude;
         const int MIN_LATITUDE = -90;
         const int MAX_LATITUDE = 90;
-        public string Latitude
+        public object Latitude
         {
-            get => latitude;
+            get => latitude == null ? null : latitude;
             set
             {
-                latitude = value;
+                var a = value.GetType();
+                latitude = (value == "" || value == null) ? null : Convert.ToDouble(value);
                 RaisePropertyChanged("Latitude");
-                validityMessages["Latitude"] = LocationMessage(value, MIN_LATITUDE, MAX_LATITUDE);
+                validityMessages["Latitude"] = LocationMessage(latitude, MIN_LATITUDE, MAX_LATITUDE);
             }
         }
 
-        private int numPositions;
 
-        public int NumPositions
+        private int? numPositions;
+        public object NumPositions
         {
-            get => numPositions;
+            get => numPositions == null ? null : numPositions;
             set
             {
-                numPositions = value;
+                numPositions = (value == "" || value == null) ? null : Convert.ToInt32(value);
                 RaisePropertyChanged("NumPositions");
-                validityMessages["NumPositions"] = NumPositionsMessage(value);
+                validityMessages["NumPositions"] = NumPositionsMessage(numPositions);
             }
         }
 
-        public string Error => null;
+        //public string Error { get; }
 
-        public string this[string propertyName]
+        //public string this[string propertyName]
+        //{
+        //    get
+        //    {
+        //        return !validityMessages.ContainsKey(propertyName) ? null :
+        //            string.Join(Environment.NewLine, validityMessages[propertyName]);
+        //    }
+        //}
+
+        public string Error
+        { 
+            get 
+            {
+                return validityMessages.Values.All(value => value == string.Empty) ? string.Empty : "Invalid input"; 
+            } 
+        }
+        public string this[string columnName]
         {
             get
             {
-                return !validityMessages.ContainsKey(propertyName) ? null :
-                    string.Join(Environment.NewLine, validityMessages[propertyName]);
+                if (validityMessages.ContainsKey(columnName))
+                    return validityMessages[columnName];
+                return string.Empty;
             }
         }
 
-        private string NumPositionsMessage(int value)
+        private string NumPositionsMessage(object value)
         {
-            throw new NotImplementedException();
+            return value switch
+            {
+                null => "Feild is required",
+                _ => "",
+            };
         }
 
-        private string LocationMessage(string value, int min, int max)
+        private string LocationMessage(object value, int min, int max)
         {
-            throw new NotImplementedException();
+            return value == null ? "Feild is required" :
+                (double)value > max ? $"Max value is {max}" :
+                (double)value < min ? $"Min value is {min}" :
+                "";
         }
 
         private string NameMessage(string value)
         {
-            throw new NotImplementedException();
+            return (value == "" || value == null) ? "Feild is required" :
+                   !value.All(c => char.IsLetter(c)) ? "Name has to contain only letters" :
+                   "";
         }
 
-        private string IdMessage(int value, int length)
+        private string IdMessage(object value, int length)
         {
-            int maxLength  = (int)Math.Pow(10, length);
-            switch (value)
+            int maxLength = (int)Math.Pow(10, length);
+            return value switch
             {
-                default:
-                    return "";
-            }
+                null => "Feild is required",
+                > 10000 or < 1000 => "Input must contain 4 digits",
+                _ => "",
+            };
         }
 
         private Dictionary<string, string> validityMessages = new()
         {
-            ["Id"] = "",
-            ["NameStation"] = "",
-            ["Longitude"] = "",
-            ["Latitude"] = "",
-            ["NumPositions"] = "",
+            ["Id"] = " ",
+            ["Name"] = " ",
+            ["Longitude"] = " ",
+            ["Latitude"] = " ",
+            ["NumPositions"] = " ",
         };
 
         protected void RaisePropertyChanged(string propertyName)

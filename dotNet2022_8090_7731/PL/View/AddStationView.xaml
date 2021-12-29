@@ -32,9 +32,9 @@
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
-            materialDesign:HintAssist.Hint="Longitude" />
-
-
+            materialDesign:HintAssist.Hint="Name" >
+        </TextBox>
+        
         <TextBox
             Text="{Binding station.Longitude,
             ValidatesOnDataErrors=true,
@@ -59,6 +59,10 @@
             materialDesign:HintAssist.Hint="Number positions" />
 
 
-        <Button Content="OK" Command="{Binding AddStationCommand}" CommandParameter="{Binding Source=self}"/>
+        <Button 
+            Content="OK" 
+            Command="{Binding AddStationCommand}" 
+            CommandParameter="{Binding RelativeSource={ RelativeSource Mode=Self}, Path=DataContext}">
+        </Button>
     </StackPanel>
 </UserControl>

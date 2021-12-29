@@ -6,6 +6,8 @@ namespace ConsoleUI_BL
 {
     partial class Program
     {
+        private static readonly BlApi.IBL bl = BlApi.BlFactory.GetBl();
+
         static void Main(string[] args)
         {
             BlApi.IBL bL = BlApi.BlFactory.GetBl();
