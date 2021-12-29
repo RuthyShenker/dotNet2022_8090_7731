@@ -80,6 +80,11 @@ namespace BO
         public DateTime? BelongParcel { get; set; }
         public DateTime? PickingUp { get; set; }
         public DateTime? Arrival { get; set; }
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
+
     }
 }
 

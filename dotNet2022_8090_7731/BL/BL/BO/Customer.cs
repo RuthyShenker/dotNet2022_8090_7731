@@ -32,8 +32,8 @@ namespace BO
             Name = name;
             Phone = phone;
             Location = location;
-            LFromCustomer = Enumerable.Empty<ParcelInCustomer>();
-            LForCustomer = Enumerable.Empty<ParcelInCustomer>();
+            LFromCustomer = new List<ParcelInCustomer>();
+            LForCustomer = new List<ParcelInCustomer>();
         }
         /// <summary>
         /// this field is init.
@@ -45,6 +45,11 @@ namespace BO
         // two lists
         public IEnumerable<ParcelInCustomer> LFromCustomer { get; set; }
         public IEnumerable<ParcelInCustomer> LForCustomer { get; set; }
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
+
     }
 }
 

@@ -132,7 +132,7 @@ namespace PO
 
         //    if (!errors[propertyName].Contains(error))
         //    {
-        //        if (isWarning) errors[propertyName].Add(error);
+        //        if (isWarning) errors[propertyName].AddCustomer(error);
         //        //else errors[propertyName].Insert(0, error);
         //    }
         //}

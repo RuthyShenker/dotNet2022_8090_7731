@@ -72,7 +72,7 @@ namespace BL
         /// function doesn't return anything.
         /// </summary>
         /// <param name="bLCustomer"></param>
-        public int Add(Customer bLCustomer)
+        public int AddCustomer(Customer bLCustomer)
         {
             if (dal.IsIdExistInList<DO.Customer>(bLCustomer.Id))
             {
@@ -187,19 +187,24 @@ namespace BL
             Customer nCustomer = new Customer(customer.Id, customer.Name, customer.Phone, nLocation);
             ParcelInCustomer parcelInCustomer;
             var dParcelslist = dal.GetListFromDal<DO.Parcel>();
+            var lFromCustomer = new List<ParcelInCustomer>();
+            var lForCustomer = new List<ParcelInCustomer>();
+
             foreach (var parcel in dParcelslist)
             {
                 if (parcel.SenderId == nCustomer.Id)
                 {
                     parcelInCustomer = CopyCommon(parcel, parcel.GetterId);
-                    nCustomer.LFromCustomer.Append(parcelInCustomer);
+                    lFromCustomer.Add(parcelInCustomer);
                 }
                 else if (parcel.GetterId == nCustomer.Id)
                 {
                     parcelInCustomer = CopyCommon(parcel, parcel.SenderId);
-                    nCustomer.LForCustomer.Append(parcelInCustomer);
+                    lForCustomer.Add(parcelInCustomer);
                 }
             }
+            nCustomer.LFromCustomer = lFromCustomer;
+            nCustomer.LForCustomer = lForCustomer;
             return nCustomer;
         }
     }

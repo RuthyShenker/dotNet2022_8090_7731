@@ -1,9 +1,10 @@
-﻿using PL.Model;
+﻿using PO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PL.ViewModels
 {
@@ -24,8 +25,17 @@ namespace PL.ViewModels
 
         private void AddCustomer(object obj)
         {
-           //בדיקת תקינות+
-           //להוסיף את היישות
+            //MessageBox.Show(Customer.Id); 
+            //TODO:
+            //check validation:
+            var blCustomer = Map(Customer);
+            bl.AddCustomer(blCustomer);
+            refreshCustomer();
+        }
+
+        private BO.Customer Map(CustomerToAdd customer)
+        {
+            return new BO.Customer(customer.Id, customer.Name, customer.Phone, new BO.Location(customer.Location.Longitude,customer.Location.Latitude));
         }
     }
 }

@@ -18,16 +18,12 @@ namespace PL.View
     /// <summary>
     /// Interaction logic for DisplayView.xaml
     /// </summary>
-    public partial class DisplayView : Window
+    public partial class DisplayView : UserControl
     {
         public DisplayView()
         {
-        }
-
-        public DisplayView(DisplayViewModel viewModel)
-        {
             InitializeComponent();
-            this.DataContext = viewModel;
+            //this.DataContext = viewModel;
         }
     }
 }

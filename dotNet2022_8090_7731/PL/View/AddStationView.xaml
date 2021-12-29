@@ -24,41 +24,41 @@
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged }"
-            materialDesign:HintAssist.Hint="Id" >
-        </TextBox>
-        
+            materialDesign:HintAssist.Hint="Id" />
+
+
         <TextBox
             Text="{Binding station.Name,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
-            materialDesign:HintAssist.Hint="Longitude" >
-        </TextBox>
-        
+            materialDesign:HintAssist.Hint="Longitude" />
+
+
         <TextBox
             Text="{Binding station.Longitude,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
-            materialDesign:HintAssist.Hint="Longitude" >
-        </TextBox>
-        
+            materialDesign:HintAssist.Hint="Longitude" />
+
+
         <TextBox 
             Text="{Binding station.Latitude,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
-            materialDesign:HintAssist.Hint="Latitude" >
-        </TextBox>
-        
+            materialDesign:HintAssist.Hint="Latitude" />
+
+
         <TextBox 
             Text="{Binding station.NumPositions,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
-            materialDesign:HintAssist.Hint="Number positions" >
-        </TextBox>
+            materialDesign:HintAssist.Hint="Number positions" />
 
-        <Button Content="OK" Command="{Binding AddStationCommand}" CommandParameter="{Binding Source=self}"></Button>
+
+        <Button Content="OK" Command="{Binding AddStationCommand}" CommandParameter="{Binding Source=self}"/>
     </StackPanel>
 </UserControl>

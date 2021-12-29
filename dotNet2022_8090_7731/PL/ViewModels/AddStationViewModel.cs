@@ -18,7 +18,7 @@ namespace PL
 
         private void AddStation(object obj)
         {
-            MessageBox.Show("Add station");
+            MessageBox.Show("AddCustomer station");
             //BlApi.BlFactory.GetBl().AddingBaseStation(station)
         }
     }

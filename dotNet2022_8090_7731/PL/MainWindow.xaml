@@ -4,15 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
+        xmlns:Views="clr-namespace:PL.View"
+        xmlns:ViewModels="clr-namespace:PL.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <local:DisplayViewModel/>
-    </Window.DataContext>
+    </Window.DataContext>-->
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:DisplayViewModel}">
+            <Views:DisplayView/>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
+        <ContentPresenter Content="{Binding MainViewModel}"/>
         <!--<ContentControl x:Name="mDroneView" Content="{Binding }" ScrollViewer.VerticalScrollBarVisibility="Auto"/>-->
 
-        <Button Content="ParcelList:" VerticalAlignment="Stretch"
+        <!--<Button Content="ParcelList:" VerticalAlignment="Stretch"
                 Height="46" Width="92" 
                 Command="{Binding ParcelListViewCommand}"/>
 
@@ -22,11 +30,11 @@
 
         <Button Content="stationList:" VerticalAlignment="Bottom"
                 Height="46" Width="92" 
-                Command="{Binding StationlistViewCommand}"/>
+                Command="{Binding StationListViewCommand}"/>
 
         <Button Content="CustomerList:" VerticalAlignment="Top"
                  Height="46" Width="92" 
-                Command="{Binding CustomerListViewCommand}" Margin="0,90,0,0" />
+                Command="{Binding CustomerListViewCommand}" Margin="0,90,0,0" />-->
     </Grid>
 
 </Window>

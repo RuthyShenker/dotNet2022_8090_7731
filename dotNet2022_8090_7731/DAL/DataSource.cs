@@ -18,7 +18,7 @@ namespace Dal
         const int INITIALIZE_DRONE = 5;
         const int INITIALIZE_CUSTOMER = 10;
         const int INITIALIZE_BASE_STATION = 2;
-        const int INITIALIZE_PARCEL = 2;
+        const int INITIALIZE_PARCEL = 5;
 
         //  INITIALIZE_PARCEL always < INITIALIZE_DRONE ( for droneId in parcel initializing )
         //  INITIALIZE_CUSTOMER always >= 2 ( for two difference customers id in parcel )

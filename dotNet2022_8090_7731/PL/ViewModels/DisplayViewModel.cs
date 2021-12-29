@@ -16,9 +16,9 @@ namespace PL
         public RelayCommand<object> DroneListViewCommand { get; set; }
         public RelayCommand<object> StationListViewCommand { get; set; }
         public RelayCommand<object> ParcelListViewCommand { get; set; }
-        public DisplayViewModel()
+        public DisplayViewModel(BlApi.IBL bl)
         {
-            bl = BlApi.BlFactory.GetBl();
+            this.bl = bl;
             CustomerListViewCommand = new RelayCommand<object>(ShowCustomerListView);
             DroneListViewCommand = new RelayCommand<object>(ShowDroneListView);
             StationListViewCommand = new RelayCommand<object>(ShowStationListView);

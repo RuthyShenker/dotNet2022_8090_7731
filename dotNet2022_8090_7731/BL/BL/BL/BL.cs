@@ -121,7 +121,7 @@ namespace BL
 //    foreach (dynamic dlItem in dalList)
 //    {
 //        var blItem = ConvertToBL(dlItem);
-//        bLList.Add(blItem);
+//        bLList.AddCustomer(blItem);
 //    }
 //    return bLList;
 //}
@@ -148,7 +148,7 @@ namespace BL
 //        foreach (dynamic dalItem in dalList)
 //        {
 //            var blToListItem = ConvertToList(dalItem);
-//            listToList.Add(blToListItem);
+//            listToList.AddCustomer(blToListItem);
 //        }
 //        return listToList;
 //    }
@@ -171,7 +171,7 @@ namespace BL
 //        foreach (dynamic dalItem in dalList)
 //        {
 //            var blToListItem = ConvertToList(dalItem);
-//            listToList.Add(blToListItem);
+//            listToList.AddCustomer(blToListItem);
 //        }
 //        return listToList;
 //    }

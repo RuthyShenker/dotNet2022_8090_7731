@@ -28,7 +28,7 @@ namespace PL
 
         private void AddDrone(object parameters)
         {
-            MessageBox.Show("Add Drone");
+            MessageBox.Show("AddCustomer Drone");
         }
     }
 }

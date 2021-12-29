@@ -84,7 +84,7 @@ namespace PL.ViewModels
             if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
             {
                 //var viewModel = new AddDroneViewModel(bl,FilterDroneListByCondition);
-                new DroneView(bl,FilterDroneListByCondition);
+                new DroneView(bl,FilterDroneListByCondition).Show();
                 //new DroneView(/*bl,*/FilterDroneListByCondition).Show();
             }
             else

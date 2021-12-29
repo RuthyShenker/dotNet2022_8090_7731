@@ -218,7 +218,7 @@ namespace BL
             drone.CurrLocation = closetdStation.Location;
             drone.DStatus = DroneStatus.Maintenance;
             //--closetBaseStation.NumAvailablePositions;
-            //closetBaseStation.LBL_ChargingDrone.Add(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
+            //closetBaseStation.LBL_ChargingDrone.AddCustomer(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
             dal.Add(new DO.ChargingDrone(drone.Id, closetdStation.Id, DateTime.Now));
         }
 

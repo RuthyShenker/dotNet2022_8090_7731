@@ -1,4 +1,5 @@
-﻿using PL.Model;
+﻿using PO;
+using PL.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,7 @@ namespace PL.ViewModels
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> UpdateCustomerCommand { get; set; }
         public RelayCommand<object> DeleteCustomerCommand { get; set; }
+        public RelayCommand<object> ShowParcelOfCustomerCommand { get; set; }
 
         public EditCustomerViewModel(BlApi.IBL bl, BO.Customer customer, Action refreshCustomers)
         {
@@ -26,6 +28,14 @@ namespace PL.ViewModels
             CloseWindowCommand = new RelayCommand<object>(Close_Window);
             UpdateCustomerCommand = new RelayCommand<object>(UpdateCustomer);
             DeleteCustomerCommand = new RelayCommand<object>(DeleteCustomer);
+            ShowParcelOfCustomerCommand = new RelayCommand<object>(MouseDoubleClick);
+        }
+
+        private void MouseDoubleClick(object obj)
+        {
+            var parcel = obj as BO.ParcelInCustomer;
+            var blParcel = bl.GetParcel(parcel.Id);
+            //new ParcelView(bl,refreshParcelList,blParcel).Show();
         }
 
         private void DeleteCustomer(object obj)
@@ -46,7 +56,7 @@ namespace PL.ViewModels
 
         private EditCustomer Map(BO.Customer customer)
         {
-            return new EditCustomer(customer.Id,customer.Name,customer.Phone,customer.Location,
+            return new EditCustomer(customer.Id,customer.Name,customer.Phone,new PO.Location(customer.Location),
                 customer.LFromCustomer,customer.LForCustomer);
         }
 

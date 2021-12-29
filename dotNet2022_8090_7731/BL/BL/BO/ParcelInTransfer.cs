@@ -58,6 +58,11 @@ namespace BO
         public Location CollectionLocation { get; set; }
         public Location DeliveryLocation { get; set; }
         public double TransDistance { get; set; }
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
+
     }
 }
 

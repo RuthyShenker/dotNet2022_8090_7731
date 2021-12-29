@@ -45,6 +45,11 @@ namespace BO
         public WeightCategories Weight { get; set; }
         public Priority MyPriority { get; set; }
         public ParcelStatus Status { get; set; }
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
+
     }
 }
 
