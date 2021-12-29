@@ -21,7 +21,7 @@ namespace PL.Drones
     /// </summary>
     public partial class DroneListWindow : Window
     {
-        public DroneListWindow(DroneListWindowViewModel droneListWindowViewModel)
+        public DroneListWindow(DroneListViewModel droneListWindowViewModel)
         {
             InitializeComponent();
             this.DataContext = droneListWindowViewModel;

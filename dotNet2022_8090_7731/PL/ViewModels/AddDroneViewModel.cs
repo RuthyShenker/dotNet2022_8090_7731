@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace PL
 {
-     class AddDroneViewModel
+    public class AddDroneViewModel
     {
         public DroneToAdd Drone { get; set; } 
         BlApi.IBL bl;

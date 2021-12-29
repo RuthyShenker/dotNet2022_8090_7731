@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace PL.ViewModels
 {
-    public class DroneListWindowViewModel : INotifyPropertyChanged
+    public class DroneListViewModel : INotifyPropertyChanged
     {
         BlApi.IBL bl;
         WeightCategories weightSelectedItem;
@@ -19,7 +19,7 @@ namespace PL.ViewModels
         public RelayCommand<object> AddDroneCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> MouseDoubleCommand { get; set; }
-        public DroneListWindowViewModel(BlApi.IBL bl)
+        public DroneListViewModel(BlApi.IBL bl)
         {
             this.bl = bl;
             droneList = Enumerable.Empty<DroneToList>();
@@ -83,8 +83,8 @@ namespace PL.ViewModels
         {
             if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
             {
-                var viewModel = new AddDroneViewModel(bl,FilterDroneListByCondition);
-
+                //var viewModel = new AddDroneViewModel(bl,FilterDroneListByCondition);
+                new DroneView(bl,FilterDroneListByCondition);
                 //new DroneView(/*bl,*/FilterDroneListByCondition).Show();
             }
             else

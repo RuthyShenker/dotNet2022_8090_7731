@@ -21,7 +21,6 @@ namespace PL
     {
         public Station()
         {
-
             InitializeComponent();
             Stationt.DataContext = new AddStationView();
         }

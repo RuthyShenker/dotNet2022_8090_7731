@@ -19,10 +19,10 @@ namespace PL
     /// </summary>
     public partial class AddDroneView : UserControl
     {
-        public AddDroneView(/*AddDroneViewModel viewModel*/)
+        public AddDroneView(AddDroneViewModel viewModel)
         {
             InitializeComponent();
-            //this.DataContext = new AddDroneViewModel(viewModel);/* viewModel;*/
+            this.DataContext = viewModel;
         }
     }
 }
