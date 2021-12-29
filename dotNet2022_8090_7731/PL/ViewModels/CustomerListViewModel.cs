@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using BO;
 using PL.View;
 
@@ -15,13 +16,18 @@ namespace PL.ViewModels
         public IEnumerable<CustomerToList> customerList;
         public RelayCommand<object> AddCustomerCommand { get; set; }
         public RelayCommand<object> MouseDoubleCommand { get; set; }
+        public RelayCommand<object> CloseWindowCommand { get; set; }
+      
+
+
         public CustomerListViewModel(BlApi.IBL bl)
         {
             this.bl = bl;
             customerList = Enumerable.Empty<CustomerToList>();
             RefreshCustomerList();
             AddCustomerCommand = new RelayCommand<object>(AddingCustomer);
-            MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
+            MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);  
+            CloseWindowCommand = new RelayCommand<object>(CloseWindow);
         }
         public IEnumerable<CustomerToList> CustomerList
         {
@@ -57,10 +63,17 @@ namespace PL.ViewModels
             //{
             //    MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             //}
+            new CustomerView(bl,RefreshCustomerList)
+                .Show();
         }
         private void RefreshCustomerList()
         {
             CustomerList = bl.GetCustomers();
         }
+        private void CloseWindow(object sender)
+        {
+            Window.GetWindow((DependencyObject)sender).Close();
+        }
+
     }
 }

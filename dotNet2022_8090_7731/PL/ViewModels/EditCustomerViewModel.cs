@@ -15,6 +15,8 @@ namespace PL.ViewModels
         Action refreshCustomers;
         EditCustomer customer;
         public RelayCommand<object> CloseWindowCommand { get; set; }
+        public RelayCommand<object> UpdateCustomerCommand { get; set; }
+        public RelayCommand<object> DeleteCustomerCommand { get; set; }
 
         public EditCustomerViewModel(BlApi.IBL bl, BO.Customer customer, Action refreshCustomers)
         {
@@ -22,6 +24,18 @@ namespace PL.ViewModels
             Customer = Map(customer);
             this.refreshCustomers = refreshCustomers;
             CloseWindowCommand = new RelayCommand<object>(Close_Window);
+            UpdateCustomerCommand = new RelayCommand<object>(UpdateCustomer);
+            DeleteCustomerCommand = new RelayCommand<object>(DeleteCustomer);
+        }
+
+        private void DeleteCustomer(object obj)
+        {
+          
+        }
+
+        private void UpdateCustomer(object obj)
+        {
+            
         }
 
         //private void RefreshCustomer()
