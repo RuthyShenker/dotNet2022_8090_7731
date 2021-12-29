@@ -22,7 +22,7 @@ namespace PL.ViewModels
         public RelayCommand<object> MouseDoubleCommand { get; set; }
         public DroneListViewModel(BlApi.IBL bl)
         {
-            this.bl = bl;
+            this.bl = BlApi.BlFactory.GetBl();/* bl;*/
             droneList = Enumerable.Empty<DroneToList>();
             FilterDroneListByCondition();
             AddDroneCommand = new RelayCommand<object>(AddingDrone);

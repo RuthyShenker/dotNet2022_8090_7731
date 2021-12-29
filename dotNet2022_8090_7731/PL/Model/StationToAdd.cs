@@ -24,12 +24,12 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _id, null);
-                    validityMessages["Id"] = IntMessage(null);
+                    validityMessages["Id"] = IntMessage(_id);
                 }
                 else if (valid)
                 {
                     Set(ref _id, Convert.ToInt32(value));
-                    validityMessages["Id"] = IntMessage(id, ID_LENGTH);
+                    validityMessages["Id"] = IntMessage(_id, ID_LENGTH);
                 }
                 else
                 {
@@ -64,12 +64,12 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _longitude, null);
-                    validityMessages["Longitude"] = LocationMessage(null);
+                    validityMessages["Longitude"] = LocationMessage(_longitude);
                 }
                 else if (valid)
                 {
                     Set(ref _longitude, Convert.ToDouble(value));
-                    validityMessages["Longitude"] = LocationMessage(longitude, MIN_LONGITUDE, MAX_LONGITUDE);
+                    validityMessages["Longitude"] = LocationMessage(_longitude, MIN_LONGITUDE, MAX_LONGITUDE);
                 }
                 else
                 {
@@ -90,12 +90,12 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _latitude, null);
-                    validityMessages["Latitude"] = LocationMessage(null);
+                    validityMessages["Latitude"] = LocationMessage(_latitude);
                 }
                 else if (valid)
                 {
                     Set(ref _latitude, Convert.ToDouble(value));
-                    validityMessages["Latitude"] = LocationMessage(latitude, MIN_LATITUDE, MAX_LATITUDE);
+                    validityMessages["Latitude"] = LocationMessage(_latitude, MIN_LATITUDE, MAX_LATITUDE);
                 }
                 else
                 {
@@ -114,12 +114,12 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _numPositions, null);
-                    validityMessages["NumPositions"] = IntMessage(null);
+                    validityMessages["NumPositions"] = IntMessage(_numPositions);
                 }
                 else if (valid)
                 {
                     Set(ref _numPositions, Convert.ToInt32(value));
-                    validityMessages["NumPositions"] = IntMessage(numPositions);
+                    validityMessages["NumPositions"] = IntMessage(_numPositions);
                 }
                 else
                 {

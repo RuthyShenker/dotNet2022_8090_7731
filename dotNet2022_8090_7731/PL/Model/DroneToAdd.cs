@@ -23,12 +23,12 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _id, null);
-                    validityMessages["Id"] = IntMessage(null);
+                    validityMessages["Id"] = IntMessage(_id);
                 }
                 else if (valid)
                 {
                     Set(ref _id, Convert.ToInt32(value));
-                    validityMessages["Id"] = IntMessage(id, ID_LENGTH);
+                    validityMessages["Id"] = IntMessage(_id, ID_LENGTH);
                 }
                 else
                 {
@@ -62,13 +62,16 @@ namespace PO
         public int StationId
         {
             get { return _stationId; }
-            set => Set(ref _stationId, value);
-
+            set
+            {
+                Set(ref _stationId, value);
+                validityMessages["StationId"] = "";
+            }
         }
 
 
-        // --------------IDataErrorInfo---------------------
-        public string Error
+    // --------------IDataErrorInfo---------------------
+    public string Error
         {
             get
             {
@@ -86,13 +89,12 @@ namespace PO
             }
         }
 
-
         private Dictionary<string, string> validityMessages = new Dictionary<string, string>()
         {
-            ["Id"] = "",
-            ["Model"] = "",
+            ["Id"] = " ",
+            ["Model"] = " ",
             ["MaxWeight"] = "",
-            ["StationId"] = "",
+            ["StationId"] = " ",
         };
 
     }

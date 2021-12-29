@@ -23,7 +23,7 @@ namespace PL
             //this.bl = bl;
             //this.refreshDrones = refreshDrones;
             StationOptions = BlApi.BlFactory.GetBl().AvailableSlots().Select(station => station.Id).ToList();
-            AddDroneCommand = new RelayCommand<object>(AddDrone, param => Drone.Error != "");
+            AddDroneCommand = new RelayCommand<object>(AddDrone, param => Drone.Error == "");
         }
 
         private void AddDrone(object parameters)

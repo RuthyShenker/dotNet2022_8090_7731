@@ -23,5 +23,9 @@
         <Button Content="CustomerList:" VerticalAlignment="Top"
                  Height="46" Width="92" 
                 Command="{Binding CustomerListViewCommand}" Margin="0,90,0,0" />
+
+        <Button Content="Add station:" VerticalAlignment="Stretch"
+                 Height="46" Width="92" 
+                Command="{Binding AddStationCommand}" Margin="0,90,0,0" />
     </Grid>
 </UserControl>
