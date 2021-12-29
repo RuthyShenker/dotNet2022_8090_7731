@@ -9,9 +9,13 @@ using System.Windows;
 
 namespace PL
 {
+
+
     public class DisplayViewModel
     {
         BlApi.IBL bl;
+        public RelayCommand<object> AddStationCommand { get; set; }
+
         public RelayCommand<object> CustomerListViewCommand { get; set; }
         public RelayCommand<object> DroneListViewCommand { get; set; }
         public RelayCommand<object> StationListViewCommand { get; set; }
@@ -19,11 +23,16 @@ namespace PL
         public DisplayViewModel()
         {
             bl = BlApi.BlFactory.GetBl();
+            AddStationCommand = new RelayCommand<object>(AddingStation);
             CustomerListViewCommand = new RelayCommand<object>(ShowCustomerListView);
             DroneListViewCommand = new RelayCommand<object>(ShowDroneListView);
             StationListViewCommand = new RelayCommand<object>(ShowStationListView);
             ParcelListViewCommand = new RelayCommand<object>(ShowParcelListView);
 
+        }
+        private void AddingStation(object sender)
+        {
+            new Station().Show();
         }
         private void ShowParcelListView(object obj)
         {

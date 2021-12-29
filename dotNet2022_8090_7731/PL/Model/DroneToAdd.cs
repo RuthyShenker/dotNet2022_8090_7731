@@ -4,82 +4,90 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PO.ValidityMessages;
 
 namespace PO
 {
-    public class DroneToAdd : INotifyPropertyChanged, IDataErrorInfo
+    public class DroneToAdd : ObservableBase, IDataErrorInfo
     {
+        const int ID_LENGTH = 4;
+
         private int? _id;
-        public int Id
+
+        public object Id
         {
-            get => _id == null ? 0 : (int)_id;
+            get => _id == null ? null : _id;
             set
-            { 
-                _id = value;
-                RaisePropertyChanged("Id");
-                errors["Id"] = IsIdValid(value);
-              
+            {
+                bool valid = int.TryParse((string)value, out int id);
+                if (value is null or "")
+                {
+                    Set(ref _id, null);
+                    validityMessages["Id"] = IntMessage(null);
+                }
+                else if (valid)
+                {
+                    Set(ref _id, Convert.ToInt32(value));
+                    validityMessages["Id"] = IntMessage(id, ID_LENGTH);
+                }
+                else
+                {
+                    validityMessages["Id"] = IntMessage("invalid input");
+                }
+                //RaisePropertyChanged("Id");
             }
         }
 
         private string _model;
+
         public string Model
         {
-            get { return _model; }
+            get => _model;
+
             set
             {
-                _model = value;
-                RaisePropertyChanged("Model");
+                Set(ref _model, value);
+                validityMessages["Model"] = StringMessage(value);
             }
         }
 
         private BO.WeightCategories _maxWeight;
         public BO.WeightCategories MaxWeight
         {
-            get { return _maxWeight; }
-            set
-            {
-                _maxWeight = value;
-                RaisePropertyChanged("Weight");
-            }
-        }
-
-        // Validates the Id property, updating the errors collection as needed.
-        public string IsIdValid(int value)
-        {
-            if (value ==null)
-            {
-                return "Value is reqired";
-            }
-            if (value< Math.Pow(10, 3))
-            {
-                return "1 Id must contain 4 digits";
-            }
-            if (value> Math.Pow(10, 4))
-            {
-                return "2 Id must contain 4 digits";
-            }
-            else
-            {
-                return "";
-            }
-        
+            get => _maxWeight;
+            set => Set(ref _maxWeight, value);
         }
 
         private int _stationId;
         public int StationId
         {
             get { return _stationId; }
-            set
+            set => Set(ref _stationId, value);
+
+        }
+
+
+        // --------------IDataErrorInfo---------------------
+        public string Error
+        {
+            get
             {
-                _stationId = value;
-                RaisePropertyChanged("Station");
+                return validityMessages.Values.All(value => value == string.Empty) ? string.Empty : "Invalid input";
             }
         }
 
-        public string Error => "1";
+        public string this[string columnName]
+        {
+            get
+            {
+                if (validityMessages.ContainsKey(columnName))
+                    return validityMessages[columnName];
+                return string.Empty;
+            }
+        }
 
-        private Dictionary<string, string> errors = new Dictionary<string, string>()
+
+        private Dictionary<string, string> validityMessages = new Dictionary<string, string>()
         {
             ["Id"] = "",
             ["Model"] = "",
@@ -87,25 +95,6 @@ namespace PO
             ["StationId"] = "",
         };
 
-        public string this[string propertyName]
-        {
-            get
-            {
-                return !errors.ContainsKey(propertyName) ? null :
-                    string.Join(Environment.NewLine, errors[propertyName]);
-            }
-        }
-
-        protected void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
 

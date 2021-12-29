@@ -17,6 +17,7 @@ namespace PL.ViewModels
         DroneStatus statusSelectedItem;
         public IEnumerable<DroneToList> droneList;
         public RelayCommand<object> AddDroneCommand { get; set; }
+        
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> MouseDoubleCommand { get; set; }
         public DroneListViewModel(BlApi.IBL bl)
@@ -25,6 +26,7 @@ namespace PL.ViewModels
             droneList = Enumerable.Empty<DroneToList>();
             FilterDroneListByCondition();
             AddDroneCommand = new RelayCommand<object>(AddingDrone);
+          
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
             MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
         }
@@ -83,8 +85,11 @@ namespace PL.ViewModels
         {
             if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
             {
-                //var viewModel = new AddDroneViewModel(bl,FilterDroneListByCondition);
-                new DroneView(bl,FilterDroneListByCondition);
+
+                //var viewModel = new AddDroneViewModel(bl, FilterDroneListByCondition);
+                new DroneView(bl,FilterDroneListByCondition).Show();
+
+
                 //new DroneView(/*bl,*/FilterDroneListByCondition).Show();
             }
             else
@@ -93,6 +98,7 @@ namespace PL.ViewModels
             }
         }
 
+       
         //private void button_Close_Click(object sender, RoutedEventArgs e)
         //{
         //    //Hide();

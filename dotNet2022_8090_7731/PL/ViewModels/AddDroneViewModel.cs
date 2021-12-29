@@ -17,12 +17,12 @@ namespace PL
         public List<int> StationOptions { get; set; }
         public RelayCommand<object> AddDroneCommand { get; set; }
 
-        public AddDroneViewModel(BlApi.IBL bl, Action refreshDrones)
+        public AddDroneViewModel(/*BlApi.IBL bl, Action refreshDrones*/)
         {
             Drone = new();
-            this.bl = bl;
-            this.refreshDrones = refreshDrones;
-            StationOptions = bl.AvailableSlots().Select(station => station.Id).ToList();
+            //this.bl = bl;
+            //this.refreshDrones = refreshDrones;
+            StationOptions = BlApi.BlFactory.GetBl().AvailableSlots().Select(station => station.Id).ToList();
             AddDroneCommand = new RelayCommand<object>(AddDrone, param => Drone.Error != "");
         }
 

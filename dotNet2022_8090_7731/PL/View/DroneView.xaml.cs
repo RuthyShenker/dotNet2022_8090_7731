@@ -22,12 +22,13 @@ namespace PL.View
     {
         public DroneView(BlApi.IBL bl, Action refreshDroneList)
         {
+            //var viewModel = new AddDroneViewModel(bl, refreshDroneList);
+            this.DataContext = new AddDroneView(/*viewModel*/);
             InitializeComponent();
             //DroneView.DataContext = new AddNewDroneView(bl, refreshDroneList,Close);
             //var viewModel = new AddDroneViewModel(/*bl, */refreshDroneList);
             //this.DataContext = new AddDroneView(viewModel);
-            var viewModel = new AddDroneViewModel(bl, refreshDroneList);
-            this.DataContext = new AddDroneView(viewModel);
+
         }
 
         public DroneView(BlApi.IBL bl, Action refreshDrones, BO.Drone selectedDrone)

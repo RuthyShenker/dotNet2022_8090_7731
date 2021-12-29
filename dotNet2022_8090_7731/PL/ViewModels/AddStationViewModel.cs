@@ -19,14 +19,20 @@ namespace PL
         private void AddStation(object obj)
         {
             StationToAdd station = ((AddStationViewModel)obj).station;
-
-            BlApi.BlFactory.GetBl().AddingBaseStation(
-                (int)station.Id,
-                station.Name,
-                (double)station.Longitude,
-                (double)station.Latitude,
-                (int)station.NumPositions
-                );
+            try
+            {
+                BlApi.BlFactory.GetBl().AddingBaseStation(
+                    (int)station.Id,
+                    station.Name,
+                    (double)station.Longitude,
+                    (double)station.Latitude,
+                    (int)station.NumPositions
+                    );
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("id is already exist");
+            }
         }
     }
 }

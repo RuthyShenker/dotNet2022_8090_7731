@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace PL
+namespace PO
 {
 
     //https://stackoverflow.com/questions/52157249/check-the-entered-value-in-textboxes-are-double-number-in-wpf/52157968
@@ -24,13 +24,13 @@ namespace PL
     }
 
 
-    public abstract class ViewModelBase : ObservableBase
-    {
-        public bool IsInDesignMode
-            => (bool)DesignerProperties.IsInDesignModeProperty
-                .GetMetadata(typeof(DependencyObject))
-                .DefaultValue;
-    }
+    //public abstract class ViewModelBase : ObservableBase
+    //{
+    //    public bool IsInDesignMode
+    //        => (bool)DesignerProperties.IsInDesignModeProperty
+    //            .GetMetadata(typeof(DependencyObject))
+    //            .DefaultValue;
+    //}
 }
 //    //class Tryial<T>
 //    //{

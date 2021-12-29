@@ -26,7 +26,7 @@
 
         <TextBlock FontSize="25" FontWeight="Bold" Text="Add a Drone" Margin="40,20" Foreground="#505050"/>
 
-        <TextBox Text="{Binding Drone.Id, ValidatesOnDataErrors=true, NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Id" />
+        <TextBox   Text="{Binding Drone.Id, ValidatesOnDataErrors=true, NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Id" />
         <TextBox Text="{Binding Drone.Model, ValidatesOnDataErrors=true, NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Model" />
         <ComboBox SelectedItem="{Binding Drone.StationId, ValidatesOnDataErrors=true, NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding StationOptions}" materialDesign:HintAssist.Hint="Base station Id" />
         <ComboBox SelectedItem="{Binding Drone.MaxWeight, ValidatesOnDataErrors=true, NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding WeightOptions}" materialDesign:HintAssist.Hint="Weight Category" />
