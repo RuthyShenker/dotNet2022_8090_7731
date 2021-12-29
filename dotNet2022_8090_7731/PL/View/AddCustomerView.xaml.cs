@@ -11,16 +11,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace PL.View
 {
     /// <summary>
-    /// Interaction logic for DroneListView.xaml
+    /// Interaction logic for AddCustomerView.xaml
     /// </summary>
-    public partial class DroneListView : Window
+    public partial class AddCustomerView : UserControl
     {
-        public DroneListView(DroneListViewModel viewModel)
+        public AddCustomerView(AddCustomerViewModel viewModel)
         {
             InitializeComponent();
             this.DataContext = viewModel;

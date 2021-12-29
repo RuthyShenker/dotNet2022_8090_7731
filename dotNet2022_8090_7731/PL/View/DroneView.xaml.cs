@@ -26,7 +26,8 @@ namespace PL.View
             //DroneView.DataContext = new AddNewDroneView(bl, refreshDroneList,Close);
             //var viewModel = new AddDroneViewModel(/*bl, */refreshDroneList);
             //this.DataContext = new AddDroneView(viewModel);
-            this.DataContext = new AddDroneViewModel(refreshDroneList);
+            var viewModel = new AddDroneViewModel(bl, refreshDroneList);
+            this.DataContext = new AddDroneView(viewModel);
         }
 
         public DroneView(BlApi.IBL bl, Action refreshDrones, BO.Drone selectedDrone)

@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="PL.View.EditCustomerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PL.View" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel>
+        <TextBlock Text="Id:"/>
+        <TextBox Text="{Binding Customer.Id}"/>
+
+        <TextBlock Text="Name:"/>
+        <TextBox Text="{Binding Customer.Name}"/>
+
+        <TextBlock Text="Phone:"/>
+        <TextBox Text="{Binding Customer.Phone}"/>
+
+        <TextBlock Text="Longitude:"/>
+        <TextBox Text="{Binding Customer.Location.Longitude}"/>
+
+        <TextBlock Text="Latitude:"/>
+        <TextBox Text="{Binding Customer.Location.Latitude}"/>
+
+        <ListView Grid.Row="1" ItemsSource="{Binding Customer.LFromCustomer}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction 
+                        Command="{Binding MouseDoubleCommand}"
+                        CommandParameter="{Binding ElementName= Customer.LFromCustomer, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ListView>
+
+        <ListView Grid.Row="1" ItemsSource="{Binding Customer.LForCustomer}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction 
+                        Command="{Binding MouseDoubleCommand}"
+                        CommandParameter="{Binding ElementName= Customer.LForCustomer, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ListView>
+    </StackPanel>
+</UserControl>

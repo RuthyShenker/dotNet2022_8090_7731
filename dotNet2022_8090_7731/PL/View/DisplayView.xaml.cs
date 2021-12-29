@@ -16,11 +16,15 @@ using System.Windows.Shapes;
 namespace PL.View
 {
     /// <summary>
-    /// Interaction logic for DroneListView.xaml
+    /// Interaction logic for DisplayView.xaml
     /// </summary>
-    public partial class DroneListView : Window
+    public partial class DisplayView : Window
     {
-        public DroneListView(DroneListViewModel viewModel)
+        public DisplayView()
+        {
+        }
+
+        public DisplayView(DisplayViewModel viewModel)
         {
             InitializeComponent();
             this.DataContext = viewModel;

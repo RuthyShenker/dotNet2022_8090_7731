@@ -23,23 +23,42 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
-        BlApi.IBL bl;
+        //BlApi.IBL bl;
+        //public RelayCommand<object> CustomerListViewCommand;
+        //public RelayCommand<object> DroneListViewCommand;
+        //public RelayCommand<object> StationListViewCommand;
+        //public RelayCommand<object> ParcelListViewCommand;
         public MainWindow()
         {
-            bl = BlApi.BlFactory.GetBl();
+            //bl = BlApi.BlFactory.GetBl();
+            //mDroneView.DataContext = new DisplayViewModel();
+            //new DisplayView(new DisplayViewModel()).Show();
             InitializeComponent();
+            //CustomerListViewCommand = new RelayCommand<object>(ShowCustomerListView);
+            //DroneListViewCommand = new RelayCommand<object>(ShowDroneListView);
+            //StationListViewCommand = new RelayCommand<object>(ShowStationListView);
+            //ParcelListViewCommand = new RelayCommand<object>(ShowParcelListView);
 
         }
-        private void btn_DroneListView_Click(object sender, RoutedEventArgs e)
-        {
-            new DroneListView(new DroneListWindowViewModel(bl)).Show();
-        }
 
-        private void StationClick(object sender, RoutedEventArgs e)
-        {
-            new Station().Show();
+        //private void ShowParcelListView(object obj)
+        //{
+        //    new ParcelListView(new ParcelListViewModel(bl)).Show();
+        //}
 
+        //private void ShowStationListView(object obj)
+        //{
+        //    new Station().Show();
+        //}
 
-        }
+        //public void ShowDroneListView(object obj)
+        //{
+        //    new DroneListView(new DroneListViewModel(bl)).Show();
+        //}
+
+        //private void ShowCustomerListView(object obj)
+        //{
+        //    new CustomerListView(new CustomerListViewModel(bl)).Show();
+        //}
     }
 }
