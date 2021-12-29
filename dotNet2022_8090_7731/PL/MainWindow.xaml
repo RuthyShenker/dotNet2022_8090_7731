@@ -6,11 +6,13 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-   
+    <Window.DataContext>
+        <local:DisplayViewModel/>
+    </Window.DataContext>
     <Grid>
-        <!--<ContentControl x:Name="DroneView" Content="{Binding }" ScrollViewer.VerticalScrollBarVisibility="Auto"/>-->
+        <!--<ContentControl x:Name="mDroneView" Content="{Binding }" ScrollViewer.VerticalScrollBarVisibility="Auto"/>-->
 
-        <!--<Button Content="ParcelList:" VerticalAlignment="Stretch"
+        <Button Content="ParcelList:" VerticalAlignment="Stretch"
                 Height="46" Width="92" 
                 Command="{Binding ParcelListViewCommand}"/>
 
@@ -24,7 +26,7 @@
 
         <Button Content="CustomerList:" VerticalAlignment="Top"
                  Height="46" Width="92" 
-                Command="{Binding CustomerListViewCommand}" Margin="0,90,0,0" />-->
+                Command="{Binding CustomerListViewCommand}" Margin="0,90,0,0" />
     </Grid>
 
 </Window>

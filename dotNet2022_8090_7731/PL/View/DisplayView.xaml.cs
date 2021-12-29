@@ -20,6 +20,10 @@ namespace PL.View
     /// </summary>
     public partial class DisplayView : Window
     {
+        public DisplayView()
+        {
+        }
+
         public DisplayView(DisplayViewModel viewModel)
         {
             InitializeComponent();

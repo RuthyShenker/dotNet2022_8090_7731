@@ -31,7 +31,8 @@ namespace PL
         public MainWindow()
         {
             //bl = BlApi.BlFactory.GetBl();
-            new DisplayView(new DisplayViewModel()).Show();
+            //mDroneView.DataContext = new DisplayViewModel();
+            //new DisplayView(new DisplayViewModel()).Show();
             InitializeComponent();
             //CustomerListViewCommand = new RelayCommand<object>(ShowCustomerListView);
             //DroneListViewCommand = new RelayCommand<object>(ShowDroneListView);

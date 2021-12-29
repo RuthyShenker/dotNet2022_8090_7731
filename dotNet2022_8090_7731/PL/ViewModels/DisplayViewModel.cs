@@ -1,20 +1,21 @@
 ﻿using PL.View;
-
+using PL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
-namespace PL.ViewModels
+namespace PL
 {
     public class DisplayViewModel
     {
         BlApi.IBL bl;
-        public RelayCommand<object> CustomerListViewCommand;
-        public RelayCommand<object> DroneListViewCommand;
-        public RelayCommand<object> StationListViewCommand;
-        public RelayCommand<object> ParcelListViewCommand;
+        public RelayCommand<object> CustomerListViewCommand { get; set; }
+        public RelayCommand<object> DroneListViewCommand { get; set; }
+        public RelayCommand<object> StationListViewCommand { get; set; }
+        public RelayCommand<object> ParcelListViewCommand { get; set; }
         public DisplayViewModel()
         {
             bl = BlApi.BlFactory.GetBl();
@@ -26,6 +27,7 @@ namespace PL.ViewModels
         }
         private void ShowParcelListView(object obj)
         {
+            MessageBox.Show("hereh");
             new ParcelListView(new ParcelListViewModel(bl)).Show();
         }
 
