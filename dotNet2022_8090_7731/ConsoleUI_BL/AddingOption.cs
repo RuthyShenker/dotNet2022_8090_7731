@@ -17,7 +17,7 @@ namespace ConsoleUI_BL
             switch ((Adding)input)
             {
                 case Adding.BaseStation:
-                    bL.AddingBaseStation(GettingNewBaseStation());
+                    AddingNewBaseStation();
                     break;
 
                 case Adding.Drone:
@@ -99,7 +99,7 @@ namespace ConsoleUI_BL
         /// A function that gets details from the user and create a new Station of bl and returns it.
         /// </summary>
         /// <returns>Station ,type=bl</returns>
-        private static Station GettingNewBaseStation()
+        private static void AddingNewBaseStation()
         {
             Console.WriteLine("Enter the id of the new base station: ");
             int id = CheckValids.InputNumberValidity("id");
@@ -110,12 +110,11 @@ namespace ConsoleUI_BL
             double longitude = CheckValids.InputDoubleValidity("longitude");
             Console.WriteLine("latitude: ");
             double latitude = CheckValids.InputDoubleValidity("latitude");
-            Location sLocation = new Location(longitude, latitude);
             Console.WriteLine("Enter the number of positions of the new base station: ");
             ///●	מספר עמדות טעינה (פנויות) - כל העמדות פנויות בהוספה
             int numAvailablePositions = CheckValids.InputNumberValidity("number of positions");
 
-            return new Station(id, nameStation, sLocation, numAvailablePositions);
+            bl.AddingBaseStation(id, nameStation, longitude, latitude, numAvailablePositions);
         }
 
         /// <summary>

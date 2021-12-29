@@ -13,13 +13,20 @@ namespace PL
         public RelayCommand<object> AddStationCommand { get; set; }
         public AddStationViewModel()
         {
-            AddStationCommand = new RelayCommand<object>(AddStation, param => station.Error == null);
+            AddStationCommand = new RelayCommand<object>(AddStation, param => station.Error == "");
         }
 
         private void AddStation(object obj)
         {
-            MessageBox.Show("Add station");
-            //BlApi.BlFactory.GetBl().AddingBaseStation(station)
+            StationToAdd station = ((AddStationViewModel)obj).station;
+
+            BlApi.BlFactory.GetBl().AddingBaseStation(
+                (int)station.Id,
+                station.Name,
+                (double)station.Longitude,
+                (double)station.Latitude,
+                (int)station.NumPositions
+                );
         }
     }
 }

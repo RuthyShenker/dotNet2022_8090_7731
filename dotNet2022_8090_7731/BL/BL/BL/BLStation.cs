@@ -15,19 +15,20 @@ namespace BL
         /// the function doesn't return anything.
         /// </summary>
         /// <param name="bLStation"></param>
-        public void AddingBaseStation(Station bLStation)
+        //public void AddingBaseStation(Station bLStation)
+        public void AddingBaseStation(int id, string name, double longitude, double latitude, int numPositions)
         {
-            if (dal.IsIdExistInList<DO.BaseStation>(bLStation.Id))
+            if (dal.IsIdExistInList<DO.BaseStation>(id))
             {
-                throw new IdIsAlreadyExistException(typeof(DO.BaseStation), bLStation.Id);
+                throw new IdIsAlreadyExistException(typeof(DO.BaseStation), id);
             }
             DO.BaseStation station = new DO.BaseStation()
             {
-                Id = bLStation.Id,
-                Latitude = bLStation.Location.Latitude,
-                Longitude = bLStation.Location.Longitude,
-                NameStation = bLStation.NameStation,
-                NumberOfChargingPositions = bLStation.NumAvailablePositions
+                Id = id,
+                Latitude = latitude,
+                Longitude = longitude,
+                NameStation = name,
+                NumberOfChargingPositions = numPositions
             };
             dal.Add(station);
         }
