@@ -118,7 +118,7 @@ namespace Dal
                 DroneList.Add(new Drone()
                 {
                     Id = Rand.Next(100000000, 1000000000),
-                    Model = $"Boing{Rand.Next(1000, 10000)}",
+                    Model = Rand.Next(1000, 10000).ToString(),
                     MaxWeight = (WeightCategories)Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length),
                 });
             }
@@ -130,14 +130,16 @@ namespace Dal
             string[] initDigitsPhone = { "0556", "0548", "0583", "0533", "0527", "0522", "0505", "0584" };
             for (int i = 0; i < INITIALIZE_CUSTOMER; i++)
             {
-                CustomerList.Add(new Customer()
+                var customer=new Customer()
                 {
                     Id = Rand.Next(100000000, 1000000000),
                     Name = initNames[Rand.Next(0, initNames.Length)],
-                    Phone = initDigitsPhone[Rand.Next(0, initDigitsPhone.Length)] += Rand.Next(100000, 1000000).ToString(),
+                    Phone = initDigitsPhone[Rand.Next(0, initDigitsPhone.Length)],
                     Longitude = Rand.Next(-90, 90) + Rand.NextDouble(),
                     Latitude = Rand.Next(-90, 90) + Rand.NextDouble()
-                });
+                };
+                customer.Phone += (Rand.Next(100000, 1000000)).ToString();
+            CustomerList.Add(customer);
             }
         }
 

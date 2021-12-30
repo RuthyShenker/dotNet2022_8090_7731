@@ -174,6 +174,18 @@ namespace BL
                 throw new IdIsNotExistException(typeof(Customer), customerId);
             }
         }
+        public string DeleteCustomer(int customerId)
+        {
+            try
+            {
+                dal.Remove<DO.Customer>(dal.GetFromDalById<DO.Customer>(customerId));
+            }
+            catch (DO.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(DO.Customer), customerId);
+            }
+            return $"The Customer with Id: {customerId} was successfully removed from the system";
+        }
 
         /// <summary>
         /// A function that gets an object of IDAL.DO.Customer

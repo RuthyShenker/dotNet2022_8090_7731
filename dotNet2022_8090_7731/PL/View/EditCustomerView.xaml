@@ -5,45 +5,67 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="Margin" Value="0,15" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
+        </Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Margin" Value="0,15" />
+        </Style>
+
+    </UserControl.Resources>
     <StackPanel>
-        <TextBlock Text="Id:"/>
-        <TextBox Text="{Binding Customer.Id}"/>
 
-        <TextBlock Text="Name:"/>
-        <TextBox Text="{Binding Customer.Name}"/>
+        <TextBox Text="{Binding Customer.Id}" materialDesign:HintAssist.Hint="Id"/>
 
-        <TextBlock Text="Phone:"/>
-        <TextBox Text="{Binding Customer.Phone}"/>
 
-        <TextBlock Text="Longitude:"/>
-        <TextBox Text="{Binding Customer.Location.Longitude}"/>
+        <TextBox Text="{Binding Customer.Name}" materialDesign:HintAssist.Hint="Name"/>
 
-        <TextBlock Text="Latitude:"/>
-        <TextBox Text="{Binding Customer.Location.Latitude}"/>
 
-        <ListView Grid.Row="1" 
+        <TextBox Text="{Binding Customer.Phone}" materialDesign:HintAssist.Hint="Phone"/>
+
+
+        <TextBox Text="{Binding Customer.Location.Longitude}"
+                 materialDesign:HintAssist.Hint="Longitude"/>
+
+
+        <TextBox Text="{Binding Customer.Location.Latitude}" 
+                 materialDesign:HintAssist.Hint="Latitude"/>
+
+        <ListView Grid.Row="1" materialDesign:HintAssist.Hint="Parcels From Customer"
                   x:Name="ParcelsFromCustomerListView"
                   ItemsSource="{Binding Customer.LFromCustomer}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="ShowParcelOfCustomerCommand">
                     <i:InvokeCommandAction 
                         Command="{Binding ShowParcelOfCustomerCommand}"
-                        CommandParameter="{Binding ElementName=ParcelsFromCustomerListView, Path=SelectedItem}"/>
+                        CommandParameter="{Binding ElementName=ParcelsFromCustomerListView,
+                        Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ListView>
 
-        <ListView Grid.Row="1" 
+        
+        <ListView Grid.Row="1"  materialDesign:HintAssist.Hint="Parcels For Customer"
                   ItemsSource="{Binding Customer.LForCustomer}"
                   x:Name="ParcelsForCustomerListView">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="ShowParcelOfCustomerCommand">
                     <i:InvokeCommandAction 
                         Command="{Binding ShowParcelOfCustomerCommand}"
-                        CommandParameter="{Binding ElementName=ParcelsForCustomerListView, Path=SelectedItem}"/>
+                        CommandParameter="{Binding ElementName=ParcelsForCustomerListView,
+                        Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ListView>
+        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                    HorizontalAlignment="Center"
+                    Content="Update"
+                    Command="{Binding UpdateCustomerCommand}"/>
     </StackPanel>
 </UserControl>

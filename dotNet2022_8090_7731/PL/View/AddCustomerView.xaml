@@ -54,6 +54,10 @@
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
             materialDesign:HintAssist.Hint="Longitude" />
-        <Button Content="OK" Command="{Binding AddCustomerCommand}"/>
+
+        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                    HorizontalAlignment="Center"
+                    Content="ADD"
+                    Command="{Binding AddCustomerCommand}"/>
     </StackPanel>
 </UserControl>

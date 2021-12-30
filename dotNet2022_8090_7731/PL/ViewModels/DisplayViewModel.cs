@@ -10,7 +10,6 @@ using System.Windows;
 namespace PL
 {
 
-
     public class DisplayViewModel
     {
         BlApi.IBL bl;
@@ -22,7 +21,8 @@ namespace PL
         public RelayCommand<object> ParcelListViewCommand { get; set; }
         public DisplayViewModel(BlApi.IBL bl)
         {
-            bl = BlApi.BlFactory.GetBl();
+            this.bl = bl;
+            //נראה לי שזה לא אמור להיות כאן
             AddStationCommand = new RelayCommand<object>(AddingStation);
             CustomerListViewCommand = new RelayCommand<object>(ShowCustomerListView);
             DroneListViewCommand = new RelayCommand<object>(ShowDroneListView);

@@ -13,5 +13,6 @@ namespace BlApi
         void UpdatingCustomerDetails(int customerId, string newName, string newPhone);
         IEnumerable<CustomerToList> GetCustomers();
         Customer GetCustomer(int customerId);
+        string DeleteCustomer(int customerId);
     }
 }

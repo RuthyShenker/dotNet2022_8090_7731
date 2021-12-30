@@ -17,8 +17,6 @@ namespace PL.ViewModels
         public RelayCommand<object> AddCustomerCommand { get; set; }
         public RelayCommand<object> MouseDoubleCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
-      
-
 
         public CustomerListViewModel(BlApi.IBL bl)
         {

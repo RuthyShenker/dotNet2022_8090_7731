@@ -40,12 +40,32 @@ namespace PL.ViewModels
 
         private void DeleteCustomer(object obj)
         {
-          
+            try
+            {
+                var customer = obj as BO.Customer;
+                MessageBox.Show(bl.DeleteCustomer(customer.Id));
+                refreshCustomers();
+            }
+            catch (BO.IdIsNotExistException exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
         }
 
         private void UpdateCustomer(object obj)
         {
-            
+            try
+            {
+                var customer = obj as BO.Customer;
+                bl.UpdatingCustomerDetails(customer.Id,customer.Name,customer.Phone);
+                //TODO:
+                //MessageBox.Show("",,,);
+                refreshCustomers();
+            }
+            catch (BO.IdIsNotExistException exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
         }
 
         //private void RefreshCustomer()
