@@ -12,7 +12,7 @@
         <local:DisplayViewModel/>
     </Window.DataContext>-->
     <Window.Resources>
-        <DataTemplate DataType="{x:Type local:DisplayViewModel}">
+        <DataTemplate DataType="{x:Type ViewModels:DisplayViewModel}">
             <Views:DisplayView/>
         </DataTemplate>
     </Window.Resources>

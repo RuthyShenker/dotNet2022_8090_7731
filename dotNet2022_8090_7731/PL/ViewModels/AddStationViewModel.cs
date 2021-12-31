@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using PO;
-namespace PL
+namespace PL.ViewModels
 {
     public class AddStationViewModel
     {

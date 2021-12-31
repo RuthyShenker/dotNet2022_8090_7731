@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using BO;
 using PO;
-namespace PL
+namespace PL.ViewModels
 {
     public class EditDroneViewModel : INotifyPropertyChanged
     {
