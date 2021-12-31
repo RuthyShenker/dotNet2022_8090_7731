@@ -9,13 +9,13 @@ namespace PO
 {
     public class EditCustomer
     {
-        public EditCustomer(int id, string name, string phone, Location location,
+        public EditCustomer(int id, string name, string phone, double longitude, double latitude,
             IEnumerable<ParcelInCustomer> lFromCustomer,IEnumerable<ParcelInCustomer> lForCustomer)
         {
             Id = id;
             Name = name;
             Phone = phone;
-            Location = location;
+            Location = new Location(longitude,latitude);
             LFromCustomer =lFromCustomer;
             LForCustomer =lForCustomer;
         }

@@ -2,10 +2,32 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="ParcelListView" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <StackPanel Orientation="Vertical">
+        <ListView x:Name="ParcelList" ItemsSource="{Binding ParcelList}"  >
+            <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
+            <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction 
+                        Command="{Binding MouseDoubleCommand}"
+                        CommandParameter="{Binding ElementName=ParcelList, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </ListView>
+
+        <Button Content="ADD" Command="{Binding AddParcelCommand}"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                HorizontalAlignment="Center"/>
+
+        <Button x:Name="close_window" Content="Close:" 
+                Command="{Binding CloseWindowCommand }" 
+                CommandParameter="{Binding ElementName=close_window}"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                HorizontalAlignment="Center"/>
+    </StackPanel>
+
 </Window>

@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="DroneWindow" Height="450" Width="800" ><!--Closing="Window_Closing"-->
-    <StackPanel>
+        Title="DroneWindow" Height="450" Width="800" >
+    <!--Closing="Window_Closing"--><!--
+ <StackPanel>
         <ContentControl x:Name="DroneView" Content="{Binding }" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         
-    </StackPanel>
+    </StackPanel>-->
 </Window>
 

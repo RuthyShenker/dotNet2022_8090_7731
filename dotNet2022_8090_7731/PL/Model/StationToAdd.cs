@@ -9,7 +9,7 @@ using static PO.ValidityMessages;
 
 namespace PO
 {
-    class StationToAdd : ObservableBase, IDataErrorInfo
+    public class StationToAdd : ObservableBase, IDataErrorInfo
     {
         const int ID_LENGTH = 4;
 

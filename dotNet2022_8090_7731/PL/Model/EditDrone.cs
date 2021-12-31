@@ -11,7 +11,7 @@ namespace PO
     public class EditDrone
     {
         public EditDrone(int id, string model, WeightCategories weight, double batteryStatus, 
-            DroneStatus status, PO.Location location, ParcelInTransfer parcelInTransfer)
+            DroneStatus status, Location location, ParcelInTransfer parcelInTransfer)
         {
             Id = id;
             Model = model;

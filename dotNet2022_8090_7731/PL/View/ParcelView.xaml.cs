@@ -30,11 +30,11 @@ namespace PL.View
             this.DataContext = new AddParcelView(viewModel);
         }
 
-        public ParcelView(BlApi.IBL bl, Action refreshParcels, BO.Parcel selectedparcel)
+        public ParcelView(BlApi.IBL bl, Action refreshParcels, BO.Parcel selectedParcel)
         {
             InitializeComponent();
             //DroneView.DataContext= new EditDroneView(bl, initializeDrones, selectedDrone,Close);
-            var viewModel = new EditParcelViewModel(bl, selectedparcel, refreshParcels);
+            var viewModel = new EditParcelViewModel(bl, selectedParcel, refreshParcels);
             this.DataContext = new EditParcelView(viewModel);
         }
     }

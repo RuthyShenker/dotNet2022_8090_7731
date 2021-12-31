@@ -10,14 +10,11 @@ namespace PO
     {
         public double Longitude { get; set; }
         public double Latitude { get; set; }
-        public Location()
+        public Location(double latitude,double longitude)
         {
-
+            Latitude = latitude;
+            Longitude = longitude;
         }
-        public Location(BO.Location location)
-        {
-            Latitude = location.Latitude;
-            Longitude = location.Longitude;
-        }
+        public Location() { }
     }
 }

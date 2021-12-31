@@ -33,7 +33,7 @@ namespace PL.ViewModels
             set
             {
                 customerList = value;
-                RaisePropertyChanged(nameof(CustomerToList));
+                RaisePropertyChanged(nameof(CustomerList));
             }
         }
 

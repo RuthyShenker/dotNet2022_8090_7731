@@ -30,12 +30,14 @@ namespace PL.ViewModels
             //check validation:
             var blCustomer = Map(Customer);
             bl.AddCustomer(blCustomer);
+            var a= bl.GetCustomer(blCustomer.Id);
             refreshCustomer();
         }
 
         private BO.Customer Map(CustomerToAdd customer)
         {
-            return new BO.Customer(customer.Id, customer.Name, customer.Phone, new BO.Location(customer.Location.Longitude,customer.Location.Latitude));
+            return new BO.Customer(customer.Id, customer.Name, customer.Phone,
+                new BO.Location(customer.Location.Longitude,customer.Location.Latitude));
         }
     }
 }

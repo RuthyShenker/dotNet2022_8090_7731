@@ -7,7 +7,7 @@ using System.Windows;
 using PO;
 namespace PL
 {
-    class AddStationViewModel
+    public class AddStationViewModel
     {
         public StationToAdd station { get; set; } = new();
         public RelayCommand<object> AddStationCommand { get; set; }
