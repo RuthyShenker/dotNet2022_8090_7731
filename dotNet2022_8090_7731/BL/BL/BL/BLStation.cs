@@ -41,7 +41,7 @@ namespace BL
         /// <param name="stationId"></param>
         /// <param name="stationName"></param>
         /// <param name="amountOfPositions"></param>
-        public void UpdatingStationDetails(int stationId, string stationName, string amountOfPositions)
+        public void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions)
         {
             try
             {
@@ -50,8 +50,7 @@ namespace BL
                 if (!string.IsNullOrEmpty(stationName))
                     dal.Update<DO.BaseStation>(stationId, stationName, nameof(baseStation.NameStation));
 
-                if (!string.IsNullOrEmpty(amountOfPositions))
-                    dal.Update<DO.BaseStation>(stationId, int.Parse(amountOfPositions), nameof(baseStation.NumberOfChargingPositions));
+                dal.Update<DO.BaseStation>(stationId, amountOfPositions, nameof(baseStation.NumberOfChargingPositions));
             }
             catch (DO.IdIsNotExistException)
             {
@@ -69,15 +68,17 @@ namespace BL
         /// <returns>a new list of charging drone of BL of specific station</returns>
         private IEnumerable<ChargingDrone> ChargingDroneBLList(int sId)
         {
-           
-            var chargingDroneBLList =  Enumerable.Empty<ChargingDrone>();
+
+            var chargingDroneBLList = Enumerable.Empty<ChargingDrone>();
             var chargingDroneDalList = dal.GetDalListByCondition<DO.ChargingDrone>(charge => charge.StationId == sId);
             var chargingDrone = new ChargingDrone();
             foreach (var chargingPosition in chargingDroneDalList)
             {
                 chargingDrone.DroneId = chargingPosition.DroneId;
                 chargingDrone.BatteryStatus = lDroneToList.FirstOrDefault(drone => drone.Id == chargingDrone.DroneId).BatteryStatus;
-                chargingDroneBLList.Append(chargingDrone);
+                // TODO: the problem was that there werent use in the return Append. to check
+                // if there more places like that.
+                chargingDroneBLList = chargingDroneBLList.Append(chargingDrone);
             }
             return chargingDroneBLList;
         }
@@ -97,7 +98,7 @@ namespace BL
             var cCoord = new GeoCoordinate(location.Latitude, location.Longitude);
             var stationDalList = dal.GetListFromDal<DO.BaseStation>();
             GeoCoordinate sCoord;
-            double currDistance, minDistance=double.MaxValue;
+            double currDistance, minDistance = double.MaxValue;
             DO.BaseStation closetStation = stationDalList.ElementAt(0);
             for (int i = 0; i < stationDalList.Count(); ++i)
             {
@@ -108,16 +109,29 @@ namespace BL
                     if (!sendingToCharge)
                     {
                         minDistance = currDistance;
-                        closetStation= stationDalList.ElementAt(i);
+                        closetStation = stationDalList.ElementAt(i);
                     }
                     else if (GetNumOfAvailablePositionsInStation(stationDalList.ElementAt(i).Id) > 0)
                     {
                         minDistance = currDistance;
-                        closetStation =  stationDalList.ElementAt(i);
+                        closetStation = stationDalList.ElementAt(i);
                     }
                 }
             }
             return ConvertToBL(closetStation);
+        }
+
+        public string DeleteStation(int stationId)
+        {
+            try
+            {
+                dal.Remove(dal.GetFromDalById<DO.BaseStation>(stationId));
+            }
+            catch (DO.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(DO.BaseStation), stationId);
+            }
+            return $"Station with Id: {stationId} was successfully removed from the system";
         }
 
         //-----Get-----------------------------------------------
@@ -134,8 +148,8 @@ namespace BL
         /// <returns> returns Available Slots</returns>
         public IEnumerable<StationToList> AvailableSlots()
         {
-           return  dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) > 0)
-                .Select(station=> ConvertToList(station));
+            return dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) > 0)
+                 .Select(station => ConvertToList(station));
         }
 
         /// <summary>
@@ -185,7 +199,7 @@ namespace BL
         private int GetNumOfAvailablePositionsInStation(int stationId)
         {
             var station = dal.GetFromDalById<DO.BaseStation>(stationId);
-            int numOfChargingDroneInStation = dal.GetDalListByCondition<DO.ChargingDrone>(s=>s.StationId==stationId).Count();
+            int numOfChargingDroneInStation = dal.GetDalListByCondition<DO.ChargingDrone>(s => s.StationId == stationId).Count();
             return station.NumberOfChargingPositions - numOfChargingDroneInStation;
         }
     }

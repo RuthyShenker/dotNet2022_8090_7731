@@ -5,27 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Height="450" Width="800">
-    <Grid>
+    <StackPanel>
         <!--<ContentControl x:Name="DroneView" Content="{Binding }" ScrollViewer.VerticalScrollBarVisibility="Auto"/>-->
 
-        <Button Content="ParcelList:" VerticalAlignment="Stretch"
+        <Button Content="ParcelList:" VerticalAlignment="Top"
                 Height="46" Width="92" 
                 Command="{Binding ParcelListViewCommand}"/>
 
-        <Button Content="DroneList:" VerticalAlignment="Top"
+        <Button Content="DroneList:" VerticalAlignment="Stretch"
                 Height="46" Width="92" 
                 Command="{Binding DroneListViewCommand}"/>
 
-        <Button Content="stationList:" VerticalAlignment="Bottom"
+        <Button Content="stationList:" VerticalAlignment="Stretch"
                 Height="46" Width="92" 
                 Command="{Binding StationListViewCommand}"/>
 
-        <Button Content="CustomerList:" VerticalAlignment="Top"
+        <Button Content="CustomerList:" VerticalAlignment="Bottom"
                  Height="46" Width="92" 
                 Command="{Binding CustomerListViewCommand}" Margin="0,90,0,0" />
 
-        <Button Content="Add station:" VerticalAlignment="Stretch"
-                 Height="46" Width="92" 
-                Command="{Binding AddStationCommand}" Margin="0,90,0,0" />
-    </Grid>
+    </StackPanel>
 </UserControl>

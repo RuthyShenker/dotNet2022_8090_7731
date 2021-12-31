@@ -61,7 +61,7 @@ namespace BL
                 if (parcel.Arrival.HasValue)
                 {
                     customer = customersDalList.First(customer => customer.Id == parcel.GetterId);
-                    wantedCustomersList.Append(ConvertToBL(customer));
+                    wantedCustomersList = wantedCustomersList.Append(ConvertToBL(customer));
                 }
             }
             return wantedCustomersList;
@@ -178,7 +178,7 @@ namespace BL
         {
             try
             {
-                dal.Remove<DO.Customer>(dal.GetFromDalById<DO.Customer>(customerId));
+                dal.Remove(dal.GetFromDalById<DO.Customer>(customerId));
             }
             catch (DO.IdIsNotExistException)
             {

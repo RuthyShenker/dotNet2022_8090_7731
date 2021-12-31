@@ -26,7 +26,7 @@ namespace ConsoleUI_BL
                 case Updating.StationDetails:
                     int stationId = 0;
                     string stationName;
-                    string amountOfPositions;
+                    int amountOfPositions;
                     GetDetailsOfStation(out stationId, out stationName, out amountOfPositions);
                     bL.UpdatingStationDetails(stationId, stationName, amountOfPositions);
                     break;
@@ -140,14 +140,14 @@ namespace ConsoleUI_BL
         /// <param name="stationId"></param>
         /// <param name="stationName"></param>
         /// <param name="amountOfPositions"></param>
-        private static void GetDetailsOfStation(out int stationId, out string stationName, out string amountOfPositions)
+        private static void GetDetailsOfStation(out int stationId, out string stationName, out int amountOfPositions)
         {
             Console.WriteLine("Enter the id of the base station: ");
             stationId = CheckValids.InputNumberValidity("id");
             Console.WriteLine("Enter the name of the of the station: ");
             stationName = CheckValids.InputNameValidity();
             Console.WriteLine("Enter the number of all the positions: ");
-            amountOfPositions = Console.ReadLine();
+            amountOfPositions = CheckValids.InputNumberValidity("number of positions");
         }
 
         /// <summary>

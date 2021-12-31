@@ -11,9 +11,10 @@ namespace BlApi
     {
         public void AddingBaseStation(int id, string name, double longitude, double latitude, int numPositions);
 
-        void UpdatingStationDetails(int stationId, string stationName, string amountOfPositions);
+        void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions);
         IEnumerable<StationToList> GetStations();
         IEnumerable<StationToList> AvailableSlots();
         Station GetStation(int stationId);
+        string DeleteStation(int stationId);
     }
 }

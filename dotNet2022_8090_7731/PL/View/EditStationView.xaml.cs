@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,19 +11,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PL
+namespace PL.View
 {
     /// <summary>
-    /// Interaction logic for Station.xaml
+    /// Interaction logic for EditStation.xaml
     /// </summary>
-    public partial class Station : Window
+    public partial class EditStationView : UserControl
     {
-        public Station()
+        public EditStationView(EditStationViewModel viewModel)
         {
             InitializeComponent();
-            Stationt.DataContext = new AddStationView();
+            DataContext = viewModel;
         }
     }
 }

@@ -1,12 +1,12 @@
-﻿<Window x:Class="PL.Station"
+﻿<Window x:Class="PL.View.StationView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL"
+        xmlns:local="clr-namespace:PL.View"
         mc:Ignorable="d"
-        Title="Station" Height="450" Width="800">
-    <Grid>
-        <ContentControl x:Name = "Stationt" Content = "{Binding}" ScrollViewer.VerticalScrollBarVisibility = "Auto" />
-    </Grid>
+        Title="StationView" Height="450" Width="800">
+    <StackPanel>
+        <ContentControl  Content="{Binding }" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+    </StackPanel>
 </Window>
