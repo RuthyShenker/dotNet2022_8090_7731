@@ -13,9 +13,9 @@ namespace PO
     //https://stackoverflow.com/questions/52157249/check-the-entered-value-in-textboxes-are-double-number-in-wpf/52157968
     public abstract class ObservableBase : INotifyPropertyChanged
     {
-        public void Set<TValue>(ref TValue field, TValue newValue, [CallerMemberName] string propertyName = "")
+        public void Set<T>(ref T field, T newValue, [CallerMemberName] string propertyName = "")
         {
-            if (!EqualityComparer<TValue>.Default.Equals(field, default(TValue)) && field.Equals(newValue)) return;
+            if (!EqualityComparer<T>.Default.Equals(field, default(T)) && field.Equals(newValue)) return;
             field = newValue;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

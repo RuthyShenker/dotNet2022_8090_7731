@@ -34,7 +34,8 @@ namespace PO
             set
             {
                 Set(ref _name, value);
-                validityMessages["Name"] = StringMessage(value);
+                validityMessages["Name"] = value is null or "" ? "" :
+                                                                StringMessage(value);
             }
         }
 
