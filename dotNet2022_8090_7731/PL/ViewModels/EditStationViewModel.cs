@@ -20,6 +20,8 @@ namespace PL.ViewModels
         public RelayCommand<object> UpdateStationCommand { get; set; }
         public RelayCommand<object> DeleteStationCommand { get; set; }
 
+        public RelayCommand<object> MouseDoubleCommand { get; set; }
+
         public RelayCommand<object> ShowDroneInStationCommand { get; set; }
         //public RelayCommand<object> ShowParcelOfCustomerCommand { get; set; }
 
@@ -31,7 +33,9 @@ namespace PL.ViewModels
             CloseWindowCommand = new RelayCommand<object>(Close_Window);
             UpdateStationCommand = new RelayCommand<object>(UpdateStation);
             DeleteStationCommand = new RelayCommand<object>(DeleteStation);
-            ShowDroneInStationCommand = new RelayCommand<object>(MouseDoubleClick);
+            MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
+
+            //ShowDroneInStationCommand = new RelayCommand<object>(MouseDoubleClick);
         }
 
         private void DeleteStation(object obj)
@@ -62,6 +66,10 @@ namespace PL.ViewModels
             try
             {
                 var station = obj as BO.Station;
+                if (station.NameStation==null&&station.NumAvailablePositions==0)
+                {
+                    MessageBox.Show("");
+                }
                 bl.UpdatingStationDetails(station.Id, station.NameStation, station.NumAvailablePositions);
                 //TODO:
                 //MessageBox.Show("",,,);  ?

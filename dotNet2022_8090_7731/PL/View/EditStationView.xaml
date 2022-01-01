@@ -19,7 +19,7 @@
             <Setter Property="Width" Value="200" />
             <!--<Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />-->
         </Style>
-        
+
         <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="200" />
@@ -35,12 +35,18 @@
         <TextBox Text="{Binding Station.Id}" 
                  materialDesign:HintAssist.Hint="Id" 
                  IsEnabled="False"/>
-      
-        <TextBox Text="{Binding Station.Name}" 
+
+        <TextBox Text="{Binding Station.Name, 
+                                ValidatesOnDataErrors=true,
+                                NotifyOnValidationError=true,
+                                UpdateSourceTrigger=PropertyChanged}" 
                  materialDesign:HintAssist.Hint="Name" 
                 materialDesign:TextFieldAssist.HasClearButton="True"/>
 
-        <TextBox Text="{Binding Station.NumAvailablePositions}"
+        <TextBox Text="{Binding Station.NumAvailablePositions,
+                                ValidatesOnDataErrors=true,
+                                NotifyOnValidationError=true,
+                                UpdateSourceTrigger=PropertyChanged}"
                  materialDesign:HintAssist.Hint="Available"
                  materialDesign:TextFieldAssist.HasClearButton="True" />
 
@@ -51,47 +57,21 @@
         <TextBox Text="{Binding Station.Location.Latitude}" 
                  materialDesign:HintAssist.Hint="Latitude"
                  IsEnabled="False"/>
-            
-        <ListView  materialDesign:HintAssist.Hint="Drones in station"
-                   x:Name="DronesInStationListView"
-                  ItemsSource="{Binding Station.ListChargingDrone}"
-                   DisplayMemberPath="DroneId"
-                   IsSynchronizedWithCurrentItem="True">
+
+        <ListView x:Name="DronesInStationListView"  ItemsSource="{Binding Station.ListChargingDrone}">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="ShowDroneInStationCommand">
+                <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 
-                        Command="{Binding Station.ShowDroneInStationCommand}"
-                        CommandParameter="{Binding 
-                        Path=SelectedItem}"/>
+                        Command="{Binding MouseDoubleCommand}"
+                        CommandParameter="{Binding ElementName=DronesInStationListView, Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ListView>
-        <!--<ComboBox Grid.Row="1" Grid.Column="1" 
-             ItemsSource="{Binding Projects}" 
-             DisplayMemberPath="ProjectName"  
-             SelectedItem="{Binding SelectedProject, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-             IsSynchronizedWithCurrentItem="True">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding ProjectSelectionChangedCommand}"></i:InvokeCommandAction>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </ComboBox>-->
-        <!--<ListView Grid.Row="1"  materialDesign:HintAssist.Hint="Parcels For Customer"
-                  ItemsSource="{Binding Customer.LForCustomer}"
-                  x:Name="ParcelsForCustomerListView">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="ShowParcelOfCustomerCommand">
-                    <i:InvokeCommandAction 
-                        Command="{Binding ShowParcelOfCustomerCommand}"
-                        CommandParameter="{Binding ElementName=ParcelsForCustomerListView,
-                        Path=SelectedItem}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </ListView>-->
+
         <Button Style="{StaticResource MaterialDesignFlatButton}"
                     HorizontalAlignment="Center"
                     Content="Update"
                     Command="{Binding UpdateStationCommand}"/>
+        
     </StackPanel>
 </UserControl>

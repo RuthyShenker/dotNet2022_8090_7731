@@ -23,16 +23,16 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _id, null);
-                    validityMessages["Id"] = IntMessage(_id);
+                    validityMessages["Id"] = IdMessage(_id);
                 }
                 else if (valid)
                 {
                     Set(ref _id, Convert.ToInt32(value));
-                    validityMessages["Id"] = IntMessage(_id, ID_LENGTH);
+                    validityMessages["Id"] = IdMessage(_id, ID_LENGTH);
                 }
                 else
                 {
-                    validityMessages["Id"] = IntMessage("invalid input");
+                    validityMessages["Id"] = IdMessage("invalid input");
                 }
                 //RaisePropertyChanged("Id");
             }
@@ -47,7 +47,8 @@ namespace PO
             set
             {
                 Set(ref _model, value);
-                validityMessages["Model"] = StringMessage(value);
+                validityMessages["Model"] = value is null or "" ? RequiredMessage() :
+                                                                StringMessage(value);
             }
         }
 

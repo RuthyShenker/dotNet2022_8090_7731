@@ -24,16 +24,16 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _id, null);
-                    validityMessages["Id"] = IntMessage(_id);
+                    validityMessages["Id"] = IdMessage(_id);
                 }
                 else if (valid)
                 {
                     Set(ref _id, Convert.ToInt32(value));
-                    validityMessages["Id"] = IntMessage(_id, ID_LENGTH);
+                    validityMessages["Id"] = IdMessage(_id, ID_LENGTH);
                 }
                 else
                 {
-                    validityMessages["Id"] = IntMessage("invalid input");
+                    validityMessages["Id"] = IdMessage("invalid input");
                 }
                 //RaisePropertyChanged("Id");
             }
@@ -48,7 +48,8 @@ namespace PO
             set
             {
                 Set(ref name, value);
-                validityMessages["Name"] = StringMessage(value);
+                validityMessages["Name"] = value is null or "" ? RequiredMessage() :
+                                                                StringMessage(value);
             }
         }
 
@@ -114,16 +115,16 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _numPositions, null);
-                    validityMessages["NumPositions"] = IntMessage(_numPositions);
+                    validityMessages["NumPositions"] = IdMessage(_numPositions);
                 }
                 else if (valid)
                 {
                     Set(ref _numPositions, Convert.ToInt32(value));
-                    validityMessages["NumPositions"] = IntMessage(_numPositions);
+                    validityMessages["NumPositions"] = IdMessage(_numPositions);
                 }
                 else
                 {
-                    validityMessages["NumPositions"] = IntMessage("invalid input");
+                    validityMessages["NumPositions"] = IdMessage("invalid input");
                 }
             }
 

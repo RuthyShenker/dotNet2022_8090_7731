@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PO
 {
     public class ValidityMessages
     {
-        public static string IntMessage(object value, int length = 0)
+        public static string IdMessage(object value, int length = 0)
         {
             int maxLength = (int)Math.Pow(10, length);
             return value switch
@@ -21,10 +22,16 @@ namespace PO
         }
         public static string StringMessage(string value)
         {
-            return (value == "" || value == null) ? "Feild is required" :
-                   !value.All(c => char.IsLetter(c)) ? "Name has to contain letters only" :
+            return !Regex.IsMatch(value, @"^[a-zA-Z-\s]+$") ? "Name has to contain letters only" :
                    "";
         }
+        public static string IntMessage(object value)
+        {
+            return !Regex.IsMatch(value.ToString(), @"^[0-9]+$") ? "Name has to contain digits only" :
+                   "";
+        }
+
+        public static string RequiredMessage() => "Feild is required";
 
         public static string LocationMessage(object value, int min = 0, int max = 0)
         {
