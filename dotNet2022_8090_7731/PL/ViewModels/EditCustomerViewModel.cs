@@ -35,7 +35,7 @@ namespace PL.ViewModels
         {
             var parcel = obj as BO.ParcelInCustomer;
             var blParcel = bl.GetParcel(parcel.Id);
-            //new ParcelView(bl,refreshParcelList,blParcel).Show();
+            //new ParcelView(bl, refreshParcelList, blParcel).Show();
         }
 
         private void DeleteCustomer(object obj)

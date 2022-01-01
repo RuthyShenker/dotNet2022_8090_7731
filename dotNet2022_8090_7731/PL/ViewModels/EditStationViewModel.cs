@@ -12,6 +12,7 @@ namespace PL.ViewModels
 {
     public class EditStationViewModel : INotifyPropertyChanged
     {
+        Drone Drone;
         BlApi.IBL bl;
         Action refreshStations;
         EditStation station;
@@ -49,9 +50,10 @@ namespace PL.ViewModels
 
         private void MouseDoubleClick(object obj)
         {
+            MessageBox.Show("herehhhh");
             var station = obj as BO.Station;
             var dronesList = station.LBL_ChargingDrone;
-            //var blParcel = bl.GetParcel(parcel.Id);
+            //var bldrone = bl.GetParcel(parcel.Id);
             //new ParcelView(bl, refreshParcelList, blParcel).Show();
         }
 

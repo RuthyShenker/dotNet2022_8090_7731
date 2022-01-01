@@ -52,20 +52,31 @@
                  materialDesign:HintAssist.Hint="Latitude"
                  IsEnabled="False"/>
 
-        <ComboBox  materialDesign:HintAssist.Hint="Drones in station"
+        <ListView  materialDesign:HintAssist.Hint="Drones in station"
                    x:Name="DronesInStationListView"
-                  ItemsSource="{Binding Station.ListChargingDrone}">
+                  ItemsSource="{Binding Station.ListChargingDrone}"
+                   DisplayMemberPath="DroneId"
+                   IsSynchronizedWithCurrentItem="True">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="ShowDronesInStationCommand">
+                <i:EventTrigger EventName="ShowDroneInStationCommand">
                     <i:InvokeCommandAction 
-                        Command="{Binding ShowDroneInStationCommand}"
-                        CommandParameter="{Binding ElementName=DronesInStationListView,
+                        Command="{Binding Station.ShowDroneInStationCommand}"
+                        CommandParameter="{Binding 
                         Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-        </ComboBox>
-             
-
+        </ListView>
+        <!--<ComboBox Grid.Row="1" Grid.Column="1" 
+             ItemsSource="{Binding Projects}" 
+             DisplayMemberPath="ProjectName"  
+             SelectedItem="{Binding SelectedProject, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+             IsSynchronizedWithCurrentItem="True">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding ProjectSelectionChangedCommand}"></i:InvokeCommandAction>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ComboBox>-->
         <!--<ListView Grid.Row="1"  materialDesign:HintAssist.Hint="Parcels For Customer"
                   ItemsSource="{Binding Customer.LForCustomer}"
                   x:Name="ParcelsForCustomerListView">
