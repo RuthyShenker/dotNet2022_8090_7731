@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PL.ViewModels
 {
@@ -15,22 +16,27 @@ namespace PL.ViewModels
         Action refreshParcels;
         EditParcel parcel;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
+        public RelayCommand<object> UpdateParcelCommand { get; set; }
+        public RelayCommand<object> CloseWindowCommand { get; set; }
+        
         public EditParcelViewModel(BlApi.IBL bl, BO.Parcel parcel, Action refreshParcels)
         {
             this.bl = bl;
             Parcel = Map(parcel);
             this.refreshParcels = refreshParcels;
-            //CloseWindowCommand = new RelayCommand<object>(Close_Window);
-            //UpdateModelOfDroneCommand = new RelayCommand<object>(UpdateDroneModel);
-            //ChargeDroneCommand = new RelayCommand<object>(SendOrReleaseDroneFromCharging);
-            //AssignParcelToDroneCommand = new RelayCommand<object>(SendOrPickOrArrivalDrone);
+            UpdateParcelCommand = new RelayCommand<object>(UpdateParcel);
+            CloseWindowCommand = new RelayCommand<object>(Close_Window);
+        }
+
+        private void UpdateParcel(object obj)
+        {
+
         }
 
         private EditParcel Map(Parcel parcel)
         {
-            return new EditParcel();
+            return new EditParcel(parcel.Id, parcel.Sender, parcel.Getter, parcel.Weight, parcel.MPriority, parcel.DInParcel,
+                parcel.MakingParcel, parcel.BelongParcel, parcel.PickingUp, parcel.Arrival);
         }
         public EditParcel Parcel
         {
@@ -45,5 +51,19 @@ namespace PL.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private void RefreshParcel()
+        {
+            refreshParcels();
+            Parcel = Map(bl.GetParcel(Parcel.Id));
+        }
+
+        private void Close_Window(object sender)
+        {
+            Window.GetWindow((DependencyObject)sender).Close();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
     }
 }

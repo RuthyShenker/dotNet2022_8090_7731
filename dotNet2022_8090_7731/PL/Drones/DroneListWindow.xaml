@@ -7,8 +7,8 @@
         xmlns:BO="clr-namespace:BO;assembly=BL"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="DroneListWindow" Height="640" Width="800" Closing="Window_Closing">
-    <Window.Resources>
+        Title="DroneListWindow" Height="640" Width="800" ><!--Closing="Window_Closing"-->
+    <!--<Window.Resources>
         <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -53,13 +53,14 @@ SelectedItem="{Binding WeightSelectedItem}"
                 <DataTemplate>
                     <ContentControl Content="{Binding }" />
 
-                    <!--<ContentControl Content="{Binding }" MouseDoubleClick="ContentControl_MouseDoubleClick"/>-->
+                    --><!--<ContentControl Content="{Binding }" MouseDoubleClick="ContentControl_MouseDoubleClick"/>--><!--
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <!--<Button Content="AddDrone:" Margin="645,451,45,47" Grid.Row="1" Click="button_AddingDrone_Click">
+        --><!--<Button Content="AddDrone:" Margin="645,451,45,47" Grid.Row="1" Click="button_AddingDrone_Click">
         </Button>
         <Button Content="close" Margin="486,451,203,47" Grid.Row="1" Click="button_Close_Click">
-        </Button>-->
-    </Grid>
+        </Button>--><!--
+    </Grid>-->
+    <Grid></Grid>
 </Window>

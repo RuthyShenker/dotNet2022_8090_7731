@@ -42,8 +42,7 @@ namespace PL.ViewModels
         {
             try
             {
-                var customer = obj as BO.Customer;
-                MessageBox.Show(bl.DeleteCustomer(customer.Id));
+                MessageBox.Show(bl.DeleteCustomer(Customer.Id));
                 refreshCustomers();
             }
             catch (BO.IdIsNotExistException exception)
@@ -56,8 +55,7 @@ namespace PL.ViewModels
         {
             try
             {
-                var customer = obj as BO.Customer;
-                bl.UpdatingCustomerDetails(customer.Id,customer.Name,customer.Phone);
+                bl.UpdatingCustomerDetails(Customer.Id,Customer.Name,Customer.Phone);
                 //TODO:
                 //MessageBox.Show("",,,);
                 refreshCustomers();
@@ -76,7 +74,8 @@ namespace PL.ViewModels
 
         private EditCustomer Map(BO.Customer customer)
         {
-            return new EditCustomer(customer.Id,customer.Name,customer.Phone,new PO.Location(customer.Location),
+            return new EditCustomer(customer.Id,customer.Name,customer.Phone,
+                customer.Location.Longitude, customer.Location.Latitude,
                 customer.LFromCustomer,customer.LForCustomer);
         }
 

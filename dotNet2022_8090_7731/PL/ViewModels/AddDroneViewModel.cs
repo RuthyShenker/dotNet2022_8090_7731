@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace PL
+namespace PL.ViewModels
 {
     public class AddDroneViewModel
     {

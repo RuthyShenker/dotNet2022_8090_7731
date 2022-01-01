@@ -4,10 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="CustomerListView" Height="450" Width="800">
+    <!--<StackPanel>-->
     <StackPanel Orientation="Vertical">
-        <ListView x:Name="CustomerList" ItemsSource="{Binding CustomerList}" >
+        <ListView x:Name="CustomerList" ItemsSource="{Binding CustomerList}"  
+            ><!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
+            <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 
@@ -15,11 +19,20 @@
                         CommandParameter="{Binding ElementName=CustomerList, Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+        
+            <!--<i:Interaction.Behaviors>
+                <i:EventTriggerBehavior
+             EventName="RightTapped">
+                    <i:InvokeCommandAction
+                  Command="{Binding YourCommand}"
+                  CommandParameter="{Binding ElementName=CustomerList, Path=SelectedItem}"/>
+            </i:Interaction.Behaviors>-->
         </ListView>
 
-            <Button Content="AddCustomer:" Command="{Binding AddCustomerCommand}"
+        <Button Content="AddCustomer:" Command="{Binding AddCustomerCommand}"
                     Style="{StaticResource MaterialDesignFlatButton}"
                 HorizontalAlignment="Center"/>
+        
         <Button x:Name="close_window" Content="Close:" 
                 Command="{Binding CloseWindowCommand }" 
                 CommandParameter="{Binding ElementName=close_window}"
@@ -27,3 +40,78 @@
                 HorizontalAlignment="Center"/>
     </StackPanel>
 </Window>
+        <!--<Grid
+  MinWidth="220">
+            <Grid.RowDefinitions>
+                <RowDefinition
+      Height="*" />
+                <RowDefinition
+      Height="Auto" />
+            </Grid.RowDefinitions>
+            <TreeView
+    Grid.Row="0"
+    ItemsSource="{Binding MovieCategories}"
+    MinWidth="220"
+    SelectedItemChanged="TreeView_SelectedItemChanged">
+                <TreeView.Resources>
+                    <Style
+        TargetType="TreeViewItem"
+        BasedOn="{StaticResource MaterialDesignTreeViewItem}">
+                        <Setter
+          Property="materialDesign:TreeViewAssist.ExpanderSize"
+          Value="32" />
+                        <Setter
+          Property="materialDesign:TreeViewAssist.ShowSelection"
+          Value="False" />
+                    </Style>
+                    <HierarchicalDataTemplate
+        DataType="{x:Type domain:MovieCategory}"
+        ItemsSource="{Binding Movies}">
+                        <TextBlock
+          Text="{Binding Name}"
+          Margin="3,2" />
+                    </HierarchicalDataTemplate>
+                    <DataTemplate
+        DataType="{x:Type domain:Movie}">
+                        <TextBlock
+          Text="{Binding Name}"
+          Margin="3 2"
+          ToolTip="{Binding Director}" />
+                    </DataTemplate>
+                </TreeView.Resources>
+            </TreeView>
+            <materialDesign:PopupBox
+    Grid.Row="1"
+    Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+    PlacementMode="LeftAndAlignMiddles"
+    UnfurlOrientation="Horizontal"
+    ToolTip="Manage items"
+    Margin="0 0 10 10"
+    HorizontalAlignment="Right"
+    VerticalAlignment="Bottom">
+                <StackPanel
+      Orientation="Horizontal">
+                    <Button
+        ToolTip="Add an item"
+        Command="{Binding AddCommand}">
+                        <Path
+          Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+          Stretch="Uniform"
+          Width="15"
+          Height="15"
+          Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" />
+                    </Button>
+                    <Button
+        ToolTip="Remove selected item"
+        Command="{Binding RemoveSelectedItemCommand}">
+                        <Path
+          Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+          Stretch="Uniform"
+          Width="15"
+          Height="15"
+          Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" />
+                    </Button>
+                </StackPanel>
+            </materialDesign:PopupBox>
+        </Grid>
+    </StackPanel>-->

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using BO;
 using PO;
-namespace PL
+namespace PL.ViewModels
 {
     public class EditDroneViewModel : INotifyPropertyChanged
     {
@@ -127,7 +127,8 @@ namespace PL
         private EditDrone Map(Drone drone)
         {
             return new EditDrone(drone.Id, drone.Model, drone.Weight, drone.BatteryStatus,
-                drone.DroneStatus, new PO.Location(drone.CurrLocation), drone.PInTransfer);
+                drone.DroneStatus, new PO.Location(drone.CurrLocation.Latitude, drone.CurrLocation.Longitude)
+                , drone.PInTransfer);
         }
 
         public EditDrone Drone

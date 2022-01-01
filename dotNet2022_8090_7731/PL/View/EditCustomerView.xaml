@@ -21,23 +21,34 @@
     </UserControl.Resources>
     <StackPanel>
 
-        <TextBox Text="{Binding Customer.Id}" materialDesign:HintAssist.Hint="Id"/>
+        <TextBox Text="{Binding Customer.Id}" materialDesign:HintAssist.Hint="Id"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
+                 VerticalAlignment="Center"/>
 
 
-        <TextBox Text="{Binding Customer.Name}" materialDesign:HintAssist.Hint="Name"/>
+        <TextBox Text="{Binding Customer.Name}" materialDesign:HintAssist.Hint="Name"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
+                 VerticalAlignment="Center"/>
 
 
-        <TextBox Text="{Binding Customer.Phone}" materialDesign:HintAssist.Hint="Phone"/>
+        <TextBox Text="{Binding Customer.Phone}"
+                 materialDesign:HintAssist.Hint="Phone"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
+                 VerticalAlignment="Center"/>
 
 
         <TextBox Text="{Binding Customer.Location.Longitude}"
-                 materialDesign:HintAssist.Hint="Longitude"/>
+                 materialDesign:HintAssist.Hint="Longitude"
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
+                 VerticalAlignment="Center"/>
 
+        <TextBox
+            materialDesign:HintAssist.Hint="Latitude"
+            Text="{Binding Customer.Location.Latitude}"
+             Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
+                 VerticalAlignment="Center"/>
 
-        <TextBox Text="{Binding Customer.Location.Latitude}" 
-                 materialDesign:HintAssist.Hint="Latitude"/>
-
-        <ListView Grid.Row="1" materialDesign:HintAssist.Hint="Parcels From Customer"
+        <ListView Grid.Row="1" 
                   x:Name="ParcelsFromCustomerListView"
                   ItemsSource="{Binding Customer.LFromCustomer}">
             <i:Interaction.Triggers>
@@ -51,7 +62,7 @@
         </ListView>
 
         
-        <ListView Grid.Row="1"  materialDesign:HintAssist.Hint="Parcels For Customer"
+        <ListView Grid.Row="1"  
                   ItemsSource="{Binding Customer.LForCustomer}"
                   x:Name="ParcelsForCustomerListView">
             <i:Interaction.Triggers>

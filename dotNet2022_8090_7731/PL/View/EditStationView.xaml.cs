@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:dotNet2022_8090_7731/PL/View/EditStationView.xaml.cs
 ﻿using PL.ViewModels;
+========
+﻿using PL.View;
+>>>>>>>> 8007f7459146c46af6ea81c15e73494ab0613a19:dotNet2022_8090_7731/PL/StationWindow.xaml.cs
 using System;
 using System.Collections.Generic;
 using System.Linq;

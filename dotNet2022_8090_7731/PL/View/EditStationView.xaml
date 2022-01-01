@@ -51,7 +51,7 @@
         <TextBox Text="{Binding Station.Location.Latitude}" 
                  materialDesign:HintAssist.Hint="Latitude"
                  IsEnabled="False"/>
-
+            
         <ListView  materialDesign:HintAssist.Hint="Drones in station"
                    x:Name="DronesInStationListView"
                   ItemsSource="{Binding Station.ListChargingDrone}"

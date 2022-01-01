@@ -20,7 +20,7 @@
             Text = "{Binding Customer.Id,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged }"
+            UpdateSourceTrigger=LostFocus }"
             materialDesign:HintAssist.Hint="Id" />
 
 

@@ -15,6 +15,6 @@ namespace PO
         public int Id { get; init; }
         public string Name { get; set; }
         public string Phone { get; set; }
-        public PO.Location Location { get; set; }
+        public Location Location { get; set; }
     }
 }

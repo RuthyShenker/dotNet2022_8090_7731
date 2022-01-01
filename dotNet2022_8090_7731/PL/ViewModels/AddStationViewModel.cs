@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using PO;
-namespace PL
+namespace PL.ViewModels
 {
-    class AddStationViewModel
+    public class AddStationViewModel
     {
         public StationToAdd station { get; set; } = new();
         public RelayCommand<object> AddStationCommand { get; set; }

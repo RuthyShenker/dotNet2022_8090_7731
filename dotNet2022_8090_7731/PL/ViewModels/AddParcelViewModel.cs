@@ -1,4 +1,5 @@
-﻿using PO;
+﻿using BO;
+using PO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace PL.ViewModels
         public ParcelToAdd Parcel { get; set; }
         BlApi.IBL bl;
         Action refreshParcels;
-      
+
         public RelayCommand<object> AddParcelCommand { get; set; }
 
         public AddParcelViewModel(BlApi.IBL bl, Action refreshParcels)
@@ -25,9 +26,21 @@ namespace PL.ViewModels
 
         private void AddParcel(object obj)
         {
-         
+            ////try
+            ////{
+            ////    bl.AddingParcel(Map(Parcel));
+            ////}
+            ////catch ()
+            ////{
+
+            ////}
         }
 
+        private Parcel Map(ParcelToAdd parcel)
+        {
+            return new Parcel(parcel.Id, parcel.Sender, parcel.Getter, parcel.Weight, parcel.MPriority, parcel.DInParcel, parcel.MakingParcel,
+                parcel.BelongParcel, parcel.PickingUp,parcel.Arrival);
+        }
     }
 }
 
