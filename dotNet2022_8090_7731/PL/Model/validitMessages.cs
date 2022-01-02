@@ -14,7 +14,7 @@ namespace PO
             int maxLength = (int)Math.Pow(10, length);
             return value switch
             {
-                null => "Feild is required",
+                null => "Field is required",
                 string => "Input must contain digits only",
                 > 10000 or < 1000 => "Input must contain 4 digits",
                 _ => "",
@@ -29,6 +29,16 @@ namespace PO
         {
             return !Regex.IsMatch(value.ToString(), @"^[0-9]+$") ? "Name has to contain digits only" :
                    "";
+        }
+        public static string PhoneMessage(string value)
+        {
+            return value switch
+            {
+                null => "Field is required",
+                !value.All(d => char.IsDigit(d)) => "Input must contain digits only",
+                value.Length !=10  => "Phone must contain 10 digits",
+                _ => "",
+            };
         }
 
         public static string RequiredMessage() => "Feild is required";

@@ -42,7 +42,7 @@ namespace BL
             }
             catch (DO.IdIsNotExistException)
             {
-                throw new IdIsNotExistException(typeof(DO.Customer), Id);
+                throw new IdIsNotExistException(typeof(Customer), Id);
             }
         }
         /// <summary>
@@ -76,7 +76,7 @@ namespace BL
         {
             if (dal.IsIdExistInList<DO.Customer>(bLCustomer.Id))
             {
-                throw new IdIsAlreadyExistException(typeof(DO.Customer), bLCustomer.Id);
+                throw new IdIsAlreadyExistException(typeof(Customer), bLCustomer.Id);
             }
 
             var newCustomer = new DO.Customer(bLCustomer.Id, bLCustomer.Name,
@@ -111,7 +111,7 @@ namespace BL
             }
             catch (DO.IdIsNotExistException)
             {
-                throw new IdIsNotExistException(typeof(DO.Customer), customerId);
+                throw new IdIsNotExistException(typeof(Customer), customerId);
             }
         }
 
@@ -182,7 +182,7 @@ namespace BL
             }
             catch (DO.IdIsNotExistException)
             {
-                throw new IdIsNotExistException(typeof(DO.Customer), customerId);
+                throw new IdIsNotExistException(typeof(Customer), customerId);
             }
             return $"The Customer with Id: {customerId} was successfully removed from the system";
         }

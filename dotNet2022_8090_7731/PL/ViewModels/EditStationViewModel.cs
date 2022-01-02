@@ -94,7 +94,8 @@ namespace PL.ViewModels
         private EditStation Map(BO.Station station)
         {
             return new EditStation(station.Id, station.NameStation, station.NumAvailablePositions, 
-               new PO.Location( station.Location.Latitude, station.Location.Longitude), station.LBL_ChargingDrone);
+               new PO.Location( station.Location.Latitude,
+               station.Location.Longitude), station.LBL_ChargingDrone);
         }
       
         private void Close_Window(object sender)
