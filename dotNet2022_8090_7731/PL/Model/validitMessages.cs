@@ -32,13 +32,17 @@ namespace PO
         }
         public static string PhoneMessage(string value)
         {
-            return value switch
-            {
-                null => "Field is required",
-                !value.All(d => char.IsDigit(d)) => "Input must contain digits only",
-                value.Length !=10  => "Phone must contain 10 digits",
-                _ => "",
-            };
+            return value == null ? "Field is required" : 
+                !value.All(d => char.IsDigit(d)) ? "Input must contain digits only" :
+                 value.Length != 10 ? "Phone must contain 10 digits":
+                "";
+            //return value switch
+            //{
+            //    null => "Field is required",
+            //    !value.All(d => char.IsDigit(d)) => "Input must contain digits only",
+            //    value.Length !=10  => "Phone must contain 10 digits",
+            //    _ => "",
+            //};
         }
 
         public static string RequiredMessage() => "Feild is required";
