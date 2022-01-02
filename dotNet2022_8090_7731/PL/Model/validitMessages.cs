@@ -22,7 +22,7 @@ namespace PO
         }
         public static string StringMessage(string value)
         {
-            return !Regex.IsMatch(value, @"^[a-zA-Z-\s]+$") ? "Name has to contain letters only" :
+            return !Regex.IsMatch(value, @"^[a-zA-Z\s]+$") ? "Name has to contain letters only" :
                    "";
         }
         public static string IntMessage(object value)

@@ -9,13 +9,13 @@ namespace PO
 {
     public class EditStation : ObservableBase, IDataErrorInfo
     {
-        public EditStation(int id, string name, int numAvailablePositions, Location location,
+        public EditStation(int id, string name, int numAvailablePositions, double longitude, double latitude,
             IEnumerable<BO.ChargingDrone> listChargingDrone)
         {
             Id = id;
             Name = name;
-            NumAvailablePositions = numAvailablePositions;
-            Location = location;
+            NumPositions = numAvailablePositions;
+            Location = new Location(latitude, longitude);
             ListChargingDrone = listChargingDrone;
         }
 
@@ -39,29 +39,35 @@ namespace PO
             }
         }
 
-        private int? _availablePositions;
+        private int? _numPositions;
 
-        public object NumAvailablePositions
+        public object NumPositions
         {
-            get => _availablePositions == null ? null : _availablePositions;
+            get => _numPositions == null ? null : _numPositions;
             set
             {
                 if (value is null or "")
                 {
-                    Set(ref _availablePositions, null);
+                    Set(ref _numPositions, null);
                 }
                 else if (int.TryParse(value.ToString(), out int id))
                 {
-                    Set(ref _availablePositions, Convert.ToInt32(value));
-                    validityMessages["NumAvailablePositions"] = IntMessage(_availablePositions);
+                    Set(ref _numPositions, id);
+                    validityMessages["NumPositions"] = IntMessage(_numPositions);
                 }
                 else
                 {
-                    validityMessages["NumAvailablePositions"] = IntMessage("invalid input");
+                    validityMessages["NumPositions"] = IntMessage(value);
                 }
                 
             }
         }
+
+        private Dictionary<string, string> validityMessages = new Dictionary<string, string>()
+        {
+            ["Name"] = "",
+            ["NumPositions"] = "",
+        };
 
         // --------------IDataErrorInfo---------------------
         public string Error
@@ -72,20 +78,14 @@ namespace PO
             }
         }
 
-        public string this[string columnName]
+        public string this[string propertyName]
         {
             get
             {
-                if (validityMessages.ContainsKey(columnName))
-                    return validityMessages[columnName];
+                if (validityMessages.ContainsKey(propertyName))
+                    return validityMessages[propertyName];
                 return string.Empty;
             }
         }
-
-        private Dictionary<string, string> validityMessages = new Dictionary<string, string>()
-        {
-            ["Name"] = "",
-            ["NumAvailablePositions"] = "",
-        };
     }
 }

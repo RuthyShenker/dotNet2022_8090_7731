@@ -10,12 +10,13 @@ using System.Windows;
 
 namespace PL.ViewModels
 {
-    public class EditStationViewModel : INotifyPropertyChanged
+    public class EditStationViewModel 
     {
         Drone Drone;
         BlApi.IBL bl;
         Action refreshStations;
-        EditStation station;
+        //EditStation station;
+        public EditStation Station { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> UpdateStationCommand { get; set; }
         public RelayCommand<object> DeleteStationCommand { get; set; }
@@ -81,32 +82,15 @@ namespace PL.ViewModels
             }
         }
 
-        public EditStation Station
-        {
-            get => station;
-            private set
-            {
-                station = value;
-                RaisePropertyChanged(nameof(Station));
-            }
-        }
-
         private EditStation Map(BO.Station station)
         {
             return new EditStation(station.Id, station.NameStation, station.NumAvailablePositions, 
-               new PO.Location( station.Location.Latitude, station.Location.Longitude), station.LBL_ChargingDrone);
+               station.Location.Latitude, station.Location.Longitude, station.LBL_ChargingDrone);
         }
       
         private void Close_Window(object sender)
         {
             Window.GetWindow((DependencyObject)sender).Close();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(string propertyName)
-    {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
