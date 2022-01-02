@@ -25,6 +25,12 @@ namespace PO
             return !Regex.IsMatch(value, @"^[a-zA-Z\s]+$") ? "Name has to contain letters only" :
                    "";
         }
+        public static string NameMessage(string name)
+        {
+            return name == "" ? "Field is required" :
+              !name.All(l => char.IsLetter(l)) ? "Input must contain letters only" :
+              "";
+        }
         public static string IntMessage(object value)
         {
             return value==null ? "" :
@@ -33,7 +39,7 @@ namespace PO
         }
         public static string PhoneMessage(string value)
         {
-            return value == null ? "Field is required" : 
+            return value == "" ? "Field is required" : 
                 !value.All(d => char.IsDigit(d)) ? "Input must contain digits only" :
                  value.Length != 10 ? "Phone must contain 10 digits":
                 "";

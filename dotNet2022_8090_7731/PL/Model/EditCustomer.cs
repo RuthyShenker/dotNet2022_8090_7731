@@ -33,8 +33,7 @@ namespace PO
             set
             {
                 Set(ref _name, value);
-                validityMessages["Name"] = value is null or "" ? "" :
-                                                                StringMessage(value);
+                validityMessages["Name"] = NameMessage(value);
             }
         }
         private string _phone;
@@ -46,7 +45,7 @@ namespace PO
             set
             {
                 Set(ref _phone, value);
-                validityMessages["Phone"] =StringMessage(value);
+                validityMessages["Phone"] =PhoneMessage(value);
             }
         }
 
