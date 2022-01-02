@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace PL.ViewModels
 {
-    public class EditCustomerViewModel : INotifyPropertyChanged
+    public class EditCustomerViewModel /*: INotifyPropertyChanged*/
     {
         BlApi.IBL bl;
         Action refreshCustomers;
@@ -99,10 +99,10 @@ namespace PL.ViewModels
             Window.GetWindow((DependencyObject)sender).Close();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //private void RaisePropertyChanged(string propertyName)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
     }
 }
