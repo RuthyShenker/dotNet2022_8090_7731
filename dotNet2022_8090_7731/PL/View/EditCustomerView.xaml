@@ -26,12 +26,14 @@
                  VerticalAlignment="Center"/>
 
 
-        <TextBox Text="{Binding Customer.Name}" materialDesign:HintAssist.Hint="Name"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"/>
+        <TextBox Text="{Binding Customer.Name, ValidatesOnDataErrors=true, NotifyOnValidationError=true,
+            UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Name"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
 
 
-        <TextBox Text="{Binding Customer.Phone}"
+        <TextBox Text="{Binding Customer.Phone, 
+            ValidatesOnDataErrors=true, NotifyOnValidationError=true,
+            UpdateSourceTrigger=PropertyChanged}"
                  materialDesign:HintAssist.Hint="Phone"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
                  VerticalAlignment="Center"/>

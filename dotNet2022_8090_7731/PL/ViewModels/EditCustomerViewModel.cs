@@ -14,7 +14,7 @@ namespace PL.ViewModels
     {
         BlApi.IBL bl;
         Action refreshCustomers;
-        EditCustomer customer;
+        EditCustomer Customer;
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> UpdateCustomerCommand { get; set; }
         public RelayCommand<object> DeleteCustomerCommand { get; set; }
@@ -35,7 +35,12 @@ namespace PL.ViewModels
         {
             var parcel = obj as BO.ParcelInCustomer;
             var blParcel = bl.GetParcel(parcel.Id);
-            //new ParcelView(bl, refreshParcelList, blParcel).Show();
+            new ParcelView(bl, refreshParcelList, blParcel).Show();
+        }
+
+        private void refreshParcelList()
+        {
+            
         }
 
         private void DeleteCustomer(object obj)
@@ -79,15 +84,15 @@ namespace PL.ViewModels
                 customer.LFromCustomer,customer.LForCustomer);
         }
 
-        public EditCustomer Customer
-        {
-            get => customer;
-            private set
-            {
-                customer = value;
-                RaisePropertyChanged(nameof(Customer));
-            }
-        }
+        //public EditCustomer Customer
+        //{
+        //    get => customer;
+        //    private set
+        //    {
+        //        customer = value;
+        //        RaisePropertyChanged(nameof(Customer));
+        //    }
+        //}
 
         private void Close_Window(object sender)
         {
