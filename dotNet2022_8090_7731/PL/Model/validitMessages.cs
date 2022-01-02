@@ -20,29 +20,49 @@ namespace PO
                 _ => "",
             };
         }
-        public static string StringMessage(string value)
+
+        public static string IdCustomerMessage(object value)
         {
-            return !Regex.IsMatch(value, @"^[a-zA-Z\s]+$") ? "Name has to contain letters only" :
+            return value == null ? 
+                        "Field is required" :
+                !Regex.IsMatch(value.ToString(), @"^[0-9]+$") ?
+                        $"Id has to contain digits only" :
+                value.ToString().Length != 9 ?
+                        "Id has to contain 9 digits":
+                        "";
+        }
+
+        public static string StringMessage(string value,string name)
+        {
+            return !Regex.IsMatch(value, @"^[a-zA-Z\s]+$") ?
+                        $"{name} has to contain letters only" :
                    "";
         }
         public static string NameMessage(string name)
-        {
-            return name == "" ? "Field is required" :
-              !name.All(l => char.IsLetter(l)) ? "Input must contain letters only" :
-              "";
+       {
+            return name == string.Empty ? 
+                        "Field is required" :
+                   !name.All(l => char.IsLetter(l)) ?
+                        "Input must contain letters only" :
+                   "";
         }
         public static string IntMessage(object value)
         {
-            return value==null ? "" :
-                   !Regex.IsMatch(value.ToString(), @"^[0-9]+$") ? "Name has to contain digits only" :
+            return value==null ?
+                        "" :
+                   !Regex.IsMatch(value.ToString(), @"^[0-9]+$") ?
+                        "Name has to contain digits only" :
                    "";
         }
         public static string PhoneMessage(string value)
         {
-            return value == "" ? "Field is required" : 
-                !value.All(d => char.IsDigit(d)) ? "Input must contain digits only" :
-                 value.Length != 10 ? "Phone must contain 10 digits":
-                "";
+            return value == string.Empty ? 
+                        "Field is required" : 
+                !value.All(d => char.IsDigit(d)) ?  
+                        "Input must contain digits only" :
+                 value.Length != 10 ?
+                        "Phone must contain 10 digits":
+                    "";
             //return value switch
             //{
             //    null => "Field is required",
@@ -56,8 +76,8 @@ namespace PO
 
         public static string LocationMessage(object value, int min = 0, int max = 0)
         {
-            return value == null ? "Feild is required" :
-                value is string ? "Input must contain digits only" :
+            return value == null ? "Field is required" :
+                !Regex.IsMatch(value.ToString(), @"^[0-9]+$") ? "Input must contain digits only" :
                 (double)value > max ? $"Max value is {max}" :
                 (double)value < min ? $"Min value is {min}" :
                 "";

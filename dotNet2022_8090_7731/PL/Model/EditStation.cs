@@ -25,7 +25,7 @@ namespace PO
             {
                 Set(ref _name, value);
                 validityMessages["Name"] = value is null or "" ? "" :
-                                                                StringMessage(value);
+                                                                StringMessage(value,nameof(Name));
             }
         }
 

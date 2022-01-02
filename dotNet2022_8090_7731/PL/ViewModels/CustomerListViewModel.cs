@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,10 @@ using PL.View;
 
 namespace PL.ViewModels
 {
-    public class CustomerListViewModel : INotifyPropertyChanged
+    public class CustomerListViewModel /*: INotifyPropertyChanged*/
     {
         BlApi.IBL bl;
-        public IEnumerable<CustomerToList> customerList ;
+        public ObservableCollection<CustomerToList> CustomerList { get; set; }
         public RelayCommand<object> AddCustomerCommand { get; set; }
         public RelayCommand<object> MouseDoubleCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
@@ -21,27 +22,27 @@ namespace PL.ViewModels
         public CustomerListViewModel(BlApi.IBL bl)
         {
             this.bl = bl;
-            customerList = Enumerable.Empty<CustomerToList>();
+            CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers());
             RefreshCustomerList();
             AddCustomerCommand = new RelayCommand<object>(AddingCustomer);
             MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);  
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
         }
-        public IEnumerable<CustomerToList> CustomerList
-        {
-            get => customerList;
-            set
-            {
-                customerList = value;
-                RaisePropertyChanged(nameof(CustomerList));
-            }
-        }
+        //public IEnumerable<CustomerToList> CustomerList
+        //{
+        //    get => customerList;
+        //    set
+        //    {
+        //        customerList = value;
+        //        RaisePropertyChanged(nameof(CustomerList));
+        //    }
+        //}
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //private void RaisePropertyChanged(string propertyName)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
         private void MouseDoubleClick(object sender)
         {
             var selectedCustomer = sender as CustomerToList;
@@ -61,12 +62,12 @@ namespace PL.ViewModels
             //{
             //    MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             //}
-            new CustomerView(bl,RefreshCustomerList)
+            new CustomerView(bl, RefreshCustomerList)
                 .Show();
         }
         private void RefreshCustomerList()
         {
-            CustomerList = bl.GetCustomers();
+            CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers());
         }
         private void CloseWindow(object sender)
         {
