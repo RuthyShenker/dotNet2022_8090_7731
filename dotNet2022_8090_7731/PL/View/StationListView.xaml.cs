@@ -21,7 +21,7 @@ namespace PL.View
     /// </summary>
     public partial class StationListView : Window
     {
-        public StationListView(StationListViewModel viewModel )
+        public StationListView(StationListViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;

@@ -13,7 +13,7 @@ namespace BlApi
 
         void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions);
         IEnumerable<StationToList> GetStations();
-        IEnumerable<StationToList> AvailableSlots();
+        IEnumerable<StationToList> AvailableSlots(int numPositions = 0);
         Station GetStation(int stationId);
         string DeleteStation(int stationId);
     }

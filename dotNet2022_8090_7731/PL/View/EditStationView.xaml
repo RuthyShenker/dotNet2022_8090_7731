@@ -62,19 +62,22 @@
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 
-                        Command="{Binding MouseDoubleCommand}"
+                        Command="{Binding ShowDroneCommand}"
                         CommandParameter="{Binding ElementName=DronesInStationListView, Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ListView>
 
-
-        <Button  Style="{StaticResource MaterialDesignFlatButton}"
-                    HorizontalAlignment="Center"
-                    Content="Update"
-                    Command="{Binding UpdateStationCommand}" CommandParameter="{Binding Station}" >
+        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                HorizontalAlignment="Center"
+                Content="Update"
+                Command="{Binding UpdateStationCommand}" CommandParameter="{Binding Station}" >
         </Button><!--CommandManager.CanExecute="{}"-->
 
-
+        <Button Content="Close" 
+                Command="{Binding CloseWindowCommand }" 
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                Style="{StaticResource MaterialDesignFlatButton}"/>
+        
     </StackPanel>
 </UserControl>

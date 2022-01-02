@@ -22,9 +22,9 @@ namespace PL.ViewModels
         public RelayCommand<object> UpdateStationCommand { get; set; }
         public RelayCommand<object> DeleteStationCommand { get; set; }
 
-        public RelayCommand<object> MouseDoubleCommand { get; set; }
+        public RelayCommand<object> ShowDroneCommand { get; set; }
 
-        public RelayCommand<object> ShowDroneInStationCommand { get; set; }
+        //public RelayCommand<object> ShowDroneInStationCommand { get; set; }
         //public RelayCommand<object> ShowParcelOfCustomerCommand { get; set; }
 
         public EditStationViewModel(BlApi.IBL bl, BO.Station station, Action refreshStations)
@@ -33,9 +33,9 @@ namespace PL.ViewModels
             Station = Map(station);
             this.refreshStations = refreshStations;
             CloseWindowCommand = new RelayCommand<object>(Close_Window);
-            UpdateStationCommand = new RelayCommand<object>(UpdateStation);
-            DeleteStationCommand = new RelayCommand<object>(DeleteStation);
-            MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
+            UpdateStationCommand = new RelayCommand<object>(UpdateStation, param => Station.Error == string.Empty);
+            DeleteStationCommand = new RelayCommand<object>(DeleteStation, param => Station.ListChargingDrone.Count() == 0);
+            ShowDroneCommand = new RelayCommand<object>(ShowDrone);
 
             //ShowDroneInStationCommand = new RelayCommand<object>(MouseDoubleClick);
         }
@@ -54,7 +54,7 @@ namespace PL.ViewModels
             }
         }
 
-        private void MouseDoubleClick(object obj)
+        private void ShowDrone(object obj)
         {
             var chargingDrone = obj as PO.ChargingDrone;
             var drone = bl.GetDrone(chargingDrone.DroneId);
@@ -64,21 +64,12 @@ namespace PL.ViewModels
 
         private void UpdateStation(object obj)
         {
-
             var station = obj as EditStation;
-            if ((station.Name is null or "") && (station.NumPositions is null or ""))
-            {
-                MessageBox.Show("two of them are empty");
-            }
-            else
-            {
-                bl.UpdatingStationDetails(station.Id, station.Name, (int)station.NumPositions);
-                refreshStations();
-                _ = CloseWindowCommand;
-            }
-            //TODO:
-            // לחסום isenabled
-            // האם להעביר את הבדיקות שאחד משתיהם ריק לשכבה הבאה ולעשות try catch?
+
+            bl.UpdatingStationDetails(station.Id, station.Name, (int)station.NumPositions);
+            refreshStations();
+            MessageBox.Show("Update Succseful");
+            //TODO: two feilds has to be full?
         }
 
         private static EditStation Map(BO.Station station)

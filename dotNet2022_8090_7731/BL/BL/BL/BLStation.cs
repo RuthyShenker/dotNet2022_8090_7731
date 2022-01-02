@@ -50,7 +50,14 @@ namespace BL
                 if (!string.IsNullOrEmpty(stationName))
                     dal.Update<DO.BaseStation>(stationId, stationName, nameof(baseStation.NameStation));
 
-                dal.Update<DO.BaseStation>(stationId, amountOfPositions, nameof(baseStation.NumberOfChargingPositions));
+                if (amountOfPositions > 0)
+                {
+                    dal.Update<DO.BaseStation>(stationId, amountOfPositions, nameof(baseStation.NumberOfChargingPositions));
+                }
+                //else  TODO  not always must update two fields? can change exception
+                //{
+                //    throw new InValidActionException("number of positions cannot be lower than 1");
+                //}
             }
             catch (DO.IdIsNotExistException)
             {
@@ -143,13 +150,20 @@ namespace BL
         }
 
         /// <summary>
-        /// A function that returns Available Slots by type of StationToList.
+        /// if numPositions == 0 returns available slots,
+        /// else returns the stations which num of available positions == numPositions
+        /// the return list is typeof StationToList.
         /// </summary>
-        /// <returns> returns Available Slots</returns>
-        public IEnumerable<StationToList> AvailableSlots()
+        /// <param name="numPositions"></param>
+        /// <returns></returns>
+        public IEnumerable<StationToList> AvailableSlots(int numPositions = 0)
         {
-            return dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) > 0)
-                 .Select(station => ConvertToList(station));
+            return numPositions == 0
+                ? dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) > 0)
+                 .Select(station => ConvertToList(station))
+
+                : dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) == numPositions)
+                     .Select(station => ConvertToList(station));
         }
 
         /// <summary>
@@ -162,10 +176,10 @@ namespace BL
         {
             var numOfAvailablePositions = GetNumOfAvailablePositionsInStation(station.Id);
             StationToList nStation = new(
-            station.Id,
-            station.NameStation,
-            numOfAvailablePositions,
-            station.NumberOfChargingPositions - numOfAvailablePositions);
+                station.Id,
+                station.NameStation,
+                numOfAvailablePositions,
+                station.NumberOfChargingPositions - numOfAvailablePositions);
             return nStation;
         }
 

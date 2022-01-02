@@ -59,7 +59,8 @@ namespace PO
         {
             get
             {
-                return (_name is null or "" && _numPositions == null) ? string.Empty : "Invalid input";
+               // TODO    can change just one feild? 
+                return (_name is null or "" || _numPositions == null) ? "Invalid input" : string.Empty;
             }
         }
 

@@ -13,44 +13,40 @@ namespace PL.ViewModels
     public class StationListViewModel : INotifyPropertyChanged
     {
         private readonly BlApi.IBL bl;
-        public IEnumerable<StationToList> stationList;
+        public IEnumerable<StationToList> StationList { get; set; }
         public RelayCommand<object> AddStationCommand { get; set; }
-            public RelayCommand<object> MouseDoubleCommand { get; set; }
-            public RelayCommand<object> CloseWindowCommand { get; set; }
+        public RelayCommand<object> ShowStationCommand { get; set; }
+        public RelayCommand<object> CloseWindowCommand { get; set; }
+        public RelayCommand<object> SortListCommand { get; set; }
+        public List<int> AvailablePositionsList { get; set; }
 
-            public StationListViewModel(BlApi.IBL bl)
-            {
-                this.bl = bl;
-            stationList = Enumerable.Empty<StationToList>();
+        public StationListViewModel(BlApi.IBL bl)
+        {
+            this.bl = bl;
+            StationList = Enumerable.Empty<StationToList>();
+            AvailablePositionsList = bl.AvailableSlots().Select(station => station.AvailablePositions).Distinct().ToList();
+            
             RefreshStationList();
             AddStationCommand = new RelayCommand<object>(AddingStation);
-                MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
-                CloseWindowCommand = new RelayCommand<object>(CloseWindow);
-            }
+            ShowStationCommand = new RelayCommand<object>(ShowStation);
+            CloseWindowCommand = new RelayCommand<object>(CloseWindow);
+            SortListCommand = new RelayCommand<object>(SortList);
+        }
 
-        public IEnumerable<StationToList> StationList
-            {
-            get => stationList;
-                set
-                {
-                stationList = value;
-                RaisePropertyChanged(nameof(stationList));
-                }
-            }
+        private void SortList(object num)
+        {
+            StationList = bl.AvailableSlots((int)num);
+        }
 
-            public event PropertyChangedEventHandler PropertyChanged;
-            private void RaisePropertyChanged(string propertyName)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-            private void MouseDoubleClick(object sender)
-            {
+        private void ShowStation(object sender)
+        {
             var selectedStation = sender as StationToList;
             var blStation = bl.GetStation(selectedStation.Id);
             new StationView(bl, RefreshStationList, blStation)
                     .Show();
-            }
+        }
 
         private void AddingStation(object sender)
         {
@@ -66,13 +62,13 @@ namespace PL.ViewModels
         }
 
         private void RefreshStationList()
-            {
+        {
             StationList = bl.GetStations();
-            }
-
-            private void CloseWindow(object sender)
-            {
-                Window.GetWindow((DependencyObject)sender).Close();
-            }
         }
+
+        private void CloseWindow(object sender)
+        {
+            Window.GetWindow((DependencyObject)sender).Close();
+        }
+    }
 }
