@@ -14,7 +14,7 @@ namespace PL.ViewModels
     {
         BlApi.IBL bl;
         Action refreshCustomers;
-        EditCustomer Customer;
+        public EditCustomer Customer { set; get; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> UpdateCustomerCommand { get; set; }
         public RelayCommand<object> DeleteCustomerCommand { get; set; }
@@ -44,11 +44,19 @@ namespace PL.ViewModels
         }
 
         private void DeleteCustomer(object obj)
-        {
+        { 
+            if( MessageBox.Show("Are You Sure You Want To Delete Customer" +
+                 $"With Id:{Customer.Id}?", "Delete Customer", MessageBoxButton.YesNo
+                 , MessageBoxImage.Warning)== MessageBoxResult.No)
+            {
+                return;
+            }
+
             try
             {
                 MessageBox.Show(bl.DeleteCustomer(Customer.Id));
                 refreshCustomers();
+                Window.GetWindow((DependencyObject)obj).Close();
             }
             catch (BO.IdIsNotExistException exception)
             {
@@ -64,6 +72,7 @@ namespace PL.ViewModels
                 //TODO:
                 //MessageBox.Show("",,,);
                 refreshCustomers();
+               
             }
             catch (BO.IdIsNotExistException exception)
             {
