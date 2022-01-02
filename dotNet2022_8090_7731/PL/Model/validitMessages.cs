@@ -27,7 +27,8 @@ namespace PO
         }
         public static string IntMessage(object value)
         {
-            return !Regex.IsMatch(value.ToString(), @"^[0-9]+$") ? "Name has to contain digits only" :
+            return value==null ? "" :
+                   !Regex.IsMatch(value.ToString(), @"^[0-9]+$") ? "Name has to contain digits only" :
                    "";
         }
         public static string PhoneMessage(string value)

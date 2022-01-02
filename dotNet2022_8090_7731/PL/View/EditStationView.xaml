@@ -43,11 +43,11 @@
                  materialDesign:HintAssist.Hint="Name" 
                 materialDesign:TextFieldAssist.HasClearButton="True"/>
 
-        <TextBox Text="{Binding Station.NumAvailablePositions,
+        <TextBox Text="{Binding Station.NumPositions,
                                 ValidatesOnDataErrors=true,
                                 NotifyOnValidationError=true,
                                 UpdateSourceTrigger=PropertyChanged}"
-                 materialDesign:HintAssist.Hint="Available"
+                 materialDesign:HintAssist.Hint="Positions"
                  materialDesign:TextFieldAssist.HasClearButton="True" />
 
         <TextBox Text="{Binding Station.Location.Longitude}"
@@ -68,10 +68,13 @@
             </i:Interaction.Triggers>
         </ListView>
 
-        <Button Style="{StaticResource MaterialDesignFlatButton}"
+
+        <Button  Style="{StaticResource MaterialDesignFlatButton}"
                     HorizontalAlignment="Center"
                     Content="Update"
-                    Command="{Binding UpdateStationCommand}"/>
-        
+                    Command="{Binding UpdateStationCommand}" CommandParameter="{Binding Station}" >
+        </Button><!--CommandManager.CanExecute="{}"-->
+
+
     </StackPanel>
 </UserControl>

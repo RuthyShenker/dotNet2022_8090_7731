@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace PL.ViewModels
 {
-    public class EditStationViewModel 
+    public class EditStationViewModel
     {
         Drone Drone;
         BlApi.IBL bl;
@@ -64,30 +64,29 @@ namespace PL.ViewModels
 
         private void UpdateStation(object obj)
         {
-            try
+
+            var station = obj as EditStation;
+            if ((station.Name is null or "") && (station.NumPositions is null or ""))
             {
-                var station = obj as BO.Station;
-                if (station.NameStation==null&&station.NumAvailablePositions==0)
-                {
-                    MessageBox.Show("");
-                }
-                bl.UpdatingStationDetails(station.Id, station.NameStation, station.NumAvailablePositions);
-                //TODO:
-                //MessageBox.Show("",,,);  ?
+                MessageBox.Show("two of them are empty");
+            }
+            else
+            {
+                bl.UpdatingStationDetails(station.Id, station.Name, (int)station.NumPositions);
                 refreshStations();
+                _ = CloseWindowCommand;
             }
-            catch (IdIsNotExistException exception)
-            {
-                MessageBox.Show(exception.Message);
-            }
+            //TODO:
+            // לחסום isenabled
+            // האם להעביר את הבדיקות שאחד משתיהם ריק לשכבה הבאה ולעשות try catch?
         }
 
         private EditStation Map(BO.Station station)
         {
-            return new EditStation(station.Id, station.NameStation, station.NumAvailablePositions, 
+            return new EditStation(station.Id, station.NameStation, station.NumAvailablePositions,
                station.Location.Latitude, station.Location.Longitude, station.LBL_ChargingDrone);
         }
-      
+
         private void Close_Window(object sender)
         {
             Window.GetWindow((DependencyObject)sender).Close();

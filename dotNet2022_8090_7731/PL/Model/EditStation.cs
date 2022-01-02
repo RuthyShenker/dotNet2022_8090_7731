@@ -53,13 +53,8 @@ namespace PO
                 else if (int.TryParse(value.ToString(), out int id))
                 {
                     Set(ref _numPositions, id);
-                    validityMessages["NumPositions"] = IntMessage(_numPositions);
                 }
-                else
-                {
-                    validityMessages["NumPositions"] = IntMessage(value);
-                }
-                
+                validityMessages["NumPositions"] = IntMessage(value);
             }
         }
 
@@ -74,7 +69,7 @@ namespace PO
         {
             get
             {
-                return validityMessages.Values.All(value => value == string.Empty) ? string.Empty : "Invalid input";
+                return (_name is null or "" && _numPositions == null) ? string.Empty : "Invalid input";
             }
         }
 
