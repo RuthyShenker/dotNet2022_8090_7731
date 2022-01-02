@@ -1,4 +1,5 @@
 ﻿using BO;
+using PL.View;
 using PO;
 using System;
 using System.Collections.Generic;
@@ -55,11 +56,10 @@ namespace PL.ViewModels
 
         private void MouseDoubleClick(object obj)
         {
-            MessageBox.Show("herehhhh");
-            var station = obj as BO.Station;
-            var dronesList = station.LBL_ChargingDrone;
-            //var bldrone = bl.GetParcel(parcel.Id);
-            //new ParcelView(bl, refreshParcelList, blParcel).Show();
+            var chargingDrone = obj as PO.ChargingDrone;
+            var drone = bl.GetDrone(chargingDrone.DroneId);
+            new DroneView(bl, null, drone)
+              .Show();
         }
 
         private void UpdateStation(object obj)
@@ -81,10 +81,16 @@ namespace PL.ViewModels
             // האם להעביר את הבדיקות שאחד משתיהם ריק לשכבה הבאה ולעשות try catch?
         }
 
-        private EditStation Map(BO.Station station)
+        private static EditStation Map(BO.Station station)
         {
-            return new EditStation(station.Id, station.NameStation, station.NumAvailablePositions,
-               station.Location.Latitude, station.Location.Longitude, station.LBL_ChargingDrone);
+            return new EditStation()
+            {
+                Id = station.Id,
+                Name = station.NameStation,
+                NumPositions = station.NumAvailablePositions,
+                Location = new PO.Location(station.Location.Latitude, station.Location.Longitude),
+                ListChargingDrone = station.LBL_ChargingDrone.Select(position => new PO.ChargingDrone(position.DroneId, position.BatteryStatus))
+            };
         }
 
         private void Close_Window(object sender)

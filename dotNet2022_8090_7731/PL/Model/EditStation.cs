@@ -9,21 +9,11 @@ namespace PO
 {
     public class EditStation : ObservableBase, IDataErrorInfo
     {
-        public EditStation(int id, string name, int numAvailablePositions, double longitude, double latitude,
-            IEnumerable<BO.ChargingDrone> listChargingDrone)
-        {
-            Id = id;
-            Name = name;
-            NumPositions = numAvailablePositions;
-            Location = new Location(latitude, longitude);
-            ListChargingDrone = listChargingDrone;
-        }
-
         public int Id { get; init; }
 
         public Location Location { get; init; }
 
-        public IEnumerable<BO.ChargingDrone> ListChargingDrone { get; set; }
+        public IEnumerable<ChargingDrone> ListChargingDrone { get; set; }
 
         private string _name;
 
