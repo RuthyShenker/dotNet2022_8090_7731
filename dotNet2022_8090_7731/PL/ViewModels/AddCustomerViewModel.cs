@@ -15,7 +15,7 @@ namespace PL.ViewModels
         public CustomerToAdd Customer { get; set; }
         public RelayCommand<object> AddCustomerCommand { get; set; }
 
-        public AddCustomerViewModel(BlApi.IBL bl,Action refreshCustomerList)
+        public AddCustomerViewModel(BlApi.IBL bl, Action refreshCustomerList)
         {
             Customer = new();
             this.bl = bl;
@@ -36,8 +36,8 @@ namespace PL.ViewModels
 
         private BO.Customer Map(CustomerToAdd customer)
         {
-            return new BO.Customer(customer.Id, customer.Name, customer.Phone,
-                new BO.Location(customer.Location.Longitude,customer.Location.Latitude));
+            return new BO.Customer((int)customer.Id, customer.Name, customer.Phone,
+                new BO.Location((double)customer.Longitude, (double)customer.Latitude));
         }
     }
 }

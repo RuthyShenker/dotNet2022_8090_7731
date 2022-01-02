@@ -63,7 +63,8 @@
         <Button 
             Content="OK" 
             Command="{Binding AddStationCommand}" 
-            CommandParameter="{Binding RelativeSource={ RelativeSource Mode=Self}, Path=DataContext}">
+            CommandParameter="{Binding RelativeSource={ RelativeSource Mode=Self},
+            Path=DataContext}">
         </Button>
     </StackPanel>
 </UserControl>

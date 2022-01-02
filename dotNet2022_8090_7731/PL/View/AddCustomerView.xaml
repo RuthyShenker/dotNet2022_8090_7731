@@ -41,7 +41,7 @@
 
 
         <TextBox 
-            Text="{Binding Customer.Location.Latitude,
+            Text="{Binding Customer.Latitude,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
@@ -49,7 +49,7 @@
 
 
         <TextBox 
-            Text="{Binding Customer.Location.Longitude,
+            Text="{Binding Customer.Longitude,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"

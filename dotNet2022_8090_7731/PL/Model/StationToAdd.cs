@@ -49,7 +49,7 @@ namespace PO
             {
                 Set(ref name, value);
                 validityMessages["Name"] = value is null or "" ? RequiredMessage() :
-                                                                StringMessage(value);
+                                                                StringMessage(value,nameof(Name));
             }
         }
 
