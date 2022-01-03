@@ -10,16 +10,9 @@
     
     <StackPanel Orientation="Vertical">
 
-        <ComboBox x:Name="AvailablePositionsList" ItemsSource="{Binding AvailablePositionsList}" >
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction 
-                        Command="{Binding FilterListCommand}"
-                        CommandParameter="{Binding ElementName=AvailablePositionsList, Path=SelectedItem}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </ComboBox>
-
+        <ComboBox ItemsSource="{Binding AvailablePositionsList}"
+                  SelectedItem="{Binding FilterList}" />
+        
         <ListView x:Name="StationList" ItemsSource="{Binding StationList, Mode=TwoWay ,IsAsync=True}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">

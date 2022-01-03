@@ -13,7 +13,7 @@ namespace PL.ViewModels
     {
         BlApi.IBL bl;
         public ListCollectionView parcelList;
-        private ParcelStatus parcelStatusSelected;
+        ParcelStatus parcelStatusSelected;
         DateTime? startTime, endTime;
 
         public RelayCommand<object> MouseDoubleCommand { get; set; }
@@ -37,7 +37,6 @@ namespace PL.ViewModels
             ParcelList.GroupDescriptions.Add(new PropertyGroupDescription(nameof(ParcelToList.SenderName)));
             //ParcelList.GroupBySelector = MyGroup;
 
-
             this.bl = bl;
 
             //ParcelList = bl.GetParcels();
@@ -59,7 +58,7 @@ namespace PL.ViewModels
         {
             if (obj is ParcelToList parcelToList)
             {
-                if ((ParcelStatusSelected == default || parcelToList.Status == ParcelStatusSelected))
+                if (ParcelStatusSelected == default || parcelToList.Status == ParcelStatusSelected)
                     //&&(!StartTime.HasValue || ))
                     return true;
 

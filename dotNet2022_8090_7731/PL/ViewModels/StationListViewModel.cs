@@ -21,19 +21,20 @@ namespace PL.ViewModels
         public RelayCommand<object> ShowStationCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public List<int> AvailablePositionsList { get; set; }
-        public RelayCommand<object> FilterListCommand { get; set; }
+        //public RelayCommand<object> FilterListCommand { get; set; }
 
         public StationListViewModel(BlApi.IBL bl)
         {
             this.bl = bl;
             StationList = new(bl.AvailableSlots().ToList());
+            StationList.Filter = FilterCondition;
             AvailablePositionsList = bl.AvailableSlots().Select(station => station.AvailablePositions).Distinct().ToList();
             
             //RefreshStationList();
             AddStationCommand = new RelayCommand<object>(AddingStation);
             ShowStationCommand = new RelayCommand<object>(ShowStation);
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
-            FilterListCommand = new RelayCommand<object>(FilterList);
+            //FilterListCommand = new RelayCommand<object>(FilterList);
             //StationList.Filter = new Predicate<object>(Contains);
         }
 
@@ -63,13 +64,17 @@ namespace PL.ViewModels
             Window.GetWindow((DependencyObject)sender).Close();
         }
 
-        private void FilterList(object num)
+        public int FilterList
         {
-            choosenNumPositions = (int)num;
-            StationList.Filter = new Predicate<object>(Contains);
+            get => choosenNumPositions;
+            set
+            {
+                choosenNumPositions = value;
+                StationList.Filter = FilterCondition;
+            }
         }
 
-        public bool Contains(object obj)
+        private bool FilterCondition(object obj)
         {
             StationToList station = obj as StationToList;
             return choosenNumPositions == 0 || station.AvailablePositions == choosenNumPositions;
