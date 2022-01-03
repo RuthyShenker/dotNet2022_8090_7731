@@ -14,9 +14,11 @@ namespace PO
         {
         }
 
-       const int ID_LENGTH = 9;
+        const int ID_LENGTH = 9;
         const int MIN_LATITUDE = -90;
         const int MAX_LATITUDE = 90;
+        const int MIN_LONGITUDE = -180;
+        const int MAX_LONGITUDE = 180;
 
         private int? _id;
 
@@ -69,9 +71,9 @@ namespace PO
                 validityMessages["Phone"] = PhoneMessage(value);
             }
         }
+
         private double? _longitude;
-        const int MIN_LONGITUDE = -180;
-        const int MAX_LONGITUDE = 180;
+       
         public object Longitude
         {
             get => _longitude == null ? null : _longitude;

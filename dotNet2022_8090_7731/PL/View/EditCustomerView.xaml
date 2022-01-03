@@ -61,23 +61,11 @@
              materialDesign:TextFieldAssist.HasClearButton="True"  
                  IsEnabled="False"/>
 
-        <ListView Grid.Row="1" 
-                  x:Name="ParcelsFromCustomerListView"
-                  ItemsSource="{Binding Customer.LFromCustomer}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="ShowParcelOfCustomerCommand">
-                    <i:InvokeCommandAction 
-                        Command="{Binding ShowParcelOfCustomerCommand}"
-                        CommandParameter="{Binding ElementName=ParcelsFromCustomerListView,
-                        Path=SelectedItem}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </ListView>
-
-        
         <ListView Grid.Row="1"  
                   ItemsSource="{Binding Customer.LForCustomer}"
                   x:Name="ParcelsForCustomerListView">
+            <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
+            <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="ShowParcelOfCustomerCommand">
                     <i:InvokeCommandAction 

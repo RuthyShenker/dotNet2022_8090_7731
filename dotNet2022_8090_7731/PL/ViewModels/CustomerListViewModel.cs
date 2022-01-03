@@ -11,10 +11,11 @@ using PL.View;
 
 namespace PL.ViewModels
 {
-    public class CustomerListViewModel /*: INotifyPropertyChanged*/
+    public class CustomerListViewModel : INotifyPropertyChanged
     {
         BlApi.IBL bl;
-        public ObservableCollection<CustomerToList> CustomerList { get; set; }
+
+        public IEnumerable<CustomerToList> customerList { get; set; }
         public RelayCommand<object> AddCustomerCommand { get; set; }
         public RelayCommand<object> MouseDoubleCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
@@ -28,21 +29,21 @@ namespace PL.ViewModels
             MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);  
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
         }
-        //public IEnumerable<CustomerToList> CustomerList
-        //{
-        //    get => customerList;
-        //    set
-        //    {
-        //        customerList = value;
-        //        RaisePropertyChanged(nameof(CustomerList));
-        //    }
-        //}
+        public IEnumerable<CustomerToList> CustomerList
+        {
+            get => customerList;
+            set
+            {
+                customerList = value;
+                RaisePropertyChanged(nameof(CustomerList));
+            }
+        }
 
-        //public event PropertyChangedEventHandler PropertyChanged;
-        //private void RaisePropertyChanged(string propertyName)
-        //{
-        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        //}
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void RaisePropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         private void MouseDoubleClick(object sender)
         {
             var selectedCustomer = sender as CustomerToList;

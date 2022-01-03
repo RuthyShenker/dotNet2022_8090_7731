@@ -14,27 +14,40 @@ namespace PL.ViewModels
         Action refreshCustomer;
         public CustomerToAdd Customer { get; set; }
         public RelayCommand<object> AddCustomerCommand { get; set; }
-
+        public RelayCommand<object> CloseWindowCommand { get; set; }
         public AddCustomerViewModel(BlApi.IBL bl, Action refreshCustomerList)
         {
             Customer = new();
             this.bl = bl;
-            this.refreshCustomer = refreshCustomerList;
-            AddCustomerCommand = new RelayCommand<object>(AddCustomer);
+            refreshCustomer = refreshCustomerList;
+            AddCustomerCommand = new RelayCommand<object>(AddCustomer, param => Customer.Error == "");
+            CloseWindowCommand = new RelayCommand<object>(CloseWindow);
+        }
+
+        private void CloseWindow(object sender)
+        {
+            Window.GetWindow((DependencyObject)sender).Close();
         }
 
         private void AddCustomer(object obj)
         {
-            //MessageBox.Show(Customer.Id); 
-            //TODO:
-            //check validation:
-            var blCustomer = Map(Customer);
-            bl.AddCustomer(blCustomer);
-            var a= bl.GetCustomer(blCustomer.Id);
-            refreshCustomer();
+            try
+            {
+                var blCustomer = MapCustomerFromPOToBO(Customer);
+                bl.AddCustomer(blCustomer);
+                refreshCustomer();
+            }
+            catch (BO.IdIsAlreadyExistException exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+            catch (BO.IdIsNotExistException exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
         }
 
-        private BO.Customer Map(CustomerToAdd customer)
+        private BO.Customer MapCustomerFromPOToBO(CustomerToAdd customer)
         {
             return new BO.Customer((int)customer.Id, customer.Name, customer.Phone,
                 new BO.Location((double)customer.Longitude, (double)customer.Latitude));
