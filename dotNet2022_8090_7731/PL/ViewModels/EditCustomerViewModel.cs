@@ -23,10 +23,10 @@ namespace PL.ViewModels
         public EditCustomerViewModel(BlApi.IBL bl, BO.Customer customer, Action refreshCustomers)
         {
             this.bl = bl;
-            Customer = Map(customer);
+            Customer = MapFromBOToPO(customer);
             this.refreshCustomers = refreshCustomers;
             CloseWindowCommand = new RelayCommand<object>(Close_Window);
-            UpdateCustomerCommand = new RelayCommand<object>(UpdateCustomer);
+            UpdateCustomerCommand = new RelayCommand<object>(UpdateCustomer, param => Customer.Error == "");
             DeleteCustomerCommand = new RelayCommand<object>(DeleteCustomer);
             ShowParcelOfCustomerCommand = new RelayCommand<object>(MouseDoubleClick);
         }
@@ -35,17 +35,25 @@ namespace PL.ViewModels
         {
             var parcel = obj as BO.ParcelInCustomer;
             var blParcel = bl.GetParcel(parcel.Id);
-            new ParcelView(bl, refreshParcelList, blParcel).Show();
-        }
-
-        private void refreshParcelList()
-        {
-            
+            new ParcelView(bl, refreshCustomers, blParcel).Show();
         }
 
         private void DeleteCustomer(object obj)
-        { 
-            if( MessageBox.Show("Are You Sure You Want To Delete Customer" +
+        {
+            if (Customer.LForCustomer.Count() != 0 || Customer.LFromCustomer.Count() != 0)
+            {
+                if (Customer.LForCustomer.Count() != 0 && Customer.LFromCustomer.Count() != 0)
+                    MessageBox.Show("You Can't Delete Me!,I Have Parcels For Me And To Me! ");
+                else if (Customer.LForCustomer.Count() != 0)
+                    MessageBox.Show("You Can't Delete Me!" +
+                 ",I Have Parcels For Me ! ");
+                else if(Customer.LFromCustomer.Count() != 0 )
+                       MessageBox.Show("You Can't Delete Me!" +
+                    ",I Have Parcels From Me ! ");
+                return;
+            }
+           
+            if ( MessageBox.Show("Are You Sure You Want To Delete Customer" +
                  $"With Id:{Customer.Id}?", "Delete Customer", MessageBoxButton.YesNo
                  , MessageBoxImage.Warning)== MessageBoxResult.No)
             {
@@ -69,10 +77,7 @@ namespace PL.ViewModels
             try
             {
                 bl.UpdatingCustomerDetails(Customer.Id,Customer.Name,Customer.Phone);
-                //TODO:
-                //MessageBox.Show("",,,);
                 refreshCustomers();
-               
             }
             catch (BO.IdIsNotExistException exception)
             {
@@ -86,7 +91,7 @@ namespace PL.ViewModels
         //    Customer = Map(bl.GetCustomer(Customer.Id));
         //}
 
-        private EditCustomer Map(BO.Customer customer)
+        private EditCustomer MapFromBOToPO(BO.Customer customer)
         {
             return new EditCustomer(customer.Id,customer.Name,customer.Phone,
                 customer.Location.Longitude, customer.Location.Latitude,
