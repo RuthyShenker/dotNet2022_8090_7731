@@ -4,44 +4,63 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"   
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:BO="clr-namespace:BO;assembly=BL"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="BO:WeightCategories"/>
+        </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="MPriorityEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="BO:Priority"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        
+    </UserControl.Resources>
     <StackPanel>
-        <TextBox  
-            Text = "{Binding Parcel.Id,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged }"
-            materialDesign:HintAssist.Hint="Id" />
 
-
-        <TextBox
-            Text="{Binding Parcel.Sender.Id,
+        <ComboBox SelectedItem="{Binding Parcel.Sender.Id,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding IdOption}"
             materialDesign:HintAssist.Hint="Sender Id" />
 
+        <ComboBox SelectedItem="{Binding Parcel.Getter.Id,
+            ValidatesOnDataErrors=true,
+            NotifyOnValidationError=true,
+            UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding IdOption}"
+            materialDesign:HintAssist.Hint="Getter Id"/>
 
-        <TextBox
-            Text="{Binding Parcel.Sender.Name,
+        <ComboBox SelectedItem="{Binding Parcel.Weight,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
-            materialDesign:HintAssist.Hint="Sender Name" />
+            ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" 
+            materialDesign:HintAssist.Hint="Weight" />
+
+        <ComboBox SelectedItem="{Binding Parcel.MPriority,
+            ValidatesOnDataErrors=true,
+            NotifyOnValidationError=true,
+            UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding Source={StaticResource MPriorityEnum}}" 
+            materialDesign:HintAssist.Hint="Priority" />
+
+        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                    HorizontalAlignment="Center"
+                    Content="ADD"
+                    Command="{Binding AddParcelCommand}"/>
         
-        <TextBox
-            Text="{Binding Parcel.Getter.Id,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
-            materialDesign:HintAssist.Hint="Getter Id" />
-        <TextBox
-            Text="{Binding Parcel.Getter.Name,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
-            materialDesign:HintAssist.Hint="Getter Name" />
-       
+        <Button x:Name="close_window" Content="close" 
+                Command="{Binding CloseWindowCommand }"
+                CommandParameter="{Binding ElementName=close_window}"
+                Style="{StaticResource MaterialDesignFlatButton}"/>
     </StackPanel>
 </UserControl>

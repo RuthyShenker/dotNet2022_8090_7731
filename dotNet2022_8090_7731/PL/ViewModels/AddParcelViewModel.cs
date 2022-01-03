@@ -3,8 +3,7 @@ using PO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 
 namespace PL.ViewModels
 {
@@ -13,8 +12,10 @@ namespace PL.ViewModels
         public ParcelToAdd Parcel { get; set; }
         BlApi.IBL bl;
         Action refreshParcels;
+        public List<int> IdOption { get; set; }
 
         public RelayCommand<object> AddParcelCommand { get; set; }
+        public RelayCommand<object> CloseWindowCommand { get; set; }
 
         public AddParcelViewModel(BlApi.IBL bl, Action refreshParcels)
         {
@@ -22,24 +23,34 @@ namespace PL.ViewModels
             this.bl = bl;
             this.refreshParcels = refreshParcels;
             AddParcelCommand = new RelayCommand<object>(AddParcel);
+            IdOption = bl.GetCustomers().Select(customer => customer.Id).ToList();
+            CloseWindowCommand = new RelayCommand<object>(CloseWindow);
         }
-
+        private void CloseWindow(object sender)
+        {
+            Window.GetWindow((DependencyObject)sender).Close();
+        }
         private void AddParcel(object obj)
         {
-            ////try
-            ////{
-            ////    bl.AddingParcel(Map(Parcel));
-            ////}
-            ////catch ()
-            ////{
+            try
+            {
+                var parcel = Map(Parcel);
+                bl.AddingParcel(parcel);
+                MessageBox.Show("The Parcel Added Succeesfully!");
+            }
+            catch (IdIsNotExistException exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
 
-            ////}
+
+
         }
 
         private Parcel Map(ParcelToAdd parcel)
         {
-            return new Parcel(parcel.Id, parcel.Sender, parcel.Getter, parcel.Weight, parcel.MPriority, parcel.DInParcel, parcel.MakingParcel,
-                parcel.BelongParcel, parcel.PickingUp,parcel.Arrival);
+            return new Parcel(parcel.Sender.Id, parcel.Getter.Id,
+                parcel.Weight, parcel.MPriority, null);
         }
     }
 }

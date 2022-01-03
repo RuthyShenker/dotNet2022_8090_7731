@@ -8,7 +8,18 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Margin" Value="0,15" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
+        </Style>
+
+        <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="200" />
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
@@ -21,17 +32,20 @@
     </UserControl.Resources>
     <StackPanel>
 
-        <TextBox Text="{Binding Customer.Id}" materialDesign:HintAssist.Hint="Id"
+        <TextBox Text="{Binding Customer.Id ,
+            ValidatesOnDataErrors=true,
+             NotifyOnValidationError=true,
+            UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Id"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
                  VerticalAlignment="Center"
                  materialDesign:TextFieldAssist.HasClearButton="True"  
                  IsEnabled="False" />
 
-       
-
-
-        <TextBox Text="{Binding Customer.Name, ValidatesOnDataErrors=true, NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Name"
+        <TextBox Text="{Binding Customer.Name,
+            ValidatesOnDataErrors=true, 
+            NotifyOnValidationError=true,
+            UpdateSourceTrigger=PropertyChanged}"
+                 materialDesign:HintAssist.Hint="Name"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                  VerticalAlignment="Center" 
                   materialDesign:TextFieldAssist.HasClearButton="True"  />
@@ -46,20 +60,27 @@
                   materialDesign:TextFieldAssist.HasClearButton="True"  />
 
 
-        <TextBox Text="{Binding Customer.Location.Longitude}"
-                 materialDesign:HintAssist.Hint="Longitude"
+        <TextBox Text="{Binding Customer.Location.Longitude,
+            ValidatesOnDataErrors=true,
+             NotifyOnValidationError=true,
+            UpdateSourceTrigger=PropertyChanged }"
+                 
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
                  VerticalAlignment="Center"
+                 materialDesign:HintAssist.Hint="Longitude"
                   materialDesign:TextFieldAssist.HasClearButton="True"  
                  IsEnabled="False"/>
 
-        <TextBox
-            materialDesign:HintAssist.Hint="Latitude"
-            Text="{Binding Customer.Location.Latitude}"
+        <TextBox Text="{Binding Customer.Location.Latitude,
+             ValidatesOnDataErrors=true,
+             NotifyOnValidationError=true,
+            UpdateSourceTrigger=PropertyChanged}"
              Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"
+                 VerticalAlignment="Center"  
+            materialDesign:HintAssist.Hint="Latitude"
              materialDesign:TextFieldAssist.HasClearButton="True"  
-                 IsEnabled="False"/>
+                 IsEnabled="False"
+            />
 
         <ListView Grid.Row="1"  
                   ItemsSource="{Binding Customer.LForCustomer}"

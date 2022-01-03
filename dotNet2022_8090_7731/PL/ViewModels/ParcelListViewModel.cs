@@ -34,9 +34,9 @@ namespace PL.ViewModels
             ParcelList = new ListCollectionView(list);
             ParcelList.Filter = FilterParcel;
             //ParcelList.SortDescriptions.Add(new SortDescription(nameof(ParcelToList.GetterName), ListSortDirection.Descending));
-            ParcelList.GroupDescriptions.Add(new PropertyGroupDescription(nameof(ParcelToList.SenderName)));
             //ParcelList.GroupBySelector = MyGroup;
 
+            //ParcelList.GroupDescriptions = MyGroup;
             this.bl = bl;
 
             //ParcelList = bl.GetParcels();
@@ -49,10 +49,10 @@ namespace PL.ViewModels
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
         }
 
-        private GroupDescription MyGroup(CollectionViewGroup group, int level)
-        {
-            throw new NotImplementedException();
-        }
+        //private GroupDescription MyGroup(CollectionViewGroup group, int level)
+        //{
+        //    .Add(new PropertyGroupDescription(nameof(ParcelToList.SenderName)));
+        //}
 
         private bool FilterParcel(object obj)
         {

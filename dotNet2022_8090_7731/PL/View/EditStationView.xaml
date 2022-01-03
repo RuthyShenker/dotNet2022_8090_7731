@@ -17,13 +17,13 @@
             <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="200" />
-            <!--<Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />-->
+            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
         </Style>
 
         <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="200" />
-            <!--<Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />-->
+            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
         </Style>
         <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Width" Value="200" />
