@@ -10,20 +10,17 @@
     
     <StackPanel Orientation="Vertical">
 
-        <ListView ItemsSource="{Binding SortCondition}" >
-        </ListView>
-
         <ComboBox x:Name="AvailablePositionsList" ItemsSource="{Binding AvailablePositionsList}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction 
-                        Command="{Binding SortListCommand}"
+                        Command="{Binding FilterListCommand}"
                         CommandParameter="{Binding ElementName=AvailablePositionsList, Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ComboBox>
-        
-        <ListView x:Name="StationList" ItemsSource="{Binding StationList}" >
+
+        <ListView x:Name="StationList" ItemsSource="{Binding StationList, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 

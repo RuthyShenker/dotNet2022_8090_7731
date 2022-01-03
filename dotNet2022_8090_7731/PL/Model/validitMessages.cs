@@ -61,7 +61,7 @@ namespace PO
                 !value.All(d => char.IsDigit(d)) ?  
                         "Input must contain digits only" :
                  value.Length != 10 ?
-                        "Phone must contain 10 digits":
+                        "Phone must contain 10 digits" :
                     "";
             //return value switch
             //{

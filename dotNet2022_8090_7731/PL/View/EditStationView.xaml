@@ -41,7 +41,7 @@
                                 NotifyOnValidationError=true,
                                 UpdateSourceTrigger=PropertyChanged}" 
                  materialDesign:HintAssist.Hint="Name" 
-                materialDesign:TextFieldAssist.HasClearButton="True"/>
+                 materialDesign:TextFieldAssist.HasClearButton="True"/>
 
         <TextBox Text="{Binding Station.NumPositions,
                                 ValidatesOnDataErrors=true,
