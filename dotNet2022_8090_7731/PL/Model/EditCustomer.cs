@@ -48,7 +48,8 @@ namespace PO
                 validityMessages["Phone"] =PhoneMessage(value);
             }
         }
-
+        //TODO
+        //NEED TO EB]NABLE EDIT
         public Location Location { get; set; }
         // two lists
         public IEnumerable<ParcelInCustomer> LFromCustomer { get; set; }

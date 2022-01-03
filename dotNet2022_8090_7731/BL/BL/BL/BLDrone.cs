@@ -90,7 +90,7 @@ namespace BL
         private DroneToList CalculateUnDeliveryingDrone(DroneToList nDrone)
         {
             //it rands free or maintance.
-            nDrone.DStatus = (DroneStatus)rand.Next((int)DroneStatus.Delivery);
+            nDrone.DStatus = (DroneStatus)rand.Next((int)DroneStatus.Free, (int)DroneStatus.Delivery);
             
             var customersList = CustomersWithProvidedParcels();
             

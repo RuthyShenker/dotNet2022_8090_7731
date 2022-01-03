@@ -70,6 +70,12 @@ namespace PL.ViewModels
         {
             CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers());
         }
+        private void RefreshCustomer()
+        {
+            //var customer = bl.GetCustomer(customerId);
+            //CustomerList.
+            CustomerList = new ObservableCollection<CustomerToList>();
+        }
         private void CloseWindow(object sender)
         {
             Window.GetWindow((DependencyObject)sender).Close();

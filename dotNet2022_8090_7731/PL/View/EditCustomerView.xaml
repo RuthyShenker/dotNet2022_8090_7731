@@ -67,7 +67,7 @@
             <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
             <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="ShowParcelOfCustomerCommand">
+                <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 
                         Command="{Binding ShowParcelOfCustomerCommand}"
                         CommandParameter="{Binding ElementName=ParcelsForCustomerListView,
