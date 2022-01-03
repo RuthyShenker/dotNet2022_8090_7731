@@ -54,7 +54,7 @@ namespace PL.ViewModels
         {
             var selectedStation = sender as StationToList;
             var blStation = bl.GetStation(selectedStation.Id);
-            new StationView(bl, null, blStation)
+            new StationView(bl, RefreshStationList, blStation)
                     .Show();
         }
 
@@ -75,10 +75,9 @@ namespace PL.ViewModels
             return choosenNumPositions == 0 || station.AvailablePositions == choosenNumPositions;
         }
 
-        //private void RefreshStationList()
-        //{
-        //    //StationList = bl.GetStations();
-        //}
-
+        private void RefreshStationList()
+        {
+            StationList.Refresh();
+        }
     }
 }
