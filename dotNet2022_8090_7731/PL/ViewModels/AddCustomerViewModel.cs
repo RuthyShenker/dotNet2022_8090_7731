@@ -11,15 +11,15 @@ namespace PL.ViewModels
     public class AddCustomerViewModel
     {
         BlApi.IBL bl;
-        Action refreshCustomer;
+        Action<BO.Customer> switchView;
         public CustomerToAdd Customer { get; set; }
         public RelayCommand<object> AddCustomerCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
-        public AddCustomerViewModel(BlApi.IBL bl, Action refreshCustomerList)
+        public AddCustomerViewModel(BlApi.IBL bl,  Action<BO.Customer> switchView)
         {
             Customer = new();
             this.bl = bl;
-            refreshCustomer = refreshCustomerList;
+            this.switchView = switchView;
             AddCustomerCommand = new RelayCommand<object>(AddCustomer, param => Customer.Error == "");
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
         }
@@ -28,14 +28,14 @@ namespace PL.ViewModels
         {
             Window.GetWindow((DependencyObject)sender).Close();
         }
-
+       
         private void AddCustomer(object obj)
         {
             try
             {
                 var blCustomer = MapCustomerFromPOToBO(Customer);
                 bl.AddCustomer(blCustomer);
-                refreshCustomer();
+                switchView(blCustomer);
             }
             catch (BO.IdIsAlreadyExistException exception)
             {

@@ -9,8 +9,8 @@
         Title="CustomerListView" Height="450" Width="800">
     <!--<StackPanel>-->
     <StackPanel Orientation="Vertical">
-        <ListView x:Name="CustomerList" ItemsSource="{Binding CustomerList}"  
-            ><!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
+        <ListView x:Name="CustomerList" ItemsSource="{Binding CustomerList}">
+            <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
             <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
@@ -19,7 +19,20 @@
                         CommandParameter="{Binding ElementName=CustomerList, Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-        
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Text="{Binding Id}"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding }"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
             <!--<i:Interaction.Behaviors>
                 <i:EventTriggerBehavior
              EventName="RightTapped">
