@@ -20,8 +20,9 @@ namespace PL.ViewModels
         public RelayCommand<object> AddStationCommand { get; set; }
         public RelayCommand<object> ShowStationCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
+
+        //TODO update when it change
         public List<int> AvailablePositionsList { get; set; }
-        //public RelayCommand<object> FilterListCommand { get; set; }
 
         public StationListViewModel(BlApi.IBL bl)
         {
@@ -30,12 +31,9 @@ namespace PL.ViewModels
             StationList.Filter = FilterCondition;
             AvailablePositionsList = bl.AvailableSlots().Select(station => station.AvailablePositions).Distinct().ToList();
             
-            //RefreshStationList();
             AddStationCommand = new RelayCommand<object>(AddingStation);
             ShowStationCommand = new RelayCommand<object>(ShowStation);
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
-            //FilterListCommand = new RelayCommand<object>(FilterList);
-            //StationList.Filter = new Predicate<object>(Contains);
         }
 
         private void AddingStation(object sender)
