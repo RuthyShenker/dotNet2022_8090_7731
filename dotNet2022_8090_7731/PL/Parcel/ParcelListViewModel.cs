@@ -47,7 +47,9 @@ namespace PL.ViewModels
             ParcelList = new ListCollectionView(list);
             ParcelList.Filter = FilterParcel;
 
-            ParcelList.SortDescriptions.Add(new SortDescription(groupBy.ToString(), ListSortDirection.Ascending));
+            //ParcelList.SortDescriptions.Add(new SortDescription(groupBy.ToString(), ListSortDirection.Ascending));
+            //parcelList.SortDescriptions.Add(new SortDescription(nameof(ParcelToList.Id), ListSortDirection.Ascending));
+
             //ParcelList.GroupBySelector = MyGroup;
             //ParcelList.GroupDescriptions = MyGroup;
             this.bl = bl;

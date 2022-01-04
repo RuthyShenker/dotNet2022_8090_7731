@@ -12,11 +12,11 @@ using static PL.Model.Enum;
 
 namespace PL.ViewModels
 {
-    public class StationListViewModel :DependencyObject
+    public class StationListViewModel : DependencyObject
     {
         private int choosenNumPositions { get; set; }
         private readonly BlApi.IBL bl;
-        //public IEnumerable<StationToList> StationList { get; set; }
+        //public ListCollectionView StationList { get; set; }
 
 
         public ListCollectionView StationList
@@ -71,6 +71,8 @@ namespace PL.ViewModels
             var blStation = bl.GetStation(selectedStation.Id);
             new StationView(bl, RefreshStationList, blStation)
                     .Show();
+            //StationList = new(bl.AvailableSlots().ToList());
+
         }
 
         private void CloseWindow(object sender)
@@ -96,7 +98,9 @@ namespace PL.ViewModels
 
         private void RefreshStationList()
         {
-            StationList.Refresh();
+            StationList = new(bl.AvailableSlots().ToList());
+
+            //StationList.Refresh();
         }
     }
 }
