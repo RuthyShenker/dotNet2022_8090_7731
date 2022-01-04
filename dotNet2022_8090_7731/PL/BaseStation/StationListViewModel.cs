@@ -8,15 +8,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using static PL.Model.Enum;
 
 namespace PL.ViewModels
 {
-    public class StationListViewModel 
+    public class StationListViewModel :DependencyObject
     {
         private int choosenNumPositions { get; set; }
         private readonly BlApi.IBL bl;
         //public IEnumerable<StationToList> StationList { get; set; }
-        public ListCollectionView StationList { get; set; }
+
+
+        public ListCollectionView StationList
+        {
+            get { return (ListCollectionView)GetValue(StationListProperty); }
+            set { SetValue(StationListProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for StationList.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty StationListProperty =
+            DependencyProperty.Register("StationList", typeof(ListCollectionView), typeof(StationListViewModel), new PropertyMetadata(null));
+
+
+
         public RelayCommand<object> AddStationCommand { get; set; }
         public RelayCommand<object> ShowStationCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
@@ -25,6 +39,7 @@ namespace PL.ViewModels
         public List<int> AvailablePositionsList { get; set; }
 
         public StationListViewModel(BlApi.IBL bl)
+
         {
             this.bl = bl;
             StationList = new(bl.AvailableSlots().ToList());
@@ -47,6 +62,7 @@ namespace PL.ViewModels
             {
                 MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            StationList = new(bl.AvailableSlots().ToList());
         }
 
         private void ShowStation(object sender)

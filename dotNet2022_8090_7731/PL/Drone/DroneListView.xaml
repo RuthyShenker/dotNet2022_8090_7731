@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:BO="clr-namespace:BO;assembly=BL"  
-        xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
          xmlns:local="clr-namespace:PL.ViewModels"
         mc:Ignorable="d"
         Title="DroneListView" Height="450" Width="800" >

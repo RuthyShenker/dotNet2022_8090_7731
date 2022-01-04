@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         xmlns:BO="clr-namespace:BO;assembly=BL"  
         xmlns:System="clr-namespace:System;assembly=mscorlib"
@@ -14,10 +15,17 @@
                 <x:Type TypeName="BO:ParcelStatus"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+       
     </Window.Resources>
     <StackPanel Orientation="Vertical">
         <ComboBox ItemsSource="{Binding Source={StaticResource ParcelStatusEnum}}" 
                   SelectedItem="{Binding ParcelStatusSelected}" />
+
+        <ComboBox ItemsSource="{Binding GroupOptions }"
+                  SelectedItem="{Binding GroupBy}" />
+        
+
+
         <ListView x:Name="ParcelList" ItemsSource="{Binding ParcelList}"  >
             <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
             <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
@@ -28,6 +36,15 @@
                         CommandParameter="{Binding ElementName=ParcelList, Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+            <!--<ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>-->
         </ListView>
 
         <!--<ListView ItemsSource="{Binding ParcelListBySender}"  >

@@ -6,20 +6,33 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
+using static PL.Model.Enum;
 
 namespace PL.ViewModels
 {
     public class ParcelListViewModel : INotifyPropertyChanged
     {
         BlApi.IBL bl;
-        public ListCollectionView parcelList;
+        ListCollectionView parcelList;
         ParcelStatus parcelStatusSelected;
         DateTime? startTime, endTime;
+        GroupBy groupBy;
 
+
+        public Array GroupOptions { get; set; }
         public RelayCommand<object> MouseDoubleCommand { get; set; }
         public RelayCommand<object> AddParcelCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
 
+        //public ListCollectionView parcelList;
+
+        //PropertyGroupDescription groupDescription;
+        //groupDescription.PropertyName = "Category";
+        //listingDataView.GroupDescriptions.Add(groupDescription);
+
+
+
+        //view.GroupDescriptions.Add(groupDescription);
         private void RefreshParcelList()
         {
 
@@ -33,12 +46,15 @@ namespace PL.ViewModels
             var list = new ObservableCollection<ParcelToList>(bl.GetParcels());
             ParcelList = new ListCollectionView(list);
             ParcelList.Filter = FilterParcel;
-            //ParcelList.SortDescriptions.Add(new SortDescription(nameof(ParcelToList.GetterName), ListSortDirection.Descending));
-            //ParcelList.GroupBySelector = MyGroup;
 
+            ParcelList.SortDescriptions.Add(new SortDescription(groupBy.ToString(), ListSortDirection.Ascending));
+            //ParcelList.GroupBySelector = MyGroup;
             //ParcelList.GroupDescriptions = MyGroup;
             this.bl = bl;
+            GroupOptions = Enum.GetValues(typeof(GroupBy));
+            //ParcelList.GroupDescriptions.Add(new PropertyGroupDescription(nameof(GroupBy)));
 
+            //groupDescription = new PropertyGroupDescription();
             //ParcelList = bl.GetParcels();
 
             //ParcelListBySender = bl.GetParcels().GroupBy(parcel => parcel.SenderName)
@@ -48,7 +64,39 @@ namespace PL.ViewModels
             AddParcelCommand = new RelayCommand<object>(AddParcel);
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
         }
+        public GroupBy GroupBy
+        {
+            get => groupBy;
+            set
+            {
+                groupBy = value;
+                parcelList.GroupDescriptions.Clear();
+                parcelList.SortDescriptions.Clear();
+                if (groupBy != GroupBy.Id)
+                {
+                    PropertyGroupDescription groupDescription = new PropertyGroupDescription(groupBy.ToString());
+                    //groupDescription.PropertyName = groupBy.ToString();
+                    parcelList.GroupDescriptions.Add(groupDescription);
+                    SortDescription sortDescription = new SortDescription(groupBy.ToString(), ListSortDirection.Ascending);
+                    parcelList.SortDescriptions.Add(sortDescription);
+                }
+            
+                parcelList.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+            }
 
+        }
+
+        private string GroupByCurrentGroup()
+        {
+
+            return groupBy switch
+            {
+                GroupBy.SenderName => nameof(ParcelToList.SenderName),
+                GroupBy.GetterName => nameof(ParcelToList.GetterName),
+                GroupBy.Id => "",
+                _ => null,
+            };
+        }
         //private GroupDescription MyGroup(CollectionViewGroup group, int level)
         //{
         //    .Add(new PropertyGroupDescription(nameof(ParcelToList.SenderName)));
@@ -122,7 +170,7 @@ namespace PL.ViewModels
                 ParcelList.Refresh();
             }
         }
-        public Dictionary<string, ObservableCollection<ParcelToList>> ParcelListBySender { get; set; }
+        //public Dictionary<string, ObservableCollection<ParcelToList>> ParcelListBySender { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void RaisePropertyChanged(string propertyName)
