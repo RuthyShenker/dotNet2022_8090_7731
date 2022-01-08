@@ -25,7 +25,7 @@ namespace PO
             {
                 Set(ref _name, value);
                 validityMessages["Name"] = value is null or "" ? "" :
-                                                                StringMessage(value,nameof(Name));
+                                                                StringMessage(value);
             }
         }
 
@@ -48,7 +48,7 @@ namespace PO
             }
         }
 
-        private Dictionary<string, string> validityMessages = new Dictionary<string, string>()
+        private Dictionary<string, string> validityMessages = new()
         {
             ["Name"] = "",
             ["NumPositions"] = "",

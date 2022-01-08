@@ -78,6 +78,13 @@
                 Command="{Binding CloseWindowCommand }" 
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                 Style="{StaticResource MaterialDesignFlatButton}"/>
-        
+
+        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                HorizontalAlignment="Center"
+                Content="Delete this station"
+                Command="{Binding DeleteStationCommand}" 
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" >
+        </Button>
+
     </StackPanel>
 </UserControl>

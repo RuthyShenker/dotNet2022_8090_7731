@@ -19,17 +19,18 @@
         </Style>
     </UserControl.Resources>
     <StackPanel>
+        
         <TextBlock  Text="Add Station" RenderTransformOrigin="0.503,0.492"></TextBlock>
+        
         <TextBox  
-            Text = "{ Binding station.Id,
+            Text = "{ Binding Station.Id,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged }"
             materialDesign:HintAssist.Hint="Id" />
 
-
         <TextBox
-            Text="{Binding station.Name,
+            Text="{Binding Station.Name,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
@@ -37,34 +38,37 @@
         </TextBox>
         
         <TextBox
-            Text="{Binding station.Longitude,
+            Text="{Binding Station.Longitude,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
             materialDesign:HintAssist.Hint="Longitude" />
 
-
         <TextBox 
-            Text="{Binding station.Latitude,
+            Text="{Binding Station.Latitude,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
             materialDesign:HintAssist.Hint="Latitude" />
 
-
         <TextBox 
-            Text="{Binding station.NumPositions,
+            Text="{Binding Station.NumPositions,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
             materialDesign:HintAssist.Hint="Number positions" />
 
-
         <Button 
             Content="OK" 
             Command="{Binding AddStationCommand}" 
-            CommandParameter="{Binding RelativeSource={ RelativeSource Mode=Self},
-            Path=DataContext}">
+            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=DataContext}" >
         </Button>
+
+        <Button 
+            Content="Cancel" 
+            Command="{Binding CancelCommand}" 
+            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" >
+        </Button>
+        
     </StackPanel>
 </UserControl>

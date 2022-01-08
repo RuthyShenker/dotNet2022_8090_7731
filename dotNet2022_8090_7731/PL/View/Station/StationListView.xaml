@@ -14,6 +14,9 @@
         <ComboBox ItemsSource="{Binding AvailablePositionsList}"
                   SelectedItem="{Binding FilterList}" />
         
+        <ComboBox ItemsSource="{Binding GroupOptions }"
+                  SelectedItem="{Binding GroupBy}" />
+        
         <ListView x:Name="StationList" ItemsSource="{Binding StationList, Mode=TwoWay ,IsAsync=True}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">

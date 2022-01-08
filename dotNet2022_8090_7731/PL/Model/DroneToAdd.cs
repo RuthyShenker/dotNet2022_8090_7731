@@ -48,7 +48,7 @@ namespace PO
             {
                 Set(ref _model, value);
                 validityMessages["Model"] = value is null or "" ? RequiredMessage() :
-                                                                StringMessage(value,nameof(Model));
+                                                                StringMessage(value);
             }
         }
 

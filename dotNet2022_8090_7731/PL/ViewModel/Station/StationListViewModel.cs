@@ -16,6 +16,7 @@ namespace PL.ViewModels
     {
         private int choosenNumPositions { get; set; }
         private readonly BlApi.IBL bl;
+
         //public ListCollectionView StationList { get; set; }
 
 
@@ -28,8 +29,7 @@ namespace PL.ViewModels
         // Using a DependencyProperty as the backing store for StationList.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty StationListProperty =
             DependencyProperty.Register("StationList", typeof(ListCollectionView), typeof(StationListViewModel), new PropertyMetadata(null));
-
-
+        private GroupOptionsForStationList groupBy;
 
         public RelayCommand<object> AddStationCommand { get; set; }
         public RelayCommand<object> ShowStationCommand { get; set; }
@@ -38,11 +38,12 @@ namespace PL.ViewModels
         //TODO update when it change
         public List<int> AvailablePositionsList { get; set; }
 
-        public StationListViewModel(BlApi.IBL bl)
+        public Array GroupOptions { get; set; } = Enum.GetValues(typeof(GroupOptionsForStationList));
 
+        public StationListViewModel(BlApi.IBL bl)
         {
             this.bl = bl;
-            StationList = new(bl.AvailableSlots().ToList());
+            StationList = new(bl.GetStations().ToList());
             StationList.Filter = FilterCondition;
             AvailablePositionsList = bl.AvailableSlots().Select(station => station.AvailablePositions).Distinct().ToList();
             
@@ -51,18 +52,40 @@ namespace PL.ViewModels
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
         }
 
+        public GroupOptionsForStationList GroupBy
+        {
+            get => groupBy;
+            set
+            {
+                groupBy = value;
+                StationList.GroupDescriptions.Clear();
+                StationList.SortDescriptions.Clear();
+                if (groupBy == GroupOptionsForStationList.FullPositions)
+                {
+                    PropertyGroupDescription groupDescription = new PropertyGroupDescription(groupBy.ToString());
+                    //groupDescription.PropertyName = groupBy.ToString();
+                    StationList.GroupDescriptions.Add(groupDescription);
+                    //SortDescription sortDescription = new SortDescription(groupBy.ToString(), ListSortDirection.Ascending);
+                    //StationList.SortDescriptions.Add(sortDescription);
+                }
+
+                //StationList.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+            }
+
+        }
+
         private void AddingStation(object sender)
         {
             if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
             {
-                new StationView(bl, null)
+                new StationView(bl, RefreshStationList)
                     .Show();
             }
             else
             {
                 MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            StationList = new(bl.AvailableSlots().ToList());
+            //StationList = new(bl.AvailableSlots().ToList());
         }
 
         private void ShowStation(object sender)
@@ -98,7 +121,7 @@ namespace PL.ViewModels
 
         private void RefreshStationList()
         {
-            StationList = new(bl.AvailableSlots().ToList());
+            StationList = new(bl.GetStations().ToList());
 
             //StationList.Refresh();
         }
