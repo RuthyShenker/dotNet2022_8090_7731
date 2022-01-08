@@ -35,8 +35,9 @@ namespace PL.ViewModels
 
         private EditParcel Map(Parcel parcel)
         {
-            return new EditParcel(parcel.Id, parcel.Sender, parcel.Getter, parcel.Weight, parcel.MPriority, parcel.DInParcel,
-                parcel.MakingParcel, parcel.BelongParcel, parcel.PickingUp, parcel.Arrival);
+            //return new EditParcel(parcel.Id, parcel.Sender, parcel.Getter, parcel.Weight, parcel.MPriority, parcel.DInParcel,
+            //    parcel.MakingParcel, parcel.BelongParcel, parcel.PickingUp, parcel.Arrival);
+            return new EditParcel();
         }
         public EditParcel Parcel
         {

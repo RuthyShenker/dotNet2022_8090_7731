@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -31,11 +32,11 @@ namespace PO
                         "Id has to contain 9 digits":
                         "";
         }
-
-        public static string StringMessage(string value,string name)
+      
+        public static string StringMessage(string value, [CallerMemberName] string propertyName = "")
         {
             return !Regex.IsMatch(value, @"^[a-zA-Z\s]+$") ?
-                        $"{name} has to contain letters only" :
+                        $"{propertyName} has to contain letters only" :
                    "";
         }
         public static string NameMessage(string name)

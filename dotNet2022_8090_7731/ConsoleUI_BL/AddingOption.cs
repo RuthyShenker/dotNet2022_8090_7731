@@ -66,9 +66,8 @@ namespace ConsoleUI_BL
             Console.WriteLine("Enter the priority of the new parcel");
             tools.PrintEnum(typeof(Priority));
             Priority mPriority = (Priority)CheckValids.InputValidOfEnum(typeof(Priority));
-            DroneInParcel DInParcel = null;
 
-            return new Parcel(senderId, getterId, weight, mPriority, DInParcel);
+            return new Parcel(senderId, getterId, weight, mPriority);
         }
 
         /// <summary>

@@ -34,9 +34,9 @@ namespace BO
         /// <param name="weight"></param>
         /// <param name="mPriority"></param>
         /// <param name="dInParcel"></param>
-        public Parcel(int senderId, int getterId, WeightCategories weight, Priority mPriority, DroneInParcel dInParcel)
+        public Parcel(int senderId, int getterId, WeightCategories weight, Priority mPriority)
             : this(0, new CustomerInParcel(senderId, string.Empty), new CustomerInParcel(getterId, string.Empty),
-                 weight, mPriority, dInParcel, DateTime.Now, null, null, null)
+                 weight, mPriority, null, DateTime.Now, null, null, null)
         {
         }
         /// <summary>

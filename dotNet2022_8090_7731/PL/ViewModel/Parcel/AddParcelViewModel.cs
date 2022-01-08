@@ -22,7 +22,7 @@ namespace PL.ViewModels
             Parcel = new();
             this.bl = bl;
             this.refreshParcels = refreshParcels;
-            AddParcelCommand = new RelayCommand<object>(AddParcel);
+            AddParcelCommand = new RelayCommand<object>(AddParcel, param => Parcel.Error == string.Empty);
             IdOption = bl.GetCustomers().Select(customer => customer.Id).ToList();
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
         }
@@ -42,15 +42,11 @@ namespace PL.ViewModels
             {
                 MessageBox.Show(exception.Message);
             }
-
-
-
         }
 
         private Parcel Map(ParcelToAdd parcel)
         {
-            return new Parcel(parcel.Sender.Id, parcel.Getter.Id,
-                parcel.Weight, parcel.MPriority, null);
+            return new Parcel(parcel.Sender.Id, parcel.Getter.Id, parcel.Weight, parcel.MPriority);
         }
     }
 }
