@@ -8,6 +8,7 @@ namespace DalApi
     {
         public static IDal GetDal()
         {
+          
             string dalType = DalConfig.DalName;
             string dalPkg = DalConfig.DalPackages[dalType];
             if (dalPkg == null) throw new DalConfigException($"Package {dalType} is not found in packages list in dal-config.xml");

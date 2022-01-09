@@ -72,10 +72,10 @@
         </StackPanel>
 
 
-        <Expander Header="Parcel in transfer">
+        <Expander Header="Parcel in transfer" >
             <StackPanel x:Name="PInTransfer"
                         Visibility="{Binding Drone,Converter={StaticResource ParcelInTransferVisibilityConverter}}">
-                
+                        
                 <TextBlock x:Name="PInTransferPId" Text = "Id" IsEnabled="True" TextWrapping="Wrap"/>
                 <TextBox x:Name="PInTransferPIdTextBox" Text = "{Binding Drone.ParcelInTransfer.PId, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
 

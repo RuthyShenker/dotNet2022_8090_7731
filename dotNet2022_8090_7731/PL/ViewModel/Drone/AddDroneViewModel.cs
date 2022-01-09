@@ -1,4 +1,5 @@
-﻿using PO;
+﻿using BO;
+using PO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,11 @@ namespace PL.ViewModels
         public List<int> StationOptions { get; set; }
         public RelayCommand<object> AddDroneCommand { get; set; }
 
-        public AddDroneViewModel(/*BlApi.IBL bl, Action refreshDrones*/)
+        public AddDroneViewModel(/*BlApi.IBL bl,*/ Action refreshDrones)
         {
             Drone = new();
             //this.bl = bl;
-            //this.refreshDrones = refreshDrones;
+            this.refreshDrones = refreshDrones;
             StationOptions = BlApi.BlFactory.GetBl().AvailableSlots().Select(station => station.Id).ToList();
             AddDroneCommand = new RelayCommand<object>(AddDrone, param => Drone.Error == "");
         }
@@ -29,6 +30,15 @@ namespace PL.ViewModels
         private void AddDrone(object parameters)
         {
             MessageBox.Show("AddCustomer Drone");
+            BlApi.BlFactory.GetBl().AddingDrone(Map(Drone),Drone.StationId);
+            refreshDrones();
+
+        }
+
+        private Drone Map(DroneToAdd drone)
+        {
+
+            return new Drone((int)drone.Id,drone.Model,drone.MaxWeight,0,DroneStatus.Maintenance,null,BlApi.BlFactory.GetBl().GetStation(Drone.StationId).Location);
         }
     }
 }

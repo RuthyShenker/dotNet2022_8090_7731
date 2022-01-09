@@ -21,10 +21,10 @@ namespace PL.View
     /// </summary>
     public partial class DroneView : Window
     {
-        public DroneView(BlApi.IBL bl, Action refreshDroneList)
+        public DroneView(/*BlApi.IBL bl,*/ Action refreshDroneList)
         {
-            //var viewModel = new AddDroneViewModel(bl, refreshDroneList);
-            this.DataContext = new AddDroneView(/*viewModel*/);
+            var viewModel = new AddDroneViewModel(/*bl,*/ refreshDroneList);
+            this.DataContext = new AddDroneView(viewModel);
             InitializeComponent();
             //DroneView.DataContext = new AddNewDroneView(bl, refreshDroneList,Close);
             //var viewModel = new AddDroneViewModel(/*bl, */refreshDroneList);

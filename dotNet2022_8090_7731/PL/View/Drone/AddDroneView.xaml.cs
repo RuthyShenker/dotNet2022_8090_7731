@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,10 +20,10 @@ namespace PL.View
     /// </summary>
     public partial class AddDroneView : UserControl
     {
-        public AddDroneView(/*AddDroneViewModel viewModel*/)
+        public AddDroneView(AddDroneViewModel viewModel)
         {
             InitializeComponent();
-            //this.DataContext = viewModel;
+            this.DataContext = viewModel;
         }
     }
 }
