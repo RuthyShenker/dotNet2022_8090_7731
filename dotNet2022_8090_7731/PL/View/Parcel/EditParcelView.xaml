@@ -6,19 +6,36 @@
              xmlns:BO="clr-namespace:BO;assembly=BL"
              xmlns:local="clr-namespace:PL.View"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-               xmlns:System="clr-namespace:System;assembly=mscorlib"
+               xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="200" />
+            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
+        </Style>
+       
+        <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
+            <Setter Property="Margin" Value="0,15" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton }">
+            <Setter Property="Margin" Value="0,15" />
+            <Setter Property="Width" Value="500" />
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
         </Style>
         <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Width" Value="200" />
             <Setter Property="Margin" Value="0,15" />
         </Style>
+        
 
         <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                         ObjectType="{x:Type System:Enum}">
@@ -35,29 +52,33 @@
     </UserControl.Resources>
             <StackPanel>
         <TextBox Text="{Binding Parcel.Id}" materialDesign:HintAssist.Hint="Parcel Id"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"
                  IsEnabled="False"/>
-
-        <TextBox Text="{Binding Parcel.Sender.Id}" materialDesign:HintAssist.Hint="Sender Id"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"
-                 IsEnabled="False"/>
+                  <!--Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
+                 VerticalAlignment="Center"-->
+        <TextBlock Text="Sender"/>
+        <Button 
+            Content="{Binding Parcel.Sender.Id}"
+            Command="{Binding EditCustomerCommand}"
+            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" >
+        </Button>
                 
         <TextBox Text="{Binding Parcel.Sender.Name}" materialDesign:HintAssist.Hint="Sender Name"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
                  VerticalAlignment="Center"
                  IsEnabled="False"/>
-                
-        <TextBox Text="{Binding Parcel.Getter.Id}" materialDesign:HintAssist.Hint="Getter Id"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"
-                 IsEnabled="False"/>
-                
+
+        <TextBlock Text="Getter"/>
+        <Button 
+            Content="{Binding Parcel.Getter.Id}"
+            Command="{Binding EditCustomerCommand}"
+            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" >
+        </Button>
+
         <TextBox Text="{Binding Parcel.Getter.Name}" materialDesign:HintAssist.Hint="Getter Name"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
                  VerticalAlignment="Center"
                  IsEnabled="False"/>
+                
         <ComboBox  
             ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}"
                     SelectedItem="{Binding Parcel.Weight}"

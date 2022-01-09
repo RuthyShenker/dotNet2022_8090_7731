@@ -1,4 +1,4 @@
-﻿using BO;
+﻿using PL.View;
 using PO;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,7 @@ namespace PL.ViewModels
 
         public RelayCommand<object> UpdateParcelCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
+        public RelayCommand<object> EditCustomerCommand { get; set; }
         
         public EditParcelViewModel(BlApi.IBL bl, BO.Parcel parcel, Action refreshParcels)
         {
@@ -26,6 +27,14 @@ namespace PL.ViewModels
             this.refreshParcels = refreshParcels;
             UpdateParcelCommand = new RelayCommand<object>(UpdateParcel);
             CloseWindowCommand = new RelayCommand<object>(Close_Window);
+            EditCustomerCommand = new RelayCommand<object>(EditSender);
+        }
+
+        private void EditSender(object senderId)
+        {
+            var blCustomer = bl.GetCustomer((int)senderId);
+            new CustomerView(bl, RefreshParcel, blCustomer)
+                    .Show();
         }
 
         private void UpdateParcel(object obj)
@@ -33,11 +42,27 @@ namespace PL.ViewModels
 
         }
 
-        private EditParcel Map(Parcel parcel)
+        private EditParcel Map(BO.Parcel parcel)
         {
-            //return new EditParcel(parcel.Id, parcel.Sender, parcel.Getter, parcel.Weight, parcel.MPriority, parcel.DInParcel,
+            return new EditParcel
+            {
+                Id = parcel.Id,
+                Sender = new CustomerInParcel(parcel.Sender.Id, parcel.Sender.Name),
+                Getter = new CustomerInParcel(parcel.Getter.Id, parcel.Getter.Name),
+                Arrival = parcel.Arrival,
+                PickingUp = parcel.PickingUp,
+                BelongParcel = parcel.BelongParcel,
+                Weight = parcel.Weight,
+                MPriority = parcel.MPriority,
+                DInParcel = parcel.DInParcel,
+                MakingParcel = parcel.MakingParcel
+            };
+
+            //parcel.Id,
+            //    new CustomerInParcel( parcel.Sender.Id, parcel.Sender.Name),
+            //    new CustomerInParcel(parcel.Getter.Id, parcel.Getter.Name),
+            //    parcel.Weight, parcel.MPriority, parcel.DInParcel,
             //    parcel.MakingParcel, parcel.BelongParcel, parcel.PickingUp, parcel.Arrival);
-            return new EditParcel();
         }
         public EditParcel Parcel
         {
