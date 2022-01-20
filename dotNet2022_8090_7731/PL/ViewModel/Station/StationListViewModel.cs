@@ -1,5 +1,6 @@
 ﻿using BO;
 using PL.View;
+using PO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,25 +13,13 @@ using static PL.Model.Enum;
 
 namespace PL.ViewModels
 {
-    public class StationListViewModel : DependencyObject
+    public class StationListViewModel : ObservableBase 
     {
         private int choosenNumPositions { get; set; }
         private readonly BlApi.IBL bl;
-
-        //public ListCollectionView StationList { get; set; }
-
-
-        public ListCollectionView StationList
-        {
-            get { return (ListCollectionView)GetValue(StationListProperty); }
-            set { SetValue(StationListProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for StationList.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty StationListProperty =
-            DependencyProperty.Register("StationList", typeof(ListCollectionView), typeof(StationListViewModel), new PropertyMetadata(null));
         private GroupOptionsForStationList groupBy;
 
+        public ListCollectionView StationList { get; set; }
         public RelayCommand<object> AddStationCommand { get; set; }
         public RelayCommand<object> ShowStationCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
@@ -97,7 +86,7 @@ namespace PL.ViewModels
             //StationList = new(bl.AvailableSlots().ToList());
 
         }
-
+       
         private void CloseWindow(object sender)
         {
             Window.GetWindow((DependencyObject)sender).Close();

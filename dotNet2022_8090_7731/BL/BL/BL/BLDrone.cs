@@ -91,16 +91,20 @@ namespace BL
         {
             //it rands free or maintance.
             nDrone.DStatus = (DroneStatus)rand.Next((int)DroneStatus.Free, (int)DroneStatus.Delivery);
-            
+
             var customersList = CustomersWithProvidedParcels();
-            
+
             if (nDrone.DStatus == DroneStatus.Maintenance || customersList.Count() == 0)
             {
                 var availableSlotsList = AvailableSlots();
                 var station = availableSlotsList.ElementAt(rand.Next(availableSlotsList.Count()));
                 nDrone.CurrLocation = GetStation(station.Id).Location;
                 nDrone.BatteryStatus = rand.NextDouble() * 20;
-                // what if availableSlotsList.Count()==0?
+
+                if (nDrone.DStatus == DroneStatus.Maintenance)
+                {
+                    dal.Add(new DO.ChargingDrone(nDrone.Id, station.Id, DateTime.Now));
+                }
             }
             else
             {
@@ -277,7 +281,7 @@ namespace BL
             }
             var optionParcels = dal.GetDalListByCondition<DO.Parcel>
                 (parcel => parcel.Weight <= (DO.WeightCategories)droneToList.Weight &&
-                droneToList.BatteryStatus >= MinBattery(GetDistance(droneToList.CurrLocation, parcel),(WeightCategories)parcel.Weight))
+                droneToList.BatteryStatus >= MinBattery(GetDistance(droneToList.CurrLocation, parcel), (WeightCategories)parcel.Weight))
                 .OrderByDescending(parcel => parcel.MPriority)
                 .ThenByDescending(parcel => parcel.Weight)
                 .ThenBy(parcel => GetDistance(droneToList.CurrLocation, parcel));
