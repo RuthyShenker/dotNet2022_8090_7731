@@ -26,16 +26,17 @@
             <Setter Property="Width" Value="200" />
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
         </Style>
+        
         <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton }">
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="500" />
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
         </Style>
+
         <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Width" Value="200" />
             <Setter Property="Margin" Value="0,15" />
         </Style>
-        
 
         <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                         ObjectType="{x:Type System:Enum}">
@@ -43,21 +44,24 @@
                 <x:Type TypeName="BO:WeightCategories"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        
         <ObjectDataProvider x:Key="PriorityEnum" MethodName="GetValues"
                         ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="BO:Priority"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        
     </UserControl.Resources>
-            <StackPanel>
+    
+    <StackPanel>
         <TextBox Text="{Binding Parcel.Id}" materialDesign:HintAssist.Hint="Parcel Id"
                  IsEnabled="False"/>
                   <!--Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
                  VerticalAlignment="Center"-->
         <TextBlock Text="Sender"/>
         <Button 
-            Content="{Binding Parcel.Sender.Id}"
+            Content="{Binding Parcel.Sender.Id, UpdateSourceTrigger=PropertyChanged}"
             Command="{Binding EditCustomerCommand}"
             CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" >
         </Button>
@@ -120,9 +124,9 @@
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
                  VerticalAlignment="Center"
                  IsEnabled="False"/>
-        <TextBox Text="{Binding Parcel.PickingUp
-}" materialDesign:HintAssist.Hint="Picking Up Parcel"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
+        <TextBox Text="{Binding Parcel.PickingUp}" 
+                 materialDesign:HintAssist.Hint="Picking Up Parcel"
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
                  VerticalAlignment="Center"
                  IsEnabled="False"/>
 
@@ -131,11 +135,11 @@
                  VerticalAlignment="Center"
                  IsEnabled="False"/>
 
-
         <Button Style="{StaticResource MaterialDesignFlatButton}"
                     HorizontalAlignment="Center"
                     Content="Update"
                     Command="{Binding UpdateParcelCommand}"/>
+        
         <Button x:Name="close_window" Content="close" 
                 Command="{Binding CloseWindowCommand }"
                 CommandParameter="{Binding ElementName=close_window}"

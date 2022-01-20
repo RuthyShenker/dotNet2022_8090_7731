@@ -56,7 +56,7 @@ namespace PL.ViewModels
             {
                 if (WeightSelectedItem == default && StatusSelectedItem == default/*|| droneToList.DStatus == statusSelectedItem*/)
                     return true;
-                else if (droneToList.DStatus == statusSelectedItem && droneToList.Weight == WeightSelectedItem)
+                else if (droneToList.DStatus == statusSelectedItem && droneToList.Weight == weightSelectedItem)
                     return true;
             }
             return false;
@@ -82,15 +82,15 @@ namespace PL.ViewModels
             }
         }
 
-
         public WeightCategories WeightSelectedItem
         {
             get => weightSelectedItem;
             set
             {
-                RaisePropertyChanged(nameof(WeightSelectedItem));
+                //RaisePropertyChanged(nameof(WeightSelectedItem));
                 weightSelectedItem = value;
-                RefreshDrones();
+                DroneList.Filter = FilterDrone;
+                //RefreshDrones();
             }
         }
 
@@ -100,7 +100,8 @@ namespace PL.ViewModels
             set
             {
                 statusSelectedItem = value;
-                RefreshDrones();
+                DroneList.Filter = FilterDrone;
+                //RefreshDrones();
             }
         }
 

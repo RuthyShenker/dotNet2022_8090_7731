@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using BO;
+using PL.View;
 using PO;
 namespace PL.ViewModels
 {
@@ -23,7 +24,8 @@ namespace PL.ViewModels
             CloseWindowCommand = new RelayCommand<object>(Close_Window);
             UpdateModelOfDroneCommand = new RelayCommand<object>(UpdateDroneModel);
             ChargeDroneCommand = new RelayCommand<object>(SendOrReleaseDroneFromCharging);
-            AssignParcelToDroneCommand = new RelayCommand<object>(SendOrPickOrArrivalDrone);
+            AssignParcelToDroneCommand = new RelayCommand<object>(OpenParcelWindow);
+            OpenParcelWindowCommand = new RelayCommand<object>(OpenParcelWindowC, param => Drone.Status == DroneStatus.Delivery);
         }
 
         public RelayCommand<object> ChargeDroneCommand { get; set; }
@@ -33,7 +35,8 @@ namespace PL.ViewModels
         public RelayCommand<object> UpdateModelOfDroneCommand { get; set; }
 
         public RelayCommand<object> CloseWindowCommand { get; set; }
-
+        public RelayCommand<object> OpenParcelWindowCommand { get; set; }
+        
         private void UpdateDroneModel(object sender)
         {
             // when we changed bl.GetDrones to return new list 
@@ -58,7 +61,14 @@ namespace PL.ViewModels
                 bl.ReleasingDrone(Drone.Id);
             RefreshDrone();
         }
-        private void SendOrPickOrArrivalDrone(object sender)
+        private void OpenParcelWindowC(object MyParcel)
+        {
+            var parcel = MyParcel as BO.ParcelInTransfer;
+            var blParcel = bl.GetParcel(parcel.PId);
+            new ParcelView(bl, RefreshDrone, blParcel).Show();
+        }
+
+        private void OpenParcelWindow(object sender)
         {
             if (Drone.Status == DroneStatus.Free)
             {

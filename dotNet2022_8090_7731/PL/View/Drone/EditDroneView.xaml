@@ -7,8 +7,29 @@
              xmlns:BO="clr-namespace:BO;assembly=BL"
              xmlns:Converters="clr-namespace:PL.Converters"
              mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
+
+        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Margin" Value="0,15" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        
+        <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Margin" Value="0,15" />
+        </Style>
 
         <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
@@ -32,30 +53,28 @@
         <Converters:ParcelInTransferVisibilityConverter x:Key="ParcelInTransferVisibilityConverter"/>
     </UserControl.Resources>
     <StackPanel>
-        <TextBlock  Text = "Drone Id:" />
-        <TextBox Name = "IdTextBox" Text = "{Binding Drone.Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+        
+        <TextBox Text = "{Binding Drone.Id, UpdateSourceTrigger=PropertyChanged}"
+                 IsEnabled="False"/>
 
-        <StackPanel x:Name="BatteryContainer">
-            <TextBlock  Text = "Battery:" />
-            <TextBox x:Name = "BatteryTextBox"  Text = "{Binding Drone.BatteryStatus}" IsEnabled="False" />
-        </StackPanel>
+        <TextBox Text = "{Binding Drone.BatteryStatus}" 
+                    materialDesign:HintAssist.Hint="Battery" 
+                    IsEnabled="False" />
 
         <TextBlock Text = "MaxWeight:" />
-        <ComboBox x:Name = "MaxWeightComboBox" 
-                  ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" 
+        <ComboBox ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" 
                   SelectedItem="{Binding Drone.Weight}"  
-                  Height = "25" Width = "140"  IsEnabled="False" />
+                  materialDesign:HintAssist.Hint="MaxWeight" 
+                  IsEnabled="False" />
 
-        <TextBlock  Text = "Model:" />
-        <TextBox x:Name = "ModelTextBox" Text = "{Binding Drone.Model, UpdateSourceTrigger=LostFocus}" />
+        <TextBox Text = "{Binding Drone.Model, UpdateSourceTrigger=LostFocus}"
+                 materialDesign:HintAssist.Hint="Model" />
 
-        <StackPanel x:Name="StatusContainer">
-            <TextBlock  Text = "Status:" />
-            <ComboBox x:Name = "StatusComboBox"   
-                      ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" 
-                      SelectedItem="{Binding Drone.Status}" 
-                      Height = "25" Width = "140"  IsEnabled="False"/>
-        </StackPanel>
+        <TextBlock  Text = "Status:" />
+        <ComboBox ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" 
+                    SelectedItem="{Binding Drone.Status}" 
+                    materialDesign:HintAssist.Hint="Status"
+                    IsEnabled="False"/>
 
         <!--<StackPanel x:Name="DeliveryContainer">
                     <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
@@ -64,14 +83,22 @@
                 </StackPanel>-->
 
         <StackPanel x:Name="Location">
-            <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
-            <TextBox x:Name = "LongitudeTextBox" Text = "{Binding Drone.Location.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" />
+            <TextBox Text = "{Binding Drone.Location.Longitude, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Longitude"
+                     IsEnabled="False" />
 
-            <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
-            <TextBox x:Name = "LatitudeTextBox" Text = "{Binding Drone.Location.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+            <TextBox Text = "{Binding Drone.Location.Latitude, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Latitude"
+                     IsEnabled="False"/>
         </StackPanel>
 
-
+        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                HorizontalAlignment="Center"
+                Content="See delivered parcel"
+                Command="{Binding OpenParcelWindowCommand}" 
+                CommandParameter="{Binding Drone.ParcelInTransfer}" >
+        </Button>
+        
         <Expander Header="Parcel in transfer" >
             <StackPanel x:Name="PInTransfer"
                         Visibility="{Binding Drone,Converter={StaticResource ParcelInTransferVisibilityConverter}}">
@@ -138,20 +165,21 @@
             </StackPanel>
         </Expander>
 
-        <Button Content = "Update Model:" Command="{Binding UpdateModelOfDroneCommand }"  />
-        <Button x:Name="SendOrReleaseDroneFromCharging" 
-                   Visibility="{Binding Drone.Status ,Converter={StaticResource DroneStatusToVisibilityConverter}}" 
+        <Button Content = "Update Model:" 
+                Command="{Binding UpdateModelOfDroneCommand }" />
+        
+        <Button Visibility="{Binding Drone.Status ,Converter={StaticResource DroneStatusToVisibilityConverter}}" 
                 Height="50"
-                   Content="{Binding Drone.Status ,Converter={StaticResource ContentByDroneStatusConverter}}"
+                Content="{Binding Drone.Status, Converter={StaticResource ContentByDroneStatusConverter}}"
                 Command="{Binding ChargeDroneCommand}" />
 
-        <Button x:Name="SendOrPickOrArrivalDrone" Command="{Binding AssignParcelToDroneCommand}"
-                    Visibility="{Binding Drone,  Converter={StaticResource VisibilityByDroneToBelongOrPickOrArrivalParcelConverter }}" 
-                    Content="{Binding Drone,  Converter={StaticResource ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter}}"
-                    Height="50"/>
-        <Button x:Name="close_window" Content="close" 
+        <Button Command="{Binding AssignParcelToDroneCommand}"
+                Visibility="{Binding Drone,  Converter={StaticResource VisibilityByDroneToBelongOrPickOrArrivalParcelConverter }}" 
+                Content="{Binding Drone,  Converter={StaticResource ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter}}" />
+
+        <Button Content="close" 
                 Command="{Binding CloseWindowCommand }"
-                CommandParameter="{Binding ElementName=close_window}"/>
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
         <!--<Button x:Name="close_window_button" Content="close" Command="{Binding CloseWindowCommand }" CommandParameter="{Binding RelativeSource=self}"></Button>-->
         <!--<Button x:Name="close_window_button" Content="close" Command="{x:Static}"  CommandParameter="{Binding RelativeSource=self}"></Button>-->
 
