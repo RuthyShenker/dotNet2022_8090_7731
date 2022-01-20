@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using static PL.Model.Enum;
@@ -12,7 +13,7 @@ namespace PL.ViewModels
 {
     public class ParcelListViewModel : INotifyPropertyChanged
     {
-        BlApi.IBL bl;
+        private readonly BlApi.IBL bl;
         ListCollectionView parcelList;
         ParcelStatus parcelStatusSelected;
         DateTime? startTime, endTime;
@@ -33,16 +34,13 @@ namespace PL.ViewModels
 
 
         //view.GroupDescriptions.Add(groupDescription);
-        private void RefreshParcelList()
-        {
-
-        }
         public ParcelListViewModel(BlApi.IBL bl)
         {
             //var list1 = new ObservableCollection<Parcel>();
             //foreach (var parcel in bl.GetParcels())
             //    list1.Add(bl.GetParcel(parcel.Id));
 
+            this.bl = bl;
             var list = new ObservableCollection<ParcelToList>(bl.GetParcels());
             ParcelList = new ListCollectionView(list);
             ParcelList.Filter = FilterParcel;
@@ -52,7 +50,6 @@ namespace PL.ViewModels
 
             //ParcelList.GroupBySelector = MyGroup;
             //ParcelList.GroupDescriptions = MyGroup;
-            this.bl = bl;
             GroupOptions = Enum.GetValues(typeof(GroupBy));
             //ParcelList.GroupDescriptions.Add(new PropertyGroupDescription(nameof(GroupBy)));
 
@@ -66,6 +63,12 @@ namespace PL.ViewModels
             AddParcelCommand = new RelayCommand<object>(AddParcel);
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
         }
+
+        private void RefreshParcelList()
+        {
+            ParcelList = new(bl.GetParcels().ToList());
+        }
+
         public GroupBy GroupBy
         {
             get => groupBy;
@@ -77,12 +80,11 @@ namespace PL.ViewModels
                 if (groupBy != GroupBy.Id)
                 {
                     PropertyGroupDescription groupDescription = new PropertyGroupDescription(groupBy.ToString());
-                    //groupDescription.PropertyName = groupBy.ToString();
                     parcelList.GroupDescriptions.Add(groupDescription);
+
                     SortDescription sortDescription = new SortDescription(groupBy.ToString(), ListSortDirection.Ascending);
                     parcelList.SortDescriptions.Add(sortDescription);
                 }
-            
                 parcelList.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
             }
 
@@ -150,7 +152,7 @@ namespace PL.ViewModels
             set
             {
                 parcelStatusSelected = value;
-                ParcelList.Refresh();
+                RefreshParcelList();
             }
         }
         public DateTime? StartTime
@@ -159,7 +161,7 @@ namespace PL.ViewModels
             set
             {
                 startTime = value;
-                ParcelList.Refresh();
+                RefreshParcelList();
             }
         }
         public DateTime? EndTime
@@ -169,7 +171,7 @@ namespace PL.ViewModels
             {
 
                 endTime = value;
-                ParcelList.Refresh();
+                RefreshParcelList();
             }
         }
         //public Dictionary<string, ObservableCollection<ParcelToList>> ParcelListBySender { get; set; }

@@ -12,17 +12,17 @@ namespace PL.ViewModels
 {
     public class DroneListViewModel : INotifyPropertyChanged
     {
-        BlApi.IBL bl;
-        WeightCategories weightSelectedItem;
-        DroneStatus statusSelectedItem;
-        public ListCollectionView droneList;
+        private readonly BlApi.IBL bl;
+        private ListCollectionView droneList;
+        private WeightCategories weightSelectedItem;
+        private DroneStatus statusSelectedItem;
+        private GroupByDroneStatus currentGroup;
+
+        public Array GroupOptions { get; set; }
         public RelayCommand<object> AddDroneCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> MouseDoubleCommand { get; set; }
-
-
-        GroupByDroneStatus groupBy;
-        public Array GroupOptions { get; set; }
+        //public RelayCommand<object> GroupCommand { get; set; }
 
         public DroneListViewModel(BlApi.IBL bl)
         {
@@ -33,10 +33,21 @@ namespace PL.ViewModels
             AddDroneCommand = new RelayCommand<object>(AddingDrone);
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
             MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
+            //GroupCommand = new RelayCommand<object>(GroupDrones);
             var list = new ObservableCollection<DroneToList>(bl.GetDrones());
             DroneList = new ListCollectionView(list);
             GroupOptions = Enum.GetValues(typeof(GroupByDroneStatus));
             DroneList.Filter = FilterDrone;
+        }
+
+        public ListCollectionView DroneList
+        {
+            get => droneList;
+            set
+            {
+                droneList = value;
+                RaisePropertyChanged(nameof(DroneList));
+            }
         }
 
         private bool FilterDrone(object obj)
@@ -51,26 +62,118 @@ namespace PL.ViewModels
             return false;
         }
 
-        public GroupByDroneStatus GroupBy
+        public GroupByDroneStatus GroupDrones
         {
-            get => groupBy;
+            get => currentGroup;
             set
             {
-                groupBy = value;
+                currentGroup = value;
                 droneList.GroupDescriptions.Clear();
                 droneList.SortDescriptions.Clear();
-                if (groupBy != GroupByDroneStatus.Id)
+                if (currentGroup != GroupByDroneStatus.Id)
                 {
-                    PropertyGroupDescription groupDescription = new PropertyGroupDescription(groupBy.ToString());
-                    //groupDescription.PropertyName = groupBy.ToString();
+                    PropertyGroupDescription groupDescription = new PropertyGroupDescription(currentGroup.ToString());
                     DroneList.GroupDescriptions.Add(groupDescription);
-                    SortDescription sortDescription = new SortDescription(groupBy.ToString(), ListSortDirection.Ascending);
+
+                    SortDescription sortDescription = new SortDescription(currentGroup.ToString(), ListSortDirection.Ascending);
                     droneList.SortDescriptions.Add(sortDescription);
                 }
-                droneList.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+                droneList.SortDescriptions.Add(new SortDescription(nameof(GroupByDroneStatus.Id), ListSortDirection.Ascending));
             }
-
         }
+
+
+        public WeightCategories WeightSelectedItem
+        {
+            get => weightSelectedItem;
+            set
+            {
+                RaisePropertyChanged(nameof(WeightSelectedItem));
+                weightSelectedItem = value;
+                RefreshDrones();
+            }
+        }
+
+        public DroneStatus StatusSelectedItem
+        {
+            get => statusSelectedItem;
+            set
+            {
+                statusSelectedItem = value;
+                RefreshDrones();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void RaisePropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            //GroupDrones = currentGroup;
+        }
+
+        private void CloseWindow(object sender)
+        {
+            Window.GetWindow((DependencyObject)sender).Close();
+        }
+
+        private void AddingDrone(object sender)
+        {
+            if (bl.AvailableSlots().Select(slot => slot.Id).Any())
+            {
+                new DroneView(/*bl,*/RefreshDrones).Show();
+            }
+            else
+            {
+                MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void RefreshDrones()
+        {
+            DroneList = new(bl.GetDrones().ToList());
+            GroupDrones = currentGroup;
+        }
+
+        //TODOTODO:
+        private void MouseDoubleClick(object sender)
+        {
+            var selectedDrone = sender as DroneToList;
+            var drone = bl.GetDrone(selectedDrone.Id);
+            new DroneView(bl, RefreshDrones, drone)
+                .Show();
+        }
+
+    }
+}
+        //private void button_Close_Click(object sender, RoutedEventArgs e)
+        //{
+        //    //Hide();
+        //}
+        //
+        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        //{
+        //    //e.Cancel = true;
+        //    //MessageBox.Show($"You can press close:)",
+        //    //   "Canceled Action",
+        //    //   MessageBoxButton.OK,
+        //    //   MessageBoxImage.Information);
+        //}
+
+        //private void GroupDrones(object obj)
+        //{
+        //    groupBy = (GroupByDroneStatus)obj;
+        //    droneList.GroupDescriptions.Clear();
+        //    droneList.SortDescriptions.Clear();
+        //    if (groupBy != GroupByDroneStatus.Id)
+        //    {
+        //        PropertyGroupDescription groupDescription = new PropertyGroupDescription(groupBy.ToString());
+        //        //groupDescription.PropertyName = groupBy.ToString();
+        //        DroneList.GroupDescriptions.Add(groupDescription);
+        //        SortDescription sortDescription = new SortDescription(groupBy.ToString(), ListSortDirection.Ascending);
+        //        droneList.SortDescriptions.Add(sortDescription);
+        //    }
+        //    droneList.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+        //}
         //private string GroupByCurrentGroup()
         //{
 
@@ -87,98 +190,13 @@ namespace PL.ViewModels
         //private void FilterDroneListByCondition()
         //{
         //    if (WeightSelectedItem == default && StatusSelectedItem == default)
-        //        DroneList = bl.GetDrones();
+        //        DroneList =new( bl.GetDrones().ToList());
         //    else if (StatusSelectedItem == default)
-        //        DroneList = bl.GetDrones(drone => drone.Weight == WeightSelectedItem);
+        //        DroneList =new( bl.GetDrones(drone => drone.Weight == WeightSelectedItem).ToList());
         //    else if (WeightSelectedItem == default)
-        //        DroneList = bl.GetDrones(drone => drone.DStatus == StatusSelectedItem);
+        //        DroneList =new( bl.GetDrones(drone => drone.DStatus == StatusSelectedItem).ToList());
         //    else
-        //        DroneList = bl.GetDrones(drone =>
+        //        DroneList =new( bl.GetDrones(drone =>
         //        drone.DStatus == StatusSelectedItem
-        //        && drone.Weight == WeightSelectedItem);
+        //        && drone.Weight == WeightSelectedItem).ToList());
         //}
-        public ListCollectionView DroneList
-        {
-            get => droneList;
-            set
-            {
-                droneList = value;
-                RaisePropertyChanged(nameof(DroneList));
-            }
-        }
-        public WeightCategories WeightSelectedItem
-        {
-            get => weightSelectedItem;
-            set
-            {
-                weightSelectedItem = value;
-                //FilterDroneListByCondition();
-
-            }
-        }
-        public DroneStatus StatusSelectedItem
-        {
-            get => statusSelectedItem;
-            set
-            {
-                statusSelectedItem = value;
-                //FilterDroneListByCondition();
-                DroneList.Refresh();
-            }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        private void CloseWindow(object sender)
-        {
-            Window.GetWindow((DependencyObject)sender).Close();
-        }
-
-        private void AddingDrone(object sender)
-        {
-            if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
-            {
-
-                //var viewModel = new AddDroneViewModel(bl, FilterDroneListByCondition);
-                new DroneView(/*bl,*/RefreshDrones).Show();
-
-
-                //new DroneView(/*bl,*/FilterDroneListByCondition).Show();
-            }
-            else
-            {
-                MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-        private void RefreshDrones()
-        {
-            //DroneList = bl.GetDrones();
-            DroneList.Refresh();
-        }
-
-        //private void button_Close_Click(object sender, RoutedEventArgs e)
-        //{
-        //    //Hide();
-        //}
-
-        //TODOTODO:
-        private void MouseDoubleClick(object sender)
-        {
-            var selectedDrone = sender as DroneToList;
-            var drone = bl.GetDrone(selectedDrone.Id);
-            new DroneView(bl, RefreshDrones, drone)
-                .Show();
-        }
-
-        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        //{
-        //    //e.Cancel = true;
-        //    //MessageBox.Show($"You can press close:)",
-        //    //   "Canceled Action",
-        //    //   MessageBoxButton.OK,
-        //    //   MessageBoxImage.Information);
-        //}
-    }
-}
