@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" d:DesignWidth="800">
+    
     <UserControl.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
             <Setter Property="VerticalAlignment" Value="Top"/>
@@ -19,68 +20,53 @@
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
         </Style>
 
+        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+            
         <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="200" />
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
         </Style>
+        
         <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Width" Value="200" />
             <Setter Property="Margin" Value="0,15" />
         </Style>
 
     </UserControl.Resources>
+    
     <StackPanel>
 
         <TextBox Text="{Binding Customer.Id ,
-            ValidatesOnDataErrors=true,
-             NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Id"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"
-                 materialDesign:TextFieldAssist.HasClearButton="True"  
+                                UpdateSourceTrigger=PropertyChanged}"
+                 materialDesign:HintAssist.Hint="Id"
                  IsEnabled="False" />
 
         <TextBox Text="{Binding Customer.Name,
             ValidatesOnDataErrors=true, 
             NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
-                 materialDesign:HintAssist.Hint="Name"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                 VerticalAlignment="Center" 
+                  materialDesign:HintAssist.Hint="Name"
                   materialDesign:TextFieldAssist.HasClearButton="True"  />
-
 
         <TextBox Text="{Binding Customer.Phone, 
-            ValidatesOnDataErrors=true, NotifyOnValidationError=true,
+            ValidatesOnDataErrors=true,
+            NotifyOnValidationError=true,
             UpdateSourceTrigger=PropertyChanged}"
-                 materialDesign:HintAssist.Hint="Phone"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="Phone"
                   materialDesign:TextFieldAssist.HasClearButton="True"  />
 
-
         <TextBox Text="{Binding Customer.Location.Longitude,
-            ValidatesOnDataErrors=true,
-             NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged }"
-                 
-                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"
+                                UpdateSourceTrigger=PropertyChanged }"
                  materialDesign:HintAssist.Hint="Longitude"
-                  materialDesign:TextFieldAssist.HasClearButton="True"  
                  IsEnabled="False"/>
 
         <TextBox Text="{Binding Customer.Location.Latitude,
-             ValidatesOnDataErrors=true,
-             NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
-             Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"  
-            materialDesign:HintAssist.Hint="Latitude"
-             materialDesign:TextFieldAssist.HasClearButton="True"  
-                 IsEnabled="False"
-            />
+                                UpdateSourceTrigger=PropertyChanged}"
+                 materialDesign:HintAssist.Hint="Latitude"
+                 IsEnabled="False" />
 
         <ListView Grid.Row="1"  
                   ItemsSource="{Binding Customer.LForCustomer}"
@@ -91,24 +77,21 @@
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 
                         Command="{Binding ShowParcelOfCustomerCommand}"
-                        CommandParameter="{Binding ElementName=ParcelsForCustomerListView,
-                        Path=SelectedItem}"/>
+                        CommandParameter="{Binding ElementName=ParcelsForCustomerListView, Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ListView>
-        <Button Style="{StaticResource MaterialDesignFlatButton}"
-                    HorizontalAlignment="Center"
-                    Content="Update"
-                    Command="{Binding UpdateCustomerCommand}"/>
-        <Button x:Name="Delete_Customer" Style="{StaticResource MaterialDesignFlatButton}"
-                    HorizontalAlignment="Center"
-                    Content="Delete"
-                    Command="{Binding DeleteCustomerCommand}"
-                CommandParameter="{Binding ElementName=Delete_Customer}"/>
-        <Button x:Name="close_window" Content="close" 
-                Command="{Binding CloseWindowCommand }"
-                CommandParameter="{Binding ElementName=close_window}"
-                Style="{StaticResource MaterialDesignFlatButton}"/>
+        
+        <Button Content="Update"
+                Command="{Binding UpdateCustomerCommand}"/>
 
+        <Button Content="Delete"
+                Command="{Binding DeleteCustomerCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+
+        <Button Content="close" 
+                Command="{Binding CloseWindowCommand }"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+        
     </StackPanel>
 </UserControl>

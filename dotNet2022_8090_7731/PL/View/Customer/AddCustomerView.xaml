@@ -14,45 +14,44 @@
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
         </Style>
     </UserControl.Resources>
+    
     <StackPanel>
-        <TextBlock  Text="Add Customer" RenderTransformOrigin="0.503,0.492"></TextBlock>
+
+        <TextBlock Text="Add Customer" RenderTransformOrigin="0.503,0.492"/>
+        
         <TextBox  
             Text = "{Binding Customer.Id,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
-            UpdateSourceTrigger=LostFocus }"
+            UpdateSourceTrigger=PropertyChanged}"
             materialDesign:HintAssist.Hint="Id" />
-
 
         <TextBox
             Text="{Binding Customer.Name,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
+                ValidatesOnDataErrors=true,
+                NotifyOnValidationError=true,
+                UpdateSourceTrigger=PropertyChanged}"
             materialDesign:HintAssist.Hint="Name" />
-
 
         <TextBox
             Text="{Binding Customer.Phone,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
+                ValidatesOnDataErrors=true,
+                NotifyOnValidationError=true,
+                UpdateSourceTrigger=PropertyChanged}"
             materialDesign:HintAssist.Hint="Phone" />
-
 
         <TextBox 
             Text="{Binding Customer.Latitude,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
+                ValidatesOnDataErrors=true,
+                NotifyOnValidationError=true,
+                UpdateSourceTrigger=PropertyChanged}"
             materialDesign:HintAssist.Hint="Latitude" />
-
 
         <TextBox 
             Text="{Binding Customer.Longitude,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
+                ValidatesOnDataErrors=true,
+                NotifyOnValidationError=true,
+                UpdateSourceTrigger=PropertyChanged}"
             materialDesign:HintAssist.Hint="Longitude" />
 
         <Button Style="{StaticResource MaterialDesignFlatButton}"
