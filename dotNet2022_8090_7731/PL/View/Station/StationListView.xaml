@@ -14,8 +14,28 @@
         <ComboBox ItemsSource="{Binding AvailablePositionsList}"
                   SelectedItem="{Binding FilterList}" />
 
-        <ComboBox ItemsSource="{Binding GroupOptions }"
-                  SelectedItem="{Binding GroupBy}" />
+        <!--<ComboBox ItemsSource="{Binding GroupOptions }"
+                  SelectedItem="{Binding GroupBy}" />-->
+
+        <ListView ItemsSource="{Binding GroupOptions}" 
+                  SelectedItem="{Binding GroupBy}"
+                  SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="30">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <RadioButton IsChecked="{Binding IsSelected,
+                                              RelativeSource={RelativeSource
+                                              AncestorType={x:Type ListViewItem}}}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        
         <!--, Mode=TwoWay ,IsAsync=True-->
         <ListView x:Name="StationList" ItemsSource="{Binding StationList}" >
             <i:Interaction.Triggers>
