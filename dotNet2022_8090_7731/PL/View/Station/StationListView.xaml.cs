@@ -26,5 +26,6 @@ namespace PL.View
             InitializeComponent();
             DataContext = viewModel;
         }
+
     }
 }

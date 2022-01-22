@@ -9,7 +9,7 @@ namespace PL.Model
     public class Enum
     {
         public enum GroupBy { Id, SenderName, GetterName }
-        public enum GroupOptionsForStationList { All, FullPositions }
+        public enum GroupOptionsForStationList { All, FullPositions, AvailablePositions }
         public enum GroupByDroneStatus {Id, DStatus }
     }
 }

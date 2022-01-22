@@ -46,21 +46,22 @@ namespace PL.ViewModels
             get => groupBy;
             set
             {
+               
                 groupBy = value;
                 StationList.GroupDescriptions.Clear();
                 StationList.SortDescriptions.Clear();
-                if (groupBy == GroupOptionsForStationList.FullPositions)
+                if (groupBy != GroupOptionsForStationList.All)
                 {
                     PropertyGroupDescription groupDescription = new PropertyGroupDescription(groupBy.ToString());
-                    //groupDescription.PropertyName = groupBy.ToString();
                     StationList.GroupDescriptions.Add(groupDescription);
-                    //SortDescription sortDescription = new SortDescription(groupBy.ToString(), ListSortDirection.Ascending);
-                    //StationList.SortDescriptions.Add(sortDescription);
+
+                    SortDescription sortDescription = new SortDescription(groupBy.ToString(), ListSortDirection.Ascending);
+                    StationList.SortDescriptions.Add(sortDescription);
                 }
 
-                //StationList.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+                // inner sort by Id
+                StationList.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
             }
-
         }
 
         private void AddingStation(object sender)
