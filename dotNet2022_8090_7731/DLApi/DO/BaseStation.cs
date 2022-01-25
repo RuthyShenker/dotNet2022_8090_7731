@@ -11,6 +11,7 @@ namespace DO
     /// A struct of base station,contains:
     /// Id,Name of Station,Number of Available Positions,Longitude,Latitude.
     /// </summary>
+    [Serializable]
     public struct BaseStation : IIdentifiable, IDalObject
     {
         

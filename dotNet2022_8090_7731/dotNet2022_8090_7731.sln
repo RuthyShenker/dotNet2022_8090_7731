@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Singleton", "Singleton\Sing
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalApi", "DLApi\DalApi.csproj", "{6DABC9FD-DCBD-4651-B3A6-E4689C053B2F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalXml", "DalXml\DalXml.csproj", "{639EC83E-6415-40BD-9999-536DA203EAB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{6DABC9FD-DCBD-4651-B3A6-E4689C053B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DABC9FD-DCBD-4651-B3A6-E4689C053B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DABC9FD-DCBD-4651-B3A6-E4689C053B2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{639EC83E-6415-40BD-9999-536DA203EAB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{639EC83E-6415-40BD-9999-536DA203EAB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{639EC83E-6415-40BD-9999-536DA203EAB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{639EC83E-6415-40BD-9999-536DA203EAB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

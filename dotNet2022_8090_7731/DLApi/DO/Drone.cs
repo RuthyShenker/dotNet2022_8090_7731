@@ -11,6 +11,7 @@ namespace DO
     ///// A struct that of Drone constains:
     ///// Id, Model, MaxWeight, BatteryStatus, Status.
     ///// </summary>
+    [Serializable]
     public struct Drone : IIdentifiable, IDalObject
     {
         /// <summary>

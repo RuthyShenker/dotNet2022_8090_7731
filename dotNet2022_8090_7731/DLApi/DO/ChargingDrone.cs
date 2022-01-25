@@ -7,6 +7,7 @@ namespace DO
     /// A struct of ChargingDrone, contains:
     /// Id of Station,Id of Drone.
     /// </summary>
+    [Serializable]
     public struct ChargingDrone : IDalObject
     {
         /// <summary>

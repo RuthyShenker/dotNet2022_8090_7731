@@ -11,6 +11,7 @@ namespace DO
     /// A struct of Parcel contains:
     /// Id of Parcel, Id of Sender, Id of Getter, Weight, Status, Id of Drone.
     /// </summary>
+    [Serializable]
     public struct Parcel : IIdentifiable, IDalObject
     {       
         /// <summary>

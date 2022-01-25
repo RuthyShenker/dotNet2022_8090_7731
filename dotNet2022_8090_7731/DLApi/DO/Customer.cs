@@ -11,6 +11,7 @@ namespace DO
     /// A struct of Customer contains:
     /// Id,Name,Phone,Longitude,Latitude
     /// </summary>
+    [Serializable]
     public struct Customer : IIdentifiable, IDalObject
     {
         /// <summary>
