@@ -64,6 +64,11 @@ namespace PL.ViewModels
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
         }
 
+        public void FiterAfterDate(object choosenDate)
+        {
+            MessageBox.Show("Wow");
+        }
+
         private void RefreshParcelList()
         {
             ParcelList = new(bl.GetParcels().ToList());

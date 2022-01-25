@@ -25,5 +25,10 @@ namespace PL.View
             InitializeComponent();
             this.DataContext = parcelListViewModel;
         }
+
+        private void hihi(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+        }
     }
 }

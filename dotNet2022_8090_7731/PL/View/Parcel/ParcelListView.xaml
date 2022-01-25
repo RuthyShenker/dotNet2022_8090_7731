@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         xmlns:BO="clr-namespace:BO;assembly=BL"  
         xmlns:System="clr-namespace:System;assembly=mscorlib"
@@ -15,17 +16,37 @@
                 <x:Type TypeName="BO:ParcelStatus"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-       
+
     </Window.Resources>
     <StackPanel Orientation="Vertical">
         <ComboBox ItemsSource="{Binding Source={StaticResource ParcelStatusEnum}}" 
                   SelectedItem="{Binding ParcelStatusSelected}" />
 
+        <StackPanel>
+            <TextBlock Text="Filter"/>
+            <StackPanel>
+                <DockPanel>
+                    <TextBlock Text="Created After"/>
+                    <DatePicker x:Name="click" 
+                         SelectedDate="{Binding FiterAfterDate}"
+                        Width="120"
+                        FlowDirection="RightToLeft"
+                        materialDesign:HintAssist.Hint="Choose Date" TextInput="{Binding FiterAfterDate, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" DataContextChanged="hihi" />
+                </DockPanel>
+
+                <DockPanel>
+                    <TextBlock Text="Created Before"/>
+                    <DatePicker
+                       Width="120"
+                       FlowDirection="RightToLeft"
+                       materialDesign:HintAssist.Hint="Choose Date" />
+                </DockPanel>
+            </StackPanel>
+        </StackPanel>
+
         <ComboBox ItemsSource="{Binding GroupOptions }"
                   SelectedItem="{Binding GroupBy}" />
         
-
-
         <ListView x:Name="ParcelList" ItemsSource="{Binding ParcelList}"  >
             <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
             <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
