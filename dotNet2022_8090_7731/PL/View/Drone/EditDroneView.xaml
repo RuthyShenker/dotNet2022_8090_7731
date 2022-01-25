@@ -8,11 +8,8 @@
              xmlns:Converters="clr-namespace:PL.Converters"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="450" d:DesignWidth="800"
-            >
-        
-        <UserControl.Resources>    
-    <UserControl.Resources>
+             d:DesignHeight="450" d:DesignWidth="800">
+<UserControl.Resources>
 
         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
             <Setter Property="VerticalAlignment" Value="Top"/>
@@ -28,7 +25,7 @@
         <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
-        
+
         <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Width" Value="200" />
             <Setter Property="Margin" Value="0,15" />
@@ -56,7 +53,7 @@
         <Converters:ParcelInTransferVisibilityConverter x:Key="ParcelInTransferVisibilityConverter"/>
     </UserControl.Resources>
     <StackPanel>
-        
+
         <TextBox Text = "{Binding Drone.Id, UpdateSourceTrigger=PropertyChanged}"
                  IsEnabled="False"/>
 
@@ -101,11 +98,11 @@
                 Command="{Binding OpenParcelWindowCommand}" 
                 CommandParameter="{Binding Drone.ParcelInTransfer}" >
         </Button>
-        
+
 
         <Button Content = "Update Model:" 
                 Command="{Binding UpdateModelOfDroneCommand }" />
-        
+
         <Button Visibility="{Binding Drone.Status ,Converter={StaticResource DroneStatusToVisibilityConverter}}" 
                 Height="50"
                 Content="{Binding Drone.Status, Converter={StaticResource ContentByDroneStatusConverter}}"
@@ -124,9 +121,9 @@
         <StackPanel x:Name="message">
         </StackPanel>
     </StackPanel>
-</UserControl>
 
-        <!--<Expander Header="Parcel in transfer" >
+
+    <!--<Expander Header="Parcel in transfer" >
             <StackPanel x:Name="PInTransfer"
                         Visibility="{Binding Drone,Converter={StaticResource ParcelInTransferVisibilityConverter}}">
                         
@@ -191,3 +188,4 @@
                 <TextBox x:Name="PInTransferTransDistanceTextBox" Text = "{Binding Drone.ParcelInTransfer.TransDistance, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
             </StackPanel>
         </Expander>-->
+    </UserControl>

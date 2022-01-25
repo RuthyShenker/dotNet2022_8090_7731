@@ -1,6 +1,8 @@
 ﻿using BO;
 using PL.View;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -12,12 +14,15 @@ namespace PL.ViewModels
 {
     public class DroneListViewModel : INotifyPropertyChanged
     {
-        private readonly BlApi.IBL bl;
-        private ListCollectionView droneList;
-        private WeightCategories weightSelectedItem;
-        private DroneStatus statusSelectedItem;
-        private GroupByDroneStatus currentGroup;
+        readonly BlApi.IBL bl;
+        ListCollectionView droneList;
+        object weightSelectedItem="Default";
+        object statusSelectedItem="Default";
 
+        GroupByDroneStatus currentGroup;
+
+        public IEnumerable WeightCategoriesEnum { get; } = new List<object>() { "Defalut" }.Union(Enum.GetValues(typeof(WeightCategories)).Cast<object>());
+        public IEnumerable DroneStatusEnum { get; } = new List<object>() { "Defalut" }.Union(Enum.GetValues(typeof(DroneStatus)).Cast<object>());
         public Array GroupOptions { get; set; }
         public RelayCommand<object> AddDroneCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
@@ -26,6 +31,7 @@ namespace PL.ViewModels
 
         public DroneListViewModel(BlApi.IBL bl)
         {
+
             this.bl = BlApi.BlFactory.GetBl();/* bl;*/
             //droneList = Enumerable.Empty<DroneToList>();
             //FilterDroneListByCondition();
@@ -52,14 +58,28 @@ namespace PL.ViewModels
 
         private bool FilterDrone(object obj)
         {
+            //if (obj is DroneToList droneToList)
+            //{
+                //if ((WeightSelectedItem == null && StatusSelectedItem == null) || (WeightSelectedItem == "Default" && StatusSelectedItem == "Default"))//*|| droneToList.DStatus == statusSelectedItem*/
+                //    return true;
+                //else if (WeightSelectedItem == null && (statusSelectedItem == "Default" || droneToList.DStatus == (DroneStatus)statusSelectedItem))
+                //    return true;
+                //else if ((WeightSelectedItem == "Default" || droneToList.Weight == (WeightCategories)WeightSelectedItem) && statusSelectedItem == null)
+                //    return true;
+                //else if ((statusSelectedItem == "Default" || droneToList.DStatus == (DroneStatus)statusSelectedItem) && (weightSelectedItem == "Default" || droneToList.Weight == (WeightCategories)weightSelectedItem))
+                //    return true;
+            //}
+
             if (obj is DroneToList droneToList)
             {
-                if (WeightSelectedItem == default && StatusSelectedItem == default/*|| droneToList.DStatus == statusSelectedItem*/)
-                    return true;
-                else if (droneToList.DStatus == statusSelectedItem && droneToList.Weight == weightSelectedItem)
-                    return true;
+               if(Enum.IsDefined(typeof(WeightCategories),WeightSelectedItem)&& Enum.IsDefined(typeof(DroneStatus), statusSelectedItem))
+                   return (WeightCategories)WeightSelectedItem == droneToList.Weight&& (DroneStatus)statusSelectedItem == droneToList.DStatus;
+               if (Enum.IsDefined(typeof(WeightCategories), WeightSelectedItem))
+                   return (WeightCategories)WeightSelectedItem == droneToList.Weight;
+               if (Enum.IsDefined(typeof(DroneStatus), statusSelectedItem))
+                   return (DroneStatus)statusSelectedItem == droneToList.DStatus;
             }
-            return false;
+            return true;
         }
 
         public GroupByDroneStatus GroupDrones
@@ -82,7 +102,7 @@ namespace PL.ViewModels
             }
         }
 
-        public WeightCategories WeightSelectedItem
+        public object WeightSelectedItem
         {
             get => weightSelectedItem;
             set
@@ -94,7 +114,7 @@ namespace PL.ViewModels
             }
         }
 
-        public DroneStatus StatusSelectedItem
+        public object StatusSelectedItem
         {
             get => statusSelectedItem;
             set
@@ -146,58 +166,58 @@ namespace PL.ViewModels
 
     }
 }
-        //private void button_Close_Click(object sender, RoutedEventArgs e)
-        //{
-        //    //Hide();
-        //}
-        //
-        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        //{
-        //    //e.Cancel = true;
-        //    //MessageBox.Show($"You can press close:)",
-        //    //   "Canceled Action",
-        //    //   MessageBoxButton.OK,
-        //    //   MessageBoxImage.Information);
-        //}
+//private void button_Close_Click(object sender, RoutedEventArgs e)
+//{
+//    //Hide();
+//}
+//
+//private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+//{
+//    //e.Cancel = true;
+//    //MessageBox.Show($"You can press close:)",
+//    //   "Canceled Action",
+//    //   MessageBoxButton.OK,
+//    //   MessageBoxImage.Information);
+//}
 
-        //private void GroupDrones(object obj)
-        //{
-        //    groupBy = (GroupByDroneStatus)obj;
-        //    droneList.GroupDescriptions.Clear();
-        //    droneList.SortDescriptions.Clear();
-        //    if (groupBy != GroupByDroneStatus.Id)
-        //    {
-        //        PropertyGroupDescription groupDescription = new PropertyGroupDescription(groupBy.ToString());
-        //        //groupDescription.PropertyName = groupBy.ToString();
-        //        DroneList.GroupDescriptions.Add(groupDescription);
-        //        SortDescription sortDescription = new SortDescription(groupBy.ToString(), ListSortDirection.Ascending);
-        //        droneList.SortDescriptions.Add(sortDescription);
-        //    }
-        //    droneList.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
-        //}
-        //private string GroupByCurrentGroup()
-        //{
+//private void GroupDrones(object obj)
+//{
+//    groupBy = (GroupByDroneStatus)obj;
+//    droneList.GroupDescriptions.Clear();
+//    droneList.SortDescriptions.Clear();
+//    if (groupBy != GroupByDroneStatus.Id)
+//    {
+//        PropertyGroupDescription groupDescription = new PropertyGroupDescription(groupBy.ToString());
+//        //groupDescription.PropertyName = groupBy.ToString();
+//        DroneList.GroupDescriptions.Add(groupDescription);
+//        SortDescription sortDescription = new SortDescription(groupBy.ToString(), ListSortDirection.Ascending);
+//        droneList.SortDescriptions.Add(sortDescription);
+//    }
+//    droneList.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+//}
+//private string GroupByCurrentGroup()
+//{
 
-        //    return groupBy switch
-        //    {
-        //        GroupByDroneStatus.Free => nameof(DroneToList.DStatus.Free),
-        //        GroupByDroneStatus.Maintenance => nameof(DroneToList.DStatus.Maintenance),
-        //        GroupByDroneStatus.Delivery => nameof(DroneToList.DStatus.Delivery),
-        //        GroupByDroneStatus.Id => "",
-        //        _ => null,
-        //    };
-        //}
+//    return groupBy switch
+//    {
+//        GroupByDroneStatus.Free => nameof(DroneToList.DStatus.Free),
+//        GroupByDroneStatus.Maintenance => nameof(DroneToList.DStatus.Maintenance),
+//        GroupByDroneStatus.Delivery => nameof(DroneToList.DStatus.Delivery),
+//        GroupByDroneStatus.Id => "",
+//        _ => null,
+//    };
+//}
 
-        //private void FilterDroneListByCondition()
-        //{
-        //    if (WeightSelectedItem == default && StatusSelectedItem == default)
-        //        DroneList =new( bl.GetDrones().ToList());
-        //    else if (StatusSelectedItem == default)
-        //        DroneList =new( bl.GetDrones(drone => drone.Weight == WeightSelectedItem).ToList());
-        //    else if (WeightSelectedItem == default)
-        //        DroneList =new( bl.GetDrones(drone => drone.DStatus == StatusSelectedItem).ToList());
-        //    else
-        //        DroneList =new( bl.GetDrones(drone =>
-        //        drone.DStatus == StatusSelectedItem
-        //        && drone.Weight == WeightSelectedItem).ToList());
-        //}
+//private void FilterDroneListByCondition()
+//{
+//    if (WeightSelectedItem == default && StatusSelectedItem == default)
+//        DroneList =new( bl.GetDrones().ToList());
+//    else if (StatusSelectedItem == default)
+//        DroneList =new( bl.GetDrones(drone => drone.Weight == WeightSelectedItem).ToList());
+//    else if (WeightSelectedItem == default)
+//        DroneList =new( bl.GetDrones(drone => drone.DStatus == StatusSelectedItem).ToList());
+//    else
+//        DroneList =new( bl.GetDrones(drone =>
+//        drone.DStatus == StatusSelectedItem
+//        && drone.Weight == WeightSelectedItem).ToList());
+//}

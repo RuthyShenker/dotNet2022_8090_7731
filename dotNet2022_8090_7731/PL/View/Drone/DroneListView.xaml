@@ -12,19 +12,19 @@
     <!--Closing="Window_Closing"-->
     <Window.Resources>
         <ObjectDataProvider x:Key="close" MethodName="CloseWindowCommand"></ObjectDataProvider>
-        <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
+        <!--<ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="BO:WeightCategories"/>
             </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
+        </ObjectDataProvider>-->
         
-        <ObjectDataProvider x:Key="DroneStatusEnum" MethodName="GetValues" 
+        <!--<ObjectDataProvider x:Key="DroneStatusEnum" MethodName="GetValues" 
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="BO:DroneStatus"/>
             </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
+        </ObjectDataProvider>-->
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -44,14 +44,14 @@
             <Label Content="Drone Status:" Grid.Column="0" HorizontalAlignment="Left"
                    Margin="81,19,0,0" VerticalAlignment="Top"/>
             <ComboBox  
-                      ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" 
+                      ItemsSource="{Binding DroneStatusEnum}" 
                       SelectedItem="{Binding StatusSelectedItem}"
                       Margin="40,9,40,10"  Width="120" Grid.Column="1" />
             <Label Content="Drone Max Weight:" Grid.Column="2" HorizontalAlignment="Center"
                    Margin="0,19,0,0" VerticalAlignment="Top"/>
-            <ComboBox  ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}"
+            <ComboBox  ItemsSource="{Binding WeightCategoriesEnum}"
                     SelectedItem="{Binding WeightSelectedItem}"
-                    Grid.Column="3" Margin="39,9,39,11"/>
+                    Grid.Column="3" Margin="39,9,39,11"/><!--Source={StaticResource-->
 
             <ComboBox ItemsSource="{Binding GroupOptions }" 
                   SelectedItem="{Binding GroupDrones}"

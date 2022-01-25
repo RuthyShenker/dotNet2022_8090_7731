@@ -22,7 +22,7 @@ namespace BL
             {
                 throw new IdIsAlreadyExistException(typeof(DO.BaseStation), id);
             }
-            DO.BaseStation station = new DO.BaseStation()
+            DO.BaseStation station = new()
             {
                 Id = id,
                 Latitude = latitude,
