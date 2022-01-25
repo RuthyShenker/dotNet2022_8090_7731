@@ -8,7 +8,7 @@
              xmlns:Converters="clr-namespace:PL.Converters"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="750" d:DesignWidth="800">
     <UserControl.Resources>
 
         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
@@ -99,7 +99,31 @@
                 CommandParameter="{Binding Drone.ParcelInTransfer}" >
         </Button>
         
-        <Expander Header="Parcel in transfer" >
+
+        <Button Content = "Update Model:" 
+                Command="{Binding UpdateModelOfDroneCommand }" />
+        
+        <Button Visibility="{Binding Drone.Status ,Converter={StaticResource DroneStatusToVisibilityConverter}}" 
+                Height="50"
+                Content="{Binding Drone.Status, Converter={StaticResource ContentByDroneStatusConverter}}"
+                Command="{Binding ChargeDroneCommand}" />
+
+        <Button Command="{Binding AssignParcelToDroneCommand}"
+                Visibility="{Binding Drone,  Converter={StaticResource VisibilityByDroneToBelongOrPickOrArrivalParcelConverter }}" 
+                Content="{Binding Drone,  Converter={StaticResource ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter}}" />
+
+        <Button Content="close" 
+                Command="{Binding CloseWindowCommand }"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+        <!--<Button x:Name="close_window_button" Content="close" Command="{Binding CloseWindowCommand }" CommandParameter="{Binding RelativeSource=self}"></Button>-->
+        <!--<Button x:Name="close_window_button" Content="close" Command="{x:Static}"  CommandParameter="{Binding RelativeSource=self}"></Button>-->
+
+        <StackPanel x:Name="message">
+        </StackPanel>
+    </StackPanel>
+</UserControl>
+
+        <!--<Expander Header="Parcel in transfer" >
             <StackPanel x:Name="PInTransfer"
                         Visibility="{Binding Drone,Converter={StaticResource ParcelInTransferVisibilityConverter}}">
                         
@@ -163,27 +187,4 @@
                 <TextBlock  Text = "TransDistance:" TextWrapping = "Wrap" ></TextBlock>
                 <TextBox x:Name="PInTransferTransDistanceTextBox" Text = "{Binding Drone.ParcelInTransfer.TransDistance, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
             </StackPanel>
-        </Expander>
-
-        <Button Content = "Update Model:" 
-                Command="{Binding UpdateModelOfDroneCommand }" />
-        
-        <Button Visibility="{Binding Drone.Status ,Converter={StaticResource DroneStatusToVisibilityConverter}}" 
-                Height="50"
-                Content="{Binding Drone.Status, Converter={StaticResource ContentByDroneStatusConverter}}"
-                Command="{Binding ChargeDroneCommand}" />
-
-        <Button Command="{Binding AssignParcelToDroneCommand}"
-                Visibility="{Binding Drone,  Converter={StaticResource VisibilityByDroneToBelongOrPickOrArrivalParcelConverter }}" 
-                Content="{Binding Drone,  Converter={StaticResource ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter}}" />
-
-        <Button Content="close" 
-                Command="{Binding CloseWindowCommand }"
-                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
-        <!--<Button x:Name="close_window_button" Content="close" Command="{Binding CloseWindowCommand }" CommandParameter="{Binding RelativeSource=self}"></Button>-->
-        <!--<Button x:Name="close_window_button" Content="close" Command="{x:Static}"  CommandParameter="{Binding RelativeSource=self}"></Button>-->
-
-        <StackPanel x:Name="message">
-        </StackPanel>
-    </StackPanel>
-</UserControl>
+        </Expander>-->
