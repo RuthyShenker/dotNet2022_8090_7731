@@ -244,6 +244,7 @@ namespace BL
                     throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is Delivery ");
                 default:
                     drone.DStatus = DroneStatus.Free;
+                    //is correct?
                     drone.BatteryStatus += timeInCharging * chargingRate;
                     var ChargingDroneToRemove = dal.GetFromDalByCondition<DO.ChargingDrone>(charge => charge.DroneId == drone.Id);
                     dal.Remove(ChargingDroneToRemove);

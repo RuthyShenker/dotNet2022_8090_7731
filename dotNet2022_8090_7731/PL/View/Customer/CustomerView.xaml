@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:PL.View"
         mc:Ignorable="d"
         Title="CustomerView" Height="450" Width="800">
-    <StackPanel>
-        <ContentControl  Content="{Binding }" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-    </StackPanel>
+    <ScrollViewer>
+        <StackPanel>
+            <ContentControl  Content="{Binding }" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        </StackPanel>
+    </ScrollViewer>
 </Window>

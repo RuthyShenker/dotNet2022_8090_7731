@@ -67,7 +67,6 @@ namespace PL.ViewModels
 
             //TODO: two feilds has to be full?
             bl.UpdatingStationDetails(station.Id, station.Name, (int)station.NumPositions);
-
             refreshStations();
             MessageBox.Show("Succseful Updating ");
         }

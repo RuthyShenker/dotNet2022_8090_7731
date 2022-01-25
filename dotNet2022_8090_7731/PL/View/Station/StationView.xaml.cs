@@ -23,6 +23,7 @@ namespace PL.View
         public StationView(BlApi.IBL bl, Action refreshStationList)
         {
             InitializeComponent();
+            //TODO:???
             //var viewModel = new AddStationViewModel(bl, refreshStationList);
             this.DataContext = new AddStationView();
         }

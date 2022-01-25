@@ -15,9 +15,9 @@ namespace PL.ViewModels
 {
     public class StationListViewModel : ObservableBase 
     {
-        private int choosenNumPositions { get; set; }
-        private readonly BlApi.IBL bl;
-        private GroupOptionsForStationList groupBy;
+        int choosenNumPositions { get; set; }
+        readonly BlApi.IBL bl;
+        GroupOptionsForStationList groupBy;
 
         public ListCollectionView StationList { get; set; }
         public RelayCommand<object> AddStationCommand { get; set; }
@@ -112,7 +112,6 @@ namespace PL.ViewModels
         private void RefreshStationList()
         {
             StationList = new(bl.GetStations().ToList());
-
             //StationList.Refresh();
         }
     }
