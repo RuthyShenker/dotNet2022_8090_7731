@@ -14,6 +14,8 @@ using static PL.Model.Enum;
 
 namespace PL.ViewModels
 {
+    public delegate void DelEventHandler();
+
     public class StationListViewModel : ObservableBase 
     {
         private object choosenNumPositions { get; set; } = "All";
@@ -32,6 +34,8 @@ namespace PL.ViewModels
 
         public StationListViewModel(BlApi.IBL bl)
         {
+            Refresh.StationsList = RefreshStationList;
+
             this.bl = bl;
             StationList = new(bl.GetStations().ToList());
             StationList.Filter = FilterCondition;
@@ -120,7 +124,7 @@ namespace PL.ViewModels
             StationList = new(bl.GetStations().ToList());
             AvailablePositions();
 
-
+            MessageBox.Show("Test");
             //StationList.Refresh();
         }
     }

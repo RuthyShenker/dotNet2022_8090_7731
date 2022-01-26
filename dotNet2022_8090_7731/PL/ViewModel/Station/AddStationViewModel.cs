@@ -32,6 +32,7 @@ namespace PL.ViewModels
                     (double)station.Latitude,
                     (int)station.NumPositions
                 );
+                Refresh.Add();
             }
             catch (Exception)
             {
