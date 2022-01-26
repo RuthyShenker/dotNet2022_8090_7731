@@ -1,2 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<BaseStationList></BaseStationList>
+<ArrayOfBaseStation>
+    <BaseStation>
+        <Id>1234</Id>
+        <NameStation>Rozovski</NameStation>
+        <NumberOfChargingPositions>20</NumberOfChargingPositions>
+        <Longitude>90</Longitude>
+        <Latitude>90</Latitude>
+    </BaseStation>
+</ArrayOfBaseStation>

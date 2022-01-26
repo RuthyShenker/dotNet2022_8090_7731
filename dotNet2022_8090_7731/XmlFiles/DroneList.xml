@@ -1,4 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DroneList>
-  
-</DroneList>
+<ArrayOfDrone>
+    <Drone>
+        <Id>1222</Id>
+        <Model>6543</Model>
+        <MaxWeight>Light</MaxWeight>
+    </Drone>
+    <Drone>
+        <Id>2111</Id>
+        <Model>3456</Model>
+        <MaxWeight>Medium</MaxWeight>
+    </Drone>
+</ArrayOfDrone>
