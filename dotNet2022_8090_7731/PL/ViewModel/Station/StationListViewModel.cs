@@ -2,6 +2,7 @@
 using PL.View;
 using PO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace PL.ViewModels
 {
     public class StationListViewModel : ObservableBase 
     {
-        int choosenNumPositions { get; set; }
+        private object choosenNumPositions { get; set; } = "All";
         readonly BlApi.IBL bl;
         GroupOptionsForStationList groupBy;
 
@@ -25,7 +26,7 @@ namespace PL.ViewModels
         public RelayCommand<object> CloseWindowCommand { get; set; }
 
         //TODO update when it change
-        public List<int> AvailablePositionsList { get; set; }
+        public IEnumerable AvailablePositionsList { get; set; }
 
         public Array GroupOptions { get; set; } = Enum.GetValues(typeof(GroupOptionsForStationList));
 
@@ -34,11 +35,16 @@ namespace PL.ViewModels
             this.bl = bl;
             StationList = new(bl.GetStations().ToList());
             StationList.Filter = FilterCondition;
-            AvailablePositionsList = bl.AvailableSlots().Select(station => station.AvailablePositions).Distinct().ToList();
-            
+            AvailablePositions();
+
             AddStationCommand = new RelayCommand<object>(AddingStation);
             ShowStationCommand = new RelayCommand<object>(ShowStation);
             CloseWindowCommand = new RelayCommand<object>(CloseWindow);
+        }
+
+        private void AvailablePositions()
+        {
+            AvailablePositionsList = new List<object>() { "All" }.Union(bl.AvailableSlots().Select(station => station.AvailablePositions).Distinct().Cast<object>());
         }
 
         public GroupOptionsForStationList GroupBy
@@ -93,7 +99,7 @@ namespace PL.ViewModels
             Window.GetWindow((DependencyObject)sender).Close();
         }
 
-        public int FilterList
+        public object FilterList
         {
             get => choosenNumPositions;
             set
@@ -106,12 +112,15 @@ namespace PL.ViewModels
         private bool FilterCondition(object obj)
         {
             StationToList station = obj as StationToList;
-            return choosenNumPositions == 0 || station.AvailablePositions == choosenNumPositions;
+            return choosenNumPositions is null or "All" || station.AvailablePositions.Equals(choosenNumPositions);
         }
 
         private void RefreshStationList()
         {
             StationList = new(bl.GetStations().ToList());
+            AvailablePositions();
+
+
             //StationList.Refresh();
         }
     }
