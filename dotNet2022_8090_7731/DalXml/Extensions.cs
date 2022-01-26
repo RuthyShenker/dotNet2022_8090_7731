@@ -9,9 +9,9 @@ namespace DalXml
 {
     public static class Extensions
     {
-        public static T MapFromXmlToObj<T>(XElement element)
-        {
+        //public static T MapFromXmlToObj<T>(XElement element)
+        //{
             
-        }
+        //}
     }
 }
