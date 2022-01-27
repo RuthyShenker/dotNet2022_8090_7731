@@ -28,10 +28,10 @@
                 <DockPanel>
                     <TextBlock Text="Created After"/>
                     <DatePicker x:Name="click" 
-                         SelectedDate="{Binding FiterAfterDate}"
+                         
                         Width="120"
                         FlowDirection="RightToLeft"
-                        materialDesign:HintAssist.Hint="Choose Date" TextInput="{Binding FiterAfterDate, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" DataContextChanged="hihi" />
+                        materialDesign:HintAssist.Hint="Choose Date" />
                 </DockPanel>
 
                 <DockPanel>
