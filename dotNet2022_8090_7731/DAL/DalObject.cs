@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using DalApi;
 using DO;
 using Singleton;
 using static Dal.DataSource.Config;
-using static Dal.DataSource;
 namespace Dal
 {
     /// <summary>

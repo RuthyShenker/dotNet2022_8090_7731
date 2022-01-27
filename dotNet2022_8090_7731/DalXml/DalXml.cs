@@ -9,58 +9,20 @@ using System.Xml.Serialization;
 
 namespace Dal
 {
-    public sealed class DalXml : Singleton<DalXml>, DalApi.IDal
+    internal sealed partial class  DalXml : Singleton<DalXml>, DalApi.IDal
     {
         readonly string xmlFilesLocation;
+
         private DalXml()
         {
             xmlFilesLocation = $@"{Directory.GetCurrentDirectory()}\..\..\XmlFiles";
-            InitializeFiles();
         }
 
-        private void InitializeFiles()
+        static DalXml()
         {
-            InitializeDrones();
-            InitializeBaseStations();
-            InitializeCustomers();
-            InitializeParcels();
+
         }
 
-        private void InitializeParcels()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void InitializeCustomers()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void InitializeBaseStations()
-        {
-            throw new NotImplementedException();
-        }
-        internal static Random Rand;
-        const int INITIALIZE_DRONE = 5;
-        const int INITIALIZE_CUSTOMER = 10;
-        const int INITIALIZE_BASE_STATION = 2;
-        const int INITIALIZE_PARCEL = 5;
-
-        private void InitializeDrones()
-        {
-            StreamWriter writer = new StreamWriter(GetXmlFilePath(typeof(Drone)));
-            XmlSerializer serializer = new XmlSerializer(typeof(Drone));
-            for (int i = 0; i < INITIALIZE_DRONE; ++i)
-            {
-                serializer.Serialize(writer,  new Drone()
-                {
-                    Id = Rand.Next(100000000, 1000000000),
-                    Model = Rand.Next(1000, 10000).ToString(),
-                    MaxWeight = (WeightCategories)Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length),
-                });
-            }
-            writer.Close();
-        }
 
         string GetXmlFilePath(Type type) => $@"{xmlFilesLocation}\{type.Name}List.xml";
         string configFilePath => $@"{xmlFilesLocation}\Config.xml";
@@ -87,23 +49,7 @@ namespace Dal
 
         public T GetFromDalById<T>(int Id) where T : IDalObject, IIdentifiable
         {
-            //var item = GetFromDalByCondition<T>(item => item.Id == Id);
-
-            //if (item.Equals(default(T)))
-            //    throw new IdIsNotExistException();
-            //else
-            //    return item;
-
-            //try
-            //{
-            //XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));
-            //XElement root = document.Root;
-            //XElement e = (from element in root.Elements()
-            //              where Int32.Parse(element.Element("Id").Value) == Id
-            //              select element).FirstOrDefault();
-            ////
-            ////if (e == null) return ;
-            //return Extensions.MapFromXmlToObj<T>(e);
+           
 
             StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T)));
             XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
@@ -125,6 +71,7 @@ namespace Dal
             StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T)));
             XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
             List<T> List = (List<T>)serializer.Deserialize(reader);
+            reader.Close();
             return List.FirstOrDefault(item => predicate(item));
 
         }
@@ -196,14 +143,12 @@ namespace Dal
             {
                 XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));
                 XElement root = document.Root;
-                foreach (var obj in root.Elements())
-                {
-                    if (int.Parse(obj.Element("Id").Value) == id)
-                        obj.Element(propertyName).Value = (string)newValue;
-                }
+
+                XElement element = root.Elements().Single(obj =>
+                 int.Parse(obj.Element("Id").Value) == id);
+                element.Element(propertyName).RemoveAttributes();
+                element.SetElementValue(propertyName, newValue);
                 document.Save(GetXmlFilePath(typeof(T)));
-
-
             }
             catch
             {
@@ -226,6 +171,7 @@ namespace Dal
             //    }
             //    document.Save(GetXmlFilePath(typeof(T)));
             //}
+
         }
 
         private bool DoesExistInList<T>(T item) where T : IDalObject
@@ -241,15 +187,33 @@ namespace Dal
 
         public int GetIndexParcel()
         {
-            return 0;
+            XDocument document = XDocument.Load(configFilePath);
+            int index = int.Parse(document.Root.Element("IndexParcel").Value);
+            document.Root.Element("IndexParcel").SetValue(index + 1);
+            document.Save(configFilePath);
+            return ++index;
             //return ++DataSource.Config.IndexParcel;
             //return XDocument.Load(configFilePath).Root;
         }
 
         public (double, double, double, double, double) PowerConsumptionRequest()
         {
-            return (0, 0, 0, 0, 0);
+            XDocument document = XDocument.Load(configFilePath);
+            double Available = int.Parse(document.Root.Element("Available").Value);
+            double LightWeight = int.Parse(document.Root.Element("LightWeight").Value);
+            double MediumWeight = int.Parse(document.Root.Element("MediumWeight").Value);
+            double HeavyWeight = int.Parse(document.Root.Element("HeavyWeight").Value);
+            double ChargingRate = int.Parse(document.Root.Element("ChargingRate").Value);
+
+            document.Save(configFilePath);
+            return (Available,
+                    LightWeight,
+                    MediumWeight,
+                    HeavyWeight,
+                    ChargingRate);
+
             //return (Available, LightWeight, MediumWeight, HeavyWeight, ChargingRate);
+
 
             //XDocument document = XDocument.Load(configFilePath);
             //XElement root = document.Root;
