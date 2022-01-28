@@ -1,17 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ArrayOfCustomer>
-    <Customer>
-        <Id>212707731</Id>
-        <Name>chani</Name>
-        <Phone>0527134326</Phone>
-        <Longitude>70</Longitude>
-        <Latitude>80</Latitude>
-    </Customer>
-    <Customer>
-        <Id>212707732</Id>
-        <Name>ruti</Name>
-        <Phone>0527134323</Phone>
-        <Longitude>80</Longitude>
-        <Latitude>90</Latitude>
-    </Customer>
-</ArrayOfCustomer>
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCustmer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+</ArrayOfCustmer>

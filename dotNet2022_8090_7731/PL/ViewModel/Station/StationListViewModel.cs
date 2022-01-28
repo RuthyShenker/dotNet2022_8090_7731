@@ -76,15 +76,15 @@ namespace PL.ViewModels
 
         private void AddingStation(object sender)
         {
-            if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
-            {
+            //if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
+            //{
                 new StationView(bl, RefreshStationList)
                     .Show();
-            }
-            else
-            {
-                MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
             //StationList = new(bl.AvailableSlots().ToList());
         }
 

@@ -1,10 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ArrayOfBaseStation>
-    <BaseStation>
-        <Id>1234</Id>
-        <NameStation>Rozovski</NameStation>
-        <NumberOfChargingPositions>20</NumberOfChargingPositions>
-        <Longitude>90</Longitude>
-        <Latitude>90</Latitude>
-    </BaseStation>
-</ArrayOfBaseStation>
+<?xml version="1.0" encoding="utf-8"?>
+<BaseStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>1234</Id>
+  <NameStation>v</NameStation>
+  <NumberOfChargingPositions>4444</NumberOfChargingPositions>
+  <Longitude>4</Longitude>
+  <Latitude>4</Latitude>
+</BaseStation>
