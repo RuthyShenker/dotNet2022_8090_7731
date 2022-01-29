@@ -20,7 +20,11 @@
             <Setter Property="Width" Value="200" />
             <Setter Property="Margin" Value="0,15" />
         </Style>
-        
+
+        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
     </UserControl.Resources>
     <StackPanel>
 
@@ -40,10 +44,13 @@
                   ItemsSource="{Binding WeightOptions}" materialDesign:HintAssist.Hint="Weight Category" />
         
         
-        <Button Style="{StaticResource MaterialDesignFlatButton}"
-                    HorizontalAlignment="Center"
-                    Content="ADD"
-                    Command="{Binding AddDroneCommand}"/>
+        <Button Content="ADD"
+                Command="{Binding AddDroneCommand}"/>
 
+        <Button Content="close" 
+                Command="{Binding CloseWindowCommand }"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" >
+        </Button>
+        
     </StackPanel>
 </UserControl>

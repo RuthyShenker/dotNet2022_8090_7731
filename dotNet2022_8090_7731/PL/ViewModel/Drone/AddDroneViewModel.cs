@@ -11,7 +11,7 @@ namespace PL.ViewModels
 {
     public class AddDroneViewModel
     {
-        public DroneToAdd Drone { get; set; } 
+        public DroneToAdd Drone { get; set; }
         BlApi.IBL bl;
         Action refreshDrones;
         public Array WeightOptions { get; set; } = Enum.GetValues(typeof(BO.WeightCategories));
@@ -29,16 +29,24 @@ namespace PL.ViewModels
 
         private void AddDrone(object parameters)
         {
-            MessageBox.Show("AddCustomer Drone");
-            BlApi.BlFactory.GetBl().AddingDrone(Map(Drone),Drone.StationId);
-            refreshDrones();
+            try
+            {
+                MessageBox.Show("AddCustomer Drone");
+                BlApi.BlFactory.GetBl().AddingDrone(Map(Drone), Drone.StationId);
+                refreshDrones();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("id is already exist");
+            }
+
 
         }
 
         private Drone Map(DroneToAdd drone)
         {
 
-            return new Drone((int)drone.Id,drone.Model,drone.MaxWeight,0,DroneStatus.Maintenance,null,BlApi.BlFactory.GetBl().GetStation(Drone.StationId).Location);
+            return new Drone((int)drone.Id, drone.Model, drone.MaxWeight, 0, DroneStatus.Maintenance, null, BlApi.BlFactory.GetBl().GetStation(Drone.StationId).Location);
         }
     }
 }

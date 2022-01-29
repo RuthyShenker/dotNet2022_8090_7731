@@ -138,13 +138,7 @@ namespace PO
         }
 
         // --------------IDataErrorInfo---------------------
-        public string Error
-        {
-            get
-            {
-                return validityMessages.Values.All(value => value == string.Empty) ? string.Empty : "Invalid input";
-            }
-        }
+        public string Error => validityMessages.Values.All(value => value == string.Empty) ? string.Empty : "Invalid input";
 
         public string this[string columnName]
         {

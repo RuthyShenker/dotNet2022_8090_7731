@@ -21,7 +21,7 @@ namespace PL.ViewModels
 
         private void AddStation(object obj)
         {
-            StationToAdd station = ((AddStationViewModel)obj).Station;
+            StationToAdd station = Station;
             try
             {
                 BlApi.BlFactory.GetBl().AddingBaseStation

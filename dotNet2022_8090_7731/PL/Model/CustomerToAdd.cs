@@ -122,13 +122,7 @@ namespace PO
             }
         }
         // --------------IDataErrorInfo---------------------
-        public string Error
-        {
-            get
-            {
-                return validityMessages.Values.All(value => value == string.Empty) ? string.Empty : "Invalid input";
-            }
-        }
+        public string Error => validityMessages.Values.All(value => value == string.Empty) ? string.Empty : "Invalid input";
 
         public string this[string propertyName]
         {
@@ -142,10 +136,11 @@ namespace PO
 
         private Dictionary<string, string> validityMessages = new Dictionary<string, string>()
         {
-            ["Id"] = "",
-            ["Name"] = "",
-            ["Phone"] = "",
-            ["Location"]=""
+            ["Id"] = " ",
+            ["Name"] = " ",
+            ["Phone"] = " ",
+            ["Longitude"] = " ",
+            ["Latitude"] = " "
         }; 
     }
 }

@@ -13,6 +13,10 @@
             <Setter Property="Width" Value="200" />
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
         </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
     </UserControl.Resources>
     
     <StackPanel>
@@ -54,9 +58,13 @@
                 UpdateSourceTrigger=PropertyChanged}"
             materialDesign:HintAssist.Hint="Longitude" />
 
-        <Button Style="{StaticResource MaterialDesignFlatButton}"
-                    HorizontalAlignment="Center"
-                    Content="ADD"
-                    Command="{Binding AddCustomerCommand}"/>
+        <Button Content="ADD"
+                Command="{Binding AddCustomerCommand}"/>
+
+        <Button Content="close" 
+                Command="{Binding CloseWindowCommand }"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" >
+        </Button>
+
     </StackPanel>
 </UserControl>

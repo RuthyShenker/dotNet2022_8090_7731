@@ -24,7 +24,7 @@ namespace PO
         public WeightCategories Weight { get; set; }
         public Priority MPriority { get; set; }
 
-        
+
         //public void SetMessage()
         //{
         //    if (sender.Id == getter.Id)
@@ -42,13 +42,7 @@ namespace PO
 
 
         // --------------IDataErrorInfo---------------------
-        public string Error
-        {
-            get
-            {
-                return Sender == null || Getter == null || Sender.Id != Getter.Id ? string.Empty : "Invalid input";
-            }
-        }
+        public string Error => Sender.Id != 0 && Getter.Id != 0 && Sender.Id != Getter.Id ? string.Empty : "Invalid input";
 
         //public string this[string columnName]
         //{

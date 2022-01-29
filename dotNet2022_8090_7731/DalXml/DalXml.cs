@@ -199,7 +199,7 @@ namespace Dal
         public (double, double, double, double, double) PowerConsumptionRequest()
         {
             XDocument document = XDocument.Load(configFilePath);
-            double Available = int.Parse(document.Root.Element("Available").Value);
+            double Available = double.Parse(document.Root.Element("Available").Value);
             double LightWeight = int.Parse(document.Root.Element("LightWeight").Value);
             double MediumWeight = int.Parse(document.Root.Element("MediumWeight").Value);
             double HeavyWeight = int.Parse(document.Root.Element("HeavyWeight").Value);

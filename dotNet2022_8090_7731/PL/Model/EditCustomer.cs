@@ -56,13 +56,7 @@ namespace PO
         public IEnumerable<ParcelInCustomer> LForCustomer { get; set; }
 
         // --------------IDataErrorInfo---------------------
-        public string Error
-        {
-            get
-            {
-                return validityMessages.Values.All(value => value == string.Empty) ? string.Empty : "Invalid input";
-            }
-        }
+        public string Error => validityMessages.Values.All(value => value == string.Empty) ? string.Empty : "Invalid input";
 
         public string this[string propertyName]
         {

@@ -17,6 +17,10 @@
             <Setter Property="Width" Value="200" />
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
         </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
     </UserControl.Resources>
     <StackPanel>
         
@@ -58,16 +62,13 @@
             UpdateSourceTrigger=PropertyChanged}"
             materialDesign:HintAssist.Hint="Number positions" />
 
-        <Button 
-            Content="OK" 
-            Command="{Binding AddStationCommand}" 
-            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=DataContext}" >
+        <Button Content="OK" 
+                Command="{Binding AddStationCommand}" >
         </Button>
 
-        <Button 
-            Content="Cancel" 
-            Command="{Binding CancelCommand}" 
-            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" >
+        <Button Content="Cancel" 
+                Command="{Binding CancelCommand}" 
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" >
         </Button>
         
     </StackPanel>
