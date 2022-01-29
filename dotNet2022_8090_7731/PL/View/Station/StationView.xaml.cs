@@ -20,7 +20,7 @@ namespace PL.View
     /// </summary>
     public partial class StationView : Window
     {
-        public StationView(BlApi.IBL bl, Action refreshStationList)
+        public StationView(BlApi.IBL bl)
         {
             InitializeComponent();
             //TODO:???
@@ -28,10 +28,10 @@ namespace PL.View
             this.DataContext = new AddStationView();
         }
 
-        public StationView(BlApi.IBL bl, Action refreshStationList, BO.Station selectedStation)
+        public StationView(BlApi.IBL bl, /*Action refreshStationList,*/ BO.Station selectedStation)
         {
             InitializeComponent();
-            var viewModel = new EditStationViewModel(bl, selectedStation, refreshStationList);
+            var viewModel = new EditStationViewModel(bl, selectedStation/*, refreshStationList*/);
             this.DataContext = new EditStationView(viewModel);
 
         }

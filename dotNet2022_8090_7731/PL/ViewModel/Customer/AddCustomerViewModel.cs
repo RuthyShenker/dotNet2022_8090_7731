@@ -21,20 +21,16 @@ namespace PL.ViewModels
             this.bl = bl;
             this.switchView = switchView;
             AddCustomerCommand = new RelayCommand<object>(AddCustomer, param => Customer.Error == "");
-            CloseWindowCommand = new RelayCommand<object>(CloseWindow);
+            CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
         }
 
-        private void CloseWindow(object sender)
-        {
-            Window.GetWindow((DependencyObject)sender).Close();
-        }
-       
         private void AddCustomer(object obj)
         {
             try
             {
                 var blCustomer = MapCustomerFromPOToBO(Customer);
                 bl.AddCustomer(blCustomer);
+                Refresh.Invoke(); 
                 switchView(blCustomer);
             }
             catch (BO.IdIsAlreadyExistException exception)

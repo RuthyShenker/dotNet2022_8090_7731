@@ -16,7 +16,7 @@ namespace PL.ViewModels
         public AddStationViewModel()
         {
             AddStationCommand = new RelayCommand<object>(AddStation, param => Station.Error == string.Empty);
-            CancelCommand = new RelayCommand<object>(CloseWindow);
+            CancelCommand = new RelayCommand<object>(Functions.CloseWindow);
         }
 
         private void AddStation(object obj)
@@ -32,17 +32,12 @@ namespace PL.ViewModels
                     (double)station.Latitude,
                     (int)station.NumPositions
                 );
-                Refresh.Add();
+                Refresh.Invoke();
             }
             catch (Exception)
             {
                 MessageBox.Show("id is already exist");
             }
-        }
-
-        private void CloseWindow(object sender)
-        {
-            Window.GetWindow((DependencyObject)sender).Close();
         }
     }
 }

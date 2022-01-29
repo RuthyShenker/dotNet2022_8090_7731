@@ -20,21 +20,21 @@ namespace PL.View
     /// </summary>
     public partial class ParcelView : Window
     {
-        public ParcelView(BlApi.IBL bl, Action refreshParcelList)
+        public ParcelView(BlApi.IBL bl/*, Action refreshParcelList*/)
         {
             InitializeComponent();
             //DroneView.DataContext = new AddNewDroneView(bl, refreshDroneList,Close);
             //var viewModel = new AddDroneViewModel(/*bl, */refreshDroneList);
             //this.DataContext = new AddDroneView(viewModel);
-            var viewModel = new AddParcelViewModel(bl, refreshParcelList);
+            var viewModel = new AddParcelViewModel(bl);
             this.DataContext = new AddParcelView(viewModel);
         }
 
-        public ParcelView(BlApi.IBL bl, Action refreshParcelList, BO.Parcel selectedParcel)
+        public ParcelView(BlApi.IBL bl, /*Action refreshParcelList,*/ BO.Parcel selectedParcel)
         {
             InitializeComponent();
             //DroneView.DataContext= new EditDroneView(bl, initializeDrones, selectedDrone,Close);
-            var viewModel = new EditParcelViewModel(bl, selectedParcel, refreshParcelList);
+            var viewModel = new EditParcelViewModel(bl, selectedParcel);
             this.DataContext = new EditParcelView(viewModel);
         }
     }

@@ -10,22 +10,23 @@ using System.Windows;
 
 namespace PL.ViewModels
 {
-    public class EditCustomerViewModel /*: INotifyPropertyChanged*/
+    public class EditCustomerViewModel : INotify
     {
         BlApi.IBL bl;
         Action refreshCustomers;
-        public EditCustomer Customer { set; get; }
+        private EditCustomer customer;
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> UpdateCustomerCommand { get; set; }
         public RelayCommand<object> DeleteCustomerCommand { get; set; }
         public RelayCommand<object> ShowParcelOfCustomerCommand { get; set; }
 
-        public EditCustomerViewModel(BlApi.IBL bl, BO.Customer customer, Action refreshCustomers)
+        public EditCustomerViewModel(BlApi.IBL bl, BO.Customer customer)
         {
+            Refresh.Customer += RefreshCustomer;
             this.bl = bl;
             Customer = MapFromBOToPO(customer);
-            this.refreshCustomers = refreshCustomers;
-            CloseWindowCommand = new RelayCommand<object>(Close_Window);
+            //this.refreshCustomers = refreshCustomers;
+            CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             UpdateCustomerCommand = new RelayCommand<object>(UpdateCustomer, param => Customer.Error == "");
             DeleteCustomerCommand = new RelayCommand<object>(DeleteCustomer);
             ShowParcelOfCustomerCommand = new RelayCommand<object>(MouseDoubleClick);
@@ -35,7 +36,7 @@ namespace PL.ViewModels
         {
             var parcel = obj as BO.ParcelInCustomer;
             var blParcel = bl.GetParcel(parcel.Id);
-            new ParcelView(bl, refreshCustomers, blParcel).Show();
+            new ParcelView(bl, blParcel).Show();
         }
 
         private void DeleteCustomer(object obj)
@@ -63,7 +64,8 @@ namespace PL.ViewModels
             try
             {
                 MessageBox.Show(bl.DeleteCustomer(Customer.Id));
-                refreshCustomers();
+                Refresh.Invoke();
+                //refreshCustomers();
                 Window.GetWindow((DependencyObject)obj).Close();
             }
             catch (BO.IdIsNotExistException exception)
@@ -77,7 +79,8 @@ namespace PL.ViewModels
             try
             {
                 bl.UpdatingCustomerDetails(Customer.Id,Customer.Name,Customer.Phone);
-                refreshCustomers();
+                Refresh.Invoke();
+                //refreshCustomers();
             }
             catch (BO.IdIsNotExistException exception)
             {
@@ -85,11 +88,10 @@ namespace PL.ViewModels
             }
         }
 
-        //private void RefreshCustomer()
-        //{
-        //    refreshCustomers();
-        //    Customer = Map(bl.GetCustomer(Customer.Id));
-        //}
+        private void RefreshCustomer()
+        {
+            Customer = MapFromBOToPO(bl.GetCustomer(Customer.Id));
+        }
 
         private EditCustomer MapFromBOToPO(BO.Customer customer)
         {
@@ -98,25 +100,15 @@ namespace PL.ViewModels
                 customer.LFromCustomer,customer.LForCustomer);
         }
 
-        //public EditCustomer Customer
-        //{
-        //    get => customer;
-        //    private set
-        //    {
-        //        customer = value;
-        //        RaisePropertyChanged(nameof(Customer));
-        //    }
-        //}
-
-        private void Close_Window(object sender)
+        public EditCustomer Customer
         {
-            Window.GetWindow((DependencyObject)sender).Close();
+            get => customer;
+            private set
+            {
+                customer = value;
+                RaisePropertyChanged(nameof(Customer));
+            }
         }
 
-        //public event PropertyChangedEventHandler PropertyChanged;
-        //private void RaisePropertyChanged(string propertyName)
-        //{
-        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        //}
     }
 }

@@ -11,12 +11,12 @@ using System.Windows;
 
 namespace PL.ViewModels
 {
-    public class EditStationViewModel
+    public class EditStationViewModel : INotify
     {
         BlApi.IBL bl;
         Action refreshStations;
         //EditStation station;
-        public EditStation Station { get; set; }
+        EditStation station;
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> UpdateStationCommand { get; set; }
         public RelayCommand<object> DeleteStationCommand { get; set; }
@@ -26,12 +26,14 @@ namespace PL.ViewModels
         //public RelayCommand<object> ShowDroneInStationCommand { get; set; }
         //public RelayCommand<object> ShowParcelOfCustomerCommand { get; set; }
 
-        public EditStationViewModel(BlApi.IBL bl, BO.Station station, Action refreshStations)
+        public EditStationViewModel(BlApi.IBL bl, BO.Station station)
         {
             this.bl = bl;
-            this.refreshStations = refreshStations;
+            Refresh.Station += RefreshStation;
+
+            //this.refreshStations = refreshStations;
             Station = Map(station);
-            CloseWindowCommand = new RelayCommand<object>(CloseWindow);
+            CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             UpdateStationCommand = new RelayCommand<object>(UpdateStation, param => Station.Error == string.Empty);
             DeleteStationCommand = new RelayCommand<object>(DeleteStation, param => Station.ListChargingDrone.Count() == 0);
             ShowDroneCommand = new RelayCommand<object>(OpenSelectedDroneWindow);
@@ -39,13 +41,30 @@ namespace PL.ViewModels
             //ShowDroneInStationCommand = new RelayCommand<object>(MouseDoubleClick);
         }
 
+        public EditStation Station
+        {
+            get => station;
+            private set
+            {
+                station = value;
+                RaisePropertyChanged(nameof(Station));
+            }
+        }
+
+        private void RefreshStation()
+        {
+            //refreshParcels();
+            Station = Map(bl.GetStation(station.Id));
+        }
+
         private void DeleteStation(object closeButton)
         {
             try
             {
                 MessageBox.Show(bl.DeleteStation(Station.Id));
-                refreshStations();
-                CloseWindow(closeButton);
+                Refresh.Invoke();
+
+                Functions.CloseWindow(closeButton);
             }
             catch (IdIsNotExistException exception)
             {
@@ -58,7 +77,7 @@ namespace PL.ViewModels
             var chargingDrone = obj as PO.ChargingDrone;
             var drone = bl.GetDrone(chargingDrone.DroneId);
 
-            new DroneView(bl, refreshStations, drone).Show();
+            new DroneView(bl, drone).Show();
         }
 
         private void UpdateStation(object obj)
@@ -67,7 +86,7 @@ namespace PL.ViewModels
 
             //TODO: two feilds has to be full?
             bl.UpdatingStationDetails(station.Id, station.Name, (int)station.NumPositions);
-            refreshStations();
+            Refresh.Invoke();
             MessageBox.Show("Succseful Updating ");
         }
 
@@ -81,11 +100,6 @@ namespace PL.ViewModels
                 Location = new PO.Location(station.Location.Latitude, station.Location.Longitude),
                 ListChargingDrone = station.LBL_ChargingDrone.Select(position => new PO.ChargingDrone(position.DroneId, position.BatteryStatus))
             };
-        }
-
-        private void CloseWindow(object sender)
-        {
-            Window.GetWindow((DependencyObject)sender).Close();
         }
     }
 }

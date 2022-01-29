@@ -12,18 +12,18 @@ using static PL.Model.Enum;
 
 namespace PL.ViewModels
 {
-    public class DroneListViewModel : INotifyPropertyChanged
+    public class DroneListViewModel : INotify
     {
-        readonly BlApi.IBL bl;
-        ListCollectionView droneList;
-        object weightSelectedItem="Default";
-        object statusSelectedItem="Default";
+        private readonly BlApi.IBL bl;
+        private ListCollectionView droneList;
+        private object weightSelectedItem = "Default";
+        private object statusSelectedItem = "Default";
 
         GroupByDroneStatus currentGroup;
 
         public IEnumerable WeightCategoriesEnum { get; } = new List<object>() { "Defalut" }.Union(Enum.GetValues(typeof(WeightCategories)).Cast<object>());
         public IEnumerable DroneStatusEnum { get; } = new List<object>() { "Defalut" }.Union(Enum.GetValues(typeof(DroneStatus)).Cast<object>());
-        public Array GroupOptions { get; set; }
+        public Array GroupOptions { get; set; } = Enum.GetValues(typeof(GroupByDroneStatus));
         public RelayCommand<object> AddDroneCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> MouseDoubleCommand { get; set; }
@@ -31,19 +31,20 @@ namespace PL.ViewModels
 
         public DroneListViewModel(BlApi.IBL bl)
         {
+            Refresh.DronesList += RefreshDronesList;
 
-            this.bl = BlApi.BlFactory.GetBl();/* bl;*/
-            //droneList = Enumerable.Empty<DroneToList>();
-            //FilterDroneListByCondition();
+            this.bl = bl;
+
+            DroneList = new(bl.GetDrones().ToList());
+            DroneList.Filter = FilterDrone;
 
             AddDroneCommand = new RelayCommand<object>(AddingDrone);
-            CloseWindowCommand = new RelayCommand<object>(CloseWindow);
+            CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
+
             //GroupCommand = new RelayCommand<object>(GroupDrones);
-            var list = new ObservableCollection<DroneToList>(bl.GetDrones());
-            DroneList = new ListCollectionView(list);
-            GroupOptions = Enum.GetValues(typeof(GroupByDroneStatus));
-            DroneList.Filter = FilterDrone;
+            //droneList = Enumerable.Empty<DroneToList>();
+            //FilterDroneListByCondition();
         }
 
         public ListCollectionView DroneList
@@ -125,23 +126,11 @@ namespace PL.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            //GroupDrones = currentGroup;
-        }
-
-        private void CloseWindow(object sender)
-        {
-            Window.GetWindow((DependencyObject)sender).Close();
-        }
-
         private void AddingDrone(object sender)
         {
             if (bl.AvailableSlots().Select(slot => slot.Id).Any())
             {
-                new DroneView(/*bl,*/RefreshDrones).Show();
+                new DroneView(/*bl,*//*RefreshDrones*/).Show();
             }
             else
             {
@@ -149,10 +138,13 @@ namespace PL.ViewModels
             }
         }
 
-        private void RefreshDrones()
+        private void RefreshDronesList()
         {
             DroneList = new(bl.GetDrones().ToList());
+           
+            // keep group and filter status
             GroupDrones = currentGroup;
+            DroneList.Filter = FilterDrone;
         }
 
         //TODOTODO:
@@ -160,7 +152,7 @@ namespace PL.ViewModels
         {
             var selectedDrone = sender as DroneToList;
             var drone = bl.GetDrone(selectedDrone.Id);
-            new DroneView(bl, RefreshDrones, drone)
+            new DroneView(bl, drone)
                 .Show();
         }
 

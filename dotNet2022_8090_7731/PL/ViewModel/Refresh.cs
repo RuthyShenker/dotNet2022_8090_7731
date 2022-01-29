@@ -7,21 +7,39 @@ using System.Windows;
 
 namespace PL.ViewModels
 {
+    public delegate void DelEventHandler();
+
     public class Refresh
     {
-        public static event DelEventHandler add;
+        public static event DelEventHandler refresh;
 
-        public static void Add()
+        public static event DelEventHandler DronesList;
+        public static event DelEventHandler StationsList;
+        public static event DelEventHandler CustomersList;
+        public static event DelEventHandler ParcelsList;
+
+        public static event DelEventHandler Parcel;
+        public static event DelEventHandler Drone;
+        public static event DelEventHandler Station;
+        public static event DelEventHandler Customer;
+
+        public static void Invoke()
         {
-            add += new DelEventHandler(India);
-            add += new DelEventHandler(StationsList);
-            add += new DelEventHandler(England);
-            add.Invoke();
+            refresh += new DelEventHandler(India);
+            refresh += new DelEventHandler(England);
 
-            //Console.ReadLine();
+            //refresh.Invoke();
+            DronesList?.Invoke();
+            StationsList?.Invoke();
+            CustomersList?.Invoke();
+            ParcelsList?.Invoke();
+
+            Customer?.Invoke();
+            Station?.Invoke();
+            Drone?.Invoke();
+            Parcel?.Invoke();
         }
 
-        public static Action StationsList;
         //public static void USA()
         //{
         //    MessageBox.Show("USA");

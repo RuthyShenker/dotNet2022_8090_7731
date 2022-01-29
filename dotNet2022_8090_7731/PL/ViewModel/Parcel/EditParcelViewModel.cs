@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace PL.ViewModels
 {
-    public class EditParcelViewModel : INotifyPropertyChanged
+    public class EditParcelViewModel : INotify
     {
         BlApi.IBL bl;
         Action refreshParcels;
@@ -20,26 +20,27 @@ namespace PL.ViewModels
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> EditCustomerCommand { get; set; }
         
-        public EditParcelViewModel(BlApi.IBL bl, BO.Parcel parcel, Action refreshParcels)
+        public EditParcelViewModel(BlApi.IBL bl, BO.Parcel parcel)
         {
             this.bl = bl;
+            Refresh.Parcel += RefreshParcel;
             Parcel = Map(parcel);
-            this.refreshParcels = refreshParcels;
+            //this.refreshParcels = refreshParcels;
             UpdateParcelCommand = new RelayCommand<object>(UpdateParcel);
-            CloseWindowCommand = new RelayCommand<object>(Close_Window);
+            CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             EditCustomerCommand = new RelayCommand<object>(EditSender);
         }
 
         private void EditSender(object senderId)
         {
             var blCustomer = bl.GetCustomer((int)senderId);
-            new CustomerView(bl, RefreshParcel, blCustomer)
+            new CustomerView(bl, /*RefreshParcel*/ blCustomer)
                     .Show();
         }
 
         private void UpdateParcel(object obj)
         {
-
+            //TODO
         }
 
         private EditParcel Map(BO.Parcel parcel)
@@ -73,23 +74,11 @@ namespace PL.ViewModels
                 RaisePropertyChanged(nameof(Parcel));
             }
         }
-        private void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         private void RefreshParcel()
         {
-            refreshParcels();
+            //refreshParcels();
             Parcel = Map(bl.GetParcel(Parcel.Id));
         }
-
-        private void Close_Window(object sender)
-        {
-            Window.GetWindow((DependencyObject)sender).Close();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
     }
 }

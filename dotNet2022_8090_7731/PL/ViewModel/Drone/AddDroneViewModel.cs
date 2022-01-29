@@ -17,14 +17,16 @@ namespace PL.ViewModels
         public Array WeightOptions { get; set; } = Enum.GetValues(typeof(BO.WeightCategories));
         public List<int> StationOptions { get; set; }
         public RelayCommand<object> AddDroneCommand { get; set; }
+        public RelayCommand<object> CloseWindowCommand { get; set; }
 
-        public AddDroneViewModel(/*BlApi.IBL bl,*/ Action refreshDrones)
+        public AddDroneViewModel(/*BlApi.IBL bl,*//* Action refreshDrones*/)
         {
             Drone = new();
             //this.bl = bl;
-            this.refreshDrones = refreshDrones;
+            //this.refreshDrones = refreshDrones;
             StationOptions = BlApi.BlFactory.GetBl().AvailableSlots().Select(station => station.Id).ToList();
             AddDroneCommand = new RelayCommand<object>(AddDrone, param => Drone.Error == "");
+            CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
         }
 
         private void AddDrone(object parameters)
@@ -33,19 +35,16 @@ namespace PL.ViewModels
             {
                 MessageBox.Show("AddCustomer Drone");
                 BlApi.BlFactory.GetBl().AddingDrone(Map(Drone), Drone.StationId);
-                refreshDrones();
+                Refresh.Invoke();
             }
             catch (Exception)
             {
                 MessageBox.Show("id is already exist");
             }
-
-
         }
 
         private Drone Map(DroneToAdd drone)
-        {
-
+        {  
             return new Drone((int)drone.Id, drone.Model, drone.MaxWeight, 0, DroneStatus.Maintenance, null, BlApi.BlFactory.GetBl().GetStation(Drone.StationId).Location);
         }
     }

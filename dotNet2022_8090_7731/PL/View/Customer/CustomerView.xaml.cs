@@ -22,24 +22,26 @@ namespace PL.View
     {
         BlApi.IBL bl;
         Action refreshCustomerList;
-        public CustomerView(BlApi.IBL bl, Action refreshCustomerList)
+       
+        public CustomerView(BlApi.IBL bl)
         {
             InitializeComponent();
-           this.bl = bl;
-            this.refreshCustomerList = refreshCustomerList;
+            this.bl = bl;
             var viewModel = new AddCustomerViewModel(bl, SwitchView);
             this.DataContext = new AddCustomerView(viewModel);
         }
-        private void SwitchView(BO.Customer selectedCustomer)
-        {
-            refreshCustomerList();
-               var viewModel = new EditCustomerViewModel(bl, selectedCustomer, refreshCustomerList);
-            this.DataContext = new EditCustomerView(viewModel);
-        }
-        public CustomerView(BlApi.IBL bl, Action refreshCustomerList, BO.Customer selectedCustomer)
+
+        public CustomerView(BlApi.IBL bl, BO.Customer selectedCustomer)
         {
             InitializeComponent();
-            var viewModel = new EditCustomerViewModel(bl, selectedCustomer, refreshCustomerList);
+            var viewModel = new EditCustomerViewModel(bl, selectedCustomer);
+            this.DataContext = new EditCustomerView(viewModel);
+        }
+
+        private void SwitchView(BO.Customer selectedCustomer)
+        {
+            //refreshCustomerList();
+            var viewModel = new EditCustomerViewModel(bl, selectedCustomer);
             this.DataContext = new EditCustomerView(viewModel);
         }
     }

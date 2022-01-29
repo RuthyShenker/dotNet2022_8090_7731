@@ -11,7 +11,7 @@ using PL.View;
 
 namespace PL.ViewModels
 {
-    public class CustomerListViewModel : INotifyPropertyChanged
+    public class CustomerListViewModel : INotify
     {
         BlApi.IBL bl;
 
@@ -22,12 +22,14 @@ namespace PL.ViewModels
 
         public CustomerListViewModel(BlApi.IBL bl)
         {
+            Refresh.CustomersList += RefreshCustomersList;
+
             this.bl = bl;
             CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers());
-            RefreshCustomerList();
+            RefreshCustomersList();
             AddCustomerCommand = new RelayCommand<object>(AddingCustomer);
             MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);  
-            CloseWindowCommand = new RelayCommand<object>(CloseWindow);
+            CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
         }
         public IEnumerable<CustomerToList> CustomerList
         {
@@ -39,16 +41,11 @@ namespace PL.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
         private void MouseDoubleClick(object sender)
         {
             var selectedCustomer = sender as CustomerToList;
             var blCustomer = bl.GetCustomer(selectedCustomer.Id);
-            new CustomerView(bl, RefreshCustomerList, blCustomer)
+            new CustomerView(bl, blCustomer)
                 .Show();
         }
         private void AddingCustomer(object sender)
@@ -63,23 +60,13 @@ namespace PL.ViewModels
             //{
             //    MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             //}
-            new CustomerView(bl, RefreshCustomerList)
+            new CustomerView(bl)
                 .Show();
         }
-        private void RefreshCustomerList()
+
+        private void RefreshCustomersList()
         {
             CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers());
         }
-        private void RefreshCustomer()
-        {
-            //var customer = bl.GetCustomer(customerId);
-            //CustomerList.
-            CustomerList = new ObservableCollection<CustomerToList>();
-        }
-        private void CloseWindow(object sender)
-        {
-            Window.GetWindow((DependencyObject)sender).Close();
-        }
-
     }
 }

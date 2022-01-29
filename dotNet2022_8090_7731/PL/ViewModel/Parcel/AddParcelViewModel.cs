@@ -17,25 +17,22 @@ namespace PL.ViewModels
         public RelayCommand<object> AddParcelCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
 
-        public AddParcelViewModel(BlApi.IBL bl, Action refreshParcels)
+        public AddParcelViewModel(BlApi.IBL bl)
         {
             Parcel = new();
             this.bl = bl;
-            this.refreshParcels = refreshParcels;
             AddParcelCommand = new RelayCommand<object>(AddParcel, param => Parcel.Error == string.Empty);
             IdOption = bl.GetCustomers().Select(customer => customer.Id).ToList();
-            CloseWindowCommand = new RelayCommand<object>(CloseWindow);
+            CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
         }
-        private void CloseWindow(object sender)
-        {
-            Window.GetWindow((DependencyObject)sender).Close();
-        }
+       
         private void AddParcel(object obj)
         {
             try
             {
                 var parcel = Map(Parcel);
                 bl.AddingParcel(parcel);
+                Refresh.Invoke();
                 MessageBox.Show("The Parcel Added Succeesfully!");
             }
             catch (IdIsNotExistException exception)

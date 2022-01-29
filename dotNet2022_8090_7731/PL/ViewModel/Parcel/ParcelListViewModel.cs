@@ -1,6 +1,7 @@
 ﻿using BO;
 using PL.View;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,20 +12,21 @@ using static PL.Model.Enum;
 
 namespace PL.ViewModels
 {
-    public class ParcelListViewModel : INotifyPropertyChanged
+    public class ParcelListViewModel : INotify
     {
         private readonly BlApi.IBL bl;
         ListCollectionView parcelList;
-        ParcelStatus parcelStatusSelected;
+        object selectedFilter { get; set; } = "All";
         DateTime? startTime, endTime;
         GroupBy groupBy;
 
-
-        public Array GroupOptions { get; set; }
         public RelayCommand<object> MouseDoubleCommand { get; set; }
         public RelayCommand<object> AddParcelCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
 
+        public Array GroupOptions { get; set; } = Enum.GetValues(typeof(GroupBy));
+        public IEnumerable FilterParcelOptions { get; } = new List<object>() { "All" }.Union(Enum.GetValues(typeof(BO.ParcelStatus)).Cast<object>());
+       
         //public ListCollectionView parcelList;
 
         //PropertyGroupDescription groupDescription;
@@ -39,18 +41,21 @@ namespace PL.ViewModels
             //var list1 = new ObservableCollection<Parcel>();
             //foreach (var parcel in bl.GetParcels())
             //    list1.Add(bl.GetParcel(parcel.Id));
+            Refresh.ParcelsList += RefreshParcelsList;
 
             this.bl = bl;
-            var list = new ObservableCollection<ParcelToList>(bl.GetParcels());
-            ParcelList = new ListCollectionView(list);
-            ParcelList.Filter = FilterParcel;
+            ParcelList = new(bl.GetParcels().ToList());
+            ParcelList.Filter = FilterCondition;
 
+            MouseDoubleCommand = new RelayCommand<object>(EditParcel);
+            AddParcelCommand = new RelayCommand<object>(AddParcel);
+            CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
+            
             //ParcelList.SortDescriptions.Add(new SortDescription(groupBy.ToString(), ListSortDirection.Ascending));
             //parcelList.SortDescriptions.Add(new SortDescription(nameof(ParcelToList.Id), ListSortDirection.Ascending));
 
             //ParcelList.GroupBySelector = MyGroup;
             //ParcelList.GroupDescriptions = MyGroup;
-            GroupOptions = Enum.GetValues(typeof(GroupBy));
             //ParcelList.GroupDescriptions.Add(new PropertyGroupDescription(nameof(GroupBy)));
 
             //groupDescription = new PropertyGroupDescription();
@@ -59,9 +64,6 @@ namespace PL.ViewModels
             //ParcelListBySender = bl.GetParcels().GroupBy(parcel => parcel.SenderName)
             //    .ToDictionary(key => key.Key, value => new ObservableCollection<ParcelToList>(value));
 
-            MouseDoubleCommand = new RelayCommand<object>(EditParcel);
-            AddParcelCommand = new RelayCommand<object>(AddParcel);
-            CloseWindowCommand = new RelayCommand<object>(CloseWindow);
         }
 
         public void FiterAfterDate(object choosenDate)
@@ -69,9 +71,13 @@ namespace PL.ViewModels
             MessageBox.Show("Wow");
         }
 
-        private void RefreshParcelList()
+        private void RefreshParcelsList()
         {
             ParcelList = new(bl.GetParcels().ToList());
+
+            // keep group and filter status
+            FilterParcels = selectedFilter;
+            GroupBy = groupBy;
         }
 
         public GroupBy GroupBy
@@ -111,35 +117,32 @@ namespace PL.ViewModels
         //    .Add(new PropertyGroupDescription(nameof(ParcelToList.SenderName)));
         //}
 
-        private bool FilterParcel(object obj)
+        public object FilterParcels
         {
-            if (obj is ParcelToList parcelToList)
+            get => selectedFilter;
+            set
             {
-                if (ParcelStatusSelected == default || parcelToList.Status == ParcelStatusSelected)
-                    //&&(!StartTime.HasValue || ))
-                    return true;
-
-                else
-                    return false;
+                selectedFilter = value;
+                ParcelList.Filter = FilterCondition;
             }
-            return false;
         }
 
-        private void CloseWindow(object sender)
+        private bool FilterCondition(object obj)
         {
-            Window.GetWindow((DependencyObject)sender).Close();
+            ParcelToList parcel = obj as ParcelToList;
+            return selectedFilter is null or "All" || parcel.Status.Equals(selectedFilter);
         }
 
         private void AddParcel(object obj)
         {
-            new ParcelView(bl, RefreshParcelList).Show();
+            new ParcelView(bl).Show();
         }
 
         private void EditParcel(object obj)
         {
             var parcel = obj as BO.ParcelToList;
             var blParcel = bl.GetParcel(parcel.Id);
-            new ParcelView(bl, RefreshParcelList, blParcel).Show();
+            new ParcelView(bl, blParcel).Show();
         }
 
         public ListCollectionView ParcelList
@@ -151,22 +154,22 @@ namespace PL.ViewModels
                 RaisePropertyChanged(nameof(ParcelList));
             }
         }
-        public ParcelStatus ParcelStatusSelected
-        {
-            get => parcelStatusSelected;
-            set
-            {
-                parcelStatusSelected = value;
-                RefreshParcelList();
-            }
-        }
+        //public ParcelStatus ParcelStatusSelected
+        //{
+        //    get => parcelStatusSelected;
+        //    set
+        //    {
+        //        parcelStatusSelected = value;
+        //        RefreshParcelList();
+        //    }
+        //}
         public DateTime? StartTime
         {
             get => startTime;
             set
             {
                 startTime = value;
-                RefreshParcelList();
+                Refresh.Invoke();
             }
         }
         public DateTime? EndTime
@@ -176,16 +179,10 @@ namespace PL.ViewModels
             {
 
                 endTime = value;
-                RefreshParcelList();
+                Refresh.Invoke();
             }
         }
         //public Dictionary<string, ObservableCollection<ParcelToList>> ParcelListBySender { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
 }

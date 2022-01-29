@@ -10,18 +10,19 @@ using PL.View;
 using PO;
 namespace PL.ViewModels
 {
-    public class EditDroneViewModel : INotifyPropertyChanged
+    public class EditDroneViewModel : INotify
     {
         BlApi.IBL bl;
         Action refreshDrones;
         EditDrone drone;
 
-        public EditDroneViewModel(BlApi.IBL bl, BO.Drone drone, Action refreshDrones)
+        public EditDroneViewModel(BlApi.IBL bl, BO.Drone drone)
         {
+            Refresh.Drone += RefreshDrone;
             this.bl = bl;
             Drone = Map(drone);
-            this.refreshDrones = refreshDrones;
-            CloseWindowCommand = new RelayCommand<object>(Close_Window);
+            //this.refreshDrones = refreshDrones;
+            CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             UpdateModelOfDroneCommand = new RelayCommand<object>(UpdateDroneModel);
             ChargeDroneCommand = new RelayCommand<object>(SendOrReleaseDroneFromCharging);
             AssignParcelToDroneCommand = new RelayCommand<object>(OpenParcelWindow);
@@ -50,7 +51,10 @@ namespace PL.ViewModels
                 bl.UpdatingDroneName(Drone.Id, Drone.Model);
                 MessageBox.Show($"Drone With Id:{Drone.Id} Updated successfuly!",
                    $" Model Updated Successly {MessageBoxImage.Information}");
-                RefreshDrone();
+
+                Refresh.Invoke();
+
+                //RefreshDrone();
             }
         }
         private void SendOrReleaseDroneFromCharging(object sender)
@@ -59,13 +63,16 @@ namespace PL.ViewModels
                 bl.SendingDroneToCharge(Drone.Id);
             else
                 bl.ReleasingDrone(Drone.Id);
-            RefreshDrone();
+            Refresh.Invoke();
+           
+            //RefreshDrone();
         }
+       
         private void OpenParcelWindowC(object MyParcel)
         {
             var parcel = MyParcel as BO.ParcelInTransfer;
             var blParcel = bl.GetParcel(parcel.PId);
-            new ParcelView(bl, RefreshDrone, blParcel).Show();
+            new ParcelView(bl, /*RefreshDrone*/ blParcel).Show();
         }
 
         private void OpenParcelWindow(object sender)
@@ -88,7 +95,9 @@ namespace PL.ViewModels
             try
             {
                 bl.DeliveryPackage(Drone.Id);
-                RefreshDrone();
+                Refresh.Invoke();
+
+                //RefreshDrone();
             }
             catch (InValidActionException exception)
             {
@@ -101,7 +110,8 @@ namespace PL.ViewModels
             try
             {
                 bl.PickingUpParcel(Drone.Id);
-                RefreshDrone();
+                Refresh.Invoke();
+                //RefreshDrone();
             }
             catch (InValidActionException exception)
             {
@@ -115,7 +125,8 @@ namespace PL.ViewModels
             try
             {
                 bl.BelongingParcel(Drone.Id);
-                RefreshDrone();
+                Refresh.Invoke();
+                //RefreshDrone();
             }
             catch (ThereIsNoMatchObjectInListException exception)
             {
@@ -130,7 +141,6 @@ namespace PL.ViewModels
 
         private void RefreshDrone()
         {
-            refreshDrones();
             Drone = Map(bl.GetDrone(Drone.Id));
         }
 
@@ -149,17 +159,6 @@ namespace PL.ViewModels
                 drone = value;
                 RaisePropertyChanged(nameof(Drone));
             }
-        }
-
-        private void Close_Window(object sender)
-        {
-            Window.GetWindow((DependencyObject)sender).Close();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

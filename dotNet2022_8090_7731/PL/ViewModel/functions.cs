@@ -9,7 +9,7 @@ namespace PL.ViewModels
 {
     public class Functions
     {
-        public static void CloseWindowCommand(object sender)
+        public static void CloseWindow(object sender)
         {
             Window.GetWindow((DependencyObject)sender).Close();
         }

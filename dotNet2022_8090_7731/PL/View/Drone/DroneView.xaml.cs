@@ -21,9 +21,9 @@ namespace PL.View
     /// </summary>
     public partial class DroneView : Window
     {
-        public DroneView(/*BlApi.IBL bl,*/ Action refreshDroneList)
+        public DroneView(/*BlApi.IBL bl,*//* Action refreshDroneList*/)
         {
-            var viewModel = new AddDroneViewModel(/*bl,*/ refreshDroneList);
+            var viewModel = new AddDroneViewModel(/*bl,*/ /*refreshDroneList*/);
             this.DataContext = new AddDroneView(viewModel);
             InitializeComponent();
             //DroneView.DataContext = new AddNewDroneView(bl, refreshDroneList,Close);
@@ -32,11 +32,11 @@ namespace PL.View
 
         }
 
-        public DroneView(BlApi.IBL bl, Action refreshDrones, BO.Drone selectedDrone)
+        public DroneView(BlApi.IBL bl/*, Action refreshDrones*/, BO.Drone selectedDrone)
         {
             InitializeComponent();
             //DroneView.DataContext= new EditDroneView(bl, initializeDrones, selectedDrone,Close);
-            var viewModel = new EditDroneViewModel(bl, selectedDrone, refreshDrones);
+            var viewModel = new EditDroneViewModel(bl, selectedDrone);
             this.DataContext = new EditDroneView(viewModel);
         }
     }
