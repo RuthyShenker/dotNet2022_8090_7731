@@ -1,4 +1,5 @@
-﻿using DO;
+﻿using DalXml;
+using DO;
 using Singleton;
 using System;
 using System.Collections.Generic;
@@ -96,16 +97,17 @@ namespace Dal
         {
             //return ((List<T>)DataSource.Data[typeof(T)]).ToList();
             //using (FileStream fs = new FileStream(GetXmlFilePath(typeof(T)), FileMode.Open))
-            {
-                using (StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T))))
-                {
-                    XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
-                    //var o = serializer.Deserialize(reader);
+            //{
+            //    using (StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T))))
+            //    {
+            //        XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+            //        //var o = serializer.Deserialize(reader);
 
-                    return (List<T>)serializer.Deserialize(reader);
-                    //ToDo:
-                }
-            }
+            //        return (List<T>)serializer.Deserialize(reader);
+            //        //ToDo:
+            //    }
+            //}
+            return (IEnumerable<T>)XMLTools.LoadListFromXmlSerializer<Customer>(GetXmlFilePath(typeof(T)));
         }
 
         //public bool IsExistInList<T>(List<T> list, Predicate<T> predicate)where T:IDalObject
@@ -120,21 +122,45 @@ namespace Dal
             //    throw new InValidActionException($" This item already exists in list {type}");
             //}
             //((List<T>)DataSource.Data[typeof(T)]).Add(item);
-            StreamWriter writer = new StreamWriter(GetXmlFilePath(typeof(T)));
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
-            writer.WriteLine();
-            serializer.Serialize(writer, item);
-            writer.Close();
+
+            //ToDo:
+
+
+            //StreamWriter writer = new StreamWriter(GetXmlFilePath(typeof(T)));
+            //XmlSerializer serializer2 = new XmlSerializer(typeof(List<T>));
+            //serializer.Serialize(writer, list);
+            //writer.Close();
             //Type type = typeof(T);
             //if (DoesExistInList(item))
             //{
 
             //}
-
+            List<T> list=XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
+            list.Add(item);
+            XMLTools.SaveListToXmlSerializer<T>(list, GetXmlFilePath(typeof(T)));
             //XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));
-            //document.Root.Add(ToXElement(item));
+            //string xmlString = ConvertObjectToXMLString(item);
+            //// Save C# class object into Xml file
+            //XElement xElement = XElement.Parse(xmlString);
+            //document.Root.Elements().Append(xElement);
             //document.Save(GetXmlFilePath(typeof(T)));
         }
+
+      
+            static string ConvertObjectToXMLString(object classObject)
+            {
+                string xmlString = null;
+                Type type = classObject.GetType();
+                XmlSerializer xmlSerializer = new XmlSerializer(type);
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    xmlSerializer.Serialize(memoryStream, classObject);
+                    memoryStream.Position = 0;
+                    xmlString = new StreamReader(memoryStream).ReadToEnd();
+                }
+                return xmlString;
+            }
+        
 
         public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
         {

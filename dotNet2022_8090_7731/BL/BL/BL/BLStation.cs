@@ -30,7 +30,7 @@ namespace BL
                 NameStation = name,
                 NumberOfChargingPositions = numPositions
             };
-            dal.Add(station);
+            dal.Add<DO.BaseStation>(station);
         }
 
         /// <summary>

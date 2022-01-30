@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <BaseStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Id>1234</Id>
-  <NameStation>v</NameStation>
-  <NumberOfChargingPositions>4444</NumberOfChargingPositions>
-  <Longitude>4</Longitude>
-  <Latitude>4</Latitude>
+  <NameStation>cc</NameStation>
+  <NumberOfChargingPositions>3333</NumberOfChargingPositions>
+  <Longitude>33</Longitude>
+  <Latitude>33</Latitude>
 </BaseStation>
