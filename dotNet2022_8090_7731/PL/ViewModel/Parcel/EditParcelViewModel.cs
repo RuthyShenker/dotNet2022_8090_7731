@@ -14,11 +14,12 @@ namespace PL.ViewModels
     {
         BlApi.IBL bl;
         Action refreshParcels;
-        EditParcel parcel;
+        private EditParcel parcel;
 
         public RelayCommand<object> UpdateParcelCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> EditCustomerCommand { get; set; }
+        public RelayCommand<object> OpenDroneWindowCommand { get; set; }
         
         public EditParcelViewModel(BlApi.IBL bl, BO.Parcel parcel)
         {
@@ -26,20 +27,27 @@ namespace PL.ViewModels
             Refresh.Parcel += RefreshParcel;
             Parcel = Map(parcel);
             //this.refreshParcels = refreshParcels;
-            UpdateParcelCommand = new RelayCommand<object>(UpdateParcel);
+            UpdateParcelCommand = new RelayCommand<object>(UpdateParcel, param => Parcel.BelongParcel == default);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             EditCustomerCommand = new RelayCommand<object>(EditSender);
+            OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow, param => Parcel.BelongParcel != default && Parcel.Arrival != default);
         }
 
-        private void EditSender(object senderId)
+        private void OpenDroneWindow(object obj)
         {
-            var blCustomer = bl.GetCustomer((int)senderId);
-            new CustomerView(bl, /*RefreshParcel*/ blCustomer)
-                    .Show();
+            var carringDrone = bl.GetDrone(Parcel.DInParcel.Id);
+            new DroneView(bl, carringDrone).Show();
+        }
+
+        private void EditSender(object customerId)
+        {
+            BO.Customer blCustomer = bl.GetCustomer((int)customerId);
+            new CustomerView(bl, blCustomer).Show();
         }
 
         private void UpdateParcel(object obj)
         {
+
             //TODO
         }
 
