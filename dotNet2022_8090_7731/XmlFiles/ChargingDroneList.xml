@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfChargingDrone>
-  <ChargingDrone>
+  <!-- <ChargingDrone>
     <StationId>1234</StationId>
     <DroneId>1222</DroneId>
     <EnteranceTime>2008-02-24T13:46:28.921875+01:00</EnteranceTime>
-  </ChargingDrone>
+  </ChargingDrone> -->
 </ArrayOfChargingDrone>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfParcel>
-    <Parcel>
+    <!-- <Parcel>
         <Id>1</Id>
         <SenderId>212707731</SenderId>
         <GetterId>212707732</GetterId>
@@ -11,5 +11,5 @@
         <BelongParcel>2008-02-24T13:46:28.921875+01:00</BelongParcel>
         <PickingUp>2008-02-24T13:46:28.921875+01:00</PickingUp>
         <Arrival>2008-02-24T13:46:28.921875+01:00</Arrival>
-    </Parcel>
+    </Parcel> -->
 </ArrayOfParcel>

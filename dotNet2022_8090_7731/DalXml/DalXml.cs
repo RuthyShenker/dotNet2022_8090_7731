@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -31,14 +32,19 @@ namespace Dal
         {
             try
             {
-                XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));
-                XElement root = document.Root;
-                XElement e = (from element in root.Elements()
-                              where int.Parse(element.Element("Id").Value) == Id
-                              select element).FirstOrDefault();
-                if (e == null) return false;
+                //XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));
+                //XElement root = document.Root;
+                //XElement e = (XElement)root.Elements(typeof(T).Name).Where(xelement => int.Parse(xelement.Element("Id").Value) == Id);
+                StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T)));
+                XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+                List<T> List = (List<T>)serializer.Deserialize(reader);
+                
+                reader.Close();
+                return !List.FirstOrDefault(item => item.Id == Id).Equals(default(T));
 
-                return true;
+                //if (e == null) return false;
+
+                //return true;
             }
             catch
             {
@@ -116,8 +122,18 @@ namespace Dal
             //((List<T>)DataSource.Data[typeof(T)]).Add(item);
             StreamWriter writer = new StreamWriter(GetXmlFilePath(typeof(T)));
             XmlSerializer serializer = new XmlSerializer(typeof(T));
+            writer.WriteLine();
             serializer.Serialize(writer, item);
             writer.Close();
+            //Type type = typeof(T);
+            //if (DoesExistInList(item))
+            //{
+
+            //}
+
+            //XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));
+            //document.Root.Add(ToXElement(item));
+            //document.Save(GetXmlFilePath(typeof(T)));
         }
 
         public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
@@ -200,10 +216,10 @@ namespace Dal
         {
             XDocument document = XDocument.Load(configFilePath);
             double Available = double.Parse(document.Root.Element("Available").Value);
-            double LightWeight = int.Parse(document.Root.Element("LightWeight").Value);
-            double MediumWeight = int.Parse(document.Root.Element("MediumWeight").Value);
-            double HeavyWeight = int.Parse(document.Root.Element("HeavyWeight").Value);
-            double ChargingRate = int.Parse(document.Root.Element("ChargingRate").Value);
+            double LightWeight = double.Parse(document.Root.Element("LightWeight").Value);
+            double MediumWeight = double.Parse(document.Root.Element("MediumWeight").Value);
+            double HeavyWeight = double.Parse(document.Root.Element("HeavyWeight").Value);
+            double ChargingRate = double.Parse(document.Root.Element("ChargingRate").Value);
 
             document.Save(configFilePath);
             return (Available,

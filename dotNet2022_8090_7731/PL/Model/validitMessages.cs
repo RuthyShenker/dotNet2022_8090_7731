@@ -41,7 +41,7 @@ namespace PO
         }
         public static string NameMessage(string name)
        {
-            return name == string.Empty ? 
+            return name == string.Empty ||name==null? 
                         "Field is required" :
                    !name.All(l => char.IsLetter(l)) ?
                         "Input must contain letters only" :
@@ -57,7 +57,7 @@ namespace PO
         }
         public static string PhoneMessage(string value)
         {
-            return value == string.Empty ? 
+            return value == string.Empty ||value==null? 
                         "Field is required" : 
                 !value.All(d => char.IsDigit(d)) ?  
                         "Input must contain digits only" :
