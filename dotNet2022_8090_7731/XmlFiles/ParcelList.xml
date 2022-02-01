@@ -1,15 +1,1 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ArrayOfParcel>
-    <!-- <Parcel>
-        <Id>1</Id>
-        <SenderId>212707731</SenderId>
-        <GetterId>212707732</GetterId>
-        <Weight>Light</Weight>
-        <MPriority>Normal</MPriority>
-        <DroneId>2111</DroneId>
-        <CreatedTime>2008-02-24T13:46:28.921875+01:00</CreatedTime>
-        <BelongParcel>2008-02-24T13:46:28.921875+01:00</BelongParcel>
-        <PickingUp>2008-02-24T13:46:28.921875+01:00</PickingUp>
-        <Arrival>2008-02-24T13:46:28.921875+01:00</Arrival>
-    </Parcel> -->
-</ArrayOfParcel>

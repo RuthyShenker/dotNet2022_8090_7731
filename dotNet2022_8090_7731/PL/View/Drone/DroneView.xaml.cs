@@ -23,7 +23,8 @@ namespace PL.View
     {
         public DroneView(/*BlApi.IBL bl,*//* Action refreshDroneList*/)
         {
-            var viewModel = new AddDroneViewModel(/*bl,*/ /*refreshDroneList*/);
+            //var viewModel = new AddDroneViewModel(/*bl,*/ /*refreshDroneList*/);
+            var viewModel = new AddDroneViewModel(SwitchView);
             this.DataContext = new AddDroneView(viewModel);
             InitializeComponent();
             //DroneView.DataContext = new AddNewDroneView(bl, refreshDroneList,Close);
@@ -37,6 +38,13 @@ namespace PL.View
             InitializeComponent();
             //DroneView.DataContext= new EditDroneView(bl, initializeDrones, selectedDrone,Close);
             var viewModel = new EditDroneViewModel(bl, selectedDrone);
+            this.DataContext = new EditDroneView(viewModel);
+        }
+
+        private void SwitchView(BO.Drone selectedDrone)
+        {
+            //refreshCustomerList();
+            var viewModel = new EditDroneViewModel(BlApi.BlFactory.GetBl(), selectedDrone);
             this.DataContext = new EditDroneView(viewModel);
         }
     }

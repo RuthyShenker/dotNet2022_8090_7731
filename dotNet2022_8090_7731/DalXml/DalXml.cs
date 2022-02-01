@@ -18,6 +18,17 @@ namespace Dal
         private DalXml()
         {
             xmlFilesLocation = $@"{Directory.GetCurrentDirectory()}\..\..\XmlFiles";
+            List<Drone> list = new List<Drone>();
+            List<Customer> list1 = new List<Customer>();
+            List<BaseStation> list2 = new List<BaseStation>();
+            List<Parcel> list3 = new List<Parcel>();
+            //List<Drone> list = new List<Drone>();
+            //List<T> list1 = new List<T>();
+            //list.Add(item);
+            XMLTools.SaveListToXmlSerializer<Drone>(list, GetXmlFilePath(typeof(Drone)));
+            XMLTools.SaveListToXmlSerializer<Customer>(list1, GetXmlFilePath(typeof(Customer)));
+            XMLTools.SaveListToXmlSerializer<BaseStation>(list2, GetXmlFilePath(typeof(BaseStation)));
+            XMLTools.SaveListToXmlSerializer<Parcel>(list3, GetXmlFilePath(typeof(Parcel)));
         }
 
         static DalXml()
@@ -136,6 +147,7 @@ namespace Dal
 
             //}
             List<T> list=XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
+            //List<T> list1 = new List<T>();
             list.Add(item);
             XMLTools.SaveListToXmlSerializer<T>(list, GetXmlFilePath(typeof(T)));
             //XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));

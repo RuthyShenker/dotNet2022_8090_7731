@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,10 @@ namespace PL.View
     /// </summary>
     public partial class AddStationView : UserControl
     {
-        public AddStationView()
+        public AddStationView(AddStationViewModel viewModel)
         {
             InitializeComponent();
+            this.DataContext = viewModel;
         }
     }
 }

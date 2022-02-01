@@ -92,12 +92,13 @@ namespace PL.ViewModels
 
         private static EditStation Map(BO.Station station)
         {
+            //MessageBox.Show(station.Location.Longitude.ToString());
             return new EditStation()
             {
                 Id = station.Id,
                 Name = station.NameStation,
                 NumPositions = station.NumAvailablePositions,
-                Location = new PO.Location(station.Location.Latitude, station.Location.Longitude),
+                Location = new PO.Location(23, 23),
                 ListChargingDrone = station.LBL_ChargingDrone.Select(position => new PO.ChargingDrone(position.DroneId, position.BatteryStatus))
             };
         }

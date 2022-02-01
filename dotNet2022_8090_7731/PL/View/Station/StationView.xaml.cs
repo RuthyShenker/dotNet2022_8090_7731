@@ -25,7 +25,8 @@ namespace PL.View
             InitializeComponent();
             //TODO:???
             //var viewModel = new AddStationViewModel(bl, refreshStationList);
-            this.DataContext = new AddStationView();
+            var viewModel = new AddStationViewModel(SwitchView);
+            this.DataContext = new AddStationView(viewModel);
         }
 
         public StationView(BlApi.IBL bl, /*Action refreshStationList,*/ BO.Station selectedStation)
@@ -34,6 +35,12 @@ namespace PL.View
             var viewModel = new EditStationViewModel(bl, selectedStation/*, refreshStationList*/);
             this.DataContext = new EditStationView(viewModel);
 
+        }
+        private void SwitchView(BO.Station selectedStation)
+        {
+            //refreshCustomerList();
+            var viewModel = new EditStationViewModel(BlApi.BlFactory.GetBl(), selectedStation);
+            this.DataContext = new EditStationView(viewModel);
         }
     }
 }
