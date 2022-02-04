@@ -82,7 +82,7 @@ namespace BL
             foreach (var chargingPosition in chargingDroneDalList)
             {
                 chargingDrone.DroneId = chargingPosition.DroneId;
-                chargingDrone.BatteryStatus = lDroneToList.FirstOrDefault(drone => drone.Id == chargingDrone.DroneId).BatteryStatus;
+                chargingDrone.BatteryStatus = lDroneToList.FirstOrDefault(drone => drone.Id == chargingDrone.DroneId)?.BatteryStatus ?? 0;
                 // TODO: the problem was that there werent use in the return Append. to check
                 // if there more places like that.
                 chargingDroneBLList = chargingDroneBLList.Append(chargingDrone);

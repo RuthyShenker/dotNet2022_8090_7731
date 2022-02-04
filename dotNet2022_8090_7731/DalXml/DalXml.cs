@@ -5,13 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace Dal
 {
-    internal sealed partial class  DalXml : Singleton<DalXml>, DalApi.IDal
+    internal sealed partial class DalXml : Singleton<DalXml>, DalApi.IDal
     {
         readonly string xmlFilesLocation;
 
@@ -42,82 +41,31 @@ namespace Dal
 
         public bool IsIdExistInList<T>(int Id) where T : IIdentifiable, IDalObject
         {
-            try
-            {
-                //XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));
-                //XElement root = document.Root;
-                //XElement e = (XElement)root.Elements(typeof(T).Name).Where(xelement => int.Parse(xelement.Element("Id").Value) == Id);
-                StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T)));
-                XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
-                List<T> List = (List<T>)serializer.Deserialize(reader);
-                
-                reader.Close();
-                return !List.FirstOrDefault(item => item.Id == Id).Equals(default(T));
-
-                //if (e == null) return false;
-
-                //return true;
-            }
-            catch
-            {
-                return false;
-            }
-            //return ((List<T>)DataSource.Data[typeof(T)]).Any(item => item.Id == Id);
+            return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)))
+                .Any(item => item.Id == Id);
         }
 
         public T GetFromDalById<T>(int Id) where T : IDalObject, IIdentifiable
         {
-           
-
-            StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T)));
-            XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
-            IEnumerable<T> List = (IEnumerable<T>)serializer.Deserialize(reader);
-            reader.Close();
-            return List.First(obj => obj.Id == Id);
-            //}
-            //catch
-            //{
-            //    //return false;
-            //}
+            return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)))
+                .First(obj => obj.Id == Id);
         }
-
-
 
         public T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IDalObject
         {
-            //return ((List<T>)DataSource.Data[typeof(T)]).FirstOrDefault(item => predicate(item));
-            StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T)));
-            XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
-            List<T> List = (List<T>)serializer.Deserialize(reader);
-            reader.Close();
-            return List.FirstOrDefault(item => predicate(item));
+            return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)))
+                .FirstOrDefault(item => predicate(item));
 
         }
 
         public IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalObject
         {
-            /*return ((List<T>)DataSource.Data[typeof(T)]).FindAll(predicate).ToList();*/
-            StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T)));
-            XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
-            List<T> List = (List<T>)serializer.Deserialize(reader);
-            reader.Close();
-            return List.FindAll(predicate).ToList();
+            return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)))
+                  .FindAll(predicate);
         }
 
         public IEnumerable<T> GetListFromDal<T>() where T : IDalObject
         {
-            //return ((List<T>)DataSource.Data[typeof(T)]).ToList();
-            //using (FileStream fs = new FileStream(GetXmlFilePath(typeof(T)), FileMode.Open))
-            //{
-            //    using (StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T))))
-            //    {
-            //        XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
-            //        //var o = serializer.Deserialize(reader);
-
-            //        return (List<T>)serializer.Deserialize(reader);
-            //        //ToDo:
-            //    }
-            //}
             return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
         }
 
@@ -146,7 +94,7 @@ namespace Dal
             //{
 
             //}
-            List<T> list=XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
+            List<T> list = XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
             //List<T> list1 = new List<T>();
             list.Add(item);
             XMLTools.SaveListToXmlSerializer<T>(list, GetXmlFilePath(typeof(T)));
@@ -158,21 +106,21 @@ namespace Dal
             //document.Save(GetXmlFilePath(typeof(T)));
         }
 
-      
-            static string ConvertObjectToXMLString(object classObject)
+
+        static string ConvertObjectToXMLString(object classObject)
+        {
+            string xmlString = null;
+            Type type = classObject.GetType();
+            XmlSerializer xmlSerializer = new XmlSerializer(type);
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                string xmlString = null;
-                Type type = classObject.GetType();
-                XmlSerializer xmlSerializer = new XmlSerializer(type);
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    xmlSerializer.Serialize(memoryStream, classObject);
-                    memoryStream.Position = 0;
-                    xmlString = new StreamReader(memoryStream).ReadToEnd();
-                }
-                return xmlString;
+                xmlSerializer.Serialize(memoryStream, classObject);
+                memoryStream.Position = 0;
+                xmlString = new StreamReader(memoryStream).ReadToEnd();
             }
-        
+            return xmlString;
+        }
+
 
         public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
         {

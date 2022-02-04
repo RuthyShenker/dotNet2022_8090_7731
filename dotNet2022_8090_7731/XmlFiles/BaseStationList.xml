@@ -1,2 +1,10 @@
 <?xml version="1.0"?>
-<ArrayOfBaseStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+<ArrayOfBaseStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <BaseStation>
+    <Id>1234</Id>
+    <NameStation>station</NameStation>
+    <NumberOfChargingPositions>9999</NumberOfChargingPositions>
+    <Longitude>1</Longitude>
+    <Latitude>3</Latitude>
+  </BaseStation>
+</ArrayOfBaseStation>
