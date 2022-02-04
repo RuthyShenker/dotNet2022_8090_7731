@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -22,7 +19,7 @@ namespace DalXml
         {
             try
             {
-                rootElem.Save(dirPath + filePath);
+                rootElem.Save(filePath);
             }
             catch (Exception ex)
             {
@@ -35,7 +32,7 @@ namespace DalXml
         {
             try
             {
-                if (File.Exists(dirPath + filePath))
+                if (File.Exists(filePath))
                 {
                     return XElement.Load(dirPath + filePath);
                 }
@@ -59,11 +56,11 @@ namespace DalXml
         {
             try
             {
-                FileStream file = new FileStream(dirPath + filePath, FileMode.Create);
-                XmlSerializer x = new XmlSerializer(list.GetType());
-
-                x.Serialize(file, list);
-                file.Close();
+                using (FileStream file = new FileStream(filePath, FileMode.Create))
+                {
+                    XmlSerializer x = new XmlSerializer(list.GetType());
+                    x.Serialize(file, list);
+                }
             }
             catch (Exception ex)
             {
@@ -75,14 +72,13 @@ namespace DalXml
         {
             try
             {
-                if (File.Exists(dirPath + filePath))
+                if (File.Exists(filePath))
                 {
-                    List<T> list;
-                    XmlSerializer x = new XmlSerializer(typeof(List<T>));
-                    FileStream file = new FileStream(dirPath + filePath, FileMode.Open);
-                    list = (List<T>)x.Deserialize(file);
-                    file.Close();
-                    return list;
+                    using (var reader = new StreamReader(filePath))
+                    {
+                        XmlSerializer x = new XmlSerializer(typeof(List<T>));
+                        return (List<T>)x.Deserialize(reader);
+                    }
                 }
                 else
                     return new List<T>();

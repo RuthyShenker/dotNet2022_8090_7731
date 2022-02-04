@@ -32,15 +32,15 @@ namespace PL
         //public RelayCommand<object> DroneListViewCommand;
         //public RelayCommand<object> StationListViewCommand;
         //public RelayCommand<object> ParcelListViewCommand;
-        readonly string xmlFilesLocation;
-        
-  string GetXmlFilePath(Type type) => $@"{xmlFilesLocation}\{type.Name}List.xml";
-        string configFilePath => $@"{xmlFilesLocation}\Config.xml";
+        //readonly string xmlFilesLocation = $@"{Directory.GetCurrentDirectory()}\..\..\XmlFiles";
+
+        //string GetXmlFilePath(Type type) => $@"{xmlFilesLocation}\{type.Name}List.xml";
+        //string configFilePath => $@"{xmlFilesLocation}\Config.xml";
 
         public MainWindow()
         {
             InitializeComponent();
-            xmlFilesLocation = $@"{Directory.GetCurrentDirectory()}\XmlFiles";
+            //xmlFilesLocation = $@"{Directory.GetCurrentDirectory()}\XmlFiles";
             List<Drone> list = new List<Drone>();
             List<Customer> list1 = new List<Customer>();
             List<Station> list2 = new List<Station>();
@@ -48,10 +48,10 @@ namespace PL
             //List<Drone> list = new List<Drone>();
             //List<T> list1 = new List<T>();
             //list.Add(item);
-            XMLTools.SaveListToXmlSerializer<Drone>(list, GetXmlFilePath(typeof(Drone)));
-            XMLTools.SaveListToXmlSerializer<Customer>(list1, GetXmlFilePath(typeof(Customer)));
-            XMLTools.SaveListToXmlSerializer<Station>(list2, GetXmlFilePath(typeof(Station)));
-            XMLTools.SaveListToXmlSerializer<Parcel>(list3, GetXmlFilePath(typeof(Parcel)));
+            //XMLTools.SaveListToXmlSerializer<Drone>(list, GetXmlFilePath(typeof(Drone)));
+            //XMLTools.SaveListToXmlSerializer<Customer>(list1, GetXmlFilePath(typeof(Customer)));
+            //XMLTools.SaveListToXmlSerializer<Station>(list2, GetXmlFilePath(typeof(Station)));
+            //XMLTools.SaveListToXmlSerializer<Parcel>(list3, GetXmlFilePath(typeof(Parcel)));
             this.DataContext = new MainWindowViewModel();
             //mDroneView.DataContext = new DisplayViewModel();
 
@@ -131,11 +131,11 @@ namespace PL
             {
                 try
                 {
-                    FileStream file = new FileStream(filePath, FileMode.Create);
-                    XmlSerializer x = new XmlSerializer(list.GetType());
-
-                    x.Serialize(file, list);
-                    file.Close();
+                    using (FileStream file = new FileStream(filePath, FileMode.Create))
+                    {
+                        XmlSerializer x = new XmlSerializer(list.GetType());
+                        x.Serialize(file, list);
+                    }
                 }
                 catch (Exception ex)
                 {

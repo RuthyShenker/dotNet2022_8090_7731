@@ -25,10 +25,10 @@ namespace Dal
             //List<Drone> list = new List<Drone>();
             //List<T> list1 = new List<T>();
             //list.Add(item);
-            XMLTools.SaveListToXmlSerializer<Drone>(list, GetXmlFilePath(typeof(Drone)));
-            XMLTools.SaveListToXmlSerializer<Customer>(list1, GetXmlFilePath(typeof(Customer)));
-            XMLTools.SaveListToXmlSerializer<BaseStation>(list2, GetXmlFilePath(typeof(BaseStation)));
-            XMLTools.SaveListToXmlSerializer<Parcel>(list3, GetXmlFilePath(typeof(Parcel)));
+            //XMLTools.SaveListToXmlSerializer<Drone>(list, GetXmlFilePath(typeof(Drone)));
+            //XMLTools.SaveListToXmlSerializer<Customer>(list1, GetXmlFilePath(typeof(Customer)));
+            //XMLTools.SaveListToXmlSerializer<BaseStation>(list2, GetXmlFilePath(typeof(BaseStation)));
+            //XMLTools.SaveListToXmlSerializer<Parcel>(list3, GetXmlFilePath(typeof(Parcel)));
         }
 
         static DalXml()
@@ -118,7 +118,7 @@ namespace Dal
             //        //ToDo:
             //    }
             //}
-            return (IEnumerable<T>)XMLTools.LoadListFromXmlSerializer<Customer>(GetXmlFilePath(typeof(T)));
+            return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
         }
 
         //public bool IsExistInList<T>(List<T> list, Predicate<T> predicate)where T:IDalObject

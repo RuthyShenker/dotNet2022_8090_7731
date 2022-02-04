@@ -97,13 +97,16 @@ namespace BL
             if (nDrone.DStatus == DroneStatus.Maintenance || customersList.Count() == 0)
             {
                 var availableSlotsList = AvailableSlots();
-                var station = availableSlotsList.ElementAt(rand.Next(availableSlotsList.Count()));
-                nDrone.CurrLocation = GetStation(station.Id).Location;
-                nDrone.BatteryStatus = rand.NextDouble() * 20;
-
-                if (nDrone.DStatus == DroneStatus.Maintenance)
+                if (availableSlotsList.Any())
                 {
-                    dal.Add(new DO.ChargingDrone(nDrone.Id, station.Id, DateTime.Now));
+                    var station = availableSlotsList.ElementAt(rand.Next(availableSlotsList.Count()));
+                    nDrone.CurrLocation = GetStation(station.Id).Location;
+                    nDrone.BatteryStatus = rand.NextDouble() * 20;
+
+                    if (nDrone.DStatus == DroneStatus.Maintenance)
+                    {
+                        dal.Add(new DO.ChargingDrone(nDrone.Id, station.Id, DateTime.Now));
+                    }
                 }
             }
             else
