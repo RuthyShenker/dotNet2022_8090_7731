@@ -54,6 +54,7 @@ namespace PL.ViewModels
         private void RefreshStation()
         {
             //refreshParcels();
+            //בעיה
             Station = Map(bl.GetStation(station.Id));
         }
 

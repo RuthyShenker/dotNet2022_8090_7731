@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
     <Id>111111111</Id>
@@ -6,5 +6,12 @@
     <Phone>6666666661</Phone>
     <Longitude>8</Longitude>
     <Latitude>8</Latitude>
+  </Customer>
+  <Customer>
+    <Id>654398765</Id>
+    <Name>ruti</Name>
+    <Phone>0976424421</Phone>
+    <Longitude>35</Longitude>
+    <Latitude>84</Latitude>
   </Customer>
 </ArrayOfCustomer>
