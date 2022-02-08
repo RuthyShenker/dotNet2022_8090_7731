@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -91,5 +92,21 @@ namespace DalXml
         }
         #endregion
     }
+    public static class XmlDrone
+    {
+        public static void SaveDroneListToXml(this IEnumerable<DO.Drone> list, string filePath)
+        {
+            XElement Drones = new XElement("ArrayOfDrones",
+                                            from drone in list
+                                            select new XElement("Drone",
+                                                        new XElement("Id", drone.Id),
+                                                        new XElement("MaxWeight", drone.MaxWeight),
+                                                        new XElement("Model", drone.Model)
+                                                        )
+                                            );
+            Drones.Save(filePath);
+        }
+    }
+
 }
 

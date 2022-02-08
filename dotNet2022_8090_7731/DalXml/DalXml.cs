@@ -20,6 +20,7 @@ namespace Dal
         private DalXml()
         {
             xmlFilesLocation = $@"{Directory.GetCurrentDirectory()}\..\..\XmlFiles";
+            #region
             //List<Drone> list = new List<Drone>();
             //List<Customer> list1 = new List<Customer>();
             //List<BaseStation> list2 = new List<BaseStation>();
@@ -31,6 +32,7 @@ namespace Dal
             //XMLTools.SaveListToXmlSerializer<Customer>(list1, GetXmlFilePath(typeof(Customer)));
             //XMLTools.SaveListToXmlSerializer<BaseStation>(list2, GetXmlFilePath(typeof(BaseStation)));
             //XMLTools.SaveListToXmlSerializer<Parcel>(list3, GetXmlFilePath(typeof(Parcel)));
+            #endregion
         }
 
         //static DalXml()
@@ -126,6 +128,7 @@ namespace Dal
         //}
         public void Add<T>(T item) where T : IDalObject
         {
+            #region
             //Type type = typeof(T);
             //if (DoesExistInList(item))
             //{
@@ -147,6 +150,7 @@ namespace Dal
             //}
 
             //List<T> list1 = new List<T>();
+            #endregion
             if (typeof(T) == typeof(DO.Drone))
             {
                 var droneList = LoadDroneListFromXmlToDrone().ToList();
@@ -160,13 +164,14 @@ namespace Dal
                 list.Add(item);
                 XMLTools.SaveListToXmlSerializer<T>(list, GetXmlFilePath(typeof(T)));
             }
-
+            #region
             //XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));
             //string xmlString = ConvertObjectToXMLString(item);
             //// Save C# class object into Xml file
             //XElement xElement = XElement.Parse(xmlString);
             //document.Root.Elements().Append(xElement);
             //document.Save(GetXmlFilePath(typeof(T)));
+            #endregion
         }
 
 
@@ -187,6 +192,7 @@ namespace Dal
 
         public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
         {
+            #region
             //Type type = typeof(T);
 
             //var oldItem = GetFromDalById<T>(id);
@@ -203,7 +209,7 @@ namespace Dal
             //    oldItem = obj;
             //}
             //DataSource.Data[type].Add(oldItem);
-
+            #endregion
             try
             {
                 XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));
@@ -223,6 +229,7 @@ namespace Dal
 
         public void Remove<T>(T item) where T : IDalObject
         {
+            #region
             //if (DoesExistInList(item))
             //{
             //    //DataSource.Data[typeof(T)].Remove(item);
@@ -234,7 +241,7 @@ namespace Dal
             //            obj.Element(propertyName).Value = (string)newValue;
             //    }
             //    document.Save(GetXmlFilePath(typeof(T)));
-
+            #endregion
             if (typeof(T) == typeof(Drone))
             {
                 var droneList = LoadDroneListFromXmlToDrone().ToList();
@@ -254,16 +261,20 @@ namespace Dal
         {
             //return ((List<T>)DataSource.Data[typeof(T)]).Any(i => i.Equals(item));
 
-            if(typeof(T)== typeof(Drone))
+            if (typeof(T) == typeof(Drone))
             {
-               return LoadDroneListFromXmlToDrone().ToList().Any(i => i.Equals(item));
+                return LoadDroneListFromXmlToDrone().ToList().Any(i => i.Equals(item));
             }
-            StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T)));
-            XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
-            List<T> List = (List<T>)serializer.Deserialize(reader);
-            //ToDo:
-            reader.Close();
-            return List.Any(i => i.Equals(item));
+
+            else
+            {
+                StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T)));
+                XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+                List<T> List = (List<T>)serializer.Deserialize(reader);
+                //ToDo:
+                reader.Close();
+                return List.Any(i => i.Equals(item));
+            }
         }
 
         public int GetIndexParcel()
@@ -273,8 +284,10 @@ namespace Dal
             document.Root.Element("IndexParcel").SetValue(index + 1);
             document.Save(configFilePath);
             return ++index;
+            #region
             //return ++DataSource.Config.IndexParcel;
             //return XDocument.Load(configFilePath).Root;
+            #endregion
         }
 
         public (double, double, double, double, double) PowerConsumptionRequest()
@@ -292,7 +305,7 @@ namespace Dal
                     MediumWeight,
                     HeavyWeight,
                     ChargingRate);
-
+            #region
             //return (Available, LightWeight, MediumWeight, HeavyWeight, ChargingRate);
 
 
@@ -303,21 +316,7 @@ namespace Dal
 
             //}
             //document.Save(GetXmlFilePath(typeof(T)));
+            #endregion
         }
-    }
-}
-public static class XmlDrone
-{
-    public static void  SaveDroneListToXml(this IEnumerable<Drone> list ,string filePath)
-    {
-        XElement Drones = new XElement("ArrayOfDrones",
-                                        from drone in list
-                                        select new XElement("Drone",
-                                                    new XElement("Id", drone.Id),
-                                                    new XElement("MaxWeight", drone.MaxWeight),
-                                                    new XElement("Model", drone.Model)
-                                                    )
-                                        );
-        Drones.Save(filePath);
     }
 }
