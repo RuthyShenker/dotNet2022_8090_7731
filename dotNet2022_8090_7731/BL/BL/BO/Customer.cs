@@ -35,6 +35,10 @@ namespace BO
             LFromCustomer = new List<ParcelInCustomer>();
             LForCustomer = new List<ParcelInCustomer>();
         }
+        public Customer()
+        {
+
+        }
         /// <summary>
         /// this field is init.
         /// </summary>
