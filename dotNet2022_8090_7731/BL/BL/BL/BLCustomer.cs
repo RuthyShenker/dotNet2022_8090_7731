@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BO;
+using System.Runtime.CompilerServices;
 
 namespace BL
 {
@@ -72,6 +73,7 @@ namespace BL
         /// function doesn't return anything.
         /// </summary>
         /// <param name="bLCustomer"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public int AddCustomer(Customer bLCustomer)
         {
             if (dal.IsIdExistInList<DO.Customer>(bLCustomer.Id))
@@ -94,6 +96,7 @@ namespace BL
         /// <param name="customerId"></param>
         /// <param name="newName"></param>
         /// <param name="newPhone"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdatingCustomerDetails(int customerId, string newName, string newPhone)
         {
             try
@@ -115,6 +118,7 @@ namespace BL
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<CustomerToList> GetCustomers()
         {
             return dal.GetListFromDal<DO.Customer>()
@@ -162,6 +166,7 @@ namespace BL
             return nCustomer;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomer(int customerId)
         {
             try
@@ -174,6 +179,8 @@ namespace BL
                 throw new IdIsNotExistException(typeof(Customer), customerId);
             }
         }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public string DeleteCustomer(int customerId)
         {
             try

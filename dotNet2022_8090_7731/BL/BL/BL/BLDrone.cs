@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static BL.Extensions;
+using System.Runtime.CompilerServices;
 
 namespace BL
 {
@@ -195,6 +196,7 @@ namespace BL
         /// function doesn't return anything.
         /// </summary>
         /// <param name="IdDrone"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SendingDroneToCharge(int IdDrone)
         {
             DroneToList drone = FindDroneInList(IdDrone);
@@ -233,6 +235,7 @@ namespace BL
         /// A function that gets an id of drone and releasing it from charging.
         /// </summary>
         /// <param name="dId"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void ReleasingDrone(int dId)
         {
             DroneToList drone = FindDroneInList(dId);
@@ -271,40 +274,6 @@ namespace BL
             }
         }
 
-        /// <summary>
-        /// A function that gets an id of drone and belonging to it a parcel.
-        /// </summary>
-        /// <param name="dId"></param>
-        public void BelongingParcel(int dId)
-        {
-            DroneToList droneToList = FindDroneInList(dId);
-            if (droneToList.DStatus != DroneStatus.Free)
-            {
-                string dStatus = droneToList.DStatus.ToString();
-                throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is {dStatus} ");
-            }
-            var optionParcels = dal.GetDalListByCondition<DO.Parcel>
-                (parcel => parcel.Weight <= (DO.WeightCategories)droneToList.Weight &&
-                droneToList.BatteryStatus >= MinBattery(GetDistance(droneToList.CurrLocation, parcel), (WeightCategories)parcel.Weight))
-                .OrderByDescending(parcel => parcel.MPriority)
-                .ThenByDescending(parcel => parcel.Weight)
-                .ThenBy(parcel => GetDistance(droneToList.CurrLocation, parcel));
-
-            var parcel = optionParcels.FirstOrDefault(parcel => parcel.BelongParcel.HasValue);
-            if (!optionParcels.Any() || parcel.Equals(default(DO.Parcel)))
-            {
-                if (!dal.GetListFromDal<DO.Parcel>().Any())
-                {
-                    throw new BO.ListIsEmptyException(typeof(DO.Parcel));
-                }
-                throw new ThereIsNoMatchObjectInListException(typeof(DO.Parcel), $"There is no match parcels to drone with id {dId} in");
-            }
-
-            droneToList.DStatus = DroneStatus.Delivery;
-
-            dal.Update<DO.Parcel>(parcel.Id, dId, nameof(parcel.DroneId));
-            dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.BelongParcel));
-        }
 
         /// <summary>
         /// A function that calculates the distance that the drone has to pass in order to give 
@@ -327,6 +296,7 @@ namespace BL
         /// </summary>
         /// <param name="bLDrone"></param>
         /// <param name="StationId"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddingDrone(Drone bLDrone, int StationId)
         {
             if (dal.IsIdExistInList<DO.Drone>(bLDrone.Id))
@@ -375,6 +345,7 @@ namespace BL
         /// </summary>
         /// <param name="droneId"></param>
         /// <param name="newModel"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdatingDroneName(int droneId, string newModel)
         {
             DroneToList droneToList = FindDroneInList(droneId);
@@ -388,6 +359,8 @@ namespace BL
                 throw new BO.IdIsNotExistException(typeof(Drone), droneId);
             }
         }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DroneToList> GetDrones(Func<DroneToList, bool> predicate = null)
         {
             if (predicate == null)
@@ -400,11 +373,13 @@ namespace BL
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public bool IsDroneExist(int Id)
         {
             return lDroneToList.Any(drone => drone.Id == Id);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Drone GetDrone(int droneId)
         {
             try

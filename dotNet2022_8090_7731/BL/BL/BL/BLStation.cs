@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BO;
+using System.Runtime.CompilerServices;
 
 namespace BL
 {
@@ -16,6 +17,7 @@ namespace BL
         /// </summary>
         /// <param name="bLStation"></param>
         //public void AddingBaseStation(Station bLStation)
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddingBaseStation(int id, string name, double longitude, double latitude, int numPositions)
         {
             if (dal.IsIdExistInList<DO.BaseStation>(id))
@@ -41,6 +43,7 @@ namespace BL
         /// <param name="stationId"></param>
         /// <param name="stationName"></param>
         /// <param name="amountOfPositions"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions)
         {
             try
@@ -64,8 +67,6 @@ namespace BL
                 throw new IdIsNotExistException(typeof(DO.BaseStation), stationId);
             }
         }
-
-
 
         /// <summary>
         /// A function that gets id of station and
@@ -128,6 +129,7 @@ namespace BL
             return ConvertToBL(closetStation);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public string DeleteStation(int stationId)
         {
             try
@@ -143,6 +145,7 @@ namespace BL
 
         //-----Get-----------------------------------------------
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationToList> GetStations()
         {
             return dal.GetListFromDal<DO.BaseStation>()
@@ -156,6 +159,7 @@ namespace BL
         /// </summary>
         /// <param name="numPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationToList> AvailableSlots(int numPositions = 0)
         {
             return numPositions == 0
@@ -183,6 +187,7 @@ namespace BL
             return nStation;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetStation(int stationId)
         {
             try

@@ -10,7 +10,6 @@ namespace BlApi
     public interface IBLStation
     {
         public void AddingBaseStation(int id, string name, double longitude, double latitude, int numPositions);
-
         void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions);
         IEnumerable<StationToList> GetStations();
         IEnumerable<StationToList> AvailableSlots(int numPositions = 0);
