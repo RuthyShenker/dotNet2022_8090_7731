@@ -194,7 +194,7 @@ namespace Dal
                 {
                     XElement root = XDocument.Load(GetXmlFilePath(typeof(T))).Root;
                     XElement element = root.Elements().Single(obj =>
-                     int.Parse(obj.Element("Id").Value) == id);
+                    int.Parse(obj.Element("Id").Value) == id);
                     element.Element(propertyName).RemoveAttributes();
                     element.SetElementValue(propertyName, newValue);
                     root.Save(GetXmlFilePath(typeof(T)));

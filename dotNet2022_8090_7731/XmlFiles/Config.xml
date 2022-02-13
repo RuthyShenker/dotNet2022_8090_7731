@@ -5,5 +5,5 @@
   <MediumWeight>0.003</MediumWeight>
   <HeavyWeight>0.004</HeavyWeight>
   <ChargingRate>0.005</ChargingRate>
-  <IndexParcel>3</IndexParcel>
+  <IndexParcel>1000</IndexParcel>
 </ArrayOfPowerConsumption>

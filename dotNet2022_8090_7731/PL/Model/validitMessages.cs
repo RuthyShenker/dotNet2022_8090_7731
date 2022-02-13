@@ -90,8 +90,8 @@ namespace PO
         public static string LocationMessage(object value, int min = 0, int max = 0)
         {
             //problem:!!!
-            return value == null ? "Field is required" :
-                !Regex.IsMatch(value.ToString(), @"^(\-*\s*[0-9]+\.[0-9]+)$") ? "Input must contain digits only" :
+            return value == null ? "Field is required" :/*^(\-*\s*[0-9]+\.[0-9]+)$*/
+                !Regex.IsMatch(value.ToString(), @"^[0-9]+$") ? "Input must contain digits only" :
                 (double)value > max ? $"Max value is {max}" :
                 (double)value < min ? $"Min value is {min}" :
                 "";

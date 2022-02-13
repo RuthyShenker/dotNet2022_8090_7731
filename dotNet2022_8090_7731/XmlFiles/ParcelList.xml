@@ -1,39 +1,4 @@
 <?xml version="1.0"?>
 <ArrayOfParcel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Parcel>
-    <Id>1</Id>
-    <SenderId>111111111</SenderId>
-    <GetterId>654398765</GetterId>
-    <Weight>Medium</Weight>
-    <MPriority>Emergency</MPriority>
-    <DroneId xsi:nil="true" />
-    <CreatedTime>2022-02-08T17:27:57.826782+02:00</CreatedTime>
-    <BelongParcel xsi:nil="true" />
-    <PickingUp xsi:nil="true" />
-    <Arrival xsi:nil="true" />
-  </Parcel>
-  <Parcel>
-    <Id>2</Id>
-    <SenderId>654398765</SenderId>
-    <GetterId>111111111</GetterId>
-    <Weight>Heavy</Weight>
-    <MPriority>Fast</MPriority>
-    <DroneId xsi:nil="true" />
-    <CreatedTime>2022-02-08T17:28:23.9826023+02:00</CreatedTime>
-    <BelongParcel xsi:nil="true" />
-    <PickingUp xsi:nil="true" />
-    <Arrival xsi:nil="true" />
-  </Parcel>
-  <Parcel>
-    <Id>3</Id>
-    <SenderId>654398765</SenderId>
-    <GetterId>357637335</GetterId>
-    <Weight>Heavy</Weight>
-    <MPriority>Fast</MPriority>
-    <DroneId xsi:nil="true" />
-    <CreatedTime>2022-02-13T15:52:07.14369+02:00</CreatedTime>
-    <BelongParcel xsi:nil="true" />
-    <PickingUp xsi:nil="true" />
-    <Arrival xsi:nil="true" />
-  </Parcel>
+
 </ArrayOfParcel>

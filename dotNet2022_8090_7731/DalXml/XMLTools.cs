@@ -114,7 +114,7 @@ namespace DalXml
                     Id = int.Parse(drone.Element("Id").Value),
                     MaxWeight = (DO.WeightCategories)Enum.Parse(typeof(DO.WeightCategories), drone.Element("MaxWeight").Value),
                     Model = drone.Element("Model").Value
-                }; ;
+                }; 
         }
 
         private static String GetXmlFilePath(Type type)
