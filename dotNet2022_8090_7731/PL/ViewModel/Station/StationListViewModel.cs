@@ -44,7 +44,12 @@ namespace PL.ViewModels
 
         private void AvailablePositions()
         {
-            AvailablePositionsList = new List<object>() { "All" }.Union(bl.AvailableSlots().Select(station => station.AvailablePositions).Distinct().Cast<object>());
+            AvailablePositionsList = new List<object>() { "All" }
+            .Union(
+                bl.AvailableSlots()
+                .Select(station => station.AvailablePositions)
+                .Distinct()
+                .Cast<object>());
         }
 
         public ListCollectionView StationList

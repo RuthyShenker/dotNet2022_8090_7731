@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using static PO.ValidityMessages;
 namespace PO
 { 
-    
     public class CustomerToAdd : ObservableBase, IDataErrorInfo
     {
         public CustomerToAdd()
@@ -17,8 +16,8 @@ namespace PO
         const int ID_LENGTH = 9;
         const int MIN_LATITUDE = -90;
         const int MAX_LATITUDE = 90;
-        const int MIN_LONGITUDE = -180;
-        const int MAX_LONGITUDE = 180;
+        const int MIN_LONGITUDE = 0;
+        const int MAX_LONGITUDE = 90;
 
         private int? _id;
 
@@ -60,14 +59,28 @@ namespace PO
         }
 
         private string _phone;
+        private string _cidomet;
 
-        public string Phone
+        public string Cidomet
         {
-            get => _phone;
+            get => _cidomet;
 
             set
             {
-                Set(ref _phone, value);
+                Set(ref _cidomet, value);
+                //validityMessages["Phone"] = PhoneMessage(value);
+            }
+        }
+
+
+
+        public string Phone
+        {
+            get => _cidomet+_phone;
+
+            set
+            {
+                Set(ref _phone,value);
                 validityMessages["Phone"] = PhoneMessage(value);
             }
         }
@@ -136,11 +149,11 @@ namespace PO
 
         private Dictionary<string, string> validityMessages = new Dictionary<string, string>()
         {
-            ["Id"] = " ",
-            ["Name"] = " ",
-            ["Phone"] = " ",
-            ["Longitude"] = " ",
-            ["Latitude"] = " "
+            ["Id"] = string.Empty,
+            ["Name"] = string.Empty,
+            ["Phone"] = string.Empty,
+            ["Longitude"] = string.Empty,
+            ["Latitude"] = string.Empty
         }; 
     }
 }

@@ -74,8 +74,8 @@ namespace BL
             // battery Status:
             Location destination = GetCustomer(parcel.GetterId).Location;
             Location nearestDestinationStation = ClosestStation(destination).Location;
-            double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, destination), (WeightCategories)parcel.Weight) +
-                MinBattery(CalculateDistance(destination, nearestDestinationStation));
+            double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, destination), 
+                (WeightCategories)parcel.Weight) + MinBattery(CalculateDistance(destination, nearestDestinationStation));
             nDrone.BatteryStatus = RandBetweenRange(minBattry, 100);
 
             nDrone.DeliveredParcelId = parcel.Id;
@@ -228,7 +228,7 @@ namespace BL
                 throw new BO.InValidActionException("The drone has no enough battery in order to get to the closest charging station");
             }
 
-            drone.BatteryStatus = minBattery;
+            drone.BatteryStatus -= minBattery;
             drone.CurrLocation = closetdStation.Location;
             drone.DStatus = DroneStatus.Maintenance;
             //--closetBaseStation.NumAvailablePositions;

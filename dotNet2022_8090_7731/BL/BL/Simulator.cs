@@ -131,6 +131,21 @@ namespace BL
                     break;
 
                 case Maintenance.GoingTowardStation:
+                    if (distance < 0.01)
+                        lock (bl)
+                        {
+                            drone.CurrLocation = station.Location;
+                            maintenance = Maintenance.Charging;
+                        }
+                    else
+                    {
+                        if (!SleepDelayTime()) break;
+                        lock (bl)
+                        {
+                            double delta = distance < STEP ? distance : STEP;
+                            distance -= delta;
+                            //drone.Battery = Max(0.0, drone.Battery - delta * bl.BatteryUsages[DRONE_FREE]);
+                        }
                     //lock (bl)
                     {
                         while (distance > 0.01 && !checkStop())

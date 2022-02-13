@@ -10,6 +10,8 @@ namespace PL.ViewModels
 {
     public class AddCustomerViewModel
     {
+        public List<string> PhoneOptions { get; set; }
+        public string cidomet { get; set; }
         BlApi.IBL bl;
         Action<BO.Customer> switchView;
         public CustomerToAdd Customer { get; set; }
@@ -22,6 +24,7 @@ namespace PL.ViewModels
             this.switchView = switchView;
             AddCustomerCommand = new RelayCommand<object>(AddCustomer, param => Customer.Error == "");
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
+            PhoneOptions = new List<string>() {"052","050","054","058","053" ,"055","056"};
         }
 
         private void AddCustomer(object obj)
@@ -45,7 +48,7 @@ namespace PL.ViewModels
 
         private BO.Customer MapCustomerFromPOToBO(CustomerToAdd customer)
         {
-            return new BO.Customer((int)customer.Id, customer.Name, customer.Phone,
+            return new BO.Customer((int)customer.Id, customer.Name,customer.Cidomet+customer.Phone,
                 new BO.Location((double)customer.Longitude, (double)customer.Latitude));
         }
     }

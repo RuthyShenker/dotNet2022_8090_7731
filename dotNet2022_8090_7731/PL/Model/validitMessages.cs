@@ -73,7 +73,7 @@ namespace PO
                         "Field is required" : 
                 !value.All(d => char.IsDigit(d)) ?  
                         "Input must contain digits only" :
-                 value.Length != 10 ?
+                 value.Length != 7?
                         "Phone must contain 10 digits" :
                     "";
             //return value switch
