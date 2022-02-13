@@ -180,7 +180,7 @@ namespace BL
         /// <returns>returns ParcelInTransfer object.</returns>
         private ParcelInTransfer CalculateParcelInTransfer(int droneId)
         {
-            var belongedParcel = dal.GetFromDalByCondition<DO.Parcel>(parcel => parcel.DroneId == droneId);
+            DO.Parcel belongedParcel = dal.GetFromDalByCondition<DO.Parcel>(parcel => parcel.DroneId == droneId);
             if (belongedParcel.Equals(default(DO.Parcel)))
             {
                 return null;

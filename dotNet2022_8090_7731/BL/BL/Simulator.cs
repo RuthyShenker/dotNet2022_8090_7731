@@ -22,9 +22,11 @@ namespace BL
         private BL bl;
         Action updateView;
         Func<bool> checkStop;
-        int parcelId;
+        DO.Parcel parcel;
         int stationId;
+        Station station;
         DalApi.IDal dal;
+        double distance;
         public enum Maintenance { Assigning, GoingTowardStation, Charging };
 
         public Simulator(BL blInstance, int droneId, Action updateViewAction, Func<bool> checkStopFunc)
@@ -40,7 +42,7 @@ namespace BL
                 switch (drone.DroneStatus)
                 {
                     case DroneStatus.Free:
-                        TryAssumingParcel(droneId);
+                        TryAssumingParcel(drone);
                         break;
                     case DroneStatus.Maintenance:
                         CompleteCharging(drone);
@@ -56,38 +58,21 @@ namespace BL
 
         private void TryAssumingParcel(Drone drone)
         {
-            ////    if (!SleepDelayTime())
-            ////        break;
-
-            //lock (bl)
-            //{
-            //    bl.BelongingParcel(drone.Id);
-
-            //    // כאשר אין באפשרות הרחפן לקחת חבילה
-            //    bl.SendingDroneToCharge(droneId);
-
-
-
-
-
-
-            //}
-
-            if (!SleepDelayTime()) break;
+            if (!SleepDelayTime()) return;
 
             lock (bl)
             {
                 var optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation);
                 if (optionalParcels.Any())
                 {
-                    var parcelId = optionalParcels.First().Id;
+                    var parcel = optionalParcels.First();
 
-                    switch (parcelId, drone.BatteryStatus)
+                    switch (parcel.Id, drone.BatteryStatus)
                     {
-
                         // if there is no parcel to assign and drone's battery is full.  
                         case (0, 1.0):
                             break;
+
                         // if the is no parcel to assign and the the drone's battery is not full.
                         case (0, _):
                             var station = bl.ClosestStation(drone.CurrLocation, true);
@@ -101,56 +86,86 @@ namespace BL
                                 dal.Add(new DO.ChargingDrone(drone.Id, stationId, DateTime.Now));
                             }
                             break;
+
                         // if there is parcel to assign and there is enough battery.
                         case (_, _):
-                            try
-                            {
-                                dal.Update<DO.Parcel>(parcelId, DateTime.Now, nameof(DO.Parcel.BelongParcel));
-                                dal.Update<DO.Parcel>(parcelId, drone.Id, nameof(DO.Parcel.DroneId));
-                                var requiredDrone= bl.lDroneToList.Find(d => d.Id == drone.Id);
-                                requiredDrone.DeliveredParcelId = parcelId;
-                                initDelivery((int)parcelId);
-                                requiredDrone.DStatus = DroneStatus.Delivery;
-                            }
-                            catch (DO.ExistIdException ex) { throw new BadStatusException("Internal error getting parcel", ex); }
+                            drone.DroneStatus = DroneStatus.Delivery;
+
+                            dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(DO.Parcel.BelongParcel));
+                            dal.Update<DO.Parcel>(parcel.Id, drone.Id, nameof(DO.Parcel.DroneId));
                             break;
+
+                        default:
                     }
+
                 }
             }
-            break;
-
-
-
-
-
         }
+
+        //var sender =bl.GetCustomer(parcel.SenderId);
+        //var getter = bl.GetCustomer(parcel.GetterId);
+        //drone.PInTransfer = new ParcelInTransfer()
+        //{
+        //    PId = parcel.Id,
+        //    MPriority = (Priority)parcel.MPriority,
+        //    Weight = (WeightCategories)parcel.Weight,
+        //    Sender = new() { Id = sender.Id, Name = sender.Name },
+        //    Getter = new() { Id = getter.Id, Name = getter.Name },
+        //    TransDistance = Extensions.CalculateDistance(sender.Location, getter.Location),
+        //    CollectionLocation = sender.Location,
+        //    DeliveryLocation = getter.Location,
+        //    IsInWay = false
+        //};
         private void CompleteCharging(Drone drone)
         {
             switch (maintenance)
             {
+                //TODO what happens when there is no available station
                 case Maintenance.Assigning:
-                    Station station = bl.ClosestStation(drone.CurrLocation, true);
+                    station = bl.ClosestStation(drone.CurrLocation, true);
+                    distance = Extensions.CalculateDistance(drone.CurrLocation, station.Location);
+                    maintenance = Maintenance.GoingTowardStation;
                     break;
+
                 case Maintenance.GoingTowardStation:
+                    if (distance < 0.01)
+                        lock (bl)
+                        {
+                            drone.CurrLocation = station.Location;
+                            maintenance = Maintenance.Charging;
+                        }
+                    else
+                    {
+                        if (!SleepDelayTime()) break;
+                        lock (bl)
+                        {
+                            double delta = distance < STEP ? distance : STEP;
+                            distance -= delta;
+                            drone.Battery = Max(0.0, drone.Battery - delta * bl.BatteryUsages[DRONE_FREE]);
+                        }
+                    }
+                    break;
+
                     break;
                 case Maintenance.Charging:
+                    while (drone.BatteryStatus < 1.0 && !checkStop())
+                    {
+                        if (!SleepDelayTime()) break;
+                        //lock (bl) למה בפרויקט לדוג עשו כאן?
+                        {
+                            drone.BatteryStatus = Math.Min(1.0, drone.BatteryStatus + chargingRate * TIME_STEP);
+                            updateView();
+                        }
+                    }
+                    if (drone.BatteryStatus >= 1.0)
+                    {
+                        drone.DroneStatus = DroneStatus.Free;
+                    }
                     break;
                 default:
                     break;
             }
-            while (drone.BatteryStatus < 1.0 && !checkStop())
-            {
-                if (!SleepDelayTime()) break;
-                //lock (bl) למה בפרויקט לדוג עשו כאן?
-                {
-                    drone.BatteryStatus = Math.Min(1.0, drone.BatteryStatus + chargingRate * TIME_STEP);
-                    updateView();
-                }
-            }
-            if (drone.BatteryStatus >= 1.0)
-            {
-                drone.DroneStatus = DroneStatus.Free;
-            }
+            
         }
 
         private void CompleteDelivery(int droneId)
