@@ -25,8 +25,10 @@ namespace BL
         DO.Parcel parcel;
         int stationId;
         Station station;
+        Customer customer;
         DalApi.IDal dal;
         double distance;
+        bool pickedUp;
         public enum Maintenance { Assigning, GoingTowardStation, Charging };
 
         public Simulator(BL blInstance, int droneId, Action updateViewAction, Func<bool> checkStopFunc)
@@ -48,7 +50,7 @@ namespace BL
                         CompleteCharging(drone);
                         break;
                     case DroneStatus.Delivery:
-                        CompleteDelivery(droneId);
+                        CompleteDelivery(drone);
                         break;
                     default:
                         break;
@@ -75,7 +77,7 @@ namespace BL
 
                         // if the is no parcel to assign and the the drone's battery is not full.
                         case (0, _):
-                            var station = bl.ClosestStation(drone.CurrLocation, true);
+                            station = bl.ClosestStation(drone.CurrLocation, true);
                             stationId = station.Id;
 
                             if (stationId != default)
@@ -89,6 +91,7 @@ namespace BL
 
                         // if there is parcel to assign and there is enough battery.
                         case (_, _):
+                            init(parcel.Id);
                             drone.DroneStatus = DroneStatus.Delivery;
 
                             dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(DO.Parcel.BelongParcel));
@@ -128,25 +131,25 @@ namespace BL
                     break;
 
                 case Maintenance.GoingTowardStation:
-                    if (distance < 0.01)
-                        lock (bl)
-                        {
-                            drone.CurrLocation = station.Location;
-                            maintenance = Maintenance.Charging;
-                        }
-                    else
+                    //lock (bl)
                     {
-                        if (!SleepDelayTime()) break;
-                        lock (bl)
+                        while (distance > 0.01 && !checkStop())
                         {
+                            if (!SleepDelayTime()) break;
                             double delta = distance < STEP ? distance : STEP;
                             distance -= delta;
-                            drone.Battery = Max(0.0, drone.Battery - delta * bl.BatteryUsages[DRONE_FREE]);
+                            drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * bl.BatteryUsages[DRONE_FREE]);
+                            updateView();
                         }
+                        if (distance <= 0.01)
+                            lock (bl)
+                            {
+                                drone.CurrLocation = station.Location;
+                                maintenance = Maintenance.Charging;
+                            }
                     }
                     break;
 
-                    break;
                 case Maintenance.Charging:
                     while (drone.BatteryStatus < 1.0 && !checkStop())
                     {
@@ -165,12 +168,55 @@ namespace BL
                 default:
                     break;
             }
-            
         }
 
-        private void CompleteDelivery(int droneId)
+        private void init(int parcelId)
         {
-            throw new NotImplementedException();
+            parcel = dal.GetFromDalById<DO.Parcel>(parcelId);
+            pickedUp = parcel.PickingUp.HasValue;
+            customer = bl.GetCustomer(pickedUp ? parcel.GetterId : parcel.SenderId);
+
+            batteryUsage = (int)Enum.Parse(typeof(BatteryUsage), parcel?.Weight.ToString());
+        }
+
+        private void CompleteDelivery(Drone drone)
+        {
+            lock (bl)
+            {
+                if (parcel.Equals(default)) init(drone.PInTransfer.PId); 
+                distance = Extensions.CalculateDistance(drone.CurrLocation, customer.Location);
+            }
+
+            if (distance < 0.01 || drone.BatteryStatus == 0.0)
+                lock (bl)
+                {
+                    drone.CurrLocation = customer.Location;
+                    if (pickedUp)
+                    {
+                        dal.ParcelDelivery((int)parcel?.Id);
+                        drone.Status = DroneStatuses.Available;
+                    }
+                    else
+                    {
+                        dal.ParcelPickup((int)parcel?.Id);
+                        customer = bl.GetCustomer((int)parcel?.TargetId);
+                        pickedUp = true;
+                    }
+                }
+            else
+            {
+                if (!sleepDelayTime()) break;
+                lock (bl)
+                {
+                    double delta = distance < STEP ? distance : STEP;
+                    double proportion = delta / distance;
+                    drone.Battery = Max(0.0, drone.Battery - delta * bl.BatteryUsages[pickedUp ? batteryUsage : DRONE_FREE]);
+                    double lat = drone.Location.Latitude + (customer.Location.Latitude - drone.Location.Latitude) * proportion;
+                    double lon = drone.Location.Longitude + (customer.Location.Longitude - drone.Location.Longitude) * proportion;
+                    drone.Location = new() { Latitude = lat, Longitude = lon };
+                }
+            }
+            break;
         }
 
         private static bool SleepDelayTime()
