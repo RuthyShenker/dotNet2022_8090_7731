@@ -101,10 +101,15 @@ namespace BL
         // return the station with the closest location to the gotten location
         // if sending to charge is true- return the station with the closest location which is has free slots to charge in,
         // otherwise the first station in the list.
-        private Station ClosestStation(Location location, bool sendingToCharge = false)
+        internal Station ClosestStation(Location location, bool sendingToCharge = false)
         {
             var cCoord = new GeoCoordinate(location.Latitude, location.Longitude);
             var stationDalList = dal.GetListFromDal<DO.BaseStation>();
+            // TODO catch when the list is empty
+            
+            var droneCoord = new GeoCoordinate(location.Latitude, location.Longitude);
+            var sortedList = stationDalList.OrderBy(station => new GeoCoordinate(station.Latitude, station.Longitude).GetDistanceTo(droneCoord));
+
             GeoCoordinate sCoord;
             double currDistance, minDistance = double.MaxValue;
             DO.BaseStation closetStation = stationDalList.ElementAt(0);

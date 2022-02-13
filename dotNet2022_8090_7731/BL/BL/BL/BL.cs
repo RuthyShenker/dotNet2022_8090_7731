@@ -14,7 +14,7 @@ namespace BL
 {
     internal sealed partial class BL : Singleton<BL>, BlApi.IBL
     {
-        DalApi.IDal dal;
+        internal DalApi.IDal dal= DalApi.DalFactory.GetDal();
         List<DroneToList> lDroneToList;
         Random rand;
         static double powerConsumptionFree;
@@ -24,8 +24,8 @@ namespace BL
         /// <summary>
         /// Charging rate per hour
         /// </summary>
-        static double chargingRate;
-
+        //static double chargingRate; שינית לinternal צריך גם בsimulator
+        internal static double chargingRate { get; set; }
         private BL()
         {
             rand = new Random();
