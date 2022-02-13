@@ -28,7 +28,7 @@ namespace PO
             {
                 null => "Field is required",
                 string => "Input must contain digits only",
-                > 100 or < 0 => "Input must be ",
+                > 100 or < 0 => "Input must be between 0 - 100",
                 _ => "",
             };
         }
