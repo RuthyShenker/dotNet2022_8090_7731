@@ -21,6 +21,18 @@ namespace PO
                 _ => "",
             };
         }
+        public static string numPositionsMessage(object value, int length = 0)
+        {
+            int maxLength = (int)Math.Pow(10, length);
+            return value switch
+            {
+                null => "Field is required",
+                string => "Input must contain digits only",
+                > 100 or < 0 => "Input must be ",
+                _ => "",
+            };
+        }
+        
 
         public static string IdCustomerMessage(object value)
         {
@@ -77,8 +89,9 @@ namespace PO
 
         public static string LocationMessage(object value, int min = 0, int max = 0)
         {
+            //problem:!!!
             return value == null ? "Field is required" :
-                !Regex.IsMatch(value.ToString(), @"^[0-9]+$") ? "Input must contain digits only" :
+                !Regex.IsMatch(value.ToString(), @"^(\-*\s*[0-9]+\.[0-9]+)$") ? "Input must contain digits only" :
                 (double)value > max ? $"Max value is {max}" :
                 (double)value < min ? $"Min value is {min}" :
                 "";

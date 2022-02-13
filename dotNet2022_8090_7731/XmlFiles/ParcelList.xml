@@ -24,4 +24,16 @@
     <PickingUp xsi:nil="true" />
     <Arrival xsi:nil="true" />
   </Parcel>
+  <Parcel>
+    <Id>3</Id>
+    <SenderId>654398765</SenderId>
+    <GetterId>357637335</GetterId>
+    <Weight>Heavy</Weight>
+    <MPriority>Fast</MPriority>
+    <DroneId xsi:nil="true" />
+    <CreatedTime>2022-02-13T15:52:07.14369+02:00</CreatedTime>
+    <BelongParcel xsi:nil="true" />
+    <PickingUp xsi:nil="true" />
+    <Arrival xsi:nil="true" />
+  </Parcel>
 </ArrayOfParcel>

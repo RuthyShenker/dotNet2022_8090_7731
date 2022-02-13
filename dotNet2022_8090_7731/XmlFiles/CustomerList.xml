@@ -14,4 +14,11 @@
     <Longitude>35</Longitude>
     <Latitude>84</Latitude>
   </Customer>
+  <Customer>
+    <Id>357637335</Id>
+    <Name>fdhg</Name>
+    <Phone>5756346227</Phone>
+    <Longitude>36</Longitude>
+    <Latitude>63</Latitude>
+  </Customer>
 </ArrayOfCustomer>

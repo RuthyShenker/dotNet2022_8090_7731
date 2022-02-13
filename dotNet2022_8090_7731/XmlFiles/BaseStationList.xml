@@ -1,13 +1,6 @@
 <?xml version="1.0"?>
 <ArrayOfBaseStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <BaseStation>
-    <Id>1234</Id>
-    <NameStation>station</NameStation>
-    <NumberOfChargingPositions>9999</NumberOfChargingPositions>
-    <Longitude>1</Longitude>
-    <Latitude>3</Latitude>
-  </BaseStation>
-  <BaseStation>
     <Id>6543</Id>
     <NameStation>ccc</NameStation>
     <NumberOfChargingPositions>3131</NumberOfChargingPositions>
@@ -22,17 +15,24 @@
     <Latitude>45</Latitude>
   </BaseStation>
   <BaseStation>
-    <Id>8765</Id>
-    <NameStation>wer</NameStation>
-    <NumberOfChargingPositions>9646</NumberOfChargingPositions>
-    <Longitude>74</Longitude>
-    <Latitude>76</Latitude>
-  </BaseStation>
-  <BaseStation>
     <Id>9999</Id>
     <NameStation>ruti</NameStation>
     <NumberOfChargingPositions>9999</NumberOfChargingPositions>
     <Longitude>99</Longitude>
     <Latitude>89</Latitude>
+  </BaseStation>
+  <BaseStation>
+    <Id>1234</Id>
+    <NameStation>tttt</NameStation>
+    <NumberOfChargingPositions>9988</NumberOfChargingPositions>
+    <Longitude>1</Longitude>
+    <Latitude>3</Latitude>
+  </BaseStation>
+  <BaseStation>
+    <Id>8765</Id>
+    <NameStation>yyy</NameStation>
+    <NumberOfChargingPositions>9641</NumberOfChargingPositions>
+    <Longitude>74</Longitude>
+    <Latitude>76</Latitude>
   </BaseStation>
 </ArrayOfBaseStation>

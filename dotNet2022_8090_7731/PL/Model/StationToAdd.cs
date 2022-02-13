@@ -54,8 +54,8 @@ namespace PO
         }
 
         private double? _longitude;
-        const int MIN_LONGITUDE = -180;
-        const int MAX_LONGITUDE = 180;
+        const int MIN_LONGITUDE = 0;
+        const int MAX_LONGITUDE = 90;
         public object Longitude
         {
             get => _longitude == null ? null : _longitude;
@@ -115,16 +115,16 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _numPositions, null);
-                    validityMessages["NumPositions"] = IdMessage(_numPositions);
+                    validityMessages["NumPositions"] = numPositionsMessage(_numPositions);
                 }
                 else if (valid)
                 {
                     Set(ref _numPositions, Convert.ToInt32(value));
-                    validityMessages["NumPositions"] = IdMessage(_numPositions);
+                    validityMessages["NumPositions"] = numPositionsMessage(_numPositions);
                 }
                 else
                 {
-                    validityMessages["NumPositions"] = IdMessage("invalid input");
+                    validityMessages["NumPositions"] = numPositionsMessage("invalid input");
                 }
             }
 
