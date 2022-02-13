@@ -38,6 +38,33 @@
         
         <!--, Mode=TwoWay ,IsAsync=True-->
         <ListView x:Name="StationList" ItemsSource="{Binding StationList}" >
+
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding Id}"
+        Header="Id" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding Name}"
+        Header="Name" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding Phone}"
+        Header="Phone" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding SentSupplied}"
+        Header="SentSupplied" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding SentNotSupplied}"
+        Header="SentNotSupplied" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding Got}"
+        Header="Got" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding InWayToCustomer}"
+        Header="InWayToCustomer" />
+                </GridView>
+            </ListView.View>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 
