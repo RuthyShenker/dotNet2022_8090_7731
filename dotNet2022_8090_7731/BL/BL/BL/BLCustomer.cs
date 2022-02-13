@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BO;
+using System.Runtime.CompilerServices;
 
 namespace BL
 {
@@ -22,7 +23,15 @@ namespace BL
         {
             var PStatus = GetParcelStatus(parcel);
             var OnTheOtherHand = NewCustomerInParcel(Id);
-            return new ParcelInCustomer(parcel.Id, (WeightCategories)parcel.Weight, (Priority)parcel.MPriority, PStatus, OnTheOtherHand);
+
+            return new ParcelInCustomer()
+            {
+                Id = parcel.Id,
+                Weight = (WeightCategories)parcel.Weight,
+                MPriority = (Priority)parcel.MPriority,
+                PStatus = PStatus,
+                OnTheOtherHand = OnTheOtherHand
+            };
         }
 
         /// <summary>
@@ -38,7 +47,11 @@ namespace BL
             try
             {
                 string name = dal.GetFromDalById<DO.Customer>(Id).Name;
-                return new CustomerInParcel(Id, name);
+                return new CustomerInParcel()
+                {
+                    Id = Id,
+                    Name = name
+                };
             }
             catch (DO.IdIsNotExistException)
             {
@@ -53,18 +66,21 @@ namespace BL
         private IEnumerable<Customer> CustomersWithProvidedParcels()
         {
             DO.Customer customer;
-            var wantedCustomersList = Enumerable.Empty<Customer>();
-            var customersDalList = dal.GetListFromDal<DO.Customer>();
-            var parcelsDalList = dal.GetListFromDal<DO.Parcel>();
-            foreach (var parcel in parcelsDalList)
+            var reqiredCustomersList = Enumerable.Empty<Customer>();
+            lock (dal)
             {
-                if (parcel.Arrival.HasValue)
+                var customersDalList = dal.GetListFromDal<DO.Customer>();
+                var parcelsDalList = dal.GetListFromDal<DO.Parcel>();
+                foreach (var parcel in parcelsDalList)
                 {
-                    customer = customersDalList.First(customer => customer.Id == parcel.GetterId);
-                    wantedCustomersList = wantedCustomersList.Append(ConvertToBL(customer));
+                    if (parcel.Arrival.HasValue)
+                    {
+                        customer = customersDalList.First(customer => customer.Id == parcel.GetterId);
+                        reqiredCustomersList = reqiredCustomersList.Append(ConvertToBL(customer));
+                    }
                 }
             }
-            return wantedCustomersList;
+            return reqiredCustomersList;
         }
 
         /// <summary>
@@ -72,16 +88,26 @@ namespace BL
         /// function doesn't return anything.
         /// </summary>
         /// <param name="bLCustomer"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public int AddCustomer(Customer bLCustomer)
         {
-            if (dal.IsIdExistInList<DO.Customer>(bLCustomer.Id))
+            lock (dal)
             {
-                throw new IdIsAlreadyExistException(typeof(Customer), bLCustomer.Id);
-            }
+                if (dal.IsIdExistInList<DO.Customer>(bLCustomer.Id))
+                {
+                    throw new IdIsAlreadyExistException(typeof(Customer), bLCustomer.Id);
+                }
 
-            var newCustomer = new DO.Customer(bLCustomer.Id, bLCustomer.Name,
-            bLCustomer.Phone, bLCustomer.Location.Longitude, bLCustomer.Location.Latitude);
-            dal.Add(newCustomer);
+                var newCustomer = new DO.Customer()
+                {
+                    Id = bLCustomer.Id,
+                    Name = bLCustomer.Name,
+                    Phone = bLCustomer.Phone,
+                    Longitude = bLCustomer.Location.Longitude,
+                    Latitude = bLCustomer.Location.Latitude
+                };
+                dal.Add(newCustomer);
+            }
             return bLCustomer.Id;
         }
 
@@ -94,19 +120,23 @@ namespace BL
         /// <param name="customerId"></param>
         /// <param name="newName"></param>
         /// <param name="newPhone"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdatingCustomerDetails(int customerId, string newName, string newPhone)
         {
             try
             {
-                DO.Customer customer = dal.GetFromDalById<DO.Customer>(customerId);
+                lock (dal)
+                {
+                    DO.Customer customer = dal.GetFromDalById<DO.Customer>(customerId);
 
-                if (!string.IsNullOrEmpty(newName))
-                {
-                    dal.Update<DO.Customer>(customerId, newName, nameof(customer.Name));
-                }
-                if (!string.IsNullOrEmpty(newPhone))
-                {
-                    dal.Update<DO.Customer>(customerId, newPhone, nameof(customer.Phone));
+                    if (!string.IsNullOrEmpty(newName))
+                    {
+                        dal.Update<DO.Customer>(customerId, newName, nameof(customer.Name));
+                    }
+                    if (!string.IsNullOrEmpty(newPhone))
+                    {
+                        dal.Update<DO.Customer>(customerId, newPhone, nameof(customer.Phone));
+                    }
                 }
             }
             catch (DO.IdIsNotExistException)
@@ -115,6 +145,7 @@ namespace BL
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<CustomerToList> GetCustomers()
         {
             return dal.GetListFromDal<DO.Customer>()
@@ -129,39 +160,48 @@ namespace BL
         /// <returns>returns CustomerToList object </returns>
         private CustomerToList ConvertToList(DO.Customer customer)
         {
-            CustomerToList nCustomer = new(customer.Id, customer.Name, customer.Phone);
-            var dParcelslist = dal.GetListFromDal<DO.Parcel>();
-            foreach (var parcel in dParcelslist)
+            CustomerToList nCustomer = new()
             {
-                if (parcel.SenderId == nCustomer.Id)
-                {
-                    switch (GetParcelStatus(parcel))
-                    {
-                        case ParcelStatus.InDestination:
-                            ++nCustomer.SentSupplied;
-                            break;
-                        default:
-                            ++nCustomer.SentNotSupplied;
-                            break;
-                    }
-                }
-                else if (parcel.GetterId == nCustomer.Id)
-                {
-                    switch (GetParcelStatus(parcel))
-                    {
-                        case ParcelStatus.InDestination:
-                            ++nCustomer.Got;
-                            break;
-                        default:
-                            ++nCustomer.InWayToCustomer;
-                            break;
-                    }
+                Id = customer.Id,
+                Name = customer.Name,
+                Phone = customer.Phone
+            };
 
+            lock (dal)
+            {
+                var dParcelslist = dal.GetListFromDal<DO.Parcel>();
+                foreach (var parcel in dParcelslist)
+                {
+                    if (parcel.SenderId == nCustomer.Id)
+                    {
+                        switch (GetParcelStatus(parcel))
+                        {
+                            case ParcelStatus.InDestination:
+                                ++nCustomer.SentSupplied;
+                                break;
+                            default:
+                                ++nCustomer.SentNotSupplied;
+                                break;
+                        }
+                    }
+                    else if (parcel.GetterId == nCustomer.Id)
+                    {
+                        switch (GetParcelStatus(parcel))
+                        {
+                            case ParcelStatus.InDestination:
+                                ++nCustomer.Got;
+                                break;
+                            default:
+                                ++nCustomer.InWayToCustomer;
+                                break;
+                        }
+                    }
                 }
             }
             return nCustomer;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomer(int customerId)
         {
             try
@@ -174,6 +214,8 @@ namespace BL
                 throw new IdIsNotExistException(typeof(Customer), customerId);
             }
         }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public string DeleteCustomer(int customerId)
         {
             try
@@ -195,24 +237,37 @@ namespace BL
         /// <returns>returns Customer object </returns>
         private Customer ConvertToBL(DO.Customer customer)
         {
-            var nLocation = new Location(customer.Longitude, customer.Latitude);
-            Customer nCustomer = new Customer(customer.Id, customer.Name, customer.Phone, nLocation);
+            Customer nCustomer = new()
+            {
+                Id = customer.Id,
+                Name = customer.Name,
+                Phone = customer.Phone,
+                Location = new Location()
+                {
+                    Longitude = customer.Longitude,
+                    Latitude = customer.Latitude
+                }
+            };
+
             ParcelInCustomer parcelInCustomer;
-            var dParcelslist = dal.GetListFromDal<DO.Parcel>();
             var lFromCustomer = new List<ParcelInCustomer>();
             var lForCustomer = new List<ParcelInCustomer>();
 
-            foreach (var parcel in dParcelslist)
+            lock (dal)
             {
-                if (parcel.SenderId == nCustomer.Id)
+                var dParcelslist = dal.GetListFromDal<DO.Parcel>();
+                foreach (var parcel in dParcelslist)
                 {
-                    parcelInCustomer = CopyCommon(parcel, parcel.GetterId);
-                    lFromCustomer.Add(parcelInCustomer);
-                }
-                else if (parcel.GetterId == nCustomer.Id)
-                {
-                    parcelInCustomer = CopyCommon(parcel, parcel.SenderId);
-                    lForCustomer.Add(parcelInCustomer);
+                    if (parcel.SenderId == nCustomer.Id)
+                    {
+                        parcelInCustomer = CopyCommon(parcel, parcel.GetterId);
+                        lFromCustomer.Add(parcelInCustomer);
+                    }
+                    else if (parcel.GetterId == nCustomer.Id)
+                    {
+                        parcelInCustomer = CopyCommon(parcel, parcel.SenderId);
+                        lForCustomer.Add(parcelInCustomer);
+                    }
                 }
             }
             nCustomer.LFromCustomer = lFromCustomer;

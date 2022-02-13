@@ -16,5 +16,7 @@ namespace BlApi
         IEnumerable<DroneToList> GetDrones(Func<DroneToList, bool> predicate = null);
         Drone GetDrone(int droneId);
         bool IsDroneExist(int id);
+        void StartSimulator(int droneId, Action updateView, Func<bool> checkStop);
+
     }
 }

@@ -5,6 +5,8 @@ using System.Reflection;
 using DO;
 using Singleton;
 using static Dal.DataSource.Config;
+using System.Runtime.CompilerServices;
+
 namespace Dal
 {
     /// <summary>
@@ -40,11 +42,13 @@ namespace Dal
             DataSource.Initialize();
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public bool IsIdExistInList<T>(int Id) where T : IIdentifiable, IDalObject
         {
             return ((List<T>)DataSource.Data[typeof(T)]).Any(item => item.Id == Id);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public T GetFromDalById<T>(int Id) where T : IDalObject, IIdentifiable
         {
             var item = GetFromDalByCondition<T>(item => item.Id == Id);
@@ -55,16 +59,19 @@ namespace Dal
                 return item;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IDalObject
         {
             return ((List<T>)DataSource.Data[typeof(T)]).FirstOrDefault(item => predicate(item));
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalObject
         {
             return ((List<T>)DataSource.Data[typeof(T)]).FindAll(predicate).ToList();
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<T> GetListFromDal<T>() where T : IDalObject
         {
             return ((List<T>)DataSource.Data[typeof(T)]).ToList();
@@ -74,6 +81,7 @@ namespace Dal
         //{
         //    return list.Find(predicate).Equals(default(T));
         //}
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Add<T>(T item) where T : IDalObject
         {
             Type type = typeof(T);
@@ -84,6 +92,7 @@ namespace Dal
             ((List<T>)DataSource.Data[typeof(T)]).Add(item);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
         {
             Type type = typeof(T);
@@ -104,6 +113,7 @@ namespace Dal
             DataSource.Data[type].Add(oldItem);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Remove<T>(T item) where T : IDalObject
         {
             if (DoesExistInList(item))
@@ -117,11 +127,13 @@ namespace Dal
             return ((List<T>)DataSource.Data[typeof(T)]).Any(i => i.Equals(item));
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public int GetIndexParcel()
         {
             return ++DataSource.Config.IndexParcel;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public (double, double, double, double, double) PowerConsumptionRequest()
         {
             return (Available, LightWeight, MediumWeight, HeavyWeight, ChargingRate);

@@ -24,6 +24,10 @@ namespace BO
             Id = id;
             Name = name;
         }
+        public CustomerInParcel()
+        {
+
+        }
         /// <summary>
         /// this field is init.
         /// </summary>

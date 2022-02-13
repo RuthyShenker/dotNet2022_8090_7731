@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace BL
 {
@@ -14,6 +15,7 @@ namespace BL
         /// doesn't return anything.
         /// </summary>
         /// <param name="parcel"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public int AddingParcel(Parcel parcel)
         {
             DO.Customer sender;
@@ -58,11 +60,48 @@ namespace BL
         }
 
         /// <summary>
+        /// A function that gets an id of drone and belonging to it a parcel.
+        /// </summary>
+        /// <param name="dId"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void BelongingParcel(int dId)
+        {
+            DroneToList droneToList = FindDroneInList(dId);
+            if (droneToList.DStatus != DroneStatus.Free)
+            {
+                string dStatus = droneToList.DStatus.ToString();
+                throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is {dStatus} ");
+            }
+            var optionParcels = dal.GetDalListByCondition<DO.Parcel>
+                (parcel => parcel.Weight <= (DO.WeightCategories)droneToList.Weight &&
+                droneToList.BatteryStatus >= MinBattery(GetDistance(droneToList.CurrLocation, parcel), (WeightCategories)parcel.Weight))
+                .OrderByDescending(parcel => parcel.MPriority)
+                .ThenByDescending(parcel => parcel.Weight)
+                .ThenBy(parcel => GetDistance(droneToList.CurrLocation, parcel));
+
+            var parcel = optionParcels.FirstOrDefault(parcel => parcel.BelongParcel.HasValue);
+            if (!optionParcels.Any() || parcel.Equals(default(DO.Parcel)))
+            {
+                if (!dal.GetListFromDal<DO.Parcel>().Any())
+                {
+                    throw new BO.ListIsEmptyException(typeof(DO.Parcel));
+                }
+                throw new ThereIsNoMatchObjectInListException(typeof(DO.Parcel), $"There is no match parcels to drone with id {dId} in");
+            }
+
+            droneToList.DStatus = DroneStatus.Delivery;
+
+            dal.Update<DO.Parcel>(parcel.Id, dId, nameof(parcel.DroneId));
+            dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.BelongParcel));
+        }
+
+        /// <summary>
         /// A function that gets an id of drone and
         /// causes the drone to pick up the parcel that 
         /// it needs to take to the destination,the function doesn't return anything.
         /// </summary>
         /// <param name="dId"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void PickingUpParcel(int dId)
         {
             var drone = FindDroneInList(dId);
@@ -106,6 +145,7 @@ namespace BL
         /// to the destination,the function doesn't return anything.
         /// </summary>
         /// <param name="dId"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeliveryPackage(int dId)
         {
             var drone = FindDroneInList(dId);
@@ -172,6 +212,7 @@ namespace BL
 
         //------Get-------------------------------------------------------
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<ParcelToList> GetParcels()
         {
             return dal.GetListFromDal<DO.Parcel>().Select(s => ConvertToList(s));
@@ -181,6 +222,7 @@ namespace BL
         /// A function that returns a list of unbelong parcels.
         /// </summary>
         /// <returns>returns a list of unbelong parcels.</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<ParcelToList> GetUnbelongParcels()
         {
             try
@@ -218,6 +260,7 @@ namespace BL
             return nParcel;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Parcel GetParcel(int parcelId)
         {
             try

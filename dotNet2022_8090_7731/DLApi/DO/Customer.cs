@@ -24,14 +24,14 @@ namespace DO
         /// <param name="phone"></param>
         /// <param name="longitude"></param>
         /// <param name="latitude"></param>
-        public Customer(int id, string name, string phone, double longitude, double latitude)
-        {
-            Id = id;
-            Name = name;
-            Phone = phone;
-            Longitude = longitude;
-            Latitude = latitude;
-        }
+        //public Customer(int id, string name, string phone, double longitude, double latitude)
+        //{
+        //    Id = id;
+        //    Name = name;
+        //    Phone = phone;
+        //    Longitude = longitude;
+        //    Latitude = latitude;
+        //}
         
         /// <summary>
         /// this field is init.

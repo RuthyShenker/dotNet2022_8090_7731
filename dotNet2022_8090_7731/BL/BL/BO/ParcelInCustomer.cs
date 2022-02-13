@@ -24,14 +24,14 @@ namespace BO
         /// <param name="mPriority"></param>
         /// <param name="pStatus"></param>
         /// <param name="onTheOtherHand"></param>
-        public ParcelInCustomer(int id, WeightCategories weight, Priority mPriority, ParcelStatus pStatus, CustomerInParcel onTheOtherHand)
-        {
-            Id = id;
-            Weight = weight;
-            MPriority = mPriority;
-            PStatus = pStatus;
-            OnTheOtherHand = onTheOtherHand;
-        }
+        //public ParcelInCustomer(int id, WeightCategories weight, Priority mPriority, ParcelStatus pStatus, CustomerInParcel onTheOtherHand)
+        //{
+        //    Id = id;
+        //    Weight = weight;
+        //    MPriority = mPriority;
+        //    PStatus = pStatus;
+        //    OnTheOtherHand = onTheOtherHand;
+        //}
         /// <summary>
         /// this field is init.
         /// </summary>
