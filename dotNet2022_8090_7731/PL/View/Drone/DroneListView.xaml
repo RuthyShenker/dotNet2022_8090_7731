@@ -24,7 +24,13 @@
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="BO:DroneStatus"/>
             </ObjectDataProvider.MethodParameters>
+        
+        
         </ObjectDataProvider>-->
+
+
+
+       
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -57,10 +63,49 @@
                   SelectedItem="{Binding GroupDrones}"
                   Grid.Column="4"/>
         </Grid>
-        <ListView x:Name="DroneList" Grid.Row="1" ItemsSource="{Binding DroneList}">
-            <!--<ListView.ItemTemplate>-->
-            <!--<DataTemplate>
-                    <ContentControl Content="{Binding }" />-->
+        <ListView x:Name="DroneList" Grid.Row="1" ItemsSource="{Binding DroneList}" >
+
+
+
+            
+
+
+<!--BatteryStatus
+DroneStatus
+PInTransfer
+CurrLocation-->
+
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding Id}"
+        Header="Id" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding Model}"
+        Header="Model" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding Weight}"
+        Header="Weight" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding BatteryStatus}"
+        Header="Battery Status" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding DStatus}"
+        Header="Drone Status" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding CurrLocation.Longitude}"
+        Header="Longitude" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding CurrLocation.Latitude}"
+        Header="Latitude" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding DeliveredParcelId }"
+        Header="Parcel Id" />
+                </GridView>
+                
+                
+            </ListView.View>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 

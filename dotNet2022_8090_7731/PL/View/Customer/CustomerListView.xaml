@@ -12,6 +12,40 @@
         <ListView x:Name="CustomerList" ItemsSource="{Binding CustomerList}">
             <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
             <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
+
+
+
+
+
+
+
+
+            <ListView.View>
+                    <GridView>
+                        <GridViewColumn
+        DisplayMemberBinding="{Binding Id}"
+        Header="Id" />
+                        <GridViewColumn
+        DisplayMemberBinding="{Binding Name}"
+        Header="Name" />
+                        <GridViewColumn
+        DisplayMemberBinding="{Binding Phone}"
+        Header="Phone" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding SentSupplied}"
+        Header="SentSupplied" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding SentNotSupplied}"
+        Header="SentNotSupplied" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding Got}"
+        Header="Got" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding InWayToCustomer}"
+        Header="InWayToCustomer" />
+                </GridView>
+                </ListView.View>
+           
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 
@@ -19,7 +53,7 @@
                         CommandParameter="{Binding ElementName=CustomerList, Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            <ListView.ItemTemplate>
+            <!--<ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -32,7 +66,7 @@
                                    Text="{Binding }"/>
                     </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
+            </ListView.ItemTemplate>-->
             <!--<i:Interaction.Behaviors>
                 <i:EventTriggerBehavior
              EventName="RightTapped">
