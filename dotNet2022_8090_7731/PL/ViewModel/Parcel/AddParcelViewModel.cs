@@ -13,12 +13,14 @@ namespace PL.ViewModels
         BlApi.IBL bl;
         Action refreshParcels;
         public List<int> IdOption { get; set; }
+        Action<BO.Parcel> switchView;
 
         public RelayCommand<object> AddParcelCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
 
-        public AddParcelViewModel(BlApi.IBL bl)
+        public AddParcelViewModel(BlApi.IBL bl, Action<BO.Parcel> switchView)
         {
+            this.switchView = switchView;
             Parcel = new();
             this.bl = bl;
             AddParcelCommand = new RelayCommand<object>(AddParcel, param => Parcel.Error == string.Empty);
@@ -34,6 +36,7 @@ namespace PL.ViewModels
                 bl.AddingParcel(parcel);
                 Refresh.Invoke();
                 MessageBox.Show("The Parcel Added Succeesfully!");
+                switchView(parcel);
             }
             catch (IdIsNotExistException exception)
             {

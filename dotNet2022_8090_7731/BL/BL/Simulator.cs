@@ -14,41 +14,41 @@ namespace BL
         // maybe good for calculate distances
         //  https://www.google.com/search?q=geography+location+and+calculate+distance+c%23&oq=geography+location+and+calculate+distance+c%23&aqs=chrome..69i57.22174j0j9&sourceid=chrome&ie=UTF-8
 
-        private const int DELAY = 500;
-        private const double VELOCITY = 1.0;
-        private const double TIME_STEP = DELAY / 1000.0;
-        private const double STEP = VELOCITY / TIME_STEP;
-        private Maintenance maintenance = Maintenance.Assigning;
-        private BL bl;
-        Action updateView;
-        Func<bool> checkStop;
-        DO.Parcel parcel;
-        int stationId;
-        Station station;
-        Customer customer;
-        DalApi.IDal dal;
-        double distance;
-        bool pickedUp;
-        double[] powerConsumption;
+        //private const int DELAY = 500;
+        //private const double VELOCITY = 1.0;
+        //private const double TIME_STEP = DELAY / 1000.0;
+        //private const double STEP = VELOCITY / TIME_STEP;
+        //private Maintenance maintenance = Maintenance.Assigning;
+        //private BL bl;
+        //Action updateView;
+        //Func<bool> checkStop;
+        //DO.Parcel parcel;
+        //int stationId;
+        //Station station;
+        //Customer customer;
+        //DalApi.IDal dal;
+        //double distance;
+        //bool pickedUp;
+        //double[] powerConsumption;
 
-        int droneFree = 0;
+        //int droneFree = 0;
          
         //        powerConsumptionFree,
         //        powerConsumptionLight,
         //        powerConsumptionMedium,
         //        powerConsumptionHeavy,
         //        chargingRate
-        public enum Maintenance { Assigning, GoingTowardStation, Charging };
+        //public enum Maintenance { Assigning, GoingTowardStation, Charging };
 
-        public Simulator(BL blInstance, int droneId, Action updateViewAction, Func<bool> checkStopFunc)
-        {
-            bl = blInstance;
-            dal = blInstance.dal;
-            powerConsumption= bl.GetPowerConsumption().ToArray();
+        //public Simulator(BL blInstance, int droneId, Action updateViewAction, Func<bool> checkStopFunc)
+        //{
+        //    bl = blInstance;
+        //    dal = blInstance.dal;
+        //    powerConsumption= bl.GetPowerConsumption().ToArray();
 
-            Drone drone = bl.GetDrone(droneId);
-            updateView = updateViewAction;
-            checkStop = checkStopFunc;
+        //    Drone drone = bl.GetDrone(droneId);
+        //    updateView = updateViewAction;
+        //    checkStop = checkStopFunc;
 
             do
             {
@@ -143,46 +143,75 @@ namespace BL
             distance = Extensions.CalculateDistance(drone.CurrLocation, station.Location);
             updateView();
 
-            // Going toward station
-            //lock (bl)
-            {
-                while (distance > 0.01 && !checkStop())
-                {
-                    if (!SleepDelayTime()) break;
-                    double delta = distance < STEP ? distance : STEP;
-                    distance -= delta;
-                    drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * bl.BatteryUsages[DRONE_FREE]);
-                    updateView();
-                }
-                if (distance <= 0.01)
-                {
-                    drone.CurrLocation = station.Location;
+//                // GoingTowardStation:
+//                    if (distance < 0.01)
+//                        lock (bl)
+//                        {
+//                            drone.CurrLocation = station.Location;
+//                        }
+//                    else
+//                    {
+//                        if (!SleepDelayTime()) break;
+//                        lock (bl)
+//                        {
+//                            double delta = distance < STEP ? distance : STEP;
+//                            distance -= delta;
+//                            //drone.Battery = Max(0.0, drone.Battery - delta * bl.BatteryUsages[DRONE_FREE]);
+//                        }
+//                    //lock (bl)
+//                    {
+//                        while (distance > 0.01 && !checkStop())
+//                        {
+//                            if (!SleepDelayTime()) break;
+//                            double delta = distance < STEP ? distance : STEP;
+//                            distance -= delta;
+//                            drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * bl.BatteryUsages[DRONE_FREE]);
+//                            updateView();
+//                        }
+//                        if (distance <= 0.01)
+//                            lock (bl)
+//                            {
+//                                drone.CurrLocation = station.Location;
+//                                maintenance = Maintenance.Charging;
+//                            }
+//                    }
+//                    break;
 
-                    // charging
-                    while (drone.BatteryStatus < 1.0 && !checkStop())
-                    {
-                        if (!SleepDelayTime()) break;
-                        //lock (bl) למה בפרויקט לדוג עשו כאן?
-                        {
-                            drone.BatteryStatus = Math.Min(1.0, drone.BatteryStatus + chargingRate * TIME_STEP);
-                            updateView();
-                        }
-                    }
-                    if (drone.BatteryStatus >= 1.0)
-                    {
-                        drone.DroneStatus = DroneStatus.Free;
-                        updateView();
-                    }
-                }
-            }
-        }
-
-        private void Init(int parcelId)
-        {
-            parcel = dal.GetFromDalById<DO.Parcel>(parcelId);
-            pickedUp = parcel.PickingUp.HasValue;
-            customer = bl.GetCustomer(pickedUp ? parcel.GetterId : parcel.SenderId);
-            distance = Extensions.CalculateDistance(drone.CurrLocation, customer.Location);
+                //case Maintenance.GoingTowardStation:
+                //    if (distance < 0.01)
+                //        lock (bl)
+                //        {
+                //            drone.CurrLocation = station.Location;
+                //            maintenance = Maintenance.Charging;
+                //        }
+                //    else
+                //    {
+                //        if (!SleepDelayTime()) break;
+                //        lock (bl)
+                //        {
+                //            double delta = distance < STEP ? distance : STEP;
+                //            distance -= delta;
+                //            //drone.Battery = Max(0.0, drone.Battery - delta * bl.BatteryUsages[DRONE_FREE]);
+                //        }
+                //    //lock (bl)
+                //    {
+                //        while (distance > 0.01 && !checkStop())
+                //        {
+                //            if (!SleepDelayTime()) break;
+                //            double delta = distance < STEP ? distance : STEP;
+                //            distance -= delta;
+                //            drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * []);
+                //                bl.
+                //            updateView();
+                //        }
+                //        if (distance <= 0.01)
+                //            lock (bl)
+                //            {
+                //                drone.CurrLocation = station.Location;
+                //                maintenance = Maintenance.Charging;
+                //            }
+                //    }
+                //    break;
 
             batteryUsage = (int)Enum.Parse(typeof(BatteryUsage), parcel?.Weight.ToString());
         }

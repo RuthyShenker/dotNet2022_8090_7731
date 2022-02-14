@@ -265,11 +265,13 @@ namespace BL
                     throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is Free ");
                 case DroneStatus.Delivery:
                     throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is Delivery ");
-                default:
-                    drone.DStatus = DroneStatus.Free;
+                default:                   
                     //is correct?
                     drone.BatteryStatus += timeInCharging * chargingRate;
-                    var ChargingDroneToRemove = dal.GetFromDalByCondition<DO.ChargingDrone>(charge => charge.DroneId == drone.Id);
+                    drone.DStatus = DroneStatus.Free;
+
+                    var ChargingDroneToRemove = dal.GetFromDalByCondition<DO.ChargingDrone>(charge
+                        => charge.DroneId == drone.Id);
                     dal.Remove(ChargingDroneToRemove);
                     break;
             }
@@ -416,6 +418,7 @@ namespace BL
             try
             {
                 dal.Remove(dal.GetFromDalById<DO.Drone>(droneId));
+                lDroneToList.Remove(lDroneToList.Find(d => d.Id == droneId));
             }
             catch (DO.IdIsNotExistException)
             {

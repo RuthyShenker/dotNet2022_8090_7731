@@ -14,8 +14,10 @@ namespace PO
         }
 
         const int ID_LENGTH = 9;
+
         const int MIN_LATITUDE = -90;
         const int MAX_LATITUDE = 90;
+
         const int MIN_LONGITUDE = 0;
         const int MAX_LONGITUDE = 90;
 
@@ -30,16 +32,16 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _id, null);
-                    validityMessages["Id"] = IdCustomerMessage(_id);
+                    validityMessages[nameof(Id)] = IdCustomerMessage(_id);
                 }
                 else if (valid)
                 {
                     Set(ref _id, id);
-                    validityMessages["Id"] = IdCustomerMessage(_id);
+                    validityMessages[nameof(Id)] = IdCustomerMessage(_id);
                 }
                 else
                 {
-                    validityMessages["Id"] = IdMessage("invalid input");
+                    validityMessages[nameof(Id)] = IdMessage("invalid input");
                 }
                 //RaisePropertyChanged("Id");
             }
@@ -54,7 +56,7 @@ namespace PO
             set
             {
                 Set(ref _name, value);
-                validityMessages["Name"] = NameMessage(value);
+                validityMessages[nameof(Name)] = NameMessage(value);
             }
         }
 
@@ -81,7 +83,7 @@ namespace PO
             set
             {
                 Set(ref _phone,value);
-                validityMessages["Phone"] = PhoneMessage(value);
+                validityMessages[nameof(Phone)] = PhoneMessage(value);
             }
         }
 
@@ -96,16 +98,16 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _longitude, null);
-                    validityMessages["Longitude"] = LocationMessage(_longitude);
+                    validityMessages[nameof(Longitude)] = LocationMessage(_longitude);
                 }
                 else if (valid)
                 {
                     Set(ref _longitude, longitude);
-                    validityMessages["Longitude"] = LocationMessage(_longitude, MIN_LONGITUDE, MAX_LONGITUDE);
+                    validityMessages[nameof(Longitude)] = LocationMessage(_longitude, MIN_LONGITUDE, MAX_LONGITUDE);
                 }
                 else
                 {
-                    validityMessages["Longitude"] = LocationMessage("invalid input");
+                    validityMessages[nameof(Longitude)] = LocationMessage("invalid input");
                 }
             }
         }
@@ -121,16 +123,16 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _latitude, null);
-                    validityMessages["Latitude"] = LocationMessage(_latitude);
+                    validityMessages[nameof(Latitude)] = LocationMessage(_latitude);
                 }
                 else if (valid)
                 {
                     Set(ref _latitude, latitude);
-                    validityMessages["Latitude"] = LocationMessage(_latitude, MIN_LATITUDE, MAX_LATITUDE);
+                    validityMessages[nameof(Latitude)] = LocationMessage(_latitude, MIN_LATITUDE, MAX_LATITUDE);
                 }
                 else
                 {
-                    validityMessages["Latitude"] = LocationMessage("invalid input");
+                    validityMessages[nameof(Latitude)] = LocationMessage("invalid input");
                 }
             }
         }
@@ -149,11 +151,11 @@ namespace PO
 
         private Dictionary<string, string> validityMessages = new Dictionary<string, string>()
         {
-            ["Id"] = string.Empty,
-            ["Name"] = string.Empty,
-            ["Phone"] = string.Empty,
-            ["Longitude"] = string.Empty,
-            ["Latitude"] = string.Empty
+            [nameof(Id)] = string.Empty,
+            [nameof(Name)] = string.Empty,
+            [nameof(Phone)] = string.Empty,
+            [nameof(Longitude)] = string.Empty,
+            [nameof(Latitude)] = string.Empty
         }; 
     }
 }

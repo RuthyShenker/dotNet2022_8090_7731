@@ -51,6 +51,14 @@ namespace PO
                         $"{propertyName} has to contain letters only" :
                    "";
         }
+        
+
+        public static string OnlyStringAndNumberMessage(string value, [CallerMemberName] string propertyName = "")
+        {
+            return !Regex.IsMatch(value, @"^[a-zA-Z0-9\s]+$") ?
+                        $"{propertyName} has to contain letters and numbers only" :
+                   "";
+        }
         public static string NameMessage(string name)
        {
             return name == string.Empty ||name==null? 

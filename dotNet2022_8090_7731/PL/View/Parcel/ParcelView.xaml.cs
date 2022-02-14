@@ -26,7 +26,7 @@ namespace PL.View
             //DroneView.DataContext = new AddNewDroneView(bl, refreshDroneList,Close);
             //var viewModel = new AddDroneViewModel(/*bl, */refreshDroneList);
             //this.DataContext = new AddDroneView(viewModel);
-            var viewModel = new AddParcelViewModel(bl);
+            var viewModel = new AddParcelViewModel(bl, SwitchView);
             this.DataContext = new AddParcelView(viewModel);
         }
 
@@ -35,6 +35,12 @@ namespace PL.View
             InitializeComponent();
             //DroneView.DataContext= new EditDroneView(bl, initializeDrones, selectedDrone,Close);
             var viewModel = new EditParcelViewModel(bl, selectedParcel);
+            this.DataContext = new EditParcelView(viewModel);
+        }
+        private void SwitchView(BO.Parcel selectedParcel)
+        {
+            //refreshCustomerList();
+            var viewModel = new EditParcelViewModel(BlApi.BlFactory.GetBl(), selectedParcel);
             this.DataContext = new EditParcelView(viewModel);
         }
     }

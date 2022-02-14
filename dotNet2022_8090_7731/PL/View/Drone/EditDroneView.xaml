@@ -67,7 +67,8 @@
                   materialDesign:HintAssist.Hint="MaxWeight" 
                   IsEnabled="False" />
 
-        <TextBox Text = "{Binding Drone.Model, UpdateSourceTrigger=LostFocus}"
+        <TextBox Text = "{Binding Drone.Model, UpdateSourceTrigger=PropertyChanged ,ValidatesOnDataErrors=true,
+            NotifyOnValidationError=true}"
                  materialDesign:HintAssist.Hint="Model" />
 
         <TextBlock  Text = "Status:" />

@@ -25,8 +25,8 @@ namespace PL.ViewModels
         private void AddStation(object obj)
         {
             StationToAdd station = Station;
-            try
-            {
+            //try
+            //{
 
                 BlApi.BlFactory.GetBl().AddingBaseStation
                 (
@@ -38,17 +38,17 @@ namespace PL.ViewModels
                 );
                 Refresh.Invoke();
                 switchView(Map(station));
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("id is already exist");
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    MessageBox.Show("id is already exist");
+            //}
         }
 
         private Station Map(StationToAdd station)
         {
             BO.Location location = new BO.Location((double)station.Longitude, (double)station.Latitude);
-            return new Station((int)station.Id, station.Name,new( (double)station.Longitude, (double)station.Latitude ), (int)station.NumPositions);
+            return new Station((int)station.Id, station.Name,location,(int)station.NumPositions);
         }
     }
 }

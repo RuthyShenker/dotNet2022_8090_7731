@@ -99,6 +99,7 @@ namespace PL.ViewModels
         {
             new StationView(bl)
                       .Show();
+            
         }
 
         private void ShowStation(object sender)

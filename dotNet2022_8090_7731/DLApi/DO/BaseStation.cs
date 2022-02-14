@@ -29,7 +29,7 @@ namespace DO
         /// <returns>the details</returns>
         public override string ToString()
         {
-            return $"Station name: {NameStation}     Id: {Id}   Longitude: {Longitude}  Latitude: {Latitude}    " +
+            return $"Station name: {NameStation}  Id: {Id}  Longitude: {Longitude}  Latitude: {Latitude}    " +
                 $"Number of charging positions: {NumberOfChargingPositions}";
         }
     }

@@ -1,10 +1,17 @@
 <?xml version="1.0"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
-    <Id>123456789</Id>
-    <Name>ch</Name>
-    <Phone>2345678</Phone>
-    <Longitude>87</Longitude>
-    <Latitude>42</Latitude>
+    <Id>123443214</Id>
+    <Name>c</Name>
+    <Phone>8766435</Phone>
+    <Longitude>65</Longitude>
+    <Latitude>43</Latitude>
+  </Customer>
+  <Customer>
+    <Id>867425425</Id>
+    <Name>golda</Name>
+    <Phone>8654254</Phone>
+    <Longitude>56</Longitude>
+    <Latitude>86</Latitude>
   </Customer>
 </ArrayOfCustomer>
