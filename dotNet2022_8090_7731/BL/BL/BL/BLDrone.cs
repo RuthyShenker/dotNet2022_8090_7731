@@ -25,6 +25,18 @@ namespace BL
                 lDroneToList.Add(ConvertToList(drone));
             }
         }
+        public IEnumerable<double> GetPowerConsumption()
+        {
+            return new List<double>
+            {
+                powerConsumptionFree,
+                powerConsumptionLight,
+                powerConsumptionMedium,
+                powerConsumptionHeavy,
+                chargingRate
+            };
+        }
+
 
         /// <summary>
         /// A function that gets an object of IDAL.DO.Drone and Expands it to object of 
@@ -74,7 +86,7 @@ namespace BL
             // battery Status:
             Location destination = GetCustomer(parcel.GetterId).Location;
             Location nearestDestinationStation = ClosestStation(destination).Location;
-            double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, destination), 
+            double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, destination),
                 (WeightCategories)parcel.Weight) + MinBattery(CalculateDistance(destination, nearestDestinationStation));
             nDrone.BatteryStatus = RandBetweenRange(minBattry, 100);
 

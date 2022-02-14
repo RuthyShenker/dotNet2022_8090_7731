@@ -18,5 +18,8 @@ namespace BlApi
         bool IsDroneExist(int id);
         void StartSimulator(int droneId, Action updateView, Func<bool> checkStop);
 
+        IEnumerable<double> GetPowerConsumption();
+        
+
     }
 }

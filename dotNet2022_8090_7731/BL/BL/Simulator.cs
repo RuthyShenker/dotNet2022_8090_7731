@@ -29,12 +29,23 @@ namespace BL
         DalApi.IDal dal;
         double distance;
         bool pickedUp;
+        double[] powerConsumption;
+
+        int droneFree = 0;
+         
+        //        powerConsumptionFree,
+        //        powerConsumptionLight,
+        //        powerConsumptionMedium,
+        //        powerConsumptionHeavy,
+        //        chargingRate
         public enum Maintenance { Assigning, GoingTowardStation, Charging };
 
         public Simulator(BL blInstance, int droneId, Action updateViewAction, Func<bool> checkStopFunc)
         {
             bl = blInstance;
             dal = blInstance.dal;
+            powerConsumption= bl.GetPowerConsumption().ToArray();
+
             Drone drone = bl.GetDrone(droneId);
             updateView = updateViewAction;
             checkStop = checkStopFunc;
@@ -153,7 +164,8 @@ namespace BL
                             if (!SleepDelayTime()) break;
                             double delta = distance < STEP ? distance : STEP;
                             distance -= delta;
-                            drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * bl.BatteryUsages[DRONE_FREE]);
+                            drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * []);
+                                bl.
                             updateView();
                         }
                         if (distance <= 0.01)
