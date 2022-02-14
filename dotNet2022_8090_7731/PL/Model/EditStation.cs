@@ -25,7 +25,7 @@ namespace PO
             set
             {
                 Set(ref _name, value);
-                validityMessages["Name"] = value is null or "" ? "" :
+                validityMessages[nameof(Name)] = value is null or "" ? "" :
                                                                 StringMessage(value);
             }
         }
@@ -45,14 +45,14 @@ namespace PO
                 {
                     Set(ref _numPositions, id);
                 }
-                validityMessages["NumPositions"] = IntMessage(value);
+                validityMessages[nameof(NumPositions)] = IntMessage(value);
             }
         }
 
         private Dictionary<string, string> validityMessages = new()
         {
-            ["Name"] = "",
-            ["NumPositions"] = "",
+            [nameof(Name)] = string.Empty,
+            [nameof(NumPositions)] = string.Empty,
         };
 
         // --------------IDataErrorInfo---------------------

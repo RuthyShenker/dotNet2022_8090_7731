@@ -2,11 +2,7 @@
 using PL.View;
 using PO;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace PL.ViewModels
@@ -35,7 +31,7 @@ namespace PL.ViewModels
             Station = Map(station);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             UpdateStationCommand = new RelayCommand<object>(UpdateStation, param => Station.Error == string.Empty);
-            DeleteStationCommand = new RelayCommand<object>(DeleteStation, param => Station.ListChargingDrone.Count() == 0);
+            DeleteStationCommand = new RelayCommand<object>(DeleteStation, param => Station.ListChargingDrone == default);
             ShowDroneCommand = new RelayCommand<object>(OpenSelectedDroneWindow);
 
             //ShowDroneInStationCommand = new RelayCommand<object>(MouseDoubleClick);
@@ -53,9 +49,12 @@ namespace PL.ViewModels
 
         private void RefreshStation()
         {
-            //refreshParcels();
-            //בעיה
-            Station = Map(bl.GetStation(station.Id));
+            if (bl.GetStations().FirstOrDefault(s => s.Id == Station.Id) != default)
+            {
+
+
+                Station = Map(bl.GetStation(station.Id));
+            }
         }
 
         private void DeleteStation(object closeButton)
@@ -99,8 +98,8 @@ namespace PL.ViewModels
                 Id = station.Id,
                 Name = station.NameStation,
                 NumPositions = station.NumAvailablePositions,
-                Location = new PO.Location(23, 23),
-                ListChargingDrone = station.LBL_ChargingDrone.Select(position => new PO.ChargingDrone(position.DroneId, position.BatteryStatus))
+                Location = new PO.Location(station.Location.Latitude, station.Location.Longitude),
+                ListChargingDrone = station.LBL_ChargingDrone?.Select(position => new PO.ChargingDrone(position.DroneId, position.BatteryStatus))
             };
         }
     }

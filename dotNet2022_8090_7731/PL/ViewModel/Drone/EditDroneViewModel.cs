@@ -181,7 +181,11 @@ namespace PL.ViewModels
 
         private void RefreshDrone()
         {
-            Drone = Map(bl.GetDrone(Drone.Id));
+            if (bl.GetDrones().FirstOrDefault(d=>d.Id==Drone.Id)!=default)
+            {
+                Drone = Map(bl.GetDrone(Drone.Id));
+            }
+            
         }
 
         private EditDrone Map(Drone drone)

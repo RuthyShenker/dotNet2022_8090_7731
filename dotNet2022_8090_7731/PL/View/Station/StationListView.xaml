@@ -40,7 +40,10 @@
         <ListView x:Name="StationList" ItemsSource="{Binding StationList}" >
 
 
-            <!--<ListView.View>
+
+
+
+            <ListView.View>
                 <GridView>
                     <GridViewColumn
         DisplayMemberBinding="{Binding Id}"
@@ -49,22 +52,14 @@
         DisplayMemberBinding="{Binding Name}"
         Header="Name" />
                     <GridViewColumn
-        DisplayMemberBinding="{Binding NumPositions}"
-        Header="NumPositions" />
+        DisplayMemberBinding="{Binding AvailablePositions}"
+        Header="AvailablePositions" />
                     <GridViewColumn
-        DisplayMemberBinding="{Binding SentSupplied}"
-        Header="SentSupplied" />
-                    <GridViewColumn
-        DisplayMemberBinding="{Binding SentNotSupplied}"
-        Header="SentNotSupplied" />
-                    <GridViewColumn
-        DisplayMemberBinding="{Binding Got}"
-        Header="Got" />
-                    <GridViewColumn
-        DisplayMemberBinding="{Binding InWayToCustomer}"
-        Header="InWayToCustomer" />
+        DisplayMemberBinding="{Binding FullPositions}"
+        Header="FullPositions" />
+                  
                 </GridView>
-            </ListView.View>-->
+            </ListView.View>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,41 +8,41 @@ using System.Threading.Tasks;
 
 namespace PO
 {
-    public class DroneToUpdate : INotifyPropertyChanged
+    public class DroneToUpdate : INotify
     {
-        int id;
+        //    int id;
         string model;
-        BO.WeightCategories weight;
-        double batteryStatus;
-        BO.DroneStatus status;
-        BO.Location location;
-        BO.ParcelInTransfer parcelInTransfer;
-        public int Id { get => id; }
+        //BO.WeightCategories weight;
+        //double batteryStatus;
+        //BO.DroneStatus status;
+        //BO.Location location;
+        //BO.ParcelInTransfer parcelInTransfer;
+        public int Id { get; init; }
         public string Model
         {
             get { return model; }
             set
             {
                 model = value;
-                RaisePropertyChanged("Model");
+                RaisePropertyChanged(nameof(Model));
             }
         }
-        public BO.WeightCategories Weight { get => weight; }
+        public BO.WeightCategories Weight { get; set; }
 
-        public double BatteryStatus { get => batteryStatus; }
-        public BO.DroneStatus DStatus { get => status; }
-        public BO.Location Location { get => location; }
-        public BO.ParcelInTransfer ParcelInTransfer { get => parcelInTransfer; }
+        public double BatteryStatus { get; set; }
+        public BO.DroneStatus DStatus { get; set; }
+        public BO.Location Location { get; set; }
+        public BO.ParcelInTransfer ParcelInTransfer { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+        
+        //protected void RaisePropertyChanged(string propertyName)
+        //{
+        //    PropertyChangedEventHandler handler = PropertyChanged;
+        //    if (handler != null)
+        //    {
+        //        handler(this, new PropertyChangedEventArgs(propertyName));
+        //    }
 
-        }
+        //}
     }
 }

@@ -90,7 +90,11 @@ namespace PL.ViewModels
 
         private void RefreshCustomer()
         {
-            Customer = MapFromBOToPO(bl.GetCustomer(Customer.Id));
+            if (bl.GetCustomers().FirstOrDefault(c=>c.Id==Customer.Id)!=default)
+            {
+                 Customer = MapFromBOToPO(bl.GetCustomer(Customer.Id));
+            }
+           
         }
 
         private EditCustomer MapFromBOToPO(BO.Customer customer)

@@ -37,7 +37,7 @@ namespace BL
         //        powerConsumptionMedium,
         //        powerConsumptionHeavy,
         //        chargingRate
-        public enum Maintenance { Assigning, GoingTowardStation, Charging };
+        //public enum Maintenance { Assigning, GoingTowardStation, Charging };
 
         public Simulator(BL blInstance, int droneId, Action updateViewAction, Func<bool> checkStopFunc)
         {
@@ -45,9 +45,9 @@ namespace BL
             dal = blInstance.dal;
             powerConsumption = bl.GetPowerConsumption().ToArray();
 
-            Drone drone = bl.GetDrone(droneId);
-            updateView = updateViewAction;
-            checkStop = checkStopFunc;
+        //    Drone drone = bl.GetDrone(droneId);
+        //    updateView = updateViewAction;
+        //    checkStop = checkStopFunc;
 
             do
             {

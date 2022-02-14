@@ -17,6 +17,7 @@ namespace Dal
         string GetXmlFilePath(Type type) => $@"{xmlFilesLocation}\{type.Name}List.xml";
         string configFilePath => $@"{xmlFilesLocation}\Config.xml";
 
+        //problem:
         //static DalXml()
         //{
         //

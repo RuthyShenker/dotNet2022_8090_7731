@@ -23,16 +23,16 @@ namespace PO
                 if (value is null or "")
                 {
                     Set(ref _id, null);
-                    validityMessages["Id"] = IdMessage(_id);
+                    validityMessages[nameof(Id)] = IdMessage(_id);
                 }
                 else if (valid)
                 {
                     Set(ref _id, Convert.ToInt32(value));
-                    validityMessages["Id"] = IdMessage(_id, ID_LENGTH);
+                    validityMessages[nameof(Id)] = IdMessage(_id, ID_LENGTH);
                 }
                 else
                 {
-                    validityMessages["Id"] = IdMessage("invalid input");
+                    validityMessages[nameof(Id)] = IdMessage("invalid input");
                 }
                 //RaisePropertyChanged("Id");
             }
@@ -47,8 +47,8 @@ namespace PO
             set
             {
                 Set(ref _model, value);
-                validityMessages["Model"] = value is null or "" ? RequiredMessage() :
-                                                                StringMessage(value);
+                validityMessages[nameof(Model)] = value is null or "" ? RequiredMessage() :
+                                                                OnlyStringAndNumberMessage(value);
             }
         }
 
@@ -66,7 +66,7 @@ namespace PO
             set
             {
                 Set(ref _stationId, value);
-                validityMessages["StationId"] = "";
+                validityMessages[nameof(StationId)] = string.Empty;
             }
         }
 
@@ -86,65 +86,66 @@ namespace PO
 
         private Dictionary<string, string> validityMessages = new Dictionary<string, string>()
         {
-            ["Id"] = " ",
-            ["Model"] = " ",
-            ["MaxWeight"] = "",
-            ["StationId"] = " ",
+            [nameof(Id)] = string.Empty,
+            [nameof(Model)] = string.Empty,
+            [nameof(MaxWeight)] = string.Empty,
+            [nameof(StationId)] = string.Empty,
         };
 
     }
 }
 
+#region
+//if (value < 5)
+//{
+//    errors["ID"] = "Value cannot be less than 5";
+//}
 
-        //if (value < 5)
-        //{
-        //    errors["ID"] = "Value cannot be less than 5";
-        //}
+////else RemoveError("Id", ID_ERROR);
 
-        ////else RemoveError("Id", ID_ERROR);
-
-        //if (value > 10) AddError("Id", IdGreater, true);
-        //else RemoveError("Id", ID_WARNING);
+//if (value > 10) AddError("Id", IdGreater, true);
+//else RemoveError("Id", ID_WARNING);
 
 
-        // Adds the specified error to the errors collection if it is not already 
-        // present, inserting it in the first position if isWarning is false. 
-        //public void AddError(string propertyName, string error, bool isWarning)
-        ////AddError("Id", ID, false);
+// Adds the specified error to the errors collection if it is not already 
+// present, inserting it in the first position if isWarning is false. 
+//public void AddError(string propertyName, string error, bool isWarning)
+////AddError("Id", ID, false);
 
-        //{
-        //    if (!errors.ContainsKey(propertyName))
-        //        errors[propertyName] = new List<string>();
+//{
+//    if (!errors.ContainsKey(propertyName))
+//        errors[propertyName] = new List<string>();
 
-        //    if (!errors[propertyName].Contains(error))
-        //    {
-        //        if (isWarning) errors[propertyName].AddCustomer(error);
-        //        //else errors[propertyName].Insert(0, error);
-        //    }
-        //}
+//    if (!errors[propertyName].Contains(error))
+//    {
+//        if (isWarning) errors[propertyName].AddCustomer(error);
+//        //else errors[propertyName].Insert(0, error);
+//    }
+//}
 
-        //// Removes the specified error from the errors collection if it is present. 
-        //public void RemoveError(string propertyName, string error)
-        //{
-        //    if (errors.ContainsKey(propertyName) &&
-        //        errors[propertyName].Contains(error))
-        //    {
-        //        errors[propertyName].Remove(error);
-        //        if (errors[propertyName].Count == 0) errors.Remove(propertyName);
-        //    }
-        //}
-        //private Dictionary<String, List<String>> errors =
-        //    new Dictionary<string, List<string>>();
-        //private const string ID = "Value cannot be less than 5.";
-        //private const string IdGreater = "Value should not be greater than 10.";
-        //private const string MaxWeightt = "Value must not contain any spaces.";
-        //private const string StationIdd= "Value should be 5 characters or less.";
-        //public int Id
-        //{
-        //    get { return _id; }
-        //    set
-        //    {
-        //        _id = value;
-        //        RaisePropertyChanged("Id");
-        //    }
-        //}
+//// Removes the specified error from the errors collection if it is present. 
+//public void RemoveError(string propertyName, string error)
+//{
+//    if (errors.ContainsKey(propertyName) &&
+//        errors[propertyName].Contains(error))
+//    {
+//        errors[propertyName].Remove(error);
+//        if (errors[propertyName].Count == 0) errors.Remove(propertyName);
+//    }
+//}
+//private Dictionary<String, List<String>> errors =
+//    new Dictionary<string, List<string>>();
+//private const string ID = "Value cannot be less than 5.";
+//private const string IdGreater = "Value should not be greater than 10.";
+//private const string MaxWeightt = "Value must not contain any spaces.";
+//private const string StationIdd= "Value should be 5 characters or less.";
+//public int Id
+//{
+//    get { return _id; }
+//    set
+//    {
+//        _id = value;
+//        RaisePropertyChanged("Id");
+//    }
+//}
+#endregion

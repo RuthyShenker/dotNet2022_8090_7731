@@ -123,7 +123,11 @@ namespace PL.ViewModels
         private void RefreshParcel()
         {
             //refreshParcels();
-            Parcel = Map(bl.GetParcel(Parcel.Id));
+
+            if (bl.GetParcels().FirstOrDefault(p=>p.Id==Parcel.Id)!=default) 
+            { 
+                Parcel = Map(bl.GetParcel(Parcel.Id));
+            }
         }
     }
 }

@@ -17,5 +17,10 @@ namespace PO
             DroneId = droneId;
             BatteryStatus = batteryStatus;
         }
+
+        public override string ToString()
+        {
+            return BL.Tools.ToStringProps(this);
+        }
     }
 }

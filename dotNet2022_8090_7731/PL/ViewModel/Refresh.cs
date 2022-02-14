@@ -11,8 +11,6 @@ namespace PL.ViewModels
 
     public class Refresh
     {
-        public static event DelEventHandler refresh;
-
         public static event DelEventHandler DronesList;
         public static event DelEventHandler StationsList;
         public static event DelEventHandler CustomersList;
@@ -25,10 +23,6 @@ namespace PL.ViewModels
 
         public static void Invoke()
         {
-            refresh += new DelEventHandler(India);
-            refresh += new DelEventHandler(England);
-
-            //refresh.Invoke();
             DronesList?.Invoke();
             StationsList?.Invoke();
             CustomersList?.Invoke();
@@ -39,26 +33,6 @@ namespace PL.ViewModels
             Drone?.Invoke();
             Parcel?.Invoke();
         }
-
-        //public static void USA()
-        //{
-        //    MessageBox.Show("USA");
-        //    //Console.WriteLine("USA");
-        //}
-
-        public static void India()
-        {
-            MessageBox.Show("India");
-
-            //Console.WriteLine("India");
-        }
-
-        public static void England()
-        {
-            MessageBox.Show("England");
-
-        }
-
 
     }
 }

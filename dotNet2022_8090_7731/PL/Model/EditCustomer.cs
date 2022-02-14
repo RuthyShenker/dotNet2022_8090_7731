@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 using static PO.ValidityMessages;
 namespace PO
 {
-    public class EditCustomer:ObservableBase,IDataErrorInfo
+    public class EditCustomer : ObservableBase, IDataErrorInfo
     {
         public EditCustomer(int id, string name, string phone, double longitude, double latitude,
-            IEnumerable<ParcelInCustomer> lFromCustomer,IEnumerable<ParcelInCustomer> lForCustomer)
+            IEnumerable<ParcelInCustomer> lFromCustomer, IEnumerable<ParcelInCustomer> lForCustomer)
         {
             Id = id;
             Name = name;
             Phone = phone;
-            Location = new Location(longitude,latitude);
-            LFromCustomer =lFromCustomer;
-            LForCustomer =lForCustomer;
+            Location = new Location(longitude, latitude);
+            LFromCustomer = lFromCustomer;
+            LForCustomer = lForCustomer;
         }
 
-  
+
         public int Id { get; init; }
 
         private string _name;
@@ -33,7 +33,7 @@ namespace PO
             set
             {
                 Set(ref _name, value);
-                validityMessages["Name"] = NameMessage(value);
+                validityMessages[nameof(Name)] = NameMessage(value);
             }
         }
         private string _phone;
@@ -45,7 +45,7 @@ namespace PO
             set
             {
                 Set(ref _phone, value);
-                validityMessages["Phone"] =PhoneMessage(value);
+                validityMessages[nameof(Phone)] = PhoneMessage(value);
             }
         }
         //TODO
@@ -70,8 +70,8 @@ namespace PO
 
         private Dictionary<string, string> validityMessages = new Dictionary<string, string>()
         {
-            ["Name"] = "",
-            ["Phone"] = "",
+            [nameof(Name)] = string.Empty,
+            [nameof(Phone)] = string.Empty,
         };
     }
 }

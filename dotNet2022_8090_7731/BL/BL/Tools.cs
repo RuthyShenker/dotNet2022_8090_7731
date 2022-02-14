@@ -50,7 +50,7 @@ namespace BL
         }
     }
 }
-
+#region
 //    string str = "";
 //    str += typeof(T).Name+' ';
 //            foreach (PropertyInfo item in t.GetType().GetProperties())
@@ -89,3 +89,4 @@ namespace BL
 //    }
 //}
 // StationId:1NameStation:lSLocation:IBL.BO.LocationNumAvailablePositions:1LBL_ChargingDrone:System.Collections.Generic.List`1[IBL.BO.ChargingDrone]
+#endregion

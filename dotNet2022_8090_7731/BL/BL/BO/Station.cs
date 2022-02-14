@@ -22,8 +22,9 @@ namespace BO
         {
             Id = id;
             NameStation = nameStation;
-            this.sLocation = sLocation;
+            Location = sLocation;
             NumAvailablePositions = numAvailablePositions;
+            LBL_ChargingDrone = null;
         }
 
         /// <summary>
