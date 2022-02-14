@@ -93,10 +93,10 @@ namespace PL.ViewModels
                 droneList.SortDescriptions.Clear();
                 if (currentGroup != GroupByDroneStatus.Id)
                 {
-                    PropertyGroupDescription groupDescription = new PropertyGroupDescription(currentGroup.ToString());
+                    PropertyGroupDescription groupDescription = new(currentGroup.ToString());
                     DroneList.GroupDescriptions.Add(groupDescription);
 
-                    SortDescription sortDescription = new SortDescription(currentGroup.ToString(), ListSortDirection.Ascending);
+                    SortDescription sortDescription = new(currentGroup.ToString(), ListSortDirection.Ascending);
                     droneList.SortDescriptions.Add(sortDescription);
                 }
                 droneList.SortDescriptions.Add(new SortDescription(nameof(GroupByDroneStatus.Id), ListSortDirection.Ascending));

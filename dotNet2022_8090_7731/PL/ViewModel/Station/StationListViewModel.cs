@@ -83,7 +83,7 @@ namespace PL.ViewModels
                 StationList.SortDescriptions.Clear();
                 if (groupBy != GroupOptionsForStationList.All)
                 {
-                    PropertyGroupDescription groupDescription = new PropertyGroupDescription(groupBy.ToString());
+                    PropertyGroupDescription groupDescription = new(groupBy.ToString());
                     StationList.GroupDescriptions.Add(groupDescription);
 
                     SortDescription sortDescription = new SortDescription(groupBy.ToString(), ListSortDirection.Ascending);

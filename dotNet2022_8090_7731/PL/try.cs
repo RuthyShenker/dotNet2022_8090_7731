@@ -15,7 +15,7 @@ namespace PO
     {
         public void Set<T>(ref T field, T newValue, [CallerMemberName] string propertyName = "")
         {
-            if (!EqualityComparer<T>.Default.Equals(field, default(T)) && field.Equals(newValue)) return;
+            if (!EqualityComparer<T>.Default.Equals(field, default) && field.Equals(newValue)) return;
             field = newValue;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

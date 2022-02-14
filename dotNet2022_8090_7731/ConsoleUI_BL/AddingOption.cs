@@ -87,7 +87,7 @@ namespace ConsoleUI_BL
             double longitude = CheckValids.InputDoubleValidity("longitude");
             Console.WriteLine("latitude: ");
             double latitude = CheckValids.InputDoubleValidity("latitude");
-            Location cLocation = new Location(longitude, latitude);
+            Location cLocation = new(longitude, latitude);
             //List<ParcelInCustomer> lFromCustomer;
             //List<ParcelInCustomer> LForCustomer
 
@@ -132,7 +132,7 @@ namespace ConsoleUI_BL
             Console.WriteLine("Enter the station Id to charge the new drone for first charging:  ");
             stationId = CheckValids.InputNumberValidity("id");
             float batteryStatus = 100;
-            DroneStatus droneStatus = default(DroneStatus);
+            DroneStatus droneStatus = default;
             ParcelInTransfer pInTransfer = null;
             Location currLocation = null;
 
