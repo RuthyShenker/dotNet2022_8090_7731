@@ -47,7 +47,7 @@ namespace BL
                         TryAssumingParcel(drone);
                         break;
                     case DroneStatus.Maintenance:
-                        CompleteCharging(drone);
+                        CompleteMaintenance(drone);
                         break;
                     case DroneStatus.Delivery:
                         CompleteDelivery(drone);
@@ -122,58 +122,47 @@ namespace BL
         //    DeliveryLocation = getter.Location,
         //    IsInWay = false
         //};
-        private void CompleteCharging(Drone drone)
+        private void CompleteMaintenance(Drone drone)
         {
-            while (drone.DroneStatus == DroneStatus.Maintenance && !checkStop())
+            if (!SleepDelayTime()) return; //TODO return?
+            //TODO what happens when there is no available station
+
+            // Assigning:
+            station = bl.ClosestStation(drone.CurrLocation, true);
+            distance = Extensions.CalculateDistance(drone.CurrLocation, station.Location);
+            updateView();
+
+            // Going toward station
+            //lock (bl)
             {
-                switch (maintenance)
+                while (distance > 0.01 && !checkStop())
                 {
-                    //TODO what happens when there is no available station
-                    case Maintenance.Assigning:
-                        station = bl.ClosestStation(drone.CurrLocation, true);
-                        distance = Extensions.CalculateDistance(drone.CurrLocation, station.Location);
-                        maintenance = Maintenance.GoingTowardStation;
-                        break;
-
-                    case Maintenance.GoingTowardStation:
-                        //lock (bl)
-                        {
-                            while (distance > 0.01 && !checkStop())
-                            {
-                                if (!SleepDelayTime()) break;
-                                double delta = distance < STEP ? distance : STEP;
-                                distance -= delta;
-                                drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * bl.BatteryUsages[DRONE_FREE]);
-                                updateView();
-                            }
-                            if (distance <= 0.01)
-                                lock (bl)
-                                {
-                                    drone.CurrLocation = station.Location;
-                                    maintenance = Maintenance.Charging;
-                                }
-                        }
-                        break;
-
-                    case Maintenance.Charging:
-                        while (drone.BatteryStatus < 1.0 && !checkStop())
-                        {
-                            if (!SleepDelayTime()) break;
-                            //lock (bl) למה בפרויקט לדוג עשו כאן?
-                            {
-                                drone.BatteryStatus = Math.Min(1.0, drone.BatteryStatus + chargingRate * TIME_STEP);
-                                updateView();
-                            }
-                        }
-                        if (drone.BatteryStatus >= 1.0)
-                        {
-                            drone.DroneStatus = DroneStatus.Free;
-                        }
-                        break;
-                    default:
-                        break;
+                    if (!SleepDelayTime()) break;
+                    double delta = distance < STEP ? distance : STEP;
+                    distance -= delta;
+                    drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * bl.BatteryUsages[DRONE_FREE]);
+                    updateView();
                 }
-                updateView();
+                if (distance <= 0.01)
+                {
+                    drone.CurrLocation = station.Location;
+
+                    // charging
+                    while (drone.BatteryStatus < 1.0 && !checkStop())
+                    {
+                        if (!SleepDelayTime()) break;
+                        //lock (bl) למה בפרויקט לדוג עשו כאן?
+                        {
+                            drone.BatteryStatus = Math.Min(1.0, drone.BatteryStatus + chargingRate * TIME_STEP);
+                            updateView();
+                        }
+                    }
+                    if (drone.BatteryStatus >= 1.0)
+                    {
+                        drone.DroneStatus = DroneStatus.Free;
+                        updateView();
+                    }
+                }
             }
         }
 
