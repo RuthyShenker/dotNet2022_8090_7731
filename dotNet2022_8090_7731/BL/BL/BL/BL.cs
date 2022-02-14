@@ -9,6 +9,7 @@ using System.Device.Location;
 using System.Collections.ObjectModel;
 using BO;
 using Singleton;
+using BlApi;
 
 namespace BL
 {
@@ -53,6 +54,10 @@ namespace BL
                 chargingRate 
             ) = dal.PowerConsumptionRequest();
         }
+
+        
+
+        
     }
 }
 //#region Erase?

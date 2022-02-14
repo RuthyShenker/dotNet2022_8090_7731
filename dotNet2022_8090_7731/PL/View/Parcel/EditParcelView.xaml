@@ -187,7 +187,11 @@
 
         <Button  Content="Update"
                  Command="{Binding UpdateParcelCommand}"/>
-        
+
+        <Button Content="Delete"
+                Command="{Binding DeleteParcelCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+
         <Button Content="close" 
                 Command="{Binding CloseWindowCommand }"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>

@@ -146,10 +146,13 @@ namespace BL
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<CustomerToList> GetCustomers()
+        public IEnumerable<CustomerToList> GetCustomers(/*Func<int, bool> predicate = null*/)
         {
-            return dal.GetListFromDal<DO.Customer>()
-                .Select(s => ConvertToList(s));
+            //return predicate!=null ?
+            //    dal.GetDalListByCondition<DO.Customer>(customer => predicate(customer.Id))
+            //    .Select(c=>ConvertToList(c)):
+             return dal.GetListFromDal<DO.Customer>()
+                    .Select(c => ConvertToList(c));
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace BL
     {
         public void StartSimulator(int droneId, Action updateView, Func<bool> checkStop)
         {
-            new Simulator(this, droneId, updateView, checkStop);
+            //new Simulator(this, droneId, updateView, checkStop);
         }
 
         private void InitializeDroneList()
@@ -397,6 +397,19 @@ namespace BL
             {
                 throw new BO.IdIsNotExistException(typeof(Drone), droneId);
             }
+        }
+
+        public string DeleteDrone(int droneId)
+        {
+            try
+            {
+                dal.Remove(dal.GetFromDalById<DO.Drone>(droneId));
+            }
+            catch (DO.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(Drone), droneId);
+            }
+            return $"The drone with Id: {droneId} was successfully removed from the system";
         }
     }
 }

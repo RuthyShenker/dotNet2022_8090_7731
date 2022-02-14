@@ -65,8 +65,8 @@ namespace PL.ViewModels
             {
                 MessageBox.Show(bl.DeleteCustomer(Customer.Id));
                 Refresh.Invoke();
-                //refreshCustomers();
-                Window.GetWindow((DependencyObject)obj).Close();
+               
+                Functions.CloseWindow(obj);
             }
             catch (BO.IdIsNotExistException exception)
             {

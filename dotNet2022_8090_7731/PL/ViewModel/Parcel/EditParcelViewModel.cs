@@ -16,11 +16,12 @@ namespace PL.ViewModels
         Action refreshParcels;
         private EditParcel parcel;
 
+        public RelayCommand<object> DeleteParcelCommand { get; set; }
         public RelayCommand<object> UpdateParcelCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> EditCustomerCommand { get; set; }
         public RelayCommand<object> OpenDroneWindowCommand { get; set; }
-        
+
         public EditParcelViewModel(BlApi.IBL bl, BO.Parcel parcel)
         {
             this.bl = bl;
@@ -30,9 +31,45 @@ namespace PL.ViewModels
             UpdateParcelCommand = new RelayCommand<object>(UpdateParcel, param => Parcel.BelongParcel == default);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             EditCustomerCommand = new RelayCommand<object>(EditSender);
+            DeleteParcelCommand = new RelayCommand<object>(DeleteParcel);
             OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow, param => Parcel.BelongParcel != default && Parcel.Arrival != default);
         }
+        private void DeleteParcel(object obj)
+        {
+            //if (Parcel.Arrival.HasValue /*&& bl.GetCustomers(customer => customer.Id == Parcel.Getter.Id || customer.Id == Parcel.Sender.Id).Any()*/) 
+            //{
+            //    MessageBox.Show( "You can't delete me! Setter Or Getter Exists,", "Delete Parcel Error", MessageBoxButton.OK,
+            //        MessageBoxImage.Stop);
+            //    return;
+            //}
+            /*else*/ if (Parcel.BelongParcel.HasValue && Parcel.PickingUp.HasValue)
+            {
+                MessageBox.Show("I am on the way!  You can't delete me!", "Delete Parcel Error", MessageBoxButton.OK,
+                    MessageBoxImage.Stop);
+                return;
+            }
 
+
+            if (MessageBox.Show("Are You Sure You Want To Delete Parcel" +
+                $"With Id:{Parcel.Id}?", "Delete Parcel", MessageBoxButton.YesNo
+                , MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                return;
+            }
+            try
+            {
+                MessageBox.Show(bl.DeleteParcel(Parcel.Id));
+                Refresh.Invoke();
+                //refreshCustomers();
+                Functions.CloseWindow(obj);
+
+            }
+            catch (BO.IdIsNotExistException exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+
+        }
         private void OpenDroneWindow(object obj)
         {
             var carringDrone = bl.GetDrone(Parcel.DInParcel.Id);
