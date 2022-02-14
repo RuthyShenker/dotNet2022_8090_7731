@@ -18,10 +18,11 @@ namespace BL
         internal DalApi.IDal dal= DalApi.DalFactory.GetDal();
         internal List<DroneToList> lDroneToList;
         Random rand;
-        internal static double powerConsumptionFree;
+        //internal static double powerConsumptionFree;
         static double powerConsumptionLight;
         static double powerConsumptionMedium;
         static double powerConsumptionHeavy;
+        internal static double powerConsumptionFree { get; set; }
         /// <summary>
         /// Charging rate per hour
         /// </summary>
