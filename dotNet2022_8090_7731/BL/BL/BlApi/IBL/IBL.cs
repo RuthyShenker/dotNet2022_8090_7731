@@ -34,7 +34,7 @@ namespace BlApi
     }
 }
 
-//#region canErase?
+#region canErase?
 
 ////IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject;
 ////IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject;
@@ -92,4 +92,4 @@ namespace BlApi
 //// Drone GetDrone(int Id);
 //// Customer GetCustomer(string Id);
 //// Parcel GetParcel(int Id);
-//#endregion
+#endregion

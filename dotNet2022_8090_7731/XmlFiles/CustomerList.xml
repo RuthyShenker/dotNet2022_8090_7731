@@ -1,4 +1,10 @@
 <?xml version="1.0"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  
+  <Customer>
+    <Id>123456789</Id>
+    <Name>ch</Name>
+    <Phone>2345678</Phone>
+    <Longitude>87</Longitude>
+    <Latitude>42</Latitude>
+  </Customer>
 </ArrayOfCustomer>

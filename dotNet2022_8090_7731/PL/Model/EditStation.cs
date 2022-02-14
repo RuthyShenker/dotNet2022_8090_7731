@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace PO
         }
 
         private int? _numPositions;
-
+        //[Required][MaxLength(11)][]
         public object NumPositions
         {
             get => _numPositions == null ? null : _numPositions;

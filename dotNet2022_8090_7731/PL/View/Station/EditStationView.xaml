@@ -81,7 +81,7 @@
 
         <Button Style="{StaticResource MaterialDesignFlatButton}"
                 HorizontalAlignment="Center"
-                Content="Delete this station"
+                Content="Delete"
                 Command="{Binding DeleteStationCommand}" 
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" >
         </Button>

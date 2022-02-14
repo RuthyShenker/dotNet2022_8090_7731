@@ -101,7 +101,8 @@
 
 
         <Button Content = "Update Model:" 
-                Command="{Binding UpdateModelOfDroneCommand }" />
+                Command="{Binding UpdateModelOfDroneCommand }"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
 
         <Button Visibility="{Binding Drone.Status ,Converter={StaticResource DroneStatusToVisibilityConverter}}" 
                 Height="50"
@@ -115,6 +116,11 @@
         <Button Content="close" 
                 Command="{Binding CloseWindowCommand }"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+
+        <Button Content="Delete"
+                Command="{Binding DeleteDroneCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+        
         <!--<Button x:Name="close_window_button" Content="close" Command="{Binding CloseWindowCommand }" CommandParameter="{Binding RelativeSource=self}"></Button>-->
         <!--<Button x:Name="close_window_button" Content="close" Command="{x:Static}"  CommandParameter="{Binding RelativeSource=self}"></Button>-->
 

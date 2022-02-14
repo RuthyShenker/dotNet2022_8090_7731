@@ -25,10 +25,12 @@ namespace PL.ViewModels
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             UpdateModelOfDroneCommand = new RelayCommand<object>(UpdateDroneModel);
             ChargeDroneCommand = new RelayCommand<object>(SendOrReleaseDroneFromCharging);
-            AssignParcelToDroneCommand = new RelayCommand<object>(OpenParcelWindow);
+            AssignParcelToDroneCommand = new RelayCommand<object>(AssignParcelToDrone);
             OpenParcelWindowCommand = new RelayCommand<object>(OpenParcelWindowC, param => Drone.Status == DroneStatus.Delivery);
+            DeleteDroneCommand = new RelayCommand<object>(DeleteDrone);
         }
 
+        
         public RelayCommand<object> ChargeDroneCommand { get; set; }
 
         public RelayCommand<object> AssignParcelToDroneCommand { get; set; }
@@ -36,6 +38,8 @@ namespace PL.ViewModels
         public RelayCommand<object> UpdateModelOfDroneCommand { get; set; }
 
         public RelayCommand<object> CloseWindowCommand { get; set; }
+
+        public RelayCommand<object> DeleteDroneCommand { get; set; }
         public RelayCommand<object> OpenParcelWindowCommand { get; set; }
         
         private void UpdateDroneModel(object sender)
@@ -63,19 +67,19 @@ namespace PL.ViewModels
                 bl.SendingDroneToCharge(Drone.Id);
             else
                 bl.ReleasingDrone(Drone.Id);
+
             Refresh.Invoke();
            
-            //RefreshDrone();
         }
        
         private void OpenParcelWindowC(object MyParcel)
         {
             var parcel = MyParcel as BO.ParcelInTransfer;
             var blParcel = bl.GetParcel(parcel.PId);
-            new ParcelView(bl, /*RefreshDrone*/ blParcel).Show();
+            new ParcelView(bl,blParcel).Show();
         }
 
-        private void OpenParcelWindow(object sender)
+        private void AssignParcelToDrone(object sender)
         {
             if (Drone.Status == DroneStatus.Free)
             {
@@ -138,6 +142,42 @@ namespace PL.ViewModels
                 MessageBox.Show(ex.Message, "Error Belong Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private void DeleteDrone(object obj)
+        {
+            if(Drone.Status==DroneStatus.Delivery)
+            {
+                MessageBox.Show("You Can't Delete Me!" +
+                  ",I Am On Way To Brong Parcel  ! ","Delete Parcel",MessageBoxButton.OK,MessageBoxImage.Stop);
+                return;
+            }
+            else if (Drone.Status == DroneStatus.Maintenance)
+            {
+                MessageBox.Show("You Can't Delete Me!" +
+                  ",I Am On Charging ! ", "Delete Parcel", MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
+            //צריך לבדוק אם צריך עוד מקרים
+
+            if (MessageBox.Show("Are You Sure You Want To Delete Drone" +
+                $"With Id:{Drone.Id}?", "Delete Drone", MessageBoxButton.YesNo
+                , MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                return;
+            }
+
+            try
+            {
+                MessageBox.Show(bl.DeleteDrone(Drone.Id));
+                Refresh.Invoke();
+
+                Functions.CloseWindow(obj);
+            }
+            catch (BO.IdIsNotExistException exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+        }
+
 
         private void RefreshDrone()
         {

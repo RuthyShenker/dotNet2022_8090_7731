@@ -319,6 +319,19 @@ namespace BL
                 return null;
             }
         }
+
+        public string DeleteParcel(int parcelId)
+        {
+            try
+            {
+                dal.Remove(dal.GetFromDalById<DO.Parcel>(parcelId));
+            }
+            catch (DO.IdIsNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(Drone), parcelId);
+            }
+            return $"The Parcel with Id: {parcelId} was successfully removed from the system";
+        }
     }
 }
 

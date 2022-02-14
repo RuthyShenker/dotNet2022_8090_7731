@@ -9,6 +9,7 @@ using System.Device.Location;
 using System.Collections.ObjectModel;
 using BO;
 using Singleton;
+using BlApi;
 
 namespace BL
 {
@@ -17,7 +18,7 @@ namespace BL
         internal DalApi.IDal dal= DalApi.DalFactory.GetDal();
         internal List<DroneToList> lDroneToList;
         Random rand;
-        static double powerConsumptionFree;
+        internal static double powerConsumptionFree;
         static double powerConsumptionLight;
         static double powerConsumptionMedium;
         static double powerConsumptionHeavy;
@@ -53,6 +54,10 @@ namespace BL
                 chargingRate 
             ) = dal.PowerConsumptionRequest();
         }
+
+        
+
+        
     }
 }
 //#region Erase?
