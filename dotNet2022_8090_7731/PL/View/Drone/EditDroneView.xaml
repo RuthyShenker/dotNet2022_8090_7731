@@ -9,7 +9,7 @@
  mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" d:DesignWidth="800">
-<UserControl.Resources>
+    <UserControl.Resources>
         <Converters:StatusToBGColorConverter x:Key="StatusToBGColorConverter"/>
         <Converters:BatteryToColorConverter x:Key="batteryToColorConverter"/>
         <Converters:BatteryToProgressBarConverter x:Key="batteryToProgressBarConverter"/>
@@ -55,7 +55,7 @@
         <Converters:VisibilityByDroneToBelongOrPickOrArrivalParcelConverter x:Key="VisibilityByDroneToBelongOrPickOrArrivalParcelConverter"/>
         <Converters:ParcelInTransferVisibilityConverter x:Key="ParcelInTransferVisibilityConverter"/>
     </UserControl.Resources>
-    <StackPanel>
+    <StackPanel   ScrollViewer.VerticalScrollBarVisibility="Auto">
 
         <TextBox Text = "{Binding Drone.Id, UpdateSourceTrigger=PropertyChanged}"
                  IsEnabled="False"/>
@@ -131,7 +131,7 @@
                     Content="{Binding Drone.Automatic, Converter={StaticResource ContentByStatusOfSimulatorConverter}}">
         </Button>
         <ProgressBar Name="BatteryProgressBar" Value="{Binding Drone.BatteryStatus,Converter={StaticResource batteryToProgressBarConverter}}" Width="Auto" Foreground="{Binding Drone.BatteryStatus, Converter={StaticResource batteryToColorConverter}}"/>
-        
+
         <TextBox Text = "{Binding Drone.Distance, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Distance"
                      IsEnabled="False"/>
@@ -208,4 +208,4 @@
                 <TextBox x:Name="PInTransferTransDistanceTextBox" Text = "{Binding Drone.ParcelInTransfer.TransDistance, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
             </StackPanel>
         </Expander>-->
-    </UserControl>
+</UserControl>

@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
     <UserControl.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
             <Setter Property="VerticalAlignment" Value="Top"/>
@@ -23,20 +23,20 @@
         <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
-            
+
         <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="200" />
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
         </Style>
-        
+
         <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Width" Value="200" />
             <Setter Property="Margin" Value="0,15" />
         </Style>
 
     </UserControl.Resources>
-    
+
     <StackPanel>
 
         <TextBox Text="{Binding Customer.Id ,
@@ -68,9 +68,38 @@
                  materialDesign:HintAssist.Hint="Latitude"
                  IsEnabled="False" />
 
+
+        <Label>For:</Label>
         <ListView Grid.Row="1"  
                   ItemsSource="{Binding Customer.LForCustomer}"
                   x:Name="ParcelsForCustomerListView">
+
+
+
+
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding Id}"
+        Header="Id" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding Weight}"
+        Header="Weight" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding MPriority}"
+        Header="MPriority" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding PStatus}"
+        Header="Parcel Status" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding OnTheOtherHand.Id}"
+        Header="Sender Id" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding OnTheOtherHand.Name}"
+        Header="Sender Name" />
+                </GridView>
+            </ListView.View>
             <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
             <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
             <i:Interaction.Triggers>
@@ -81,7 +110,45 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ListView>
-        
+
+
+        <Label>From:</Label>
+        <ListView Grid.Row="1"  
+                  ItemsSource="{Binding Customer.LFromCustomer}"
+                  x:Name="ParcelsFromCustomerListView">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding Id}"
+        Header="Id" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding Weight}"
+        Header="Weight" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding MPriority}"
+        Header="MPriority" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding PStatus}"
+        Header="PStatus" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding OnTheOtherHand.Id}"
+        Header="Getter Id" />
+                    <GridViewColumn
+        DisplayMemberBinding="{Binding OnTheOtherHand.Name}"
+        Header="Getter Name" />
+                </GridView>
+            </ListView.View>
+            <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
+            <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction 
+                        Command="{Binding ShowParcelOfCustomerCommand}"
+                        CommandParameter="{Binding ElementName=ParcelsFromCustomerListView, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ListView>
+
         <Button Content="Update"
                 Command="{Binding UpdateCustomerCommand}"/>
 
@@ -92,6 +159,6 @@
         <Button Content="close" 
                 Command="{Binding CloseWindowCommand }"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
-        
+
     </StackPanel>
 </UserControl>

@@ -13,7 +13,7 @@ namespace BL
     class Simulator
     {
         // maybe good for calculate distances
-        //  https://www.google.com/search?q=geography+location+and+calculate+distance+c%23&oq=geography+location+and+calculate+distance+c%23&aqs=chrome..69i57.22174j0j9&sourceid=chrome&ie=UTF-8
+        // https://www.google.com/search?q=geography+location+and+calculate+distance+c%23&oq=geography+location+and+calculate+distance+c%23&aqs=chrome..69i57.22174j0j9&sourceid=chrome&ie=UTF-8
 
         private const int DELAY = 500;
         private const double VELOCITY = 1.0;
