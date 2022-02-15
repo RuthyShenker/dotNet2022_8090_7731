@@ -60,7 +60,7 @@ namespace Dal
 
             if (item.Equals(default(T)))
             {
-                throw new IdIsNotExistException();
+                throw new IdDoesNotExistException();
             }
             return item;
 

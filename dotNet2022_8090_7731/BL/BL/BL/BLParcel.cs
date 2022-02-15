@@ -24,7 +24,7 @@ namespace BL
             {
                 sender = dal.GetFromDalById<DO.Customer>(parcel.Sender.Id);
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(DO.Customer), parcel.Sender.Id);
             }
@@ -33,7 +33,7 @@ namespace BL
             {
                 getter = dal.GetFromDalById<DO.Customer>(parcel.Getter.Id);
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(DO.Customer), parcel.Getter.Id);
             }
@@ -126,7 +126,7 @@ namespace BL
             {
                 parcel = dal.GetFromDalById<DO.Parcel>(drone.DeliveredParcelId.Value);
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
             }
@@ -170,7 +170,7 @@ namespace BL
             {
                 parcel = dal.GetFromDalById<DO.Parcel>(drone.DeliveredParcelId.Value);
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
             }
@@ -274,7 +274,7 @@ namespace BL
                 var dParcel = dal.GetFromDalById<DO.Parcel>(parcelId);
                 return ConvertToBL(dParcel);
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Parcel), parcelId);
             }
@@ -326,7 +326,7 @@ namespace BL
             {
                 dal.Remove(dal.GetFromDalById<DO.Parcel>(parcelId));
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Drone), parcelId);
             }

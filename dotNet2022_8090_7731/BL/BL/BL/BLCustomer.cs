@@ -53,9 +53,10 @@ namespace BL
                     Name = name
                 };
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException ex)
             {
-                throw new IdIsNotExistException(typeof(Customer), Id);
+                throw new IdIsNotExistException();
+                //throw new IdDoesNotExistException(typeof(Customer), Id);
             }
         }
         /// <summary>
@@ -139,7 +140,7 @@ namespace BL
                     }
                 }
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Customer), customerId);
             }
@@ -212,7 +213,7 @@ namespace BL
                 var dCustomer = dal.GetFromDalById<DO.Customer>(customerId);
                 return ConvertToBL(dCustomer);
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Customer), customerId);
             }
@@ -225,7 +226,7 @@ namespace BL
             {
                 dal.Remove(dal.GetFromDalById<DO.Customer>(customerId));
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Customer), customerId);
             }

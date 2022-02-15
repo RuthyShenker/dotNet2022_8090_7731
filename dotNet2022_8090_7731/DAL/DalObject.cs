@@ -58,7 +58,7 @@ namespace Dal
             var item = GetFromDalByCondition<T>(item => item.Id == Id);
 
             if (item.Equals(default(T)))
-                throw new IdIsNotExistException();
+                throw new IdDoesNotExistException($"Id: {Id} does not exist");
             else
                 return item;
         }

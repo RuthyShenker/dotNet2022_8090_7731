@@ -103,9 +103,9 @@ namespace BL
 //        BL wantedBl = ConvertToBL(wantedDal);
 //        return wantedBl;
 //    }
-//    catch (DalObject.IdIsNotExistException)
+//    catch (DalObject.IdDoesNotExistException)
 //    {
-//        throw new IdIsNotExistException(typeof(DL), Id);
+//        throw new IdDoesNotExistException(typeof(DL), Id);
 //    }
 //}
 ///// <summary>

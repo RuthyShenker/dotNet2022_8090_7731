@@ -382,7 +382,7 @@ namespace BL
                     Model = bLDrone.Model
                 });
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new BO.IdIsNotExistException(typeof(DO.BaseStation), StationId);
             }
@@ -403,7 +403,7 @@ namespace BL
                 dal.Update<DO.Drone>(droneId, newModel, nameof(DO.Drone.Model));
                 droneToList.Model = newModel;
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new BO.IdIsNotExistException(typeof(Drone), droneId);
             }
@@ -437,7 +437,7 @@ namespace BL
                 var dDrone = dal.GetFromDalById<DO.Drone>(droneId);
                 return ConvertToBL(dDrone);
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new BO.IdIsNotExistException(typeof(Drone), droneId);
             }
@@ -450,7 +450,7 @@ namespace BL
                 dal.Remove(dal.GetFromDalById<DO.Drone>(droneId));
                 lDroneToList.Remove(lDroneToList.Find(d => d.Id == droneId));
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Drone), droneId);
             }

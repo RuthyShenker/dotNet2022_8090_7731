@@ -62,7 +62,7 @@ namespace BL
                 //    throw new InValidActionException("number of positions cannot be lower than 1");
                 //}
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(DO.BaseStation), stationId);
             }
@@ -140,7 +140,7 @@ namespace BL
             {
                 dal.Remove(dal.GetFromDalById<DO.BaseStation>(stationId));
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(DO.BaseStation), stationId);
             }
@@ -199,7 +199,7 @@ namespace BL
                 var dStation = dal.GetFromDalById<DO.BaseStation>(stationId);
                 return ConvertToBL(dStation);
             }
-            catch (DO.IdIsNotExistException)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(Station), stationId);
             }
