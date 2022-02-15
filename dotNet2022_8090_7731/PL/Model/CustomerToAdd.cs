@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static PO.ValidityMessages;
 namespace PO
-{ 
+{
     public class CustomerToAdd : ObservableBase, IDataErrorInfo
     {
         public CustomerToAdd()
@@ -60,35 +60,35 @@ namespace PO
             }
         }
 
-        private string _phone;
-        private string _cidomet;
 
-        public string Cidomet
+        private string _prefix;
+
+        public string Prefix
         {
-            get => _cidomet;
+            get => _prefix;
 
             set
             {
-                Set(ref _cidomet, value);
+                Set(ref _prefix, value);
                 //validityMessages["Phone"] = PhoneMessage(value);
             }
         }
 
-
+        private string _phone;
 
         public string Phone
         {
-            get => _cidomet+_phone;
+            get => _phone;
 
             set
             {
-                Set(ref _phone,value);
-                validityMessages[nameof(Phone)] = PhoneMessage(value);
+                Set(ref _phone, value);
+                validityMessages[nameof(Phone)] = PhoneMessage(value,7);
             }
         }
 
         private double? _longitude;
-       
+
         public object Longitude
         {
             get => _longitude == null ? null : _longitude;
@@ -113,7 +113,7 @@ namespace PO
         }
 
         private double? _latitude;
-        
+
         public object Latitude
         {
             get => _latitude == null ? null : _latitude;
@@ -149,13 +149,13 @@ namespace PO
             }
         }
 
-        private readonly Dictionary<string, string> validityMessages = new ()
+        private readonly Dictionary<string, string> validityMessages = new()
         {
             [nameof(Id)] = string.Empty,
             [nameof(Name)] = string.Empty,
             [nameof(Phone)] = string.Empty,
             [nameof(Longitude)] = string.Empty,
             [nameof(Latitude)] = string.Empty
-        }; 
+        };
     }
 }

@@ -15,24 +15,7 @@ namespace BO
     ///OnTheOtherHand
     /// </summary>
     public class ParcelInCustomer
-    {
-        /// <summary>
-        /// A constructor with fields.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="weight"></param>
-        /// <param name="mPriority"></param>
-        /// <param name="pStatus"></param>
-        /// <param name="onTheOtherHand"></param>
-        //public ParcelInCustomer(int id, WeightCategories weight, Priority mPriority, ParcelStatus pStatus, CustomerInParcel onTheOtherHand)
-        //{
-        //    Id = id;
-        //    Weight = weight;
-        //    MPriority = mPriority;
-        //    PStatus = pStatus;
-        //    OnTheOtherHand = onTheOtherHand;
-        //}
-        /// <summary>
+    { 
         /// this field is init.
         /// </summary>
         public int Id { get; init; }

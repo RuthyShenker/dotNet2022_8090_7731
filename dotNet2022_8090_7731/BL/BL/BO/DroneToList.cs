@@ -19,35 +19,6 @@ namespace BO
     /// </summary>
     public class DroneToList
     {
-        public DroneToList()
-        {
-
-        }
-        public DroneToList(DroneToList d)
-        {
-            Id = d.Id;
-            Model = d.Model;
-            BatteryStatus = d.BatteryStatus;
-            CurrLocation = d.CurrLocation;
-            DeliveredParcelId = d.DeliveredParcelId;
-            DStatus = d.DStatus;
-            Weight = d.Weight;
-
-        }
-        public DroneToList(int id, string model, WeightCategories weight
-            , double batteryStatus, DroneStatus dStatus, Location currLocation, int? numOfParcel)
-        {
-            Id = id;
-            Model = model;
-            Weight = weight;
-            BatteryStatus = batteryStatus;
-            DStatus = dStatus;
-            CurrLocation = currLocation;
-            DeliveredParcelId = numOfParcel;
-        }
-        public DroneToList(int id, string model, WeightCategories weight) : this(id, model, weight, 0, 0, null, 0)
-        {
-        }
         /// <summary>
         /// this field is init.
         /// </summary>

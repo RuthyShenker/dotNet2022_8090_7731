@@ -15,13 +15,6 @@ namespace BO
     /// </summary>
     public class StationToList
     {
-        public StationToList(int id, string name, int availablePositions, int fullPositions)
-        {
-            Id = id;
-            Name = name;
-            AvailablePositions = availablePositions;
-            FullPositions = fullPositions;
-        }
         /// <summary>
         /// this field is init.
         /// </summary>

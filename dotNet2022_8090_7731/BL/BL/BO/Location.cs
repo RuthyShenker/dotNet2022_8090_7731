@@ -14,20 +14,6 @@ namespace BO
     /// </summary>
     public class Location
     {
-        /// <summary>
-        /// A constructor of Location with fields.
-        /// </summary>
-        /// <param name="longitude"></param>
-        /// <param name="latitude"></param>
-        public Location(double longitude, double latitude)
-        {
-            Longitude = longitude;
-            Latitude = latitude;
-        }
-        public Location()
-        {
-
-        }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public override string ToString() => this.ToStringProps();

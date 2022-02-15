@@ -15,25 +15,6 @@ namespace DO
     public struct Customer : IIdentifiable, IDalObject
     {
         /// <summary>
-        /// A constructor of Customer that gets parameters 
-        /// and initalizes the new instance with this 
-        /// parameters.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="phone"></param>
-        /// <param name="longitude"></param>
-        /// <param name="latitude"></param>
-        //public Customer(int id, string name, string phone, double longitude, double latitude)
-        //{
-        //    Id = id;
-        //    Name = name;
-        //    Phone = phone;
-        //    Longitude = longitude;
-        //    Latitude = latitude;
-        //}
-        
-        /// <summary>
         /// this field is init.
         /// </summary>
         public int Id { get; init; }

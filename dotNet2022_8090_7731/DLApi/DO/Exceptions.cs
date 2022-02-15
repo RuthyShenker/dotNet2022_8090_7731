@@ -30,14 +30,14 @@ namespace DO
     }
 
     [Serializable]
-    public class IdIsNotExistException : Exception
+    public class IdDoesNotExistException : Exception
     {
-        public IdIsNotExistException() : base() { }
-        public IdIsNotExistException(string message) : base(message) { }
-        public IdIsNotExistException(string message, Exception inner) : base(message, inner) { }
-        protected IdIsNotExistException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public IdDoesNotExistException() : base() { }
+        public IdDoesNotExistException(string message) : base(message) { }
+        public IdDoesNotExistException(string message, Exception inner) : base(message, inner) { }
+        protected IdDoesNotExistException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
-        //public IdIsNotExistException(Type type, int id) : base(type, id) { }
+        //public IdDoesNotExistException(Type type, int id) : base(type, id) { }
 
         //protected override string Message()
         //{

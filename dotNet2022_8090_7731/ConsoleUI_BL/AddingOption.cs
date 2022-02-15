@@ -66,7 +66,19 @@ namespace ConsoleUI_BL
             tools.PrintEnum(typeof(Priority));
             Priority mPriority = (Priority)CheckValids.InputValidOfEnum(typeof(Priority));
 
-            return new Parcel(senderId, getterId, weight, mPriority);
+            return new Parcel()
+            {
+                Id = 0,
+                Sender =new() { Id = senderId, Name = string.Empty },
+                Getter=new() { Id = getterId, Name = string.Empty },
+                Weight=weight,
+                MPriority= mPriority,
+                DInParcel= null,
+               MakingParcel= DateTime.Now,
+               BelongParcel= null,
+               PickingUp= null,
+               Arrival= null
+            };
         }
 
         /// <summary>
@@ -86,11 +98,11 @@ namespace ConsoleUI_BL
             double longitude = CheckValids.InputDoubleValidity("longitude");
             Console.WriteLine("latitude: ");
             double latitude = CheckValids.InputDoubleValidity("latitude");
-            Location cLocation = new(longitude, latitude);
+            Location cLocation = new() { Longitude = longitude, Latitude = latitude };
             //List<ParcelInCustomer> lFromCustomer;
             //List<ParcelInCustomer> LForCustomer
 
-            return new Customer(id, name, phone, cLocation);
+            return new() { Id = id, Name = name, Phone = phone, Location = cLocation };
         }
 
         /// <summary>
@@ -135,8 +147,16 @@ namespace ConsoleUI_BL
             ParcelInTransfer pInTransfer = null;
             Location currLocation = null;
 
-            return new Drone(id, model, weight, batteryStatus,
-                droneStatus, pInTransfer, currLocation);
+            return new()
+            {
+                Id = id,
+                Model = model,
+                Weight = weight,
+                BatteryStatus = batteryStatus,
+                DroneStatus = droneStatus,
+                PInTransfer = pInTransfer,
+                CurrLocation = currLocation
+            };
         }
 
         //public static BaseStation GettingBaseStation()

@@ -13,27 +13,12 @@ namespace BO
     /// </summary>
     public class ChargingDrone
     {
-        /// <summary>
-        /// A constructor of ChargingDrone with fields.
-        /// </summary>
-        /// <param name="droneId"></param>
-        /// <param name="batteryStatus"></param>
-        public ChargingDrone(int droneId, double batteryStatus)
-        {
-            DroneId = droneId;
-            BatteryStatus = batteryStatus;
-        }
-        public ChargingDrone()
-        {
-
-        }
         public int DroneId { get; set; }
         public double BatteryStatus { get; set; }
         public override string ToString()
         {
             return BL.Tools.ToStringProps(this);
         }
-
     }
 }
 

@@ -13,21 +13,7 @@ namespace BO
     ///Name
     /// </summary>
     public class CustomerInParcel
-    {
-        /// <summary>
-        ///A constructor of CustomerInParcel with fields.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        public CustomerInParcel(int id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
-        public CustomerInParcel()
-        {
-
-        }
+    { 
         /// <summary>
         /// this field is init.
         /// </summary>
@@ -37,7 +23,6 @@ namespace BO
         {
             return BL.Tools.ToStringProps(this);
         }
-
     }
 }
 

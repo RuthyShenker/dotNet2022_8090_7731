@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Device.Location;
-using System.Collections.ObjectModel;
-using BO;
+﻿using BO;
 using Singleton;
-using BlApi;
+using System;
+using System.Collections.Generic;
 
 namespace BL
 {
@@ -52,7 +44,7 @@ namespace BL
                 powerConsumptionLight,
                 powerConsumptionMedium,
                 powerConsumptionHeavy,
-                chargingRate 
+                chargingRate
             ) = dal.PowerConsumptionRequest();
         }
 
@@ -103,9 +95,9 @@ namespace BL
 //        BL wantedBl = ConvertToBL(wantedDal);
 //        return wantedBl;
 //    }
-//    catch (DalObject.IdIsNotExistException)
+//    catch (DalObject.IdDoesNotExistException)
 //    {
-//        throw new IdIsNotExistException(typeof(DL), Id);
+//        throw new IdDoesNotExistException(typeof(DL), Id);
 //    }
 //}
 ///// <summary>

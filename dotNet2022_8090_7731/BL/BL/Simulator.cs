@@ -94,7 +94,7 @@ namespace BL
                         if (station.Id != default)
                         {
                             drone.DStatus = DroneStatus.Maintenance;
-                            dal.Add(new DO.ChargingDrone(drone.Id, station.Id, DateTime.Now));
+                            dal.Add(new DO.ChargingDrone() { DroneId = drone.Id, StationId = station.Id, EnteranceTime = DateTime.Now });
                             bl.GetDrone(drone.Id);
                             updateView();
                             return;
@@ -145,7 +145,7 @@ namespace BL
                 {
                     if (!SleepDelayTime()) break;
                     double delta = distance < STEP ? distance : STEP;
-                    distance -= 50000 * delta;
+                    distance -= delta;
                     drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * PowerConsumptionFree);
                     updateView();
                 }
@@ -159,7 +159,7 @@ namespace BL
                         if (!SleepDelayTime()) break;
                         //lock (bl) למה בפרויקט לדוג עשו כאן?
                         {
-                            drone.BatteryStatus = Math.Min(1.0, (drone.BatteryStatus + chargingRate * TIME_STEP) * 5);
+                            drone.BatteryStatus = Math.Min(1.0, drone.BatteryStatus + chargingRate * TIME_STEP);
                             updateView();
                         }
                     }
