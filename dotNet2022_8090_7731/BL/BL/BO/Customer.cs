@@ -20,26 +20,6 @@ namespace BO
     public class Customer
     {
         /// <summary>
-        /// A constructor of Customer with fields.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="phone"></param>
-        /// <param name="location"></param>
-        public Customer(int id, string name, string phone, Location location)
-        {
-            Id = id;
-            Name = name;
-            Phone = phone;
-            Location = location;
-            LFromCustomer = new List<ParcelInCustomer>();
-            LForCustomer = new List<ParcelInCustomer>();
-        }
-        public Customer()
-        {
-
-        }
-        /// <summary>
         /// this field is init.
         /// </summary>
         public int Id { get; init; }

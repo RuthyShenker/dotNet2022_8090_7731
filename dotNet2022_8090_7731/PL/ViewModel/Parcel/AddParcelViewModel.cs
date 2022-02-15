@@ -48,7 +48,19 @@ namespace PL.ViewModels
 
         private Parcel Map(ParcelToAdd parcel)
         {
-            return new Parcel(parcel.Sender.Id, parcel.Getter.Id, parcel.Weight, parcel.MPriority);
+            return new Parcel(){
+
+               Id= 0,
+               Sender= new() {  Id=parcel.Sender.Id,Name=string.Empty },
+               Getter= new() { Id = parcel.Getter.Id, Name = string.Empty},
+                Weight= parcel.Weight,
+                MPriority= parcel.MPriority,
+                DInParcel =null, 
+                 MakingParcel=DateTime.Now,
+                BelongParcel= null, 
+               PickingUp= null,
+                 Arrival=null
+            };
         }
     }
 }

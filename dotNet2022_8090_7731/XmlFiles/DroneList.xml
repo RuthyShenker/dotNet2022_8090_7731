@@ -20,4 +20,9 @@
     <MaxWeight>Medium</MaxWeight>
     <Model>g</Model>
   </Drone>
+  <Drone>
+    <Id>7867</Id>
+    <MaxWeight>Medium</MaxWeight>
+    <Model>hbb</Model>
+  </Drone>
 </ArrayOfDrones>

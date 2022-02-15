@@ -255,14 +255,15 @@ namespace BL
             string senderName = dal.GetFromDalById<DO.Customer>(parcel.SenderId).Name;
             string getterName = dal.GetFromDalById<DO.Customer>(parcel.GetterId).Name;
 
-            ParcelToList nParcel = new(
-            parcel.Id,
-            senderName,
-            getterName,
-            (WeightCategories)parcel.Weight,
-            (Priority)parcel.MPriority,
-            GetParcelStatus(parcel)
-            );
+            ParcelToList nParcel = new()
+            {
+                Id = parcel.Id,
+                SenderName = senderName,
+                GetterName = getterName,
+                Weight = (WeightCategories)parcel.Weight,
+                MyPriority = (Priority)parcel.MPriority,
+                Status = GetParcelStatus(parcel)
+            };
             return nParcel;
         }
 
@@ -291,10 +292,19 @@ namespace BL
             CustomerInParcel sender = NewCustomerInParcel(parcel.SenderId);
             CustomerInParcel getter = NewCustomerInParcel(parcel.GetterId);
             DroneInParcel dInParcel = ConvertDroneInParcel(parcel.DroneId);
-            return new Parcel(parcel.Id, sender, getter,
-                (WeightCategories)parcel.Weight, (Priority)parcel.MPriority,
-                dInParcel, parcel.CreatedTime, parcel.BelongParcel,
-                parcel.PickingUp, parcel.Arrival);
+            return new Parcel()
+            {
+                Id = parcel.Id,
+                Sender = sender,
+                Getter = getter,
+                Weight = (WeightCategories)parcel.Weight,
+                MPriority = (Priority)parcel.MPriority,
+                DInParcel = dInParcel,
+                MakingParcel = parcel.CreatedTime,
+                BelongParcel = parcel.BelongParcel,
+                PickingUp = parcel.PickingUp,
+                Arrival = parcel.Arrival
+            };
         }
 
         /// <summary>
@@ -312,7 +322,7 @@ namespace BL
             if (lDroneToList.FirstOrDefault(d => d.Id == droneId) != null)
             {
                 var drone = lDroneToList.FirstOrDefault(drone => drone.Id == droneId);
-                return new DroneInParcel(droneId.Value, drone.BatteryStatus, drone.CurrLocation);
+                return new() { Id = droneId.Value, BatteryStatus = drone.BatteryStatus, CurrLocation = drone.CurrLocation };
             }
             else
             {

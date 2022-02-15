@@ -76,11 +76,11 @@ namespace BL
             var sender = dal.GetFromDalByCondition<DO.Customer>(customer => customer.Id == parcel.SenderId);
             if (parcel.BelongParcel != null && parcel.PickingUp == null)
             {
-                nDrone.CurrLocation = ClosestStation(new Location(sender.Longitude, sender.Latitude)).Location;
+                nDrone.CurrLocation = ClosestStation(new Location() { Longitude = sender.Longitude, Latitude = sender.Latitude }).Location;
             }
             else if (parcel.Arrival == null && parcel.PickingUp != null)
             {
-                nDrone.CurrLocation = new Location(sender.Longitude, sender.Latitude);
+                nDrone.CurrLocation = new Location() { Longitude = sender.Longitude, Latitude = sender.Latitude };
             }
 
             // battery Status:
@@ -108,12 +108,12 @@ namespace BL
         private DroneToList CalculateUnDeliveryingDrone(DroneToList nDrone)
         {
             //if the list of charging drone empty or this drone is not on charging so it is free.
-            if (!dal.GetListFromDal<DO.ChargingDrone>().Any() || 
-                dal.GetListFromDal<DO.ChargingDrone>().FirstOrDefault(chargingDrone =>chargingDrone.DroneId == nDrone.Id).Equals(default(DO.ChargingDrone))) 
+            if (!dal.GetListFromDal<DO.ChargingDrone>().Any() ||
+                dal.GetListFromDal<DO.ChargingDrone>().FirstOrDefault(chargingDrone => chargingDrone.DroneId == nDrone.Id).Equals(default(DO.ChargingDrone)))
                 nDrone.DStatus = DroneStatus.Free;
             else
                 nDrone.DStatus = DroneStatus.Maintenance;
-          
+
             var customersList = CustomersWithProvidedParcels();
 
 
@@ -143,15 +143,15 @@ namespace BL
                 {
                     var stationId = dal.GetDalListByCondition<DO.ChargingDrone>(c => c.DroneId == nDrone.Id).First().StationId;
                     var station = dal.GetFromDalByCondition<DO.BaseStation>(s => s.Id == stationId);
-                    nDrone.CurrLocation =new(station.Longitude,station.Latitude);
-                   
+                    nDrone.CurrLocation = new() { Longitude = station.Longitude, Latitude = station.Latitude };
+
                 }
                 else //customersList.Count() == 0
                 {
                     var idStation = GetStations().ElementAt(rand.Next(GetStations().Count())).Id;
                     var longitude = dal.GetFromDalById<DO.BaseStation>(idStation).Longitude;
                     var latitude = dal.GetFromDalById<DO.BaseStation>(idStation).Latitude;
-                    nDrone.CurrLocation =new(longitude,latitude);
+                    nDrone.CurrLocation = new() { Longitude = longitude, Latitude = latitude };
                 }
                 nDrone.BatteryStatus = rand.NextDouble() * 20;
             }
@@ -169,10 +169,12 @@ namespace BL
         /// A function that builds new DroneToList object and gets an object of IDAL.DO.Drone
         /// and copies from the object-IDAL.DO.Drone the common fields.
         /// </summary>
-        private DroneToList CopyCommon(DO.Drone source) => new(
-            source.Id,
-            source.Model,
-            (WeightCategories)source.MaxWeight);
+        private DroneToList CopyCommon(DO.Drone source) => new()
+        {
+            Id=source.Id,
+            Model= source.Model,
+            Weight=(WeightCategories)source.MaxWeight
+        };
 
         /// <summary>
         ///  
@@ -185,7 +187,7 @@ namespace BL
         {
             ParcelInTransfer parcelInTransfer = CalculateParcelInTransfer(drone.Id);
             var wantedDrone = lDroneToList.FirstOrDefault(droneToList => droneToList.Id == drone.Id);
-            return new Drone()
+            return new()
             {
                 Id = wantedDrone.Id,
                 Model = wantedDrone.Model,
@@ -233,8 +235,18 @@ namespace BL
                 Location senderLocation = GetCustomer(parcel.Sender.Id).Location;
                 Location getterLocation = GetCustomer(parcel.Getter.Id).Location;
                 double distance = Extensions.CalculateDistance(senderLocation, getterLocation);
-                return new ParcelInTransfer(parcel.Id, parcel.PickingUp.HasValue, parcel.MPriority,
-                    parcel.Weight, parcel.Sender, parcel.Getter, senderLocation, getterLocation, distance);
+                return new ParcelInTransfer()
+                {
+                    PId = parcel.Id,
+                    IsInWay = parcel.PickingUp.HasValue,
+                    MPriority = parcel.MPriority,
+                    Weight = parcel.Weight,
+                    Sender = parcel.Sender,
+                    Getter = parcel.Getter,
+                    CollectionLocation = senderLocation,
+                    DeliveryLocation = getterLocation,
+                    TransDistance = distance
+                };
             }
         }
 
@@ -275,7 +287,13 @@ namespace BL
             drone.DStatus = DroneStatus.Maintenance;
             //--closetBaseStation.NumAvailablePositions;
             //closetBaseStation.LBL_ChargingDrone.AddCustomer(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
-            dal.Add(new DO.ChargingDrone(drone.Id, closetdStation.Id, DateTime.Now));
+            dal.Add(new DO.ChargingDrone()
+            {
+                DroneId = drone.Id,
+                StationId = closetdStation.Id,
+                EnteranceTime = DateTime.Now
+            }
+            );
         }
 
         /// <summary>
@@ -363,17 +381,18 @@ namespace BL
                 bLDrone.BatteryStatus = 0;
                 //bLDrone.BatteryStatus = rand.Next(20, 41);
                 bLDrone.DroneStatus = DroneStatus.Maintenance;
-                dal.Add(new DO.ChargingDrone(bLDrone.Id, StationId, DateTime.Now));
+                dal.Add(new DO.ChargingDrone() { DroneId = bLDrone.Id, StationId = StationId, EnteranceTime = DateTime.Now });
 
-                lDroneToList.Add(new DroneToList(
-                    bLDrone.Id,
-                    bLDrone.Model,
-                    bLDrone.Weight,
-                    bLDrone.BatteryStatus,
-                    bLDrone.DroneStatus,
-                    new Location(station.Longitude, station.Latitude),
-                    null
-                    ));
+                lDroneToList.Add(new()
+                {
+                    Id = bLDrone.Id,
+                    Model = bLDrone.Model,
+                    Weight = bLDrone.Weight,
+                    BatteryStatus = bLDrone.BatteryStatus,
+                    DStatus = bLDrone.DroneStatus,
+                    CurrLocation = new Location() { Longitude = station.Longitude, Latitude = station.Latitude },
+                    DeliveredParcelId = null
+                });
 
                 dal.Add(new DO.Drone()
                 {
@@ -414,11 +433,21 @@ namespace BL
         {
             if (predicate == null)
             {
-                return lDroneToList.Select(d => new DroneToList(d));
+                return lDroneToList.Select(d => new DroneToList() { Id=d.Id, Weight=d.Weight, Model=d.Model,
+                 DStatus=d.DStatus, DeliveredParcelId=d.DeliveredParcelId, CurrLocation=d.CurrLocation, BatteryStatus=d.BatteryStatus } );
             }
             else
             {
-                return lDroneToList.Where(predicate).Select(d => new DroneToList(d));
+                return lDroneToList.Where(predicate).Select(d => new DroneToList()
+                {
+                    Id = d.Id,
+                    Weight = d.Weight,
+                    Model = d.Model,
+                    DStatus = d.DStatus,
+                    DeliveredParcelId = d.DeliveredParcelId,
+                    CurrLocation = d.CurrLocation,
+                    BatteryStatus = d.BatteryStatus
+                });
             }
         }
 

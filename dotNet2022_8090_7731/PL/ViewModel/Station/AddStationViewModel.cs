@@ -47,8 +47,15 @@ namespace PL.ViewModels
 
         private Station Map(StationToAdd station)
         {
-            BO.Location location = new((double)station.Longitude, (double)station.Latitude);
-            return new Station((int)station.Id, station.Name,location,(int)station.NumPositions);
+            BO.Location location = new() { Longitude = (double)station.Longitude, Latitude = (double)station.Latitude };
+            return new Station()
+            {
+                Id = (int)station.Id,
+                NameStation = station.Name,
+                Location = location,
+                NumAvailablePositions = (int)station.NumPositions,
+                 LBL_ChargingDrone=null
+            };
         }
     }
 }

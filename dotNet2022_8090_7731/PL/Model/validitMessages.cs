@@ -73,23 +73,19 @@ namespace PO
                         "Name has to contain digits only" :
                    "";
         }
-        public static string PhoneMessage(string value)
+
+        public static string PhoneMessage(string value,int length)
         {
             return value == string.Empty ||value==null? 
                         "Field is required" : 
                 !value.All(d => char.IsDigit(d)) ?  
                         "Input must contain digits only" :
-                 value.Length != 7?
-                        "Phone must contain 10 digits" :
+                 value.Length != length?
+                        $"Phone must contain {length} digits" :
                     "";
-            //return value switch
-            //{
-            //    null => "Field is required",
-            //    !value.All(d => char.IsDigit(d)) => "Input must contain digits only",
-            //    value.Length !=10  => "Phone must contain 10 digits",
-            //    _ => "",
-            //};
         }
+
+        
 
         public static string RequiredMessage() => "Feild is required";
 

@@ -92,7 +92,7 @@ namespace BL
                         if (station.Id != default)
                         {
                             drone.DStatus = DroneStatus.Maintenance;
-                            dal.Add(new DO.ChargingDrone(drone.Id, station.Id, DateTime.Now));
+                            dal.Add(new DO.ChargingDrone() { DroneId = drone.Id, StationId = station.Id, EnteranceTime = DateTime.Now });
                             bl.GetDrone(drone.Id);
                             updateView();
                             return;

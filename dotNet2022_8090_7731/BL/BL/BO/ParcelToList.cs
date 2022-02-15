@@ -18,25 +18,6 @@ namespace BO
     public class ParcelToList
     {
         /// <summary>
-        /// A constructor of ParcelToList with fields.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="senderName"></param>
-        /// <param name="getterName"></param>
-        /// <param name="weight"></param>
-        /// <param name="myPriority"></param>
-        /// <param name="status"></param>
-        public ParcelToList(int id, string senderName, string getterName,
-           WeightCategories weight, Priority myPriority, ParcelStatus status)
-        {
-            Id = id;
-            SenderName = senderName;
-            GetterName = getterName;
-            Weight = weight;
-            MyPriority = myPriority;
-            Status = status;
-        }
-        /// <summary>
         /// this field is init.
         /// </summary>
         public int Id { get; init; }

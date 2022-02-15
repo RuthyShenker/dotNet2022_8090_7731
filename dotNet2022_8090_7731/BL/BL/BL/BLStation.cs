@@ -78,11 +78,14 @@ namespace BL
         {
             var chargingDroneBLList = Enumerable.Empty<ChargingDrone>();
             var chargingDroneDalList = dal.GetDalListByCondition<DO.ChargingDrone>(charge => charge.StationId == sId);
-            var chargingDrone = new ChargingDrone();
+            ChargingDrone chargingDrone;
             foreach (var chargingPosition in chargingDroneDalList)
             {
-                chargingDrone.DroneId = chargingPosition.DroneId;
-                chargingDrone.BatteryStatus = lDroneToList.FirstOrDefault(drone => drone.Id == chargingDrone.DroneId)?.BatteryStatus ?? 0;
+                chargingDrone = new()
+                {
+                    DroneId = chargingPosition.DroneId,
+                    BatteryStatus = lDroneToList.FirstOrDefault(drone => drone.Id == chargingPosition.DroneId)?.BatteryStatus ?? 0
+                };
                 // TODO: the problem was that there werent use in the return Append. to check
                 // if there more places like that.
                 chargingDroneBLList = chargingDroneBLList.Append(chargingDrone);
@@ -183,11 +186,9 @@ namespace BL
         private StationToList ConvertToList(DO.BaseStation station)
         {
             var numOfAvailablePositions = GetNumOfAvailablePositionsInStation(station.Id);
-            StationToList nStation = new(
-                station.Id,
-                station.NameStation,
-                numOfAvailablePositions,
-                station.NumberOfChargingPositions - numOfAvailablePositions);
+            StationToList nStation = new() { Id = station.Id, Name = station.NameStation,
+                AvailablePositions = numOfAvailablePositions, FullPositions = station.NumberOfChargingPositions - numOfAvailablePositions };
+
             return nStation;
         }
 
@@ -213,10 +214,10 @@ namespace BL
         /// <returns>returns Station object</returns>
         private Station ConvertToBL(DO.BaseStation station)
         {
-            var nLocation = new Location(station.Longitude, station.Latitude);
+            var nLocation = new Location() { Longitude = station.Longitude, Latitude = station.Latitude };
             var numAvailablePositions = GetNumOfAvailablePositionsInStation(station.Id);
             var chargingDroneBList = ChargingDroneBLList(station.Id);
-            return new Station(station.Id, station.NameStation, nLocation, numAvailablePositions, chargingDroneBList);
+            return new Station() { Id = station.Id, NameStation = station.NameStation, Location = nLocation, NumAvailablePositions = numAvailablePositions, LBL_ChargingDrone = chargingDroneBList };
         }
 
         private int GetNumOfAvailablePositionsInStation(int stationId)

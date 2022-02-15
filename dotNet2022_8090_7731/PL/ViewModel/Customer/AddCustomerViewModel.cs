@@ -49,8 +49,16 @@ namespace PL.ViewModels
 
         private BO.Customer MapCustomerFromPOToBO(CustomerToAdd customer)
         {
-            return new BO.Customer((int)customer.Id, customer.Name,customer.Cidomet+customer.Phone,
-                new BO.Location((double)customer.Longitude, (double)customer.Latitude));
+            var phone = customer.Prefix + customer.Phone;
+            return new()
+            {
+                Id = (int)customer.Id,
+                Name = customer.Name,
+                Phone = phone,
+                Location = new() { Longitude = (double)customer.Longitude, Latitude = (double)customer.Latitude },
+                LForCustomer = new List<BO.ParcelInCustomer>(),
+                LFromCustomer = new List<BO.ParcelInCustomer>()
+            };
         }
     }
 }

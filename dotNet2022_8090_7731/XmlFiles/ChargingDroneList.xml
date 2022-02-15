@@ -15,4 +15,9 @@
     <DroneId>6664</DroneId>
     <EnteranceTime>2022-02-15T19:04:37.5366702+02:00</EnteranceTime>
   </ChargingDrone>
+  <ChargingDrone>
+    <StationId>7777</StationId>
+    <DroneId>7867</DroneId>
+    <EnteranceTime>2022-02-15T19:35:03.5069794+02:00</EnteranceTime>
+  </ChargingDrone>
 </ArrayOfChargingDrone>

@@ -47,7 +47,7 @@ namespace BL
             try
             {
                 string name = dal.GetFromDalById<DO.Customer>(Id).Name;
-                return new CustomerInParcel()
+                return new()
                 {
                     Id = Id,
                     Name = name

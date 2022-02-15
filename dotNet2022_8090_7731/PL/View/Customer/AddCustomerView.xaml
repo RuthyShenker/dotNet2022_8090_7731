@@ -37,7 +37,7 @@
                 UpdateSourceTrigger=PropertyChanged}"
             materialDesign:HintAssist.Hint="Name" />
 
-        <ComboBox SelectedItem="{Binding cidomet, ValidatesOnDataErrors=true,
+        <ComboBox SelectedItem="{Binding Customer.Prefix, ValidatesOnDataErrors=true,
             NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding PhoneOptions}" materialDesign:HintAssist.Hint="cidomet" />
         <TextBox

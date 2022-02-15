@@ -48,8 +48,17 @@ namespace PL.ViewModels
         }
 
         private Drone Map(DroneToAdd drone)
-        {  
-            return new Drone((int)drone.Id, drone.Model, drone.MaxWeight, 0, DroneStatus.Maintenance, null, BlApi.BlFactory.GetBl().GetStation(Drone.StationId).Location);
+        {
+            return new()
+            {
+                Id = (int)drone.Id,
+                Model = drone.Model,
+                Weight = drone.MaxWeight,
+                BatteryStatus = 0,
+                DroneStatus = DroneStatus.Maintenance,
+                PInTransfer = null,
+                CurrLocation = BlApi.BlFactory.GetBl().GetStation(Drone.StationId).Location
+            };
         }
     }
 }

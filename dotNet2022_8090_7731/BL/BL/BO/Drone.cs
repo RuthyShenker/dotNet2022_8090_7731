@@ -29,24 +29,16 @@ namespace BO
         /// <param name="droneStatus"></param>
         /// <param name="pInTransfer"></param>
         /// <param name="currLocation"></param>
-        public Drone(int id, string model, WeightCategories weight, double batteryStatus, DroneStatus droneStatus, ParcelInTransfer pInTransfer, Location currLocation)
-        {
-            Id = id;
-            Model = model;
-            Weight = weight;
-            BatteryStatus = batteryStatus;
-            DroneStatus = droneStatus;
-            PInTransfer = pInTransfer;
-            CurrLocation = currLocation;
-        }
-
-        public Drone(int id, string model, WeightCategories weight, DroneStatus droneStatus) : this(id, model, weight, 0, droneStatus, null, null)
-        {
-        }
-
-        public Drone()
-        {
-        }
+        //public Drone(int id, string model, WeightCategories weight, double batteryStatus, DroneStatus droneStatus, ParcelInTransfer pInTransfer, Location currLocation)
+        //{
+        //    Id = id;
+        //    Model = model;
+        //    Weight = weight;
+        //    BatteryStatus = batteryStatus;
+        //    DroneStatus = droneStatus;
+        //    PInTransfer = pInTransfer;
+        //    CurrLocation = currLocation;
+        //}
 
         /// <summary>
         /// this field is init.

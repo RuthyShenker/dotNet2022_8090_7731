@@ -45,7 +45,7 @@ namespace PO
             set
             {
                 Set(ref _phone, value);
-                validityMessages[nameof(Phone)] = PhoneMessage(value);
+                validityMessages[nameof(Phone)] = PhoneMessage(value,10);
             }
         }
         //TODO
