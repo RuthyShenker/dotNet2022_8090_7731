@@ -86,7 +86,7 @@ namespace PO
                 return string.Empty;
             }
         }
-        private Dictionary<string, string> validityMessages = new Dictionary<string, string>()
+        private Dictionary<string, string> validityMessages = new()
         {
             [nameof(Model)] = string.Empty,
         };

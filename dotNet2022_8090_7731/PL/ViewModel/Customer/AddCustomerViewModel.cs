@@ -12,8 +12,9 @@ namespace PL.ViewModels
     {
         public List<string> PhoneOptions { get; set; }
         public string cidomet { get; set; }
-        BlApi.IBL bl;
-        Action<BO.Customer> switchView;
+
+        readonly BlApi.IBL bl;
+        readonly Action<BO.Customer> switchView;
         public CustomerToAdd Customer { get; set; }
         public RelayCommand<object> AddCustomerCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }

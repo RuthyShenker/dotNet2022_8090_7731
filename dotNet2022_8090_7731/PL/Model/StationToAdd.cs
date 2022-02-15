@@ -111,7 +111,7 @@ namespace PO
             get => _numPositions == null ? null : _numPositions;
             set
             {
-                bool valid = int.TryParse((string)value, out int numPositions);
+                bool valid = int.TryParse((string)value, out _);
                 if (value is null or "")
                 {
                     Set(ref _numPositions, null);
@@ -150,7 +150,7 @@ namespace PO
             }
         }
 
-        private Dictionary<string, string> validityMessages = new()
+        private readonly Dictionary<string, string> validityMessages = new()
         {
             [nameof(Id)] = string.Empty,
             [nameof(name)] = string.Empty,

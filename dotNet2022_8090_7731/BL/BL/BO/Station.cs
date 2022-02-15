@@ -16,7 +16,7 @@ namespace BO
     /// </summary>
     public class Station
     {
-        private Location sLocation;
+        private readonly Location sLocation;
 
         public Station(int id, string nameStation, Location sLocation, int numAvailablePositions)
         {

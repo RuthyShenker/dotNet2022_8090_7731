@@ -270,8 +270,8 @@ namespace Dal
                 return XMLTools.LoadDroneListFromXmlToDrone().ToList().Any(i => i.Equals(item));
             else
             {
-                StreamReader reader = new StreamReader(GetXmlFilePath(typeof(T)));
-                XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+                StreamReader reader = new(GetXmlFilePath(typeof(T)));
+                XmlSerializer serializer = new(typeof(List<T>));
                 List<T> List = (List<T>)serializer.Deserialize(reader);
                 reader.Close();
                 return List.Any(i => i.Equals(item));

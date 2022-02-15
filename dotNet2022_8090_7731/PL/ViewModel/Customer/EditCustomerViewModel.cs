@@ -13,7 +13,7 @@ namespace PL.ViewModels
     public class EditCustomerViewModel : INotify
     {
         BlApi.IBL bl;
-        Action refreshCustomers;
+        readonly Action refreshCustomers;
         private EditCustomer customer;
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> UpdateCustomerCommand { get; set; }

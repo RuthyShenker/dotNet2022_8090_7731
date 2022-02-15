@@ -13,7 +13,7 @@ namespace PL.ViewModels
 {
     public class CustomerListViewModel : INotify
     {
-        BlApi.IBL bl;
+        readonly BlApi.IBL bl;
 
         public IEnumerable<CustomerToList> customerList { get; set; }
         public RelayCommand<object> AddCustomerCommand { get; set; }

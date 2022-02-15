@@ -57,9 +57,9 @@ namespace DalXml
         {
             try
             {
-                using (FileStream file = new FileStream(filePath, FileMode.Create))
+                using (FileStream file = new(filePath, FileMode.Create))
                 {
-                    XmlSerializer x = new XmlSerializer(list.GetType());
+                    XmlSerializer x = new(list.GetType());
                     x.Serialize(file, list);
                 }
             }
@@ -75,11 +75,9 @@ namespace DalXml
             {
                 if (File.Exists(filePath))
                 {
-                    using (var reader = new StreamReader(filePath))
-                    {
-                        XmlSerializer x = new XmlSerializer(typeof(List<T>));
-                        return (List<T>)x.Deserialize(reader);
-                    }
+                    using var reader = new StreamReader(filePath);
+                    XmlSerializer x = new XmlSerializer(typeof(List<T>));
+                    return (List<T>)x.Deserialize(reader);
                 }
                 else
                     return new List<T>();
