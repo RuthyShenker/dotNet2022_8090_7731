@@ -141,17 +141,17 @@ namespace BL
 
                 if (nDrone.DStatus == DroneStatus.Maintenance)
                 {
-                    var stationId = dal.GetDalListByCondition<DO.ChargingDrone>(c => c.DroneId == nDrone.Id).First().StationId;
+                    int stationId = dal.GetDalListByCondition<DO.ChargingDrone>(c => c.DroneId == nDrone.Id).First().StationId;
                     var station = dal.GetFromDalByCondition<DO.BaseStation>(s => s.Id == stationId);
-                    nDrone.CurrLocation =new(station.Longitude,station.Latitude);
+                    nDrone.CurrLocation = new(station.Longitude, station.Latitude);
                    
                 }
                 else //customersList.Count() == 0
                 {
-                    var idStation = GetStations().ElementAt(rand.Next(GetStations().Count())).Id;
-                    var longitude = dal.GetFromDalById<DO.BaseStation>(idStation).Longitude;
-                    var latitude = dal.GetFromDalById<DO.BaseStation>(idStation).Latitude;
-                    nDrone.CurrLocation =new(longitude,latitude);
+                    int idStation = GetStations().ElementAt(rand.Next(GetStations().Count())).Id;
+                    double longitude = dal.GetFromDalById<DO.BaseStation>(idStation).Longitude;
+                    double latitude = dal.GetFromDalById<DO.BaseStation>(idStation).Latitude;
+                    nDrone.CurrLocation = new(longitude, latitude);
                 }
                 nDrone.BatteryStatus = rand.NextDouble() * 20;
             }
