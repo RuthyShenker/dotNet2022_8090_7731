@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BO;
 using System.Threading;
 using static BL.BL;
+using System.Runtime.CompilerServices;
 
 namespace BL
 {
@@ -38,14 +39,13 @@ namespace BL
         //        chargingRate
         //public enum Maintenance { Assigning, GoingTowardStation, Charging };
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Simulator(BL blInstance, int droneId, Action updateViewAction, Func<bool> checkStopFunc)
         {
             bl = blInstance;
             dal = blInstance.dal;
-            //powerConsumption = bl.GetPowerConsumption().ToArray();
             DroneToList drone = bl.lDroneToList.First(d => d.Id == droneId);
 
-            //Drone drone = bl.GetDrone(droneId);
             updateView = updateViewAction;
             checkStop = checkStopFunc;
 
@@ -77,10 +77,12 @@ namespace BL
 
                 if (!optionalParcels.Any())
                 {
-                    if (drone.BatteryStatus == 1.0)
+                    if (drone.BatteryStatus >= 1.0)
                     {
                         while (!optionalParcels.Any() && !checkStop())
                         {
+                            drone.DStatus = DroneStatus.Free;
+                            updateView();
                             if (!SleepDelayTime()) break;
                             optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
                         }
@@ -106,45 +108,6 @@ namespace BL
 
                 dal.Update<DO.Parcel>((int)(parcel.Id), DateTime.Now, nameof(DO.Parcel.BelongParcel));
                 dal.Update<DO.Parcel>((int)(parcel.Id), drone.Id, nameof(DO.Parcel.DroneId));
-                ////if (optionalParcels.Any())
-                //{
-                //    if (!SleepDelayTime()) return;
-
-                //    switch (parcel, drone.BatteryStatus)
-                //    {
-                //        // if there is no parcel to assign and drone's battery is full.  
-                //        case (null, 1.0):
-                //            // TODO
-                //            while (!optionalParcels.Any() && !checkStop()) 
-                //            {
-                //                optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
-                //                if (!SleepDelayTime()) return;
-                //            }
-                //            break;
-
-                //        // if the is no parcel to assign and the the drone's battery is not full.
-                //        case (null, _):
-                //            station = bl.ClosestStation(drone.CurrLocation, true);
-
-                //            if (station.Id != default)
-                //            {
-                //                drone.DroneStatus = DroneStatus.Maintenance;
-
-                //                dal.Update<DO.BaseStation>(station.Id, station.NumAvailablePositions - 1, nameof(station.NumAvailablePositions));
-                //                dal.Add(new DO.ChargingDrone(drone.Id, station.Id, DateTime.Now));
-                //            }
-                //            break;
-
-                //        // if there is parcel to assign and there is enough battery.
-                //        case (_, _):
-                //            Init((int)(parcel?.Id));
-                //            drone.DroneStatus = DroneStatus.Delivery;
-
-                //            dal.Update<DO.Parcel>((int)(parcel?.Id), DateTime.Now, nameof(DO.Parcel.BelongParcel));
-                //            dal.Update<DO.Parcel>((int)(parcel?.Id), drone.Id, nameof(DO.Parcel.DroneId));
-                //            break;
-
-                //        default:
             }
         }
 
@@ -182,8 +145,8 @@ namespace BL
                 {
                     if (!SleepDelayTime()) break;
                     double delta = distance < STEP ? distance : STEP;
-                    distance -= delta;
-                    drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * powerConsumptionFree);
+                    distance -= 50000 * delta;
+                    drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * PowerConsumptionFree);
                     updateView();
                 }
                 if (distance <= 0.01)
@@ -196,7 +159,7 @@ namespace BL
                         if (!SleepDelayTime()) break;
                         //lock (bl) למה בפרויקט לדוג עשו כאן?
                         {
-                            drone.BatteryStatus = Math.Min(1.0, drone.BatteryStatus + chargingRate * TIME_STEP);
+                            drone.BatteryStatus = Math.Min(1.0, (drone.BatteryStatus + chargingRate * TIME_STEP) * 5);
                             updateView();
                         }
                     }
@@ -231,7 +194,7 @@ namespace BL
                 {
                     double delta = distance < STEP ? distance : STEP;
                     double proportion = delta / distance;
-                    drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * (pickedUp ? powerConsumptionFree : powerConsumptionFree));
+                    drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * (pickedUp ? PowerConsumptionFree : PowerConsumptionFree));
                     double lat = drone.CurrLocation.Latitude + (customer.Location.Latitude - drone.CurrLocation.Latitude) * proportion;
                     double lon = drone.CurrLocation.Longitude + (customer.Location.Longitude - drone.CurrLocation.Longitude) * proportion;
                     drone.CurrLocation = new() { Latitude = lat, Longitude = lon };

@@ -7,4 +7,11 @@
     <Longitude>9</Longitude>
     <Latitude>9</Latitude>
   </BaseStation>
+  <BaseStation>
+    <Id>4444</Id>
+    <NameStation>j</NameStation>
+    <NumberOfChargingPositions>5</NumberOfChargingPositions>
+    <Longitude>5</Longitude>
+    <Latitude>5</Latitude>
+  </BaseStation>
 </ArrayOfBaseStation>
