@@ -42,7 +42,8 @@ namespace PL.ViewModels
             //        MessageBoxImage.Stop);
             //    return;
             //}
-            /*else*/ if (Parcel.BelongParcel.HasValue && Parcel.PickingUp.HasValue)
+            /*else*/
+            if (Parcel.BelongParcel.HasValue && Parcel.PickingUp.HasValue)
             {
                 MessageBox.Show("I am on the way!  You can't delete me!", "Delete Parcel Error", MessageBoxButton.OK,
                     MessageBoxImage.Stop);
@@ -124,8 +125,8 @@ namespace PL.ViewModels
         {
             //refreshParcels();
 
-            if (bl.GetParcels().FirstOrDefault(p=>p.Id==Parcel.Id)!=default) 
-            { 
+            if (bl.GetParcels().FirstOrDefault(p => p.Id == Parcel.Id) != default)
+            {
                 Parcel = Map(bl.GetParcel(Parcel.Id));
             }
         }

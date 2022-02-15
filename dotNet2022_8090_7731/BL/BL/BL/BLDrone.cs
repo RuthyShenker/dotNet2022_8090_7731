@@ -14,7 +14,7 @@ namespace BL
     {
         public void StartSimulator(int droneId, Action updateView, Func<bool> checkStop)
         {
-            //new Simulator(this, droneId, updateView, checkStop);
+            new Simulator(this, droneId, updateView, checkStop);
         }
 
         private void InitializeDroneList()
@@ -160,8 +160,16 @@ namespace BL
         {
             ParcelInTransfer parcelInTransfer = CalculateParcelInTransfer(drone.Id);
             var wantedDrone = lDroneToList.FirstOrDefault(droneToList => droneToList.Id == drone.Id);
-            return new Drone(wantedDrone.Id, wantedDrone.Model, wantedDrone.Weight, wantedDrone.BatteryStatus,
-                wantedDrone.DStatus, parcelInTransfer, wantedDrone.CurrLocation);
+            return new Drone()
+            {
+                Id = wantedDrone.Id,
+                Model = wantedDrone.Model,
+                Weight = wantedDrone.Weight,
+                BatteryStatus = wantedDrone.BatteryStatus,
+                DroneStatus = wantedDrone.DStatus,
+                CurrLocation = wantedDrone.CurrLocation,
+                PInTransfer = parcelInTransfer
+            };
         }
 
         /// <summary>
@@ -265,7 +273,7 @@ namespace BL
                     throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is Free ");
                 case DroneStatus.Delivery:
                     throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is Delivery ");
-                default:                   
+                default:
                     //is correct?
                     drone.BatteryStatus += timeInCharging * chargingRate;
                     drone.DStatus = DroneStatus.Free;

@@ -137,7 +137,6 @@ namespace PL.ViewModels
             FilterList = choosenNumPositions;
             GroupBy = groupBy;
 
-            MessageBox.Show("RefreshStationList");
             //StationList.Refresh();
         }
     }

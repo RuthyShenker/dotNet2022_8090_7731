@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using BO;
 using PL.View;
 using PO;
@@ -15,6 +16,18 @@ namespace PL.ViewModels
         BlApi.IBL bl;
         Action refreshDrones;
         EditDrone drone;
+
+        public RelayCommand<object> ChargeDroneCommand { get; set; }
+
+        public RelayCommand<object> AssignParcelToDroneCommand { get; set; }
+
+        public RelayCommand<object> UpdateModelOfDroneCommand { get; set; }
+
+        public RelayCommand<object> CloseWindowCommand { get; set; }
+
+        public RelayCommand<object> DeleteDroneCommand { get; set; }
+        public RelayCommand<object> OpenParcelWindowCommand { get; set; }
+        public RelayCommand<object> StartOrStopSimulatorCommand { get; set; }
 
         public EditDroneViewModel(BlApi.IBL bl, BO.Drone drone)
         {
@@ -28,20 +41,60 @@ namespace PL.ViewModels
             AssignParcelToDroneCommand = new RelayCommand<object>(AssignParcelToDrone);
             OpenParcelWindowCommand = new RelayCommand<object>(OpenParcelWindowC, param => Drone.Status == DroneStatus.Delivery);
             DeleteDroneCommand = new RelayCommand<object>(DeleteDrone);
+            StartOrStopSimulatorCommand = new RelayCommand<object>(StartOrStopSimulator);
         }
 
-        
-        public RelayCommand<object> ChargeDroneCommand { get; set; }
+        private void updateDroneView()
+        {
+            Refresh.Invoke();
 
-        public RelayCommand<object> AssignParcelToDroneCommand { get; set; }
+            // update distance
 
-        public RelayCommand<object> UpdateModelOfDroneCommand { get; set; }
+            //drone.Distance = args.ProgressPercentage;
 
-        public RelayCommand<object> CloseWindowCommand { get; set; }
+            //DroneForList droneForList = Model.Drones.FirstOrDefault(d => d.Id == Drone.Id);
+            //int index = Model.Drones.IndexOf(droneForList);
+            //drone = bl.GetDrone(Drone.Id);
+            //Model.Drones.Remove(droneForList);
+            //Model.Drones.Insert(index, bl.GetDroneForList(Drone.Id));
+            //updateFlags();
+            //this.setAndNotify(PropertyChanged, nameof(Drone), out drone, drone);
+        }
 
-        public RelayCommand<object> DeleteDroneCommand { get; set; }
-        public RelayCommand<object> OpenParcelWindowCommand { get; set; }
-        
+        //--worker--
+        BackgroundWorker worker;
+        private void updateDrone() => worker.ReportProgress(0);
+        private bool checkStop() => worker.CancellationPending;
+
+        // private void Manual_Click(object sender, RoutedEventArgs e) => worker?.CancelAsync();
+
+
+
+
+        double d;
+
+        private void StartOrStopSimulator(object obj)
+        {
+            if (!Drone.Automatic)
+            {
+                Drone.Automatic = true;
+
+                worker = new()
+                {
+                    WorkerReportsProgress = true,
+                    WorkerSupportsCancellation = true,
+                };
+                worker.DoWork += (sender, args) => bl.StartSimulator(Drone.Id, updateDrone, checkStop);
+                worker.RunWorkerCompleted += (sender, args) => Drone.Automatic = false;
+                worker.ProgressChanged += (sender, args) => updateDroneView();
+                worker.RunWorkerAsync(Drone.Id);
+            }
+            else //Drone.Automatic = false
+            {
+                worker?.CancelAsync();
+            }
+        }
+
         private void UpdateDroneModel(object sender)
         {
             // when we changed bl.GetDrones to return new list 
@@ -69,14 +122,14 @@ namespace PL.ViewModels
                 bl.ReleasingDrone(Drone.Id);
 
             Refresh.Invoke();
-           
+
         }
-       
+
         private void OpenParcelWindowC(object MyParcel)
         {
             var parcel = MyParcel as BO.ParcelInTransfer;
             var blParcel = bl.GetParcel(parcel.PId);
-            new ParcelView(bl,blParcel).Show();
+            new ParcelView(bl, blParcel).Show();
         }
 
         private void AssignParcelToDrone(object sender)
@@ -144,10 +197,10 @@ namespace PL.ViewModels
         }
         private void DeleteDrone(object obj)
         {
-            if(Drone.Status==DroneStatus.Delivery)
+            if (Drone.Status == DroneStatus.Delivery)
             {
                 MessageBox.Show("You Can't Delete Me!" +
-                  ",I Am On Way To Brong Parcel  ! ","Delete Parcel",MessageBoxButton.OK,MessageBoxImage.Stop);
+                  ",I Am On Way To Brong Parcel  ! ", "Delete Parcel", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
             else if (Drone.Status == DroneStatus.Maintenance)
@@ -181,11 +234,12 @@ namespace PL.ViewModels
 
         private void RefreshDrone()
         {
-            if (bl.GetDrones().FirstOrDefault(d=>d.Id==Drone.Id)!=default)
+            if (bl.GetDrones().FirstOrDefault(d => d.Id == Drone.Id) != default)
             {
+                var keepSimulatorState = drone.Automatic;
                 Drone = Map(bl.GetDrone(Drone.Id));
+                Drone.Automatic = keepSimulatorState;
             }
-            
         }
 
         private EditDrone Map(Drone drone)

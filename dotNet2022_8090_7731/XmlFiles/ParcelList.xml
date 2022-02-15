@@ -1,15 +1,4 @@
 <?xml version="1.0"?>
 <ArrayOfParcel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Parcel>
-    <Id>1003</Id>
-    <SenderId>867425425</SenderId>
-    <GetterId>123443214</GetterId>
-    <Weight>Light</Weight>
-    <MPriority>Normal</MPriority>
-    <DroneId xsi:nil="true" />
-    <CreatedTime>2022-02-14T17:59:22.4963414+02:00</CreatedTime>
-    <BelongParcel xsi:nil="true" />
-    <PickingUp xsi:nil="true" />
-    <Arrival xsi:nil="true" />
-  </Parcel>
+  
 </ArrayOfParcel>

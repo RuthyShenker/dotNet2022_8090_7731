@@ -10,7 +10,10 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" d:DesignWidth="800">
 <UserControl.Resources>
-            <Converters:ContentByStatusOfSimulatorConverter x:Key="ContentByStatusOfSimulatorConverter"/>
+        <Converters:StatusToBGColorConverter x:Key="StatusToBGColorConverter"/>
+        <Converters:BatteryToColorConverter x:Key="batteryToColorConverter"/>
+        <Converters:BatteryToProgressBarConverter x:Key="batteryToProgressBarConverter"/>
+        <Converters:ContentByStatusOfSimulatorConverter x:Key="ContentByStatusOfSimulatorConverter"/>
         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Height" Value="50"/>
@@ -57,7 +60,7 @@
         <TextBox Text = "{Binding Drone.Id, UpdateSourceTrigger=PropertyChanged}"
                  IsEnabled="False"/>
 
-        <TextBox Text = "{Binding Drone.BatteryStatus}" 
+        <TextBox Text = "{Binding Drone.BatteryStatus,  UpdateSourceTrigger=PropertyChanged}" 
                     materialDesign:HintAssist.Hint="Battery" 
                     IsEnabled="False" />
 
@@ -73,7 +76,7 @@
 
         <TextBlock  Text = "Status:" />
         <ComboBox ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" 
-                    SelectedItem="{Binding Drone.Status}" 
+                    SelectedItem="{Binding Drone.Status, UpdateSourceTrigger=PropertyChanged}" 
                     materialDesign:HintAssist.Hint="Status"
                     IsEnabled="False"/>
 
@@ -122,11 +125,16 @@
                 Command="{Binding DeleteDroneCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
 
+        <!-- Simulator -->
         <Button Command="{Binding StartOrStopSimulatorCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                    Content="{Binding Simulator.Status, Converter={StaticResource ContentByStatusOfSimulatorConverter}}">
+                    Content="{Binding Drone.Automatic, Converter={StaticResource ContentByStatusOfSimulatorConverter}}">
         </Button>
+        <ProgressBar Name="BatteryProgressBar" Value="{Binding Drone.BatteryStatus,Converter={StaticResource batteryToProgressBarConverter}}" Width="Auto" Foreground="{Binding Drone.BatteryStatus, Converter={StaticResource batteryToColorConverter}}"/>
         
+        <TextBox Text = "{Binding Drone.Distance, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Distance"
+                     IsEnabled="False"/>
         <!--<Button x:Name="close_window_button" Content="close" Command="{Binding CloseWindowCommand }" CommandParameter="{Binding RelativeSource=self}"></Button>-->
         <!--<Button x:Name="close_window_button" Content="close" Command="{x:Static}"  CommandParameter="{Binding RelativeSource=self}"></Button>-->
 

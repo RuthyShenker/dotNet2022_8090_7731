@@ -18,7 +18,6 @@ namespace BL
         private const double VELOCITY = 1.0;
         private const double TIME_STEP = DELAY / 1000.0;
         private const double STEP = VELOCITY / TIME_STEP;
-        private Maintenance maintenance = Maintenance.Assigning;
         private BL bl;
         Action updateView;
         Func<bool> checkStop;
@@ -29,7 +28,7 @@ namespace BL
         DalApi.IDal dal;
         double distance;
         bool pickedUp;
-        double[] powerConsumption;
+        //double[] powerConsumption;
         int droneFree = 0;
 
         //        powerConsumptionFree,
@@ -43,15 +42,16 @@ namespace BL
         {
             bl = blInstance;
             dal = blInstance.dal;
-            powerConsumption = bl.GetPowerConsumption().ToArray();
-
-        //    Drone drone = bl.GetDrone(droneId);
-        //    updateView = updateViewAction;
-        //    checkStop = checkStopFunc;
+            //powerConsumption = bl.GetPowerConsumption().ToArray();
+          DroneToList drone = bl.lDroneToList.First(d => d.Id == droneId);
+            
+            //Drone drone = bl.GetDrone(droneId);
+            updateView = updateViewAction;
+            checkStop = checkStopFunc;
 
             do
             {
-                switch (drone.DroneStatus)
+                switch (drone.DStatus)
                 {
                     case DroneStatus.Free:
                         TryAssumingParcel(drone);
@@ -68,57 +68,88 @@ namespace BL
             } while (!checkStop());
         }
 
-        private void TryAssumingParcel(Drone drone)
+        private void TryAssumingParcel(DroneToList drone)
         {
             lock (bl)
             {
-                var optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation);
-                
-                var parcel = (optionalParcels?.First());
+                DO.Parcel parcel;
+                List<DO.Parcel> optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
 
-                //if (optionalParcels.Any())
+                if (!optionalParcels.Any())
                 {
-                    if (!SleepDelayTime()) return;
-
-                    switch (parcel, drone.BatteryStatus)
+                    if (drone.BatteryStatus == 1.0)
                     {
-                        // if there is no parcel to assign and drone's battery is full.  
-                        case (null, 1.0):
-                            // TODO
-                            while (!optionalParcels.Any() && !checkStop()) 
-                            {
-                                optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation);
-                                if (!SleepDelayTime()) return;
-                            }
-                            break;
+                        while (!optionalParcels.Any() && !checkStop())
+                        {
+                            if (!SleepDelayTime()) break;
+                            optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
+                        }
+                    }
+                    else
+                    {
+                        station = bl.ClosestStation(drone.CurrLocation, true);
 
-                        // if the is no parcel to assign and the the drone's battery is not full.
-                        case (null, _):
-                            station = bl.ClosestStation(drone.CurrLocation, true);
-
-                            if (station.Id != default)
-                            {
-                                drone.DroneStatus = DroneStatus.Maintenance;
-
-                                dal.Update<DO.BaseStation>(station.Id, station.NumAvailablePositions - 1, nameof(station.NumAvailablePositions));
-                                dal.Add(new DO.ChargingDrone(drone.Id, station.Id, DateTime.Now));
-                            }
-                            break;
-
-                        // if there is parcel to assign and there is enough battery.
-                        case (_, _):
-                            Init((int)(parcel?.Id));
-                            drone.DroneStatus = DroneStatus.Delivery;
-
-                            dal.Update<DO.Parcel>((int)(parcel?.Id), DateTime.Now, nameof(DO.Parcel.BelongParcel));
-                            dal.Update<DO.Parcel>((int)(parcel?.Id), drone.Id, nameof(DO.Parcel.DroneId));
-                            break;
-
-                        default:
+                        if (station.Id != default)
+                        {
+                            drone.DStatus = DroneStatus.Maintenance;
+                            dal.Add(new DO.ChargingDrone(drone.Id, station.Id, DateTime.Now));
+                            bl.GetDrone(drone.Id);
+                            updateView();
+                            return;
+                        }
                     }
                 }
+
+                parcel = (optionalParcels.First());
+                Init((int)(parcel.Id));
+                drone.DStatus = DroneStatus.Delivery;
+
+                dal.Update<DO.Parcel>((int)(parcel.Id), DateTime.Now, nameof(DO.Parcel.BelongParcel));
+                dal.Update<DO.Parcel>((int)(parcel.Id), drone.Id, nameof(DO.Parcel.DroneId));
+                ////if (optionalParcels.Any())
+                //{
+                //    if (!SleepDelayTime()) return;
+
+                //    switch (parcel, drone.BatteryStatus)
+                //    {
+                //        // if there is no parcel to assign and drone's battery is full.  
+                //        case (null, 1.0):
+                //            // TODO
+                //            while (!optionalParcels.Any() && !checkStop()) 
+                //            {
+                //                optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
+                //                if (!SleepDelayTime()) return;
+                //            }
+                //            break;
+
+                //        // if the is no parcel to assign and the the drone's battery is not full.
+                //        case (null, _):
+                //            station = bl.ClosestStation(drone.CurrLocation, true);
+
+                //            if (station.Id != default)
+                //            {
+                //                drone.DroneStatus = DroneStatus.Maintenance;
+
+                //                dal.Update<DO.BaseStation>(station.Id, station.NumAvailablePositions - 1, nameof(station.NumAvailablePositions));
+                //                dal.Add(new DO.ChargingDrone(drone.Id, station.Id, DateTime.Now));
+                //            }
+                //            break;
+
+                //        // if there is parcel to assign and there is enough battery.
+                //        case (_, _):
+                //            Init((int)(parcel?.Id));
+                //            drone.DroneStatus = DroneStatus.Delivery;
+
+                //            dal.Update<DO.Parcel>((int)(parcel?.Id), DateTime.Now, nameof(DO.Parcel.BelongParcel));
+                //            dal.Update<DO.Parcel>((int)(parcel?.Id), drone.Id, nameof(DO.Parcel.DroneId));
+                //            break;
+
+                //        default:
             }
         }
+
+
+
 
         //var sender =bl.GetCustomer(parcel.SenderId);
         //var getter = bl.GetCustomer(parcel.GetterId);
@@ -134,10 +165,10 @@ namespace BL
         //    DeliveryLocation = getter.Location,
         //    IsInWay = false
         //};
-        private void CompleteMaintenance(Drone drone)
+        private void CompleteMaintenance(DroneToList drone)
         {
             if (!SleepDelayTime()) return; //TODO return?
-            //TODO what happens when there is no available station
+                                           //TODO what happens when there is no available station
 
             // Assigning:
             station = bl.ClosestStation(drone.CurrLocation, true);
@@ -171,7 +202,7 @@ namespace BL
                     }
                     if (drone.BatteryStatus >= 1.0)
                     {
-                        drone.DroneStatus = DroneStatus.Free;
+                        drone.DStatus = DroneStatus.Free;
                         updateView();
                     }
                 }
@@ -189,9 +220,9 @@ namespace BL
             //batteryUsage = (int)Enum.Parse(typeof(BatteryUsage), parcel?.Weight.ToString());
         }
 
-        private void CompleteDelivery(Drone drone)
+        private void CompleteDelivery(DroneToList drone)
         {
-            if (parcel.Equals(default)) Init(drone.PInTransfer.PId);
+            if (parcel.Equals(default)) Init((int)drone.DeliveredParcelId);
 
             while (distance > 0.01 && drone.BatteryStatus != 0 && !checkStop())
             {
@@ -215,7 +246,7 @@ namespace BL
                 if (pickedUp)
                 {
                     dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
-                    drone.DroneStatus = DroneStatus.Free;
+                    drone.DStatus = DroneStatus.Free;
                 }
                 else
                 {
@@ -241,4 +272,5 @@ namespace BL
         }
     }
 }
+
 

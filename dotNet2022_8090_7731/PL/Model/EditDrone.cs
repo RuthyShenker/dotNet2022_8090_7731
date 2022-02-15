@@ -11,7 +11,7 @@ namespace PO
 {
     public class EditDrone : ObservableBase, IDataErrorInfo
     {
-        public EditDrone(int id, string model, WeightCategories weight, double batteryStatus, 
+        public EditDrone(int id, string model, WeightCategories weight, double batteryStatus,
             DroneStatus status, Location location, ParcelInTransfer parcelInTransfer)
         {
             Id = id;
@@ -33,15 +33,47 @@ namespace PO
             set
             {
                 Set(ref _model, value);
-                validityMessages[nameof(Model)] = value is null or ""? RequiredMessage() :
+                validityMessages[nameof(Model)] = value is null or "" ? RequiredMessage() :
                                                                 OnlyStringAndNumberMessage(value);
             }
         }
         public WeightCategories Weight { get; set; }
-        public double BatteryStatus { get; set; }
-        public DroneStatus Status { get; set; }
+        private double batteryStatus;
+
+        public double BatteryStatus
+        {
+            get => batteryStatus;
+            set => Set(ref batteryStatus, value);
+        }
+
+        private DroneStatus status;
+
+        public DroneStatus Status
+        {
+            get => status;
+            set => Set(ref status, value);
+        }
+
+        //public DroneStatus Status { get; set; }
         public Location Location { get; set; }
         public ParcelInTransfer ParcelInTransfer { get; set; }
+
+        private bool automatic;
+        public bool Automatic
+        {
+            get => automatic;
+            set => Set(ref automatic, value);
+        }
+
+        private double distance;
+
+        public double Distance
+        {
+            get => distance;
+            set => Set(ref distance, value);
+        }
+
+        // --------------IDataErrorInfo---------------------
 
         public string Error => validityMessages.Values.All(value => value == string.Empty) ? string.Empty : "Invalid input";
 

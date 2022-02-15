@@ -48,15 +48,15 @@ namespace PL.ViewModels
                 else if (Customer.LForCustomer.Count() != 0)
                     MessageBox.Show("You Can't Delete Me!" +
                  ",I Have Parcels For Me ! ");
-                else if(Customer.LFromCustomer.Count() != 0 )
-                       MessageBox.Show("You Can't Delete Me!" +
-                    ",I Have Parcels From Me ! ");
+                else if (Customer.LFromCustomer.Count() != 0)
+                    MessageBox.Show("You Can't Delete Me!" +
+                 ",I Have Parcels From Me ! ");
                 return;
             }
-           
-            if ( MessageBox.Show("Are You Sure You Want To Delete Customer" +
+
+            if (MessageBox.Show("Are You Sure You Want To Delete Customer" +
                  $"With Id:{Customer.Id}?", "Delete Customer", MessageBoxButton.YesNo
-                 , MessageBoxImage.Warning)== MessageBoxResult.No)
+                 , MessageBoxImage.Warning) == MessageBoxResult.No)
             {
                 return;
             }
@@ -65,7 +65,7 @@ namespace PL.ViewModels
             {
                 MessageBox.Show(bl.DeleteCustomer(Customer.Id));
                 Refresh.Invoke();
-               
+
                 Functions.CloseWindow(obj);
             }
             catch (BO.IdIsNotExistException exception)
@@ -78,7 +78,7 @@ namespace PL.ViewModels
         {
             try
             {
-                bl.UpdatingCustomerDetails(Customer.Id,Customer.Name,Customer.Phone);
+                bl.UpdatingCustomerDetails(Customer.Id, Customer.Name, Customer.Phone);
                 Refresh.Invoke();
                 //refreshCustomers();
             }
@@ -90,18 +90,18 @@ namespace PL.ViewModels
 
         private void RefreshCustomer()
         {
-            if (bl.GetCustomers().FirstOrDefault(c=>c.Id==Customer.Id)!=default)
+            if (bl.GetCustomers().FirstOrDefault(c => c.Id == Customer.Id) != default)
             {
-                 Customer = MapFromBOToPO(bl.GetCustomer(Customer.Id));
+                Customer = MapFromBOToPO(bl.GetCustomer(Customer.Id));
             }
-           
+
         }
 
         private EditCustomer MapFromBOToPO(BO.Customer customer)
         {
-            return new EditCustomer(customer.Id,customer.Name,customer.Phone,
+            return new EditCustomer(customer.Id, customer.Name, customer.Phone,
                 customer.Location.Longitude, customer.Location.Latitude,
-                customer.LFromCustomer,customer.LForCustomer);
+                customer.LFromCustomer, customer.LForCustomer);
         }
 
         public EditCustomer Customer
