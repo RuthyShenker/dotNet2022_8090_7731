@@ -15,7 +15,7 @@ namespace BL
 {
     internal sealed partial class BL : Singleton<BL>, BlApi.IBL
     {
-        internal DalApi.IDal dal= DalApi.DalFactory.GetDal();
+        internal DalApi.IDal dal = DalApi.DalFactory.GetDal();
         internal List<DroneToList> lDroneToList;
         readonly Random rand;
         //internal static double powerConsumptionFree;

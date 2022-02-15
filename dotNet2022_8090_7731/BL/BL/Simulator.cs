@@ -31,12 +31,12 @@ namespace BL
         //double[] powerConsumption;
         int droneFree = 0;
 
-//        //        powerConsumptionFree,
-//        //        powerConsumptionLight,
-//        //        powerConsumptionMedium,
-//        //        powerConsumptionHeavy,
-//        //        chargingRate
-//        //public enum Maintenance { Assigning, GoingTowardStation, Charging };
+        //        powerConsumptionFree,
+        //        powerConsumptionLight,
+        //        powerConsumptionMedium,
+        //        powerConsumptionHeavy,
+        //        chargingRate
+        //public enum Maintenance { Assigning, GoingTowardStation, Charging };
 
         public Simulator(BL blInstance, int droneId, Action updateViewAction, Func<bool> checkStopFunc)
         {
@@ -183,7 +183,7 @@ namespace BL
                     if (!SleepDelayTime()) break;
                     double delta = distance < STEP ? distance : STEP;
                     distance -= delta;
-                    drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * powerConsumptionFree);
+                    drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * PowerConsumptionFree);
                     updateView();
                 }
                 if (distance <= 0.01)
@@ -209,11 +209,11 @@ namespace BL
             }
         }
 
-        //private void Init(int parcelId)
-        //{
-        //    parcel = dal.GetFromDalById<DO.Parcel>(parcelId);
-        //    pickedUp = parcel.PickingUp.HasValue;
-        //    customer = bl.GetCustomer(pickedUp ? parcel.GetterId : parcel.SenderId);
+        private void Init(int parcelId)
+        {
+            parcel = dal.GetFromDalById<DO.Parcel>(parcelId);
+            pickedUp = parcel.PickingUp.HasValue;
+            customer = bl.GetCustomer(pickedUp ? parcel.GetterId : parcel.SenderId);
 
             //distance = Extensions.CalculateDistance(drone.CurrLocation, customer.Location);
 
@@ -231,7 +231,7 @@ namespace BL
                 {
                     double delta = distance < STEP ? distance : STEP;
                     double proportion = delta / distance;
-                    drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * (pickedUp ? powerConsumptionFree : powerConsumptionFree));
+                    drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * (pickedUp ? PowerConsumptionFree : PowerConsumptionFree));
                     double lat = drone.CurrLocation.Latitude + (customer.Location.Latitude - drone.CurrLocation.Latitude) * proportion;
                     double lon = drone.CurrLocation.Longitude + (customer.Location.Longitude - drone.CurrLocation.Longitude) * proportion;
                     drone.CurrLocation = new() { Latitude = lat, Longitude = lon };
@@ -272,4 +272,3 @@ namespace BL
         }
     }
 }
-

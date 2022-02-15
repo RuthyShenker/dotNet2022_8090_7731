@@ -32,7 +32,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50*"/>
-            <RowDefinition Height="400*"/>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="50*"/>
         </Grid.RowDefinitions>
         <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
                 VerticalAlignment="Stretch" Width="auto">
@@ -120,12 +122,12 @@ CurrLocation-->
         <!--<Button x:Name="close_window" Content="close" Width="90" Grid.Row="3" Grid.Column="4"
                 Command="{Binding CloseWindowCommand }"
                 CommandParameter="{Binding ElementName=close_window}" />-->
-        <Button Content="ADD" 
+        <Button Content="ADD" Grid.Row="2"
                 Command="{Binding AddDroneCommand}"
                 Style="{StaticResource MaterialDesignFlatButton}"
                 HorizontalAlignment="Center" />
 
-        <Button x:Name="close_window" Content="Close" 
+        <Button x:Name="close_window" Content="Close" Grid.Row="3"
                 Command="{Binding CloseWindowCommand }" 
                 CommandParameter="{Binding ElementName=close_window}"
                 Style="{StaticResource MaterialDesignFlatButton}"
