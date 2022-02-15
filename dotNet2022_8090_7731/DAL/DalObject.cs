@@ -37,6 +37,7 @@ namespace Dal
         {
 
         }
+
         /// <summary>
         /// A constructor of DalObject that activates the function Initialize
         /// </summary>
