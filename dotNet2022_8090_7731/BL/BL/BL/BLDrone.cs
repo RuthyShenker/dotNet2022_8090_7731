@@ -14,7 +14,7 @@ namespace BL
     {
         public void StartSimulator(int droneId, Action updateView, Func<bool> checkStop)
         {
-            //new Simulator(this, droneId, updateView, checkStop);
+            new Simulator(this, droneId, updateView, checkStop);
         }
 
         private void InitializeDroneList()

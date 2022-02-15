@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfDrones>
   <Drone>
-    <Id>7777</Id>
-    <MaxWeight>Light</MaxWeight>
-    <Model>t</Model>
-  </Drone>
-  <Drone>
-    <Id>7778</Id>
-    <MaxWeight>Light</MaxWeight>
-    <Model>f</Model>
-  </Drone>
-  <Drone>
     <Id>6666</Id>
     <MaxWeight>Light</MaxWeight>
     <Model>g</Model>
+  </Drone>
+  <Drone>
+    <Id>6668</Id>
+    <MaxWeight>Light</MaxWeight>
+    <Model>h</Model>
+  </Drone>
+  <Drone>
+    <Id>6664</Id>
+    <MaxWeight>Light</MaxWeight>
+    <Model>f</Model>
   </Drone>
 </ArrayOfDrones>
