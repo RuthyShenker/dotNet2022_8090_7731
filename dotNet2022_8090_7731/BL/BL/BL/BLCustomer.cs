@@ -53,7 +53,7 @@ namespace BL
                     Name = name
                 };
             }
-            catch (DO.IdDoesNotExistException ex)
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException();
                 //throw new IdDoesNotExistException(typeof(Customer), Id);
