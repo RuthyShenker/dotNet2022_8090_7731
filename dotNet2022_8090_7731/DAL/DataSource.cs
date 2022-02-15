@@ -109,7 +109,11 @@ namespace Dal
             InitializeBaseStations();
 
             InitializeParcels();
+
+            InitializeChargingDrone();
         }
+
+       
 
         private static void InitializeDrones()
         {
@@ -135,7 +139,7 @@ namespace Dal
                     Id = Rand.Next(100000000, 1000000000),
                     Name = initNames[Rand.Next(0, initNames.Length)],
                     Phone = initDigitsPhone[Rand.Next(0, initDigitsPhone.Length)],
-                    Longitude = Rand.Next(-90, 90) + Rand.NextDouble(),
+                    Longitude = Rand.Next(0, 90) + Rand.NextDouble(),
                     Latitude = Rand.Next(-90, 90) + Rand.NextDouble()
                 };
                 customer.Phone += (Rand.Next(100000, 1000000)).ToString();
@@ -153,7 +157,7 @@ namespace Dal
                     Id = Rand.Next(100000000, 1000000000),
                     NameStation = initNameStation[Rand.Next(0, initNameStation.Length)],
                     NumberOfChargingPositions = Rand.Next(0, 50),
-                    Longitude = Rand.Next(-90, 90) + Rand.NextDouble(),
+                    Longitude = Rand.Next(0, 90) + Rand.NextDouble(),
                     Latitude = Rand.Next(-90, 90) + Rand.NextDouble()
                 });
             }
@@ -186,6 +190,29 @@ namespace Dal
                     }
                 }
                 ParceList.Add(newParcel);
+            }
+        }
+
+        private static void InitializeChargingDrone()
+        {
+            //get all stations with numberofpositions >0
+            var BaseStationsWithChargingPosition = BaseStationList.Where(baseStation => baseStation.NumberOfChargingPositions > 0);
+
+            //if there are ChargingPositions so we can charge
+            if (BaseStationsWithChargingPosition.Any())
+            {
+                for (int i = 0; i < DroneList.Count; i++)
+                {
+                    //if the drone doesnt take a parcel
+                    if (ParceList.FirstOrDefault(p => p.DroneId == DroneList.ElementAt(i).Id).Equals(default))
+                    {
+                        var index = Rand.Next(BaseStationsWithChargingPosition.Count());
+                        if (ChargingDroneList.Where(c => c.StationId == index).Count() < BaseStationList.ElementAt(index).NumberOfChargingPositions)
+                        {
+                            ChargingDroneList.Add(new ChargingDrone(DroneList.ElementAt(i).Id, BaseStationList.ElementAt(index).Id, DateTime.Now));
+                        }
+                    }
+                }
             }
         }
 

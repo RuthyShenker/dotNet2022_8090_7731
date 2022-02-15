@@ -12,8 +12,8 @@ namespace PL.ViewModels
 {
     public class EditCustomerViewModel : INotify
     {
-        BlApi.IBL bl;
-        readonly Action refreshCustomers;
+        readonly BlApi.IBL bl;
+        //readonly Action refreshCustomers;
         private EditCustomer customer;
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> UpdateCustomerCommand { get; set; }
@@ -41,16 +41,16 @@ namespace PL.ViewModels
 
         private void DeleteCustomer(object obj)
         {
-            if (Customer.LForCustomer.Count() != 0 || Customer.LFromCustomer.Count() != 0)
+            if (Customer.LForCustomer.Any() || Customer.LFromCustomer.Any())
             {
-                if (Customer.LForCustomer.Count() != 0 && Customer.LFromCustomer.Count() != 0)
+                if (Customer.LForCustomer.Any() && Customer.LFromCustomer.Any())
                     MessageBox.Show("You Can't Delete Me!,I Have Parcels For Me And To Me! ");
-                else if (Customer.LForCustomer.Count() != 0)
+                else if (Customer.LForCustomer.Any())
                     MessageBox.Show("You Can't Delete Me!" +
                  ",I Have Parcels For Me ! ");
-                else if (Customer.LFromCustomer.Count() != 0)
-                    MessageBox.Show("You Can't Delete Me!" +
-                 ",I Have Parcels From Me ! ");
+                else if(Customer.LFromCustomer.Any())
+                       MessageBox.Show("You Can't Delete Me!" +
+                    ",I Have Parcels From Me ! ");
                 return;
             }
 

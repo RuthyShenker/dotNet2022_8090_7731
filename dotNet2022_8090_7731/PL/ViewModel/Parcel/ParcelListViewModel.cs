@@ -17,7 +17,7 @@ namespace PL.ViewModels
         private readonly BlApi.IBL bl;
         ListCollectionView parcelList;
         object selectedFilter { get; set; } = "All";
-        DateTime? startTime, endTime;
+        //DateTime? startTime, endTime;
         GroupBy groupBy;
 
         public RelayCommand<object> MouseDoubleCommand { get; set; }
@@ -38,9 +38,6 @@ namespace PL.ViewModels
         //view.GroupDescriptions.Add(groupDescription);
         public ParcelListViewModel(BlApi.IBL bl)
         {
-            //var list1 = new ObservableCollection<Parcel>();
-            //foreach (var parcel in bl.GetParcels())
-            //    list1.Add(bl.GetParcel(parcel.Id));
             Refresh.ParcelsList += RefreshParcelsList;
 
             this.bl = bl;
@@ -50,20 +47,6 @@ namespace PL.ViewModels
             MouseDoubleCommand = new RelayCommand<object>(EditParcel);
             AddParcelCommand = new RelayCommand<object>(AddParcel);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
-            
-            //ParcelList.SortDescriptions.Add(new SortDescription(groupBy.ToString(), ListSortDirection.Ascending));
-            //parcelList.SortDescriptions.Add(new SortDescription(nameof(ParcelToList.Id), ListSortDirection.Ascending));
-
-            //ParcelList.GroupBySelector = MyGroup;
-            //ParcelList.GroupDescriptions = MyGroup;
-            //ParcelList.GroupDescriptions.Add(new PropertyGroupDescription(nameof(GroupBy)));
-
-            //groupDescription = new PropertyGroupDescription();
-            //ParcelList = bl.GetParcels();
-
-            //ParcelListBySender = bl.GetParcels().GroupBy(parcel => parcel.SenderName)
-            //    .ToDictionary(key => key.Key, value => new ObservableCollection<ParcelToList>(value));
-
         }
 
         public void FiterAfterDate(object choosenDate)
@@ -90,28 +73,28 @@ namespace PL.ViewModels
                 parcelList.SortDescriptions.Clear();
                 if (groupBy != GroupBy.Id)
                 {
-                    PropertyGroupDescription groupDescription = new PropertyGroupDescription(groupBy.ToString());
+                    PropertyGroupDescription groupDescription = new(groupBy.ToString());
                     parcelList.GroupDescriptions.Add(groupDescription);
 
-                    SortDescription sortDescription = new SortDescription(groupBy.ToString(), ListSortDirection.Ascending);
+                    SortDescription sortDescription = new (groupBy.ToString(), ListSortDirection.Ascending);
                     parcelList.SortDescriptions.Add(sortDescription);
                 }
-                parcelList.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+                parcelList.SortDescriptions.Add(new ("Id", ListSortDirection.Ascending));
             }
 
         }
 
-        private string GroupByCurrentGroup()
-        {
+        //private string GroupByCurrentGroup()
+        //{
 
-            return groupBy switch
-            {
-                GroupBy.SenderName => nameof(ParcelToList.SenderName),
-                GroupBy.GetterName => nameof(ParcelToList.GetterName),
-                GroupBy.Id => "",
-                _ => null,
-            };
-        }
+        //    return groupBy switch
+        //    {
+        //        GroupBy.SenderName => nameof(ParcelToList.SenderName),
+        //        GroupBy.GetterName => nameof(ParcelToList.GetterName),
+        //        GroupBy.Id => "",
+        //        _ => null,
+        //    };
+        //}
         //private GroupDescription MyGroup(CollectionViewGroup group, int level)
         //{
         //    .Add(new PropertyGroupDescription(nameof(ParcelToList.SenderName)));
@@ -135,7 +118,10 @@ namespace PL.ViewModels
 
         private void AddParcel(object obj)
         {
-            new ParcelView(bl).Show();
+            if (!bl.GetCustomers().Any())
+                MessageBox.Show("There are no customers in the system", "Failed Adding Parcel", MessageBoxButton.OK, MessageBoxImage.Stop);
+            else
+                new ParcelView(bl).Show();
         }
 
         private void EditParcel(object obj)
@@ -163,25 +149,26 @@ namespace PL.ViewModels
         //        RefreshParcelList();
         //    }
         //}
-        public DateTime? StartTime
-        {
-            get => startTime;
-            set
-            {
-                startTime = value;
-                Refresh.Invoke();
-            }
-        }
-        public DateTime? EndTime
-        {
-            get => endTime;
-            set
-            {
 
-                endTime = value;
-                Refresh.Invoke();
-            }
-        }
+        //public DateTime? StartTime
+        //{
+        //    get => startTime;
+        //    set
+        //    {
+        //        startTime = value;
+        //        Refresh.Invoke();
+        //    }
+        //}
+        //public DateTime? EndTime
+        //{
+        //    get => endTime;
+        //    set
+        //    {
+
+        //        endTime = value;
+        //        Refresh.Invoke();
+        //    }
+        //}
         //public Dictionary<string, ObservableCollection<ParcelToList>> ParcelListBySender { get; set; }
     }
 

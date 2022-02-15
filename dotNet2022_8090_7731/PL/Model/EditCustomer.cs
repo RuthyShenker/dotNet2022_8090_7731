@@ -68,7 +68,7 @@ namespace PO
             }
         }
 
-        private Dictionary<string, string> validityMessages = new Dictionary<string, string>()
+        private readonly Dictionary<string, string> validityMessages = new()
         {
             [nameof(Name)] = string.Empty,
             [nameof(Phone)] = string.Empty,

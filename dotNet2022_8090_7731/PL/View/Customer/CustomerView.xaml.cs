@@ -20,8 +20,8 @@ namespace PL.View
     /// </summary>
     public partial class CustomerView : Window
     {
-        BlApi.IBL bl;
-        Action refreshCustomerList;
+        readonly BlApi.IBL bl;
+        //readonly Action refreshCustomerList;
        
         public CustomerView(BlApi.IBL bl)
         {

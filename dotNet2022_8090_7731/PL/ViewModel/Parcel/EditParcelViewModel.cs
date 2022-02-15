@@ -12,8 +12,8 @@ namespace PL.ViewModels
 {
     public class EditParcelViewModel : INotify
     {
-        BlApi.IBL bl;
-        Action refreshParcels;
+        readonly BlApi.IBL bl;
+        readonly Action refreshParcels;
         private EditParcel parcel;
 
         public RelayCommand<object> DeleteParcelCommand { get; set; }
@@ -21,6 +21,7 @@ namespace PL.ViewModels
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> EditCustomerCommand { get; set; }
         public RelayCommand<object> OpenDroneWindowCommand { get; set; }
+        public RelayCommand<object> CollectAndDeliverPackageCommand { get; set; }
 
         public EditParcelViewModel(BlApi.IBL bl, BO.Parcel parcel)
         {
@@ -30,22 +31,58 @@ namespace PL.ViewModels
             //this.refreshParcels = refreshParcels;
             UpdateParcelCommand = new RelayCommand<object>(UpdateParcel, param => Parcel.BelongParcel == default);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
-            EditCustomerCommand = new RelayCommand<object>(EditSender);
+            EditCustomerCommand = new RelayCommand<object>(EditSender, param => !(Parcel.BelongParcel != default && Parcel.Arrival == default));
             DeleteParcelCommand = new RelayCommand<object>(DeleteParcel);
-            OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow, param => Parcel.BelongParcel != default && Parcel.Arrival != default);
+            CollectAndDeliverPackageCommand = new RelayCommand<object>(GivingPermissionToCollectAndDeliverPackage/*,param=> Parcel.BelongParcel!=default*/);     
+            OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow, param => !(Parcel.BelongParcel != default && Parcel.Arrival == default));
         }
+
+        private void GivingPermissionToCollectAndDeliverPackage(object obj)
+        {
+            if (Parcel.BelongParcel == null)
+            {
+                MessageBox.Show("In Order to Pick up parcel, you need to belong it to drone ","Error Pick Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (Parcel.PickingUp == null)
+            {
+                try
+                {
+                    bl.PickingUpParcel(Parcel.DInParcel.Id);
+                    Refresh.Invoke();
+
+                }
+                catch (BO.InValidActionException exception)
+                {
+                    MessageBox.Show(exception.Message, "Error Pick Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else if(Parcel.Arrival==null)
+            {
+                try
+                {
+                    bl.DeliveryPackage(Parcel.DInParcel.Id);
+                    Refresh.Invoke();
+
+                    //RefreshDrone();
+                }
+                catch (BO.InValidActionException exception)
+                {
+                    MessageBox.Show(exception.Message, "Error Delivery Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("The Parcel Had Already arrived", "Error Delivery Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
         private void DeleteParcel(object obj)
         {
-            //if (Parcel.Arrival.HasValue /*&& bl.GetCustomers(customer => customer.Id == Parcel.Getter.Id || customer.Id == Parcel.Sender.Id).Any()*/) 
-            //{
-            //    MessageBox.Show( "You can't delete me! Setter Or Getter Exists,", "Delete Parcel Error", MessageBoxButton.OK,
-            //        MessageBoxImage.Stop);
-            //    return;
-            //}
-            /*else*/
-            if (Parcel.BelongParcel.HasValue && Parcel.PickingUp.HasValue)
+
+            if (Parcel.BelongParcel.HasValue)
             {
-                MessageBox.Show("I am on the way!  You can't delete me!", "Delete Parcel Error", MessageBoxButton.OK,
+                MessageBox.Show("You can't delete me! I am belonging to a drone", "Delete Parcel Error", MessageBoxButton.OK,
                     MessageBoxImage.Stop);
                 return;
             }

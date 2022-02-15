@@ -20,7 +20,7 @@ namespace PO
             get => _id == null ? null : _id;
             set
             {
-                bool valid = int.TryParse((string)value, out int id);
+                bool valid = int.TryParse((string)value, out _);
                 if (value is null or "")
                 {
                     Set(ref _id, null);
@@ -61,7 +61,7 @@ namespace PO
             get => _longitude == null ? null : _longitude;
             set
             {
-                bool valid = double.TryParse((string)value, out double longitude);
+                bool valid = double.TryParse((string)value, out _);
                 if (value is null or "")
                 {
                     Set(ref _longitude, null);
@@ -87,7 +87,7 @@ namespace PO
             get => _latitude == null ? null : _latitude;
             set
             {
-                bool valid = double.TryParse((string)value, out double latitude);
+                bool valid = double.TryParse((string)value, out _);
                 if (value is null or "")
                 {
                     Set(ref _latitude, null);

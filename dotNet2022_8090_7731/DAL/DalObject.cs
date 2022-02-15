@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using DO;
 using Singleton;
-using static Dal.DataSource.Config;
 using System.Runtime.CompilerServices;
 
 namespace Dal
@@ -34,6 +33,10 @@ namespace Dal
     /// AvailableSlots
     /// </summary>
     {
+        static DalObject()
+        {
+
+        }
         /// <summary>
         /// A constructor of DalObject that activates the function Initialize
         /// </summary>
@@ -68,13 +71,13 @@ namespace Dal
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalObject
         {
-            return ((List<T>)DataSource.Data[typeof(T)]).FindAll(predicate).ToList();
+            return ((List<T>)DataSource.Data[typeof(T)]).FindAll(predicate);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<T> GetListFromDal<T>() where T : IDalObject
         {
-            return ((List<T>)DataSource.Data[typeof(T)]).ToList();
+            return (List<T>)DataSource.Data[typeof(T)];
         }
 
         //public bool IsExistInList<T>(List<T> list, Predicate<T> predicate)where T:IDalObject
@@ -136,8 +139,8 @@ namespace Dal
         [MethodImpl(MethodImplOptions.Synchronized)]
         public (double, double, double, double, double) PowerConsumptionRequest()
         {
-            return (Available, LightWeight, MediumWeight, HeavyWeight, ChargingRate);
-
+            return (DataSource.Config.Available, DataSource.Config.LightWeight, DataSource.Config.MediumWeight, 
+                DataSource.Config.HeavyWeight, DataSource.Config.ChargingRate);
         }
     }
 }

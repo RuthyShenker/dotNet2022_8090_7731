@@ -57,11 +57,9 @@ namespace DalXml
         {
             try
             {
-                using (FileStream file = new(filePath, FileMode.Create))
-                {
-                    XmlSerializer x = new(list.GetType());
-                    x.Serialize(file, list);
-                }
+                using FileStream file = new(filePath, FileMode.Create);
+                XmlSerializer x = new(list.GetType());
+                x.Serialize(file, list);
             }
             catch (Exception ex)
             {
@@ -76,7 +74,7 @@ namespace DalXml
                 if (File.Exists(filePath))
                 {
                     using var reader = new StreamReader(filePath);
-                    XmlSerializer x = new XmlSerializer(typeof(List<T>));
+                    XmlSerializer x = new (typeof(List<T>));
                     return (List<T>)x.Deserialize(reader);
                 }
                 else
@@ -91,7 +89,7 @@ namespace DalXml
         #endregion
         public static void SaveDroneListToXml(IEnumerable<DO.Drone> list, string filePath)
         {
-            XElement Drones = new XElement("ArrayOfDrones",
+            XElement Drones = new("ArrayOfDrones",
                                             from drone in list
                                             select new XElement("Drone",
                                                         new XElement("Id", drone.Id),
@@ -103,10 +101,10 @@ namespace DalXml
         }
 
        
-        public static IEnumerable<DO.Drone> LoadDroneListFromXmlToDrone()
+        public static IEnumerable<DO.Drone> LoadDroneListFromXmlToDrone(string filePath)
         {
             return
-                from drone in XElement.Load(GetXmlFilePath(typeof(DO.Drone))).Elements()
+                from drone in XElement.Load(filePath).Elements()
                 select new DO.Drone()
                 {
                     Id = int.Parse(drone.Element("Id").Value),
@@ -115,11 +113,6 @@ namespace DalXml
                 }; 
         }
 
-        private static String GetXmlFilePath(Type type)
-        {
-            var xmlFilesLocation= $@"{Directory.GetCurrentDirectory()}\..\..\XmlFiles";
-            return $@"{xmlFilesLocation}\{type.Name}List.xml";
-        }
         //private DO.Drone ConvertFromXmlToDrone/*<T>*/(XElement element) /*where T : new()*/
         //{
 

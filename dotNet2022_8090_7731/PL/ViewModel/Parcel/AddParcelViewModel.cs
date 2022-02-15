@@ -10,10 +10,12 @@ namespace PL.ViewModels
     public class AddParcelViewModel
     {
         public ParcelToAdd Parcel { get; set; }
-        BlApi.IBL bl;
-        Action refreshParcels;
+
+        readonly BlApi.IBL bl;
+       // readonly Action refreshParcels;
         public List<int> IdOption { get; set; }
-        Action<BO.Parcel> switchView;
+
+        readonly Action<BO.Parcel> switchView;
 
         public RelayCommand<object> AddParcelCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }

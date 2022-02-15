@@ -12,9 +12,9 @@ namespace PL.ViewModels
     public class AddDroneViewModel
     {
         public DroneToAdd Drone { get; set; }
-        BlApi.IBL bl;
+        //BlApi.IBL bl;
         Action<BO.Drone> switchView;
-        Action refreshDrones;
+        //Action refreshDrones;
         public Array WeightOptions { get; set; } = Enum.GetValues(typeof(BO.WeightCategories));
         public List<int> StationOptions { get; set; }
         public RelayCommand<object> AddDroneCommand { get; set; }

@@ -76,7 +76,6 @@ namespace BL
         /// <returns>a new list of charging drone of BL of specific station</returns>
         private IEnumerable<ChargingDrone> ChargingDroneBLList(int sId)
         {
-
             var chargingDroneBLList = Enumerable.Empty<ChargingDrone>();
             var chargingDroneDalList = dal.GetDalListByCondition<DO.ChargingDrone>(charge => charge.StationId == sId);
             var chargingDrone = new ChargingDrone();

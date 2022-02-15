@@ -86,7 +86,7 @@ namespace PL.ViewModels
                     PropertyGroupDescription groupDescription = new(groupBy.ToString());
                     StationList.GroupDescriptions.Add(groupDescription);
 
-                    SortDescription sortDescription = new SortDescription(groupBy.ToString(), ListSortDirection.Ascending);
+                    SortDescription sortDescription = new (groupBy.ToString(), ListSortDirection.Ascending);
                     StationList.SortDescriptions.Add(sortDescription);
                 }
 

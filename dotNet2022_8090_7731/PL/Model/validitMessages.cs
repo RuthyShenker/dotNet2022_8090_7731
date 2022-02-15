@@ -10,20 +10,18 @@ namespace PO
 {
     public class ValidityMessages
     {
-        public static string IdMessage(object value, int length = 0)
-        {
-            int maxLength = (int)Math.Pow(10, length);
-            return value switch
+        public static string IdMessage(object value, int length = 0) =>
+            //int maxLength = (int)Math.Pow(10, length);
+            value switch
             {
                 null => "Field is required",
                 string => "Input must contain digits only",
                 > 10000 or < 1000 => "Input must contain 4 digits",
                 _ => "",
             };
-        }
         public static string numPositionsMessage(object value, int length = 0)
         {
-            int maxLength = (int)Math.Pow(10, length);
+            //int maxLength = (int)Math.Pow(10, length);
             return value switch
             {
                 null => "Field is required",

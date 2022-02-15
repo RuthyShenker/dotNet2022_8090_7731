@@ -10,7 +10,7 @@ namespace PL.ViewModels
 {
     public class AddStationViewModel
     {
-        Action<BO.Station> switchView;
+        readonly Action<BO.Station> switchView;
         public StationToAdd Station { get; set; } = new();
         public RelayCommand<object> AddStationCommand { get; set; }
         public RelayCommand<object> CancelCommand { get; set; }

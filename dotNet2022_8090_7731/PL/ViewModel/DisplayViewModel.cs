@@ -13,16 +13,17 @@ namespace PL.ViewModels
     public class DisplayViewModel
     {
         private readonly BlApi.IBL bl;
-        public RelayCommand<object> AddStationCommand { get; set; }
 
+        public RelayCommand<object> AddStationCommand { get; set; }
         public RelayCommand<object> CustomerListViewCommand { get; set; }
         public RelayCommand<object> DroneListViewCommand { get; set; }
         public RelayCommand<object> StationListViewCommand { get; set; }
         public RelayCommand<object> ParcelListViewCommand { get; set; }
+
         public DisplayViewModel(BlApi.IBL bl)
         {
             this.bl = bl;
-           
+      
             CustomerListViewCommand = new RelayCommand<object>(ShowCustomerListView);
             DroneListViewCommand = new RelayCommand<object>(ShowDroneListView);
             StationListViewCommand = new RelayCommand<object>(ShowStationListView);
@@ -38,8 +39,6 @@ namespace PL.ViewModels
         private void ShowStationListView(object obj)
         {
             new StationListView(new StationListViewModel(bl)).Show();
-
-            //new Station().Show();
         }
 
         public void ShowDroneListView(object obj)

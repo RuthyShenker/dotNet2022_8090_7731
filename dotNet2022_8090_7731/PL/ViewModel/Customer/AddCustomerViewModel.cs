@@ -11,7 +11,7 @@ namespace PL.ViewModels
     public class AddCustomerViewModel
     {
         public List<string> PhoneOptions { get; set; }
-        public string cidomet { get; set; }
+        public string Cidomet { get; set; }
 
         readonly BlApi.IBL bl;
         readonly Action<BO.Customer> switchView;

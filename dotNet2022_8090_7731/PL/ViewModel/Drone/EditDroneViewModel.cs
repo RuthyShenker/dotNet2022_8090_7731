@@ -13,9 +13,9 @@ namespace PL.ViewModels
 {
     public class EditDroneViewModel : INotify
     {
-        BlApi.IBL bl;
-        Action refreshDrones;
-        EditDrone drone;
+        readonly BlApi.IBL bl;
+        //readonly Action refreshDrones;
+        private EditDrone drone;
 
         public RelayCommand<object> ChargeDroneCommand { get; set; }
 

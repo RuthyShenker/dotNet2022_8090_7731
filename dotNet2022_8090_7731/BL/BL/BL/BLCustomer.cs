@@ -62,7 +62,7 @@ namespace BL
         /// A function that 
         /// returns the list of customers that have packages delivered to them.
         /// </summary>
-        /// <returns>returns the list of customers that have packages delivered to them. </returns>
+        /// <returns> returns the list of customers that have packages delivered to them. </returns>
         private IEnumerable<Customer> CustomersWithProvidedParcels()
         {
             DO.Customer customer;

@@ -11,9 +11,8 @@ namespace ConsoleUI_BL
     {
         public static void AddingOption(BlApi.IBL bL)
         {
-            int input = 0;
             tools.PrintEnum(typeof(Adding));
-            CheckValids.CheckValid(1, 4, out input);
+            CheckValids.CheckValid(1, 4, out int input);
             switch ((Adding)input)
             {
                 case Adding.BaseStation:

@@ -31,12 +31,12 @@ namespace BL
         //double[] powerConsumption;
         int droneFree = 0;
 
-        //        powerConsumptionFree,
-        //        powerConsumptionLight,
-        //        powerConsumptionMedium,
-        //        powerConsumptionHeavy,
-        //        chargingRate
-        //public enum Maintenance { Assigning, GoingTowardStation, Charging };
+//        //        powerConsumptionFree,
+//        //        powerConsumptionLight,
+//        //        powerConsumptionMedium,
+//        //        powerConsumptionHeavy,
+//        //        chargingRate
+//        //public enum Maintenance { Assigning, GoingTowardStation, Charging };
 
         public Simulator(BL blInstance, int droneId, Action updateViewAction, Func<bool> checkStopFunc)
         {
@@ -209,11 +209,11 @@ namespace BL
             }
         }
 
-        private void Init(int parcelId)
-        {
-            parcel = dal.GetFromDalById<DO.Parcel>(parcelId);
-            pickedUp = parcel.PickingUp.HasValue;
-            customer = bl.GetCustomer(pickedUp ? parcel.GetterId : parcel.SenderId);
+        //private void Init(int parcelId)
+        //{
+        //    parcel = dal.GetFromDalById<DO.Parcel>(parcelId);
+        //    pickedUp = parcel.PickingUp.HasValue;
+        //    customer = bl.GetCustomer(pickedUp ? parcel.GetterId : parcel.SenderId);
 
             //distance = Extensions.CalculateDistance(drone.CurrLocation, customer.Location);
 

@@ -15,13 +15,13 @@ namespace Dal
     {
         readonly string xmlFilesLocation;
         string GetXmlFilePath(Type type) => $@"{xmlFilesLocation}\{type.Name}List.xml";
-        string configFilePath => $@"{xmlFilesLocation}\Config.xml";
+        string ConfigFilePath => $@"{xmlFilesLocation}\Config.xml";
 
         //problem:
-        //static DalXml()
-        //{
-        //
+        static DalXml()
+        {
 
+        }
         private DalXml()
         {
             xmlFilesLocation = $@"{Directory.GetCurrentDirectory()}\..\..\XmlFiles";
@@ -44,7 +44,7 @@ namespace Dal
         {
             if (typeof(T) == typeof(DO.Drone))
             {
-                return XMLTools.LoadDroneListFromXmlToDrone().Any(item => item.Id == Id);
+                return XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone))).Any(item => item.Id == Id);
             }
             else
             {
@@ -55,23 +55,22 @@ namespace Dal
 
         public T GetFromDalById<T>(int Id) where T : IDalObject, IIdentifiable
         {
-            if (typeof(T) == typeof(DO.Drone))
+
+            var item = GetFromDalByCondition<T>(item => item.Id == Id);
+
+            if (item.Equals(default(T)))
             {
-                var drone = XMLTools.LoadDroneListFromXmlToDrone().First(item => item.Id == Id);
-                return (T)Convert.ChangeType(drone, typeof(T));
+                throw new IdIsNotExistException();
             }
-            else
-            {
-                return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)))
-                .First(obj => obj.Id == Id);
-            }
+            return item;
+
         }
 
         public T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IDalObject
         {
             if (typeof(T) == typeof(DO.Drone))
             {
-                var drone = XMLTools.LoadDroneListFromXmlToDrone().FirstOrDefault(item =>
+                var drone = XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone))).FirstOrDefault(item =>
                             predicate((T)Convert.ChangeType(item, typeof(T))));
                 return (T)Convert.ChangeType(drone, typeof(T));
             }
@@ -86,18 +85,18 @@ namespace Dal
         public IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalObject
         {
             //problem:!!!
-            //if (typeof(T) == typeof(DO.Drone))
-            //    return LoadDroneListFromXmlToDrone().ToList().FindAll(predicate);
-            //else
+            if (typeof(T) == typeof(DO.Drone))
+                return XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone))).Cast<T>().Where(item=>predicate(item));
+            else
                 return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)))
-                  .FindAll(predicate);
+              .FindAll(predicate);
         }
 
         public IEnumerable<T> GetListFromDal<T>() where T : IDalObject
         {
-            if (typeof(T) == typeof(DO.Drone)) 
-                return (IEnumerable<T>)XMLTools.LoadDroneListFromXmlToDrone();
-            else 
+            if (typeof(T) == typeof(DO.Drone))
+                return (IEnumerable<T>)XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone)));
+            else
                 return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
         }
 
@@ -130,12 +129,19 @@ namespace Dal
 
             //List<T> list1 = new List<T>();
             #endregion
+
+            Type type = typeof(T);
+            if (DoesExistInList(item))
+            {
+                throw new InValidActionException($" This item already exists in list {type}");
+            }
+
             if (typeof(T) == typeof(DO.Drone))
             {
-                var droneList = XMLTools.LoadDroneListFromXmlToDrone().ToList();
+                var droneList = XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone))).ToList();
                 Drone drone = (Drone)Convert.ChangeType(item, typeof(Drone));
                 droneList.Add(drone);
-                XMLTools.SaveDroneListToXml(droneList,GetXmlFilePath(typeof(Drone)));
+                XMLTools.SaveDroneListToXml(droneList, GetXmlFilePath(typeof(Drone)));
             }
             else
             {
@@ -191,7 +197,7 @@ namespace Dal
             #endregion
             try
             {
-                if (typeof(T)==typeof(DO.Drone))
+                if (typeof(T) == typeof(DO.Drone))
                 {
                     XElement root = XDocument.Load(GetXmlFilePath(typeof(T))).Root;
                     XElement element = root.Elements().Single(obj =>
@@ -205,7 +211,7 @@ namespace Dal
                     List<T> list = XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
 
                     Type type = typeof(T);
-                    var oldItem = list.FirstOrDefault(item=>item.Id==id);
+                    var oldItem = list.FirstOrDefault(item => item.Id == id);
                     list.Remove(oldItem);
 
                     if (newValue != null)
@@ -220,10 +226,10 @@ namespace Dal
                     }
 
                     list.Add(oldItem);
-                  
+
                     XMLTools.SaveListToXmlSerializer<T>(list, GetXmlFilePath(typeof(T)));
                 }
-               
+
             }
             catch
             {
@@ -234,31 +240,36 @@ namespace Dal
 
         public void Remove<T>(T item) where T : IDalObject
         {
-            #region
-            //if (DoesExistInList(item))
-            //{
-            //    //DataSource.Data[typeof(T)].Remove(item);
-            //    XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));
-            //    XElement root = document.Root;
-            //    foreach (var obj in root.Elements())
-            //    {
-            //        if (int.Parse(obj.Element("Id").Value) ==item)
-            //            obj.Element(propertyName).Value = (string)newValue;
-            //    }
-            //    document.Save(GetXmlFilePath(typeof(T)));
-            #endregion
-            if (typeof(T) == typeof(Drone))
+
+            if (DoesExistInList(item))
             {
-                var droneList =XMLTools.LoadDroneListFromXmlToDrone().ToList();
-                droneList.Remove((Drone)Convert.ChangeType(item, typeof(Drone)));
-                XMLTools.SaveDroneListToXml(droneList,GetXmlFilePath(typeof(T)));
-                //list.Remove();
-            }
-            else 
-            { 
-                var list= XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
-                list.Remove(item);
-                XMLTools.SaveListToXmlSerializer(list, GetXmlFilePath(typeof(T)));
+
+                #region
+                //if (DoesExistInList(item))
+                //{
+                //    //DataSource.Data[typeof(T)].Remove(item);
+                //    XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));
+                //    XElement root = document.Root;
+                //    foreach (var obj in root.Elements())
+                //    {
+                //        if (int.Parse(obj.Element("Id").Value) ==item)
+                //            obj.Element(propertyName).Value = (string)newValue;
+                //    }
+                //    document.Save(GetXmlFilePath(typeof(T)));
+                #endregion
+                if (typeof(T) == typeof(Drone))
+                {
+                    var droneList = XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone))).ToList();
+                    droneList.Remove((Drone)Convert.ChangeType(item, typeof(Drone)));
+                    XMLTools.SaveDroneListToXml(droneList, GetXmlFilePath(typeof(T)));
+                    //list.Remove();
+                }
+                else
+                {
+                    var list = XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
+                    list.Remove(item);
+                    XMLTools.SaveListToXmlSerializer(list, GetXmlFilePath(typeof(T)));
+                }
             }
         }
 
@@ -267,7 +278,8 @@ namespace Dal
             //return ((List<T>)DataSource.Data[typeof(T)]).Any(i => i.Equals(item));
 
             if (typeof(T) == typeof(Drone))
-                return XMLTools.LoadDroneListFromXmlToDrone().ToList().Any(i => i.Equals(item));
+                return XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone)))
+                    .ToList().Any(i => i.Equals(item));
             else
             {
                 StreamReader reader = new(GetXmlFilePath(typeof(T)));
@@ -280,10 +292,10 @@ namespace Dal
 
         public int GetIndexParcel()
         {
-            XElement root = XDocument.Load(configFilePath).Root;
+            XElement root = XDocument.Load(ConfigFilePath).Root;
             int index = int.Parse(root.Element("IndexParcel").Value);
             root.Element("IndexParcel").SetValue(index + 1);
-            root.Save(configFilePath);
+            root.Save(ConfigFilePath);
             return ++index;
             #region
             //return ++DataSource.Config.IndexParcel;
@@ -293,14 +305,14 @@ namespace Dal
 
         public (double, double, double, double, double) PowerConsumptionRequest()
         {
-            XElement root = XDocument.Load(configFilePath).Root;
+            XElement root = XDocument.Load(ConfigFilePath).Root;
             double Available = double.Parse(root.Element("Available").Value);
             double LightWeight = double.Parse(root.Element("LightWeight").Value);
             double MediumWeight = double.Parse(root.Element("MediumWeight").Value);
             double HeavyWeight = double.Parse(root.Element("HeavyWeight").Value);
             double ChargingRate = double.Parse(root.Element("ChargingRate").Value);
 
-            root.Save(configFilePath);
+            root.Save(ConfigFilePath);
             return (Available,
                     LightWeight,
                     MediumWeight,

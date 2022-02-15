@@ -49,7 +49,7 @@ namespace PO
             }
         }
 
-        private Dictionary<string, string> validityMessages = new()
+        private readonly Dictionary<string, string> validityMessages = new()
         {
             [nameof(Name)] = string.Empty,
             [nameof(NumPositions)] = string.Empty,

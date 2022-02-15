@@ -12,13 +12,13 @@ namespace PL
     {
         readonly Action<object> _execute;
         readonly Predicate<object> _canExecute;
-
+        [DebuggerStepThrough]
         public RelayCommand(Action<object> execute)
             : this(execute, null)
         {
             //_execute = execute;
         }
-
+        [DebuggerStepThrough]
         public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
             if (execute == null)
@@ -41,7 +41,7 @@ namespace PL
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
-
+        [DebuggerStepThrough]
         public void Execute(object parameter)
         {
             _execute(parameter);

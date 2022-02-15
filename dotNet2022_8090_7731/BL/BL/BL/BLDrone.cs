@@ -29,7 +29,7 @@ namespace BL
         {
             return new List<double>
             {
-                powerConsumptionFree,
+                PowerConsumptionFree,
                 powerConsumptionLight,
                 powerConsumptionMedium,
                 powerConsumptionHeavy,
@@ -107,27 +107,55 @@ namespace BL
         /// <returns></returns>
         private DroneToList CalculateUnDeliveryingDrone(DroneToList nDrone)
         {
-            //it rands free or maintance.
-            nDrone.DStatus = (DroneStatus)rand.Next((int)DroneStatus.Free, (int)DroneStatus.Delivery);
-
+            //if the list of charging drone empty or this drone is not on charging so it is free.
+            if (!dal.GetListFromDal<DO.ChargingDrone>().Any() || 
+                dal.GetListFromDal<DO.ChargingDrone>().FirstOrDefault(chargingDrone =>chargingDrone.DroneId == nDrone.Id).Equals(default(DO.ChargingDrone))) 
+                nDrone.DStatus = DroneStatus.Free;
+            else
+                nDrone.DStatus = DroneStatus.Maintenance;
+          
             var customersList = CustomersWithProvidedParcels();
 
-            if (nDrone.DStatus == DroneStatus.Maintenance || customersList.Count() == 0)
-            {
-                var availableSlotsList = AvailableSlots();
-                if (availableSlotsList.Any())
-                {
-                    var station = availableSlotsList.ElementAt(rand.Next(availableSlotsList.Count()));
-                    nDrone.CurrLocation = GetStation(station.Id).Location;
-                    nDrone.BatteryStatus = rand.NextDouble() * 20;
 
-                    if (nDrone.DStatus == DroneStatus.Maintenance)
-                    {
-                        dal.Add(new DO.ChargingDrone(nDrone.Id, station.Id, DateTime.Now));
-                    }
+            if (nDrone.DStatus == DroneStatus.Maintenance || !customersList.Any())
+            {
+                #region
+                //var availableSlotsList = AvailableSlots();
+                //if (availableSlotsList.Any())
+                //{
+                //    var station = availableSlotsList.ElementAt(rand.Next(availableSlotsList.Count()));
+                //    //maybe to rand to closet station?.
+                //    nDrone.CurrLocation = GetStation(station.Id).Location;
+                //    nDrone.BatteryStatus = rand.NextDouble() * 20;
+
+                //    if (nDrone.DStatus == DroneStatus.Maintenance)
+                //    {
+                //        dal.Add(new DO.ChargingDrone(nDrone.Id, station.Id, DateTime.Now));
+                //    }
+                //}
+                //else
+                //{
+
+                //}
+                #endregion
+
+                if (nDrone.DStatus == DroneStatus.Maintenance)
+                {
+                    var stationId = dal.GetDalListByCondition<DO.ChargingDrone>(c => c.DroneId == nDrone.Id).First().StationId;
+                    var station = dal.GetFromDalByCondition<DO.BaseStation>(s => s.Id == stationId);
+                    nDrone.CurrLocation =new(station.Longitude,station.Latitude);
+                   
                 }
+                else //customersList.Count() == 0
+                {
+                    var idStation = GetStations().ElementAt(rand.Next(GetStations().Count())).Id;
+                    var longitude = dal.GetFromDalById<DO.BaseStation>(idStation).Longitude;
+                    var latitude = dal.GetFromDalById<DO.BaseStation>(idStation).Latitude;
+                    nDrone.CurrLocation =new(longitude,latitude);
+                }
+                nDrone.BatteryStatus = rand.NextDouble() * 20;
             }
-            else
+            else //free + customersList.Count() != 0
             {
                 nDrone.CurrLocation = customersList.ElementAt(rand.Next(customersList.Count())).Location;
                 var closetStation = ClosestStation(nDrone.CurrLocation);
@@ -141,13 +169,10 @@ namespace BL
         /// A function that builds new DroneToList object and gets an object of IDAL.DO.Drone
         /// and copies from the object-IDAL.DO.Drone the common fields.
         /// </summary>
-        private DroneToList CopyCommon(DO.Drone source)
-        {
-            return new DroneToList(
+        private DroneToList CopyCommon(DO.Drone source) => new(
             source.Id,
             source.Model,
             (WeightCategories)source.MaxWeight);
-        }
 
         /// <summary>
         ///  
@@ -181,16 +206,13 @@ namespace BL
         /// <param name="distance"></param>
         /// <param name="weight"></param>
         /// <returns>the minimum battery in double</returns>
-        private double MinBattery(double distance, WeightCategories weight = 0)
+        private double MinBattery(double distance, WeightCategories weight = 0) => weight switch
         {
-            return weight switch
-            {
-                WeightCategories.Light => powerConsumptionLight * distance,
-                WeightCategories.Heavy => powerConsumptionHeavy * distance,
-                WeightCategories.Medium => powerConsumptionMedium * distance,
-                _ => powerConsumptionFree * distance,
-            };
-        }
+            WeightCategories.Light => powerConsumptionLight * distance,
+            WeightCategories.Heavy => powerConsumptionHeavy * distance,
+            WeightCategories.Medium => powerConsumptionMedium * distance,
+            _ => PowerConsumptionFree * distance,
+        };
         /// <summary>
         /// A function that creates ParcelInTransferand
         /// Calculates bills for specific drone id 

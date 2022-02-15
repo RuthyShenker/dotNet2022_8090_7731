@@ -9,8 +9,8 @@ namespace PL.ViewModels
 {
     public class EditStationViewModel : INotify
     {
-        BlApi.IBL bl;
-        Action refreshStations;
+        readonly BlApi.IBL bl;
+        //readonly Action refreshStations;
         //EditStation station;
         EditStation station;
         public RelayCommand<object> CloseWindowCommand { get; set; }
