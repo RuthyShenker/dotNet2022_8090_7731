@@ -1,11 +1,7 @@
 ﻿using PL.View;
 using PO;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace PL.ViewModels
@@ -33,7 +29,7 @@ namespace PL.ViewModels
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             EditCustomerCommand = new RelayCommand<object>(EditSender, param => !(Parcel.BelongParcel != default && Parcel.Arrival == default));
             DeleteParcelCommand = new RelayCommand<object>(DeleteParcel);
-            CollectAndDeliverPackageCommand = new RelayCommand<object>(GivingPermissionToCollectAndDeliverPackage/*,param=> Parcel.BelongParcel!=default*/);     
+            CollectAndDeliverPackageCommand = new RelayCommand<object>(GivingPermissionToCollectAndDeliverPackage/*,param=> Parcel.BelongParcel!=default*/);
             OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow, param => !(Parcel.BelongParcel != default && Parcel.Arrival == default));
         }
 
@@ -41,7 +37,7 @@ namespace PL.ViewModels
         {
             if (Parcel.BelongParcel == null)
             {
-                MessageBox.Show("In Order to Pick up parcel, you need to belong it to drone ","Error Pick Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("In Order to Pick up parcel, you need to belong it to drone ", "Error Pick Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else if (Parcel.PickingUp == null)
             {
@@ -56,7 +52,7 @@ namespace PL.ViewModels
                     MessageBox.Show(exception.Message, "Error Pick Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            else if(Parcel.Arrival==null)
+            else if (Parcel.Arrival == null)
             {
                 try
                 {
@@ -110,6 +106,7 @@ namespace PL.ViewModels
         }
         private void OpenDroneWindow(object obj)
         {
+            //problem::
             var carringDrone = bl.GetDrone(Parcel.DInParcel.Id);
             new DroneView(bl, carringDrone).Show();
         }

@@ -23,6 +23,7 @@ namespace BL
             foreach (var drone in dal.GetListFromDal<DO.Drone>())
             {
                 lDroneToList.Add(ConvertToList(drone));
+                
             }
         }
         public IEnumerable<double> GetPowerConsumption()
@@ -52,6 +53,7 @@ namespace BL
             var parcel = dal.GetFromDalByCondition<DO.Parcel>(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
             if (!parcel.Equals(default(DO.Parcel)))
             {
+                //+ checking if it can be:
                 return CalculateDroneInDelivery(nDrone, parcel);
             }
             else
@@ -70,8 +72,6 @@ namespace BL
         /// <returns></returns>
         private DroneToList CalculateDroneInDelivery(DroneToList nDrone, DO.Parcel parcel)
         {
-            nDrone.DStatus = DroneStatus.Delivery;
-
             //location:
             var sender = dal.GetFromDalByCondition<DO.Customer>(customer => customer.Id == parcel.SenderId);
             if (parcel.BelongParcel != null && parcel.PickingUp == null)
@@ -88,9 +88,25 @@ namespace BL
             Location nearestDestinationStation = ClosestStation(destination).Location;
             double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, destination),(WeightCategories)parcel.Weight)
                 + MinBattery(CalculateDistance(destination, nearestDestinationStation));
-            nDrone.BatteryStatus = Math.Min(100, RandBetweenRange(minBattry, 100));
 
-            nDrone.DeliveredParcelId = parcel.Id;
+            if (minBattry > 100)
+            {
+                //נשאר  באותו מיקום?
+                nDrone.DStatus = DroneStatus.Free;
+                nDrone.BatteryStatus = RandBetweenRange(0, 100);
+                nDrone.DeliveredParcelId = default;
+                dal.Update<DO.Parcel>(parcel.Id,null,nameof(DO.Parcel.DroneId));
+                dal.Update<DO.Parcel>(parcel.Id, null, nameof(DO.Parcel.BelongParcel));
+                dal.Update<DO.Parcel>(parcel.Id, null, nameof(DO.Parcel.PickingUp));
+                var e = dal.GetFromDalById<DO.Parcel>(parcel.Id);
+
+            }
+            else
+            {
+                nDrone.DStatus = DroneStatus.Delivery;
+                nDrone.BatteryStatus = RandBetweenRange(minBattry, 100);
+                nDrone.DeliveredParcelId = parcel.Id;
+            }
             return nDrone;
         }
 

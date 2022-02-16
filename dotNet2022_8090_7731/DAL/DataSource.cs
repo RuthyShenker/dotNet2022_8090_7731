@@ -209,7 +209,7 @@ namespace Dal
                         var index = Rand.Next(BaseStationsWithChargingPosition.Count());
                         if (ChargingDroneList.Where(c => c.StationId == index).Count() < BaseStationList.ElementAt(index).NumberOfChargingPositions)
                         {
-                            ChargingDroneList.Add(new() { DroneId = DroneList.ElementAt(i).Id, StationId = BaseStationList.ElementAt(index).Id, EnteranceTime = DateTime.Now });
+                            ChargingDroneList.Add(new(){ DroneId=DroneList.ElementAt(i).Id, StationId= BaseStationList.ElementAt(index).Id, EnteranceTime= DateTime.Now});
                         }
                     }
                 }
