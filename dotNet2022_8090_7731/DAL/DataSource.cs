@@ -139,8 +139,8 @@ namespace Dal
                     Id = Rand.Next(100000000, 1000000000),
                     Name = initNames[Rand.Next(0, initNames.Length)],
                     Phone = initDigitsPhone[Rand.Next(0, initDigitsPhone.Length)],
-                    Longitude = Rand.Next(25, 30) + Rand.NextDouble(),
-                    Latitude = Rand.Next(25, 30) + Rand.NextDouble()
+                    Longitude = Rand.Next(0, 90) + Rand.NextDouble(),
+                    Latitude = Rand.Next(-90, 90) + Rand.NextDouble()
                 };
                 customer.Phone += (Rand.Next(100000, 1000000)).ToString();
             CustomerList.Add(customer);
@@ -157,8 +157,8 @@ namespace Dal
                     Id = Rand.Next(100000000, 1000000000),
                     NameStation = initNameStation[Rand.Next(0, initNameStation.Length)],
                     NumberOfChargingPositions = Rand.Next(0, 50),
-                    Longitude = Rand.Next(25, 30) + Rand.NextDouble(),
-                    Latitude = Rand.Next(25, 30) + Rand.NextDouble()
+                    Longitude = Rand.Next(0, 90) + Rand.NextDouble(),
+                    Latitude = Rand.Next(-90, 90) + Rand.NextDouble()
                 });
             }
         }
@@ -209,7 +209,7 @@ namespace Dal
                         var index = Rand.Next(BaseStationsWithChargingPosition.Count());
                         if (ChargingDroneList.Where(c => c.StationId == index).Count() < BaseStationList.ElementAt(index).NumberOfChargingPositions)
                         {
-                            ChargingDroneList.Add(new() { DroneId = DroneList.ElementAt(i).Id, StationId = BaseStationList.ElementAt(index).Id, EnteranceTime = DateTime.Now });
+                            ChargingDroneList.Add(new(){ DroneId=DroneList.ElementAt(i).Id, StationId= BaseStationList.ElementAt(index).Id, EnteranceTime= DateTime.Now});
                         }
                     }
                 }
