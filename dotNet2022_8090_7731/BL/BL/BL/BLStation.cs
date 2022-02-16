@@ -105,35 +105,50 @@ namespace BL
         // otherwise the first station in the list.
         internal Station ClosestStation(Location location, bool sendingToCharge = false)
         {
-            var cCoord = new GeoCoordinate(location.Latitude, location.Longitude);
-            var stationDalList = dal.GetListFromDal<DO.BaseStation>();
-            // TODO catch when the list is empty
-            
-            var droneCoord = new GeoCoordinate(location.Latitude, location.Longitude);
-            var sortedList = stationDalList.OrderBy(station => new GeoCoordinate(station.Latitude, station.Longitude).GetDistanceTo(droneCoord));
-
-            GeoCoordinate sCoord;
-            double currDistance, minDistance = double.MaxValue;
-            DO.BaseStation closetStation = stationDalList.ElementAt(0);
-            for (int i = 0; i < stationDalList.Count(); ++i)
+            // TODO catch when the list is empty or there is no first...
+            try
             {
-                sCoord = new GeoCoordinate(stationDalList.ElementAt(i).Latitude, stationDalList.ElementAt(i).Longitude);
-                currDistance = sCoord.GetDistanceTo(cCoord);
-                if (currDistance < minDistance)
-                {
-                    if (!sendingToCharge)
-                    {
-                        minDistance = currDistance;
-                        closetStation = stationDalList.ElementAt(i);
-                    }
-                    else if (GetNumOfAvailablePositionsInStation(stationDalList.ElementAt(i).Id) > 0)
-                    {
-                        minDistance = currDistance;
-                        closetStation = stationDalList.ElementAt(i);
-                    }
-                }
+                var droneCoord = new GeoCoordinate(location.Latitude, location.Longitude);
+
+                var sortedList = dal.GetListFromDal<DO.BaseStation>()
+                    .OrderBy(station => new GeoCoordinate(station.Latitude, station.Longitude).GetDistanceTo(droneCoord));
+
+                var closetStation = sendingToCharge
+                    ? sortedList.First()
+                    : sortedList.FirstOrDefault(s => GetNumOfAvailablePositionsInStation(s.Id) > 0);
+
+                return ConvertToBL(closetStation);
             }
-            return ConvertToBL(closetStation);
+            catch (ArgumentNullException)
+            {
+                throw new ListIsEmptyException();
+            }
+            #region canDelete
+            //var cCoord = new GeoCoordinate(location.Latitude, location.Longitude);
+            //var stationDalList = dal.GetListFromDal<DO.BaseStation>();
+
+            //GeoCoordinate sCoord;
+            //double currDistance, minDistance = double.MaxValue;
+            //DO.BaseStation closetStation = stationDalList.ElementAt(0);
+            //for (int i = 0; i < stationDalList.Count(); ++i)
+            //{
+            //    sCoord = new GeoCoordinate(stationDalList.ElementAt(i).Latitude, stationDalList.ElementAt(i).Longitude);
+            //    currDistance = sCoord.GetDistanceTo(cCoord);
+            //    if (currDistance < minDistance)
+            //    {
+            //        if (!sendingToCharge)
+            //        {
+            //            minDistance = currDistance;
+            //            closetStation = stationDalList.ElementAt(i);
+            //        }
+            //        else if (GetNumOfAvailablePositionsInStation(stationDalList.ElementAt(i).Id) > 0)
+            //        {
+            //            minDistance = currDistance;
+            //            closetStation = stationDalList.ElementAt(i);
+            //        }
+            //    }
+            //}
+            #endregion
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -186,8 +201,13 @@ namespace BL
         private StationToList ConvertToList(DO.BaseStation station)
         {
             var numOfAvailablePositions = GetNumOfAvailablePositionsInStation(station.Id);
-            StationToList nStation = new() { Id = station.Id, Name = station.NameStation,
-                AvailablePositions = numOfAvailablePositions, FullPositions = station.NumberOfChargingPositions - numOfAvailablePositions };
+            StationToList nStation = new()
+            {
+                Id = station.Id,
+                Name = station.NameStation,
+                AvailablePositions = numOfAvailablePositions,
+                FullPositions = station.NumberOfChargingPositions - numOfAvailablePositions
+            };
 
             return nStation;
         }
@@ -214,6 +234,10 @@ namespace BL
         /// <returns>returns Station object</returns>
         private Station ConvertToBL(DO.BaseStation station)
         {
+            if (station.Equals(default))
+            {
+                return new Station();
+            }
             var nLocation = new Location() { Longitude = station.Longitude, Latitude = station.Latitude };
             var numAvailablePositions = GetNumOfAvailablePositionsInStation(station.Id);
             var chargingDroneBList = ChargingDroneBLList(station.Id);
