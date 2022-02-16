@@ -20,48 +20,78 @@
         <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
-        
+
     </Window.Resources>
-    <StackPanel Orientation="Vertical">
-        <TextBlock Text="Filter list"/>
-        <ComboBox ItemsSource="{Binding FilterParcelOptions}" 
+    <ScrollViewer>
+        <StackPanel Orientation="Vertical" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <TextBlock Text="Filter list"/>
+            <ComboBox ItemsSource="{Binding FilterParcelOptions}" 
                   SelectedItem="{Binding FilterParcels}" />
 
-        <StackPanel>
-            <TextBlock Text="Filter"/>
             <StackPanel>
-                <DockPanel>
-                    <TextBlock Text="Created After"/>
-                    <DatePicker x:Name="click" 
+                <TextBlock Text="Filter"/>
+                <StackPanel>
+                    <DockPanel>
+                        <TextBlock Text="Created After"/>
+                        <DatePicker x:Name="click" 
                         Width="120"
                         FlowDirection="RightToLeft"
                         materialDesign:HintAssist.Hint="Choose Date"/>
-                </DockPanel>
+                    </DockPanel>
 
-                <DockPanel>
-                    <TextBlock Text="Created Before"/>
-                    <DatePicker
+                    <DockPanel>
+                        <TextBlock Text="Created Before"/>
+                        <DatePicker
                        Width="120"
                        FlowDirection="RightToLeft"
                        materialDesign:HintAssist.Hint="Choose Date" />
-                </DockPanel>
+                    </DockPanel>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
 
-        <ComboBox ItemsSource="{Binding GroupOptions }"
+            <ComboBox ItemsSource="{Binding GroupOptions }"
                   SelectedItem="{Binding GroupBy}" />
-        
-        <ListView x:Name="ParcelList" ItemsSource="{Binding ParcelList}"  >
-            <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
-            <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction 
+
+            <ListView x:Name="ParcelList" ItemsSource="{Binding ParcelList}"  >
+                <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
+                <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
+                <ListView.View>
+                    
+
+
+
+
+
+                    <GridView>
+                        <GridViewColumn
+        DisplayMemberBinding="{Binding Id}"
+        Header="Id" />
+                        <GridViewColumn
+        DisplayMemberBinding="{Binding SenderName}"
+        Header="SenderName" />
+                        <GridViewColumn
+        DisplayMemberBinding="{Binding GetterName}"
+        Header="GetterName" />
+                        <GridViewColumn
+        DisplayMemberBinding="{Binding Weight}"
+        Header="Weight" />
+                        <GridViewColumn
+        DisplayMemberBinding="{Binding MyPriority}"
+        Header="MyPriority" />
+                        <GridViewColumn
+        DisplayMemberBinding="{Binding Status}"
+        Header="Status" />
+
+                    </GridView>
+                </ListView.View>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction 
                         Command="{Binding MouseDoubleCommand}"
                         CommandParameter="{Binding ElementName=ParcelList, Path=SelectedItem}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <!--<ListView.GroupStyle>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <!--<ListView.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
@@ -70,9 +100,9 @@
                     </GroupStyle.HeaderTemplate>
                 </GroupStyle>
             </ListView.GroupStyle>-->
-        </ListView>
+            </ListView>
 
-        <!--<ListView ItemsSource="{Binding ParcelListBySender}"  >
+            <!--<ListView ItemsSource="{Binding ParcelListBySender}"  >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -97,13 +127,14 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>-->
-        <Button Content="ADD"
+            <Button Content="ADD"
                 Command="{Binding AddParcelCommand}" />
 
-        <Button Content="Close" 
+            <Button Content="Close" 
                 Command="{Binding CloseWindowCommand }" 
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" >
-        </Button>
-    </StackPanel>
+            </Button>
+        </StackPanel>
+    </ScrollViewer>
 
 </Window>

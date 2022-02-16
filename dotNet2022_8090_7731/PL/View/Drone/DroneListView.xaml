@@ -18,7 +18,7 @@
                 <x:Type TypeName="BO:WeightCategories"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>-->
-        
+
         <!--<ObjectDataProvider x:Key="DroneStatusEnum" MethodName="GetValues" 
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -27,110 +27,113 @@
         
         
         </ObjectDataProvider>-->
-       
+
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="22*"/>
-            <RowDefinition Height="100*"/>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="50*"/>
-        </Grid.RowDefinitions>
-        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
+    <ScrollViewer>
+        <Grid ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="22*"/>
+                <RowDefinition Height="100*"/>
+                <RowDefinition Height="50*"/>
+                <RowDefinition Height="50*"/>
+            </Grid.RowDefinitions>
+            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
                 VerticalAlignment="Stretch" Width="auto">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions >
-            <Label Content="Drone Status:" Grid.Column="0" HorizontalAlignment="Left"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions >
+                <Label Content="Drone Status:" Grid.Column="0" HorizontalAlignment="Left"
                    Margin="81,19,0,0" VerticalAlignment="Top"/>
-            <ComboBox  
+                <ComboBox  
                       ItemsSource="{Binding DroneStatusEnum}" 
                       SelectedItem="{Binding StatusSelectedItem}"
                       Margin="40,9,40,10"  Width="120" Grid.Column="1" />
-            <Label Content="Drone Max Weight:" Grid.Column="2" HorizontalAlignment="Center"
+                <Label Content="Drone Max Weight:" Grid.Column="2" HorizontalAlignment="Center"
                    Margin="0,19,0,0" VerticalAlignment="Top"/>
-            <ComboBox  ItemsSource="{Binding WeightCategoriesEnum}"
+                <ComboBox  ItemsSource="{Binding WeightCategoriesEnum}"
                     SelectedItem="{Binding WeightSelectedItem}"
-                    Grid.Column="3" Margin="39,9,39,11"/><!--Source={StaticResource-->
+                    Grid.Column="3" Margin="39,9,39,11"/>
+                <!--Source={StaticResource-->
 
-            <ComboBox ItemsSource="{Binding GroupOptions }" 
+                <ComboBox ItemsSource="{Binding GroupOptions }" 
                   SelectedItem="{Binding GroupDrones}"
                   Grid.Column="4"/>
-        </Grid>
-        <ListView x:Name="DroneList" Grid.Row="1" ItemsSource="{Binding DroneList}" >
+            </Grid>
+            <ListView x:Name="DroneList" Grid.Row="1" ItemsSource="{Binding DroneList}" >
 
 
 
-            
 
 
-<!--BatteryStatus
+
+                <!--BatteryStatus
 DroneStatus
 PInTransfer
 CurrLocation-->
 
 
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn
         DisplayMemberBinding="{Binding Id}"
         Header="Id" />
-                    <GridViewColumn
+                        <GridViewColumn
         DisplayMemberBinding="{Binding Model}"
         Header="Model" />
-                    <GridViewColumn
+                        <GridViewColumn
         DisplayMemberBinding="{Binding Weight}"
         Header="Weight" />
-                    <GridViewColumn
+                        <GridViewColumn
         DisplayMemberBinding="{Binding BatteryStatus}"
         Header="Battery Status" />
-                    <GridViewColumn
+                        <GridViewColumn
         DisplayMemberBinding="{Binding DStatus}"
         Header="Drone Status" />
-                    <GridViewColumn
+                        <GridViewColumn
         DisplayMemberBinding="{Binding CurrLocation.Longitude}"
         Header="Longitude" />
-                    <GridViewColumn
+                        <GridViewColumn
         DisplayMemberBinding="{Binding CurrLocation.Latitude}"
         Header="Latitude" />
-                    <GridViewColumn
+                        <GridViewColumn
         DisplayMemberBinding="{Binding DeliveredParcelId }"
         Header="Parcel Id" />
-                </GridView>
-                
-                
-            </ListView.View>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction 
+                    </GridView>
+
+
+                </ListView.View>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction 
                         Command="{Binding MouseDoubleCommand}"
                         CommandParameter="{Binding ElementName=DroneList, Path=SelectedItem}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
 
-            <!--<ContentControl Content="{Binding }" MouseDoubleClick="ContentControl_MouseDoubleClick"/>-->
-            <!--</DataTemplate>
+                <!--<ContentControl Content="{Binding }" MouseDoubleClick="ContentControl_MouseDoubleClick"/>-->
+                <!--</DataTemplate>
             </ListView.ItemTemplate>-->
-        </ListView>
-        <!--<Button Content="AddDrone:" Grid.Row="1"
+            </ListView>
+            <!--<Button Content="AddDrone:" Grid.Row="1"
                 Command="{Binding AddDroneCommand}" Margin="0,214,0,140" />-->
-        <!--<Button x:Name="close_window" Content="close" Width="90" Grid.Row="3" Grid.Column="4"
+            <!--<Button x:Name="close_window" Content="close" Width="90" Grid.Row="3" Grid.Column="4"
                 Command="{Binding CloseWindowCommand }"
                 CommandParameter="{Binding ElementName=close_window}" />-->
-        <Button Content="ADD" Grid.Row="2"
+            <Button Content="ADD" Grid.Row="2"
                 Command="{Binding AddDroneCommand}"
                 Style="{StaticResource MaterialDesignFlatButton}"
                 HorizontalAlignment="Center" />
 
-        <Button x:Name="close_window" Content="Close" Grid.Row="3"
+            <Button x:Name="close_window" Content="Close" Grid.Row="3"
                 Command="{Binding CloseWindowCommand }" 
                 CommandParameter="{Binding ElementName=close_window}"
                 Style="{StaticResource MaterialDesignFlatButton}"
                 HorizontalAlignment="Center" />
-    </Grid>
+        </Grid>
+    </ScrollViewer>
 </Window>

@@ -76,19 +76,19 @@ namespace BL
             var sender = dal.GetFromDalByCondition<DO.Customer>(customer => customer.Id == parcel.SenderId);
             if (parcel.BelongParcel != null && parcel.PickingUp == null)
             {
-                nDrone.CurrLocation = ClosestStation(new Location() { Longitude = sender.Longitude, Latitude = sender.Latitude }).Location;
+                nDrone.CurrLocation = ClosestStation(new() { Longitude = sender.Longitude, Latitude = sender.Latitude }).Location;
             }
             else if (parcel.Arrival == null && parcel.PickingUp != null)
             {
-                nDrone.CurrLocation = new Location() { Longitude = sender.Longitude, Latitude = sender.Latitude };
+                nDrone.CurrLocation = new() { Longitude = sender.Longitude, Latitude = sender.Latitude };
             }
 
             // battery Status:
             Location destination = GetCustomer(parcel.GetterId).Location;
             Location nearestDestinationStation = ClosestStation(destination).Location;
-            double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, destination),
-                (WeightCategories)parcel.Weight) + MinBattery(CalculateDistance(destination, nearestDestinationStation));
-            nDrone.BatteryStatus = RandBetweenRange(minBattry, 100);
+            double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, destination),(WeightCategories)parcel.Weight)
+                + MinBattery(CalculateDistance(destination, nearestDestinationStation));
+            nDrone.BatteryStatus = Math.Min(100, RandBetweenRange(minBattry, 100));
 
             nDrone.DeliveredParcelId = parcel.Id;
             return nDrone;
@@ -315,7 +315,7 @@ namespace BL
                     throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is Delivery ");
                 default:
                     //is correct?
-                    drone.BatteryStatus += timeInCharging * chargingRate;
+                    drone.BatteryStatus += Math.Min(timeInCharging * chargingRate,100);
                     drone.DStatus = DroneStatus.Free;
 
                     var ChargingDroneToRemove = dal.GetFromDalByCondition<DO.ChargingDrone>(charge

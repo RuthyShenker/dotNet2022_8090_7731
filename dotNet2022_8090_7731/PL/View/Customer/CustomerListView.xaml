@@ -8,19 +8,13 @@
         mc:Ignorable="d"
         Title="CustomerListView" Height="450" Width="800">
     <!--<StackPanel>-->
-    <StackPanel Orientation="Vertical">
-        <ListView x:Name="CustomerList" ItemsSource="{Binding CustomerList}">
-            <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
-            <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
 
-
-
-
-
-
-
-
-            <ListView.View>
+    <ScrollViewer>
+        <StackPanel Orientation="Vertical" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <ListView x:Name="CustomerList" ItemsSource="{Binding CustomerList}">
+                <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
+                <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
+                <ListView.View>
                     <GridView>
                         <GridViewColumn
         DisplayMemberBinding="{Binding Id}"
@@ -31,29 +25,29 @@
                         <GridViewColumn
         DisplayMemberBinding="{Binding Phone}"
         Header="Phone" />
-                    <GridViewColumn
+                        <GridViewColumn
         DisplayMemberBinding="{Binding SentSupplied}"
         Header="SentSupplied" />
-                    <GridViewColumn
+                        <GridViewColumn
         DisplayMemberBinding="{Binding SentNotSupplied}"
         Header="SentNotSupplied" />
-                    <GridViewColumn
+                        <GridViewColumn
         DisplayMemberBinding="{Binding Got}"
         Header="Got" />
-                    <GridViewColumn
+                        <GridViewColumn
         DisplayMemberBinding="{Binding InWayToCustomer}"
         Header="InWayToCustomer" />
-                </GridView>
+                    </GridView>
                 </ListView.View>
-           
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction 
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction 
                         Command="{Binding MouseDoubleCommand}"
                         CommandParameter="{Binding ElementName=CustomerList, Path=SelectedItem}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <!--<ListView.ItemTemplate>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <!--<ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -67,27 +61,28 @@
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>-->
-            <!--<i:Interaction.Behaviors>
+                <!--<i:Interaction.Behaviors>
                 <i:EventTriggerBehavior
              EventName="RightTapped">
                     <i:InvokeCommandAction
                   Command="{Binding YourCommand}"
                   CommandParameter="{Binding ElementName=CustomerList, Path=SelectedItem}"/>
             </i:Interaction.Behaviors>-->
-        </ListView>
+            </ListView>
 
-        <Button Content="AddCustomer:" Command="{Binding AddCustomerCommand}"
+            <Button Content="AddCustomer:" Command="{Binding AddCustomerCommand}"
                     Style="{StaticResource MaterialDesignFlatButton}"
                 HorizontalAlignment="Center"/>
-        
-        <Button x:Name="close_window" Content="Close:" 
+
+            <Button x:Name="close_window" Content="Close:" 
                 Command="{Binding CloseWindowCommand }" 
                 CommandParameter="{Binding ElementName=close_window}"
                     Style="{StaticResource MaterialDesignFlatButton}"
                 HorizontalAlignment="Center"/>
-    </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </Window>
-        <!--<Grid
+<!--<Grid
   MinWidth="220">
             <Grid.RowDefinitions>
                 <RowDefinition
