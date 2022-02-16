@@ -103,6 +103,7 @@ namespace BL
                 parcel = optionalParcels.First();
                 Init(parcel.Id, drone);
                 drone.DStatus = DroneStatus.Delivery;
+                drone.DeliveredParcelId = parcel.Id;
 
                 dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(DO.Parcel.BelongParcel));
                 dal.Update<DO.Parcel>(parcel.Id, drone.Id, nameof(DO.Parcel.DroneId));
