@@ -17,7 +17,7 @@ namespace BL
 
         private const int DELAY = 500;
         private const double VELOCITY = 1.0;
-        private const double TIME_STEP = DELAY / 1000.0;
+        private const double TIME_STEP = DELAY / 3000.0;
         private const double STEP = VELOCITY / TIME_STEP;
         private BL bl;
         Action updateView;
@@ -103,6 +103,7 @@ namespace BL
                 parcel = optionalParcels.First();
                 Init(parcel.Id, drone);
                 drone.DStatus = DroneStatus.Delivery;
+                drone.DeliveredParcelId = parcel.Id;
 
                 dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(DO.Parcel.BelongParcel));
                 dal.Update<DO.Parcel>(parcel.Id, drone.Id, nameof(DO.Parcel.DroneId));
