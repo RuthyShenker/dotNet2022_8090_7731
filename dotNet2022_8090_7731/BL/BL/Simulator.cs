@@ -106,6 +106,7 @@ namespace BL
 
                 dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(DO.Parcel.BelongParcel));
                 dal.Update<DO.Parcel>(parcel.Id, drone.Id, nameof(DO.Parcel.DroneId));
+                drone.DeliveredParcelId = parcel.Id;
             }
         }
 
@@ -150,17 +151,17 @@ namespace BL
                     drone.CurrLocation = station.Location;
 
                     // charging 
-                    while (drone.BatteryStatus < 1.0 && !checkStop())
+                    while (drone.BatteryStatus < 100 && !checkStop())
                     {
                         if (!SleepDelayTime()) break;
                         //lock (bl) למה בפרויקט לדוג עשו כאן?
                         {
-                            drone.BatteryStatus = Math.Min(1.0, drone.BatteryStatus + (chargingRate * TIME_STEP));
+                            drone.BatteryStatus = Math.Min(100, drone.BatteryStatus + (chargingRate * TIME_STEP));
                             updateView();
                         }
                     }
 
-                    if (drone.BatteryStatus >= 1.0)
+                    if (drone.BatteryStatus >= 100)
                     {
                         drone.DStatus = DroneStatus.Free;
                         updateView();
@@ -204,7 +205,6 @@ namespace BL
                 else
                 {
                     dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.PickingUp));
-
                     customer = bl.GetCustomer(parcel.GetterId);
                     pickedUp = true;
                 }

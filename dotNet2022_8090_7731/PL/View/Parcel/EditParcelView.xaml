@@ -186,7 +186,7 @@
                  materialDesign:HintAssist.Hint="Arrival Parcel"
                  IsEnabled="False"/>
 
-        <Button  Content="Update"
+        <Button Content="Update"
                  Command="{Binding UpdateParcelCommand}"/>
 
         <Button Content="Delete"

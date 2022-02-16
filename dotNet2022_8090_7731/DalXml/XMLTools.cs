@@ -57,9 +57,10 @@ namespace DalXml
         {
             try
             {
-                using FileStream file = new(filePath, FileMode.Create);
+                FileStream file = new(filePath, FileMode.Create);
                 XmlSerializer x = new(list.GetType());
                 x.Serialize(file, list);
+                file.Close();
             }
             catch (Exception ex)
             {
@@ -73,9 +74,15 @@ namespace DalXml
             {
                 if (File.Exists(filePath))
                 {
-                    using var reader = new StreamReader(filePath);
-                    XmlSerializer x = new (typeof(List<T>));
-                    return (List<T>)x.Deserialize(reader);
+                    
+                        var reader = new StreamReader(filePath);
+                        XmlSerializer x = new(typeof(List<T>));
+                        var list = (List<T>)x.Deserialize(reader);
+                        reader.Close();
+
+                        return list;
+                    
+
                 }
                 else
                     return new List<T>();
@@ -100,17 +107,20 @@ namespace DalXml
             Drones.Save(filePath);
         }
 
-       
+
         public static IEnumerable<DO.Drone> LoadDroneListFromXmlToDrone(string filePath)
         {
-            return
-                from drone in XElement.Load(filePath).Elements()
+            var document = XElement.Load(filePath);
+            var list =
+                from drone in document.Elements()
                 select new DO.Drone()
                 {
                     Id = int.Parse(drone.Element("Id").Value),
                     MaxWeight = (DO.WeightCategories)Enum.Parse(typeof(DO.WeightCategories), drone.Element("MaxWeight").Value),
                     Model = drone.Element("Model").Value
-                }; 
+                };
+            document.Save(filePath);
+            return list;
         }
 
         //private DO.Drone ConvertFromXmlToDrone/*<T>*/(XElement element) /*where T : new()*/
@@ -120,7 +130,7 @@ namespace DalXml
     }
     //public static class XmlDrone
     //{
-     
+
     //}
 
 }

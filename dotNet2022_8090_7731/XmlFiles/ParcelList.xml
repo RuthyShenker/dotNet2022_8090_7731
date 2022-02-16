@@ -6,10 +6,10 @@
     <GetterId>785644322</GetterId>
     <Weight>Light</Weight>
     <MPriority>Normal</MPriority>
-    <DroneId xsi:nil="true" />
+    <DroneId>5463</DroneId>
     <CreatedTime>2022-02-16T11:17:30.5659345+02:00</CreatedTime>
-    <BelongParcel xsi:nil="true" />
-    <PickingUp xsi:nil="true" />
-    <Arrival xsi:nil="true" />
+    <BelongParcel>2022-02-16T15:40:40.6419761+02:00</BelongParcel>
+    <PickingUp>2022-02-16T14:54:00.1243956+02:00</PickingUp>
+    <Arrival>2022-02-16T15:40:40.6468375+02:00</Arrival>
   </Parcel>
 </ArrayOfParcel>
