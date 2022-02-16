@@ -64,6 +64,7 @@
                 <x:Type TypeName="BO:Priority"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <Converters:VisibilityByParcelPickingValueConverter x:Key="VisibilityByParcelPickingValueConverter"/>
         <Converters:ContentByDroneInParcelPickOrDeliveryParcelConverter x:Key="ContentByDroneInParcelPickOrDeliveryParcelConverter"/>
     </UserControl.Resources>
 
@@ -173,16 +174,16 @@
         <TextBox Text="{Binding Parcel.MakingParcel}" 
                  materialDesign:HintAssist.Hint="Making Parcel"
                  IsEnabled="False"/>
-        
-        <TextBox Text="{Binding Parcel.BelongParcel}"
+
+        <TextBox Text="{Binding Parcel.BelongParcel}" Visibility="{Binding Parcel.PickingUp ,Converter={StaticResource VisibilityByParcelPickingValueConverter}}" 
                  materialDesign:HintAssist.Hint="Belong Parcel"
                  IsEnabled="False"/>
         
-        <TextBox Text="{Binding Parcel.PickingUp}" 
+        <TextBox Text="{Binding Parcel.PickingUp}" Visibility="{Binding Parcel.PickingUp ,Converter={StaticResource VisibilityByParcelPickingValueConverter}}" 
                  materialDesign:HintAssist.Hint="Picking Up Parcel"
                  IsEnabled="False"/>
 
-        <TextBox Text="{Binding Parcel.Arrival}" 
+        <TextBox Text="{Binding Parcel.Arrival}" Visibility="{Binding Parcel.PickingUp ,Converter={StaticResource VisibilityByParcelPickingValueConverter}}" 
                  materialDesign:HintAssist.Hint="Arrival Parcel"
                  IsEnabled="False"/>
 

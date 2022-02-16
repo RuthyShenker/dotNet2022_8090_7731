@@ -125,9 +125,8 @@ namespace BL
                     var sortedList = dal.GetListFromDal<DO.BaseStation>()
                         .OrderBy(station => new GeoCoordinate(station.Latitude, station.Longitude).GetDistanceTo(droneCoord));
 
-                    var closetStation = sendingToCharge
-                        ? sortedList.First()
-                        : sortedList.FirstOrDefault(s => GetNumOfAvailablePositionsInStation(s.Id) > 0);
+                var closetStation = sendingToCharge == true
+                    ? sortedList.FirstOrDefault(s => GetNumOfAvailablePositionsInStation(s.Id) > 0) : sortedList.First();
 
                     return ConvertToBL(closetStation);
                 }

@@ -30,7 +30,7 @@ namespace PL.ViewModels
             EditCustomerCommand = new RelayCommand<object>(EditSender, param => !(Parcel.BelongParcel != default && Parcel.Arrival == default));
             DeleteParcelCommand = new RelayCommand<object>(DeleteParcel);
             CollectAndDeliverPackageCommand = new RelayCommand<object>(GivingPermissionToCollectAndDeliverPackage/*,param=> Parcel.BelongParcel!=default*/);
-            OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow, param => !(Parcel.BelongParcel != default && Parcel.Arrival == default));
+            OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow, param => Parcel.BelongParcel ==null);
         }
 
         private void GivingPermissionToCollectAndDeliverPackage(object obj)

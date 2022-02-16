@@ -86,15 +86,18 @@ namespace BL
             {
                 IOrderedEnumerable<DO.Parcel> optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation);
 
-                var parcel = optionParcels.FirstOrDefault(parcel => parcel.BelongParcel.HasValue);
-                if (!optionParcels.Any() || parcel.Equals(default(DO.Parcel)))
-                {
-                    if (!dal.GetListFromDal<DO.Parcel>().Any())
-                    {
-                        throw new BO.ListIsEmptyException(typeof(DO.Parcel));
-                    }
-                    throw new ThereIsNoMatchObjectInListException(typeof(DO.Parcel), $"There is no match parcels to drone with id {dId} in");
-                }
+            if (!dal.GetListFromDal<DO.Parcel>().Any())
+            {
+                throw new BO.ListIsEmptyException(typeof(DO.Parcel));
+            }
+
+            var optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation).ToList();
+            var parcel = optionParcels.FirstOrDefault(parcel => !parcel.BelongParcel.HasValue);
+
+            if (!optionParcels.Any() || parcel.Equals(default))
+            {
+                throw new ThereIsNoMatchObjectInListException(typeof(DO.Parcel), $"There is no match parcels to drone with id {dId} in");
+            }
 
                 droneToList.DStatus = DroneStatus.Delivery;
 
@@ -110,7 +113,8 @@ namespace BL
             //    + MinBattery(CalculateDistance(destination, nearestDestinationStation))
 
             return dal.GetDalListByCondition<DO.Parcel>
-                                (parcel => parcel.Weight <= (DO.WeightCategories)weight &&
+                                (parcel => parcel.Weight <= (DO.WeightCategories)weight
+                                &&
                                 batteryStatus >=
                                 MinBattery(
                                     Extensions.CalculateDistance(currLocation, GetCustomer(parcel.SenderId).Location)
@@ -224,6 +228,8 @@ namespace BL
             drone.CurrLocation = getterLocation;
             drone.DStatus = DroneStatus.Free;
             drone.DeliveredParcelId = null;
+            dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
+            dal.Update<DO.Parcel>(parcel.Id, null, nameof(parcel.DroneId));
 
         }
 
@@ -238,15 +244,18 @@ namespace BL
             {
                 return ParcelStatus.InDestination;
             }
-            if (parcel.PickingUp.HasValue)
+            else if (parcel.PickingUp.HasValue)
             {
                 return ParcelStatus.collected;
             }
-            if (parcel.BelongParcel.HasValue)
+            else if (parcel.BelongParcel.HasValue)
             {
                 return ParcelStatus.belonged;
             }
-            return ParcelStatus.made;
+            else
+            {
+                return ParcelStatus.made;
+            }
         }
 
         //------Get-------------------------------------------------------
