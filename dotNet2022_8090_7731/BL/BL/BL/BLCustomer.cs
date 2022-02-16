@@ -44,7 +44,6 @@ namespace BL
         /// the new object of CustomerInParcel</returns>
         private CustomerInParcel NewCustomerInParcel(int Id)
         {
-           
             try
             {
                 string name = dal.GetFromDalById<DO.Customer>(Id).Name;
@@ -165,6 +164,7 @@ namespace BL
         /// <returns>returns CustomerToList object </returns>
         private CustomerToList ConvertToList(DO.Customer customer)
         {
+            //problem:!!!!
             CustomerToList nCustomer = new()
             {
                 Id = customer.Id,

@@ -84,9 +84,11 @@ namespace BL
             }
 
             // battery Status:
+            Location source = GetCustomer(parcel.SenderId).Location;
             Location destination = GetCustomer(parcel.GetterId).Location;
             Location nearestDestinationStation = ClosestStation(destination).Location;
-            double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, destination),(WeightCategories)parcel.Weight)
+            double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, source))
+                + MinBattery(CalculateDistance(source, destination),(WeightCategories)parcel.Weight)
                 + MinBattery(CalculateDistance(destination, nearestDestinationStation));
 
             if (minBattry > 100)
@@ -98,8 +100,7 @@ namespace BL
                 dal.Update<DO.Parcel>(parcel.Id,null,nameof(DO.Parcel.DroneId));
                 dal.Update<DO.Parcel>(parcel.Id, null, nameof(DO.Parcel.BelongParcel));
                 dal.Update<DO.Parcel>(parcel.Id, null, nameof(DO.Parcel.PickingUp));
-                var e = dal.GetFromDalById<DO.Parcel>(parcel.Id);
-
+                //var e = dal.GetFromDalById<DO.Parcel>(parcel.Id);
             }
             else
             {
@@ -251,7 +252,7 @@ namespace BL
                 Location senderLocation = GetCustomer(parcel.Sender.Id).Location;
                 Location getterLocation = GetCustomer(parcel.Getter.Id).Location;
                 double distance = Extensions.CalculateDistance(senderLocation, getterLocation);
-                return new ParcelInTransfer()
+                return new()
                 {
                     PId = parcel.Id,
                     IsInWay = parcel.PickingUp.HasValue,
@@ -291,9 +292,9 @@ namespace BL
                 throw new BO.InValidActionException("There ara no stations with available positions!");
             }
 
-            double distanceFromDroneToStation = Extensions.CalculateDistance(closetdStation.Location, drone.CurrLocation);
-            double minBattery = MinBattery(distanceFromDroneToStation, drone.Weight);
-            if (drone.BatteryStatus - minBattery < 0)
+            double distanceFromDroneToStation = Extensions.CalculateDistance(drone.CurrLocation, closetdStation.Location);
+            double minBattery = MinBattery(distanceFromDroneToStation);
+            if (minBattery>drone.BatteryStatus)
             {
                 throw new BO.InValidActionException("The drone has no enough battery in order to get to the closest charging station");
             }
@@ -331,7 +332,8 @@ namespace BL
                     throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is Delivery ");
                 default:
                     //is correct?
-                    drone.BatteryStatus += Math.Min(timeInCharging * chargingRate,100);
+
+                    drone.BatteryStatus = Math.Min(drone.BatteryStatus + timeInCharging * chargingRate, 100);
                     drone.DStatus = DroneStatus.Free;
 
                     var ChargingDroneToRemove = dal.GetFromDalByCondition<DO.ChargingDrone>(charge
@@ -369,8 +371,8 @@ namespace BL
         private double GetDistance(Location droneLocation, DO.Parcel parcel)
         {
             Location senderLocation = GetCustomer(parcel.SenderId).Location;
-            Location getterLocation = GetCustomer(parcel.SenderId).Location;
-            return Extensions.CalculateDistance(droneLocation, senderLocation, getterLocation, ClosestStation(getterLocation).Location);
+            //Location getterLocation = GetCustomer(parcel.GetterId).Location;
+            return Extensions.CalculateDistance(droneLocation, senderLocation/*, getterLocation, ClosestStation(getterLocation).Location*/);
         }
         /// <summary>
         /// A function that gets Drone and station id and adds this Drone to the data base and sending

@@ -72,15 +72,17 @@ namespace BL
                 string dStatus = droneToList.DStatus.ToString();
                 throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is {dStatus} ");
             }
-            IOrderedEnumerable<DO.Parcel> optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation);
 
-            var parcel = optionParcels.FirstOrDefault(parcel => parcel.BelongParcel.HasValue);
-            if (!optionParcels.Any() || parcel.Equals(default(DO.Parcel)))
+            if (!dal.GetListFromDal<DO.Parcel>().Any())
             {
-                if (!dal.GetListFromDal<DO.Parcel>().Any())
-                {
-                    throw new BO.ListIsEmptyException(typeof(DO.Parcel));
-                }
+                throw new BO.ListIsEmptyException(typeof(DO.Parcel));
+            }
+
+            var optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation).ToList();
+            var parcel = optionParcels.FirstOrDefault(parcel => !parcel.BelongParcel.HasValue);
+
+            if (!optionParcels.Any() || parcel.Equals(default))
+            {
                 throw new ThereIsNoMatchObjectInListException(typeof(DO.Parcel), $"There is no match parcels to drone with id {dId} in");
             }
 
@@ -97,15 +99,16 @@ namespace BL
             //    + MinBattery(CalculateDistance(destination, nearestDestinationStation))
 
             return dal.GetDalListByCondition<DO.Parcel>
-                                (parcel => parcel.Weight <= (DO.WeightCategories)weight &&
-                                batteryStatus >=  
+                                (parcel => parcel.Weight <= (DO.WeightCategories)weight
+                                &&
+                                batteryStatus >=
                                 MinBattery(
-                                    Extensions.CalculateDistance( currLocation , GetCustomer(parcel.SenderId).Location )
+                                    Extensions.CalculateDistance(currLocation, GetCustomer(parcel.SenderId).Location)
                                     )
-                                + MinBattery( 
-                                    Extensions.CalculateDistance( GetCustomer(parcel.SenderId).Location , GetCustomer(parcel.GetterId).Location ), (WeightCategories)parcel.Weight
-                                    )+
-                                MinBattery( 
+                                + MinBattery(
+                                    Extensions.CalculateDistance(GetCustomer(parcel.SenderId).Location, GetCustomer(parcel.GetterId).Location), (WeightCategories)parcel.Weight
+                                    ) +
+                                MinBattery(
                                     Extensions.CalculateDistance(GetCustomer(parcel.GetterId).Location, ClosestStation(GetCustomer(parcel.GetterId).Location).Location)
                                     )
                                 )
@@ -203,7 +206,7 @@ namespace BL
             drone.DStatus = DroneStatus.Free;
             drone.DeliveredParcelId = null;
             dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
-            dal.Update<DO.Parcel>(parcel.Id, 0, nameof(parcel.DroneId));
+            dal.Update<DO.Parcel>(parcel.Id, null, nameof(parcel.DroneId));
 
         }
 
@@ -218,15 +221,18 @@ namespace BL
             {
                 return ParcelStatus.InDestination;
             }
-            if (parcel.PickingUp.HasValue)
+            else if (parcel.PickingUp.HasValue)
             {
                 return ParcelStatus.collected;
             }
-            if (parcel.BelongParcel.HasValue)
+            else if (parcel.BelongParcel.HasValue)
             {
                 return ParcelStatus.belonged;
             }
-            return ParcelStatus.made;
+            else
+            {
+                return ParcelStatus.made;
+            }
         }
 
         //------Get-------------------------------------------------------
