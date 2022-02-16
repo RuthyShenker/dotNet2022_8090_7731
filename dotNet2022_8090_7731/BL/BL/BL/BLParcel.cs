@@ -93,9 +93,22 @@ namespace BL
         //TODO what happens if the list is empty
         internal IOrderedEnumerable<DO.Parcel> OptionalParcelsForSpecificDrone(double batteryStatus, WeightCategories weight, Location currLocation)
         {
+            //MinBattery(CalculateDistance(currLocation, destination), (WeightCategories)parcel.Weight)
+            //    + MinBattery(CalculateDistance(destination, nearestDestinationStation))
+
             return dal.GetDalListByCondition<DO.Parcel>
                                 (parcel => parcel.Weight <= (DO.WeightCategories)weight &&
-                                batteryStatus >= MinBattery(GetDistance(currLocation, parcel), (WeightCategories)parcel.Weight))
+                                batteryStatus >=  
+                                MinBattery(
+                                    Extensions.CalculateDistance( currLocation , GetCustomer(parcel.SenderId).Location )
+                                    )
+                                + MinBattery( 
+                                    Extensions.CalculateDistance( GetCustomer(parcel.SenderId).Location , GetCustomer(parcel.GetterId).Location ), (WeightCategories)parcel.Weight
+                                    )+
+                                MinBattery( 
+                                    Extensions.CalculateDistance(GetCustomer(parcel.GetterId).Location, ClosestStation(GetCustomer(parcel.GetterId).Location).Location)
+                                    )
+                                )
                                 ?.OrderByDescending(parcel => parcel.MPriority)
                                 .ThenByDescending(parcel => parcel.Weight)
                                 .ThenBy(parcel => GetDistance(currLocation, parcel));

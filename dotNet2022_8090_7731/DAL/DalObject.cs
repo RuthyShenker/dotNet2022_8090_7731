@@ -104,8 +104,8 @@ namespace Dal
             var oldItem = GetFromDalById<T>(id);
 
             DataSource.Data[type].Remove(oldItem);
-            if (newValue != null)//TODO: //האם צרחך את הבדיקה הזאת?
-            {
+            //if (newValue != null)//TODO: //האם צרחך את הבדיקה הזאת?
+            //{
                 //type.GetProperty(propertyName).SetValue(oldItem, newValue);
                 T obj = oldItem;
                 PropertyInfo propertyInfo = typeof(T).GetProperty(propertyName);
@@ -113,7 +113,7 @@ namespace Dal
                 propertyInfo.SetValue(boxed, newValue, null);
                 obj = (T)boxed;
                 oldItem = obj;
-            }
+            //}
             DataSource.Data[type].Add(oldItem);
         }
 
