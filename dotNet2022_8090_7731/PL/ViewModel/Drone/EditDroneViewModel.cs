@@ -68,11 +68,6 @@ namespace PL.ViewModels
 
         // private void Manual_Click(object sender, RoutedEventArgs e) => worker?.CancelAsync();
 
-
-
-
-        double d;
-
         private void StartOrStopSimulator(object obj)
         {
             if (!Drone.Automatic)
@@ -230,7 +225,6 @@ namespace PL.ViewModels
                 MessageBox.Show(exception.Message);
             }
         }
-
 
         private void RefreshDrone()
         {

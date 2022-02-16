@@ -23,14 +23,13 @@ namespace BL
         Action updateView;
         Func<bool> checkStop;
         DO.Parcel parcel;
-        int stationId;
         Station station;
         Customer customer;
         DalApi.IDal dal;
         double distance;
         bool pickedUp;
-        //double[] powerConsumption;
         int droneFree = 0;
+        //double[] powerConsumption;
 
         //        powerConsumptionFree,
         //        powerConsumptionLight,
@@ -45,7 +44,6 @@ namespace BL
             bl = blInstance;
             dal = blInstance.dal;
             DroneToList drone = bl.lDroneToList.First(d => d.Id == droneId);
-
             updateView = updateViewAction;
             checkStop = checkStopFunc;
 
@@ -102,18 +100,16 @@ namespace BL
                     }
                 }
 
-                parcel = (optionalParcels.First());
-                Init((int)(parcel.Id));
+                parcel = optionalParcels.First();
+                Init(parcel.Id, drone);
                 drone.DStatus = DroneStatus.Delivery;
 
-                dal.Update<DO.Parcel>((int)(parcel.Id), DateTime.Now, nameof(DO.Parcel.BelongParcel));
-                dal.Update<DO.Parcel>((int)(parcel.Id), drone.Id, nameof(DO.Parcel.DroneId));
+                dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(DO.Parcel.BelongParcel));
+                dal.Update<DO.Parcel>(parcel.Id, drone.Id, nameof(DO.Parcel.DroneId));
             }
         }
 
-
-
-
+        #region newPInTransferIfNeeded
         //var sender =bl.GetCustomer(parcel.SenderId);
         //var getter = bl.GetCustomer(parcel.GetterId);
         //drone.PInTransfer = new ParcelInTransfer()
@@ -128,41 +124,42 @@ namespace BL
         //    DeliveryLocation = getter.Location,
         //    IsInWay = false
         //};
+        #endregion
+
         private void CompleteMaintenance(DroneToList drone)
         {
             if (!SleepDelayTime()) return; //TODO return?
                                            //TODO what happens when there is no available station
-
             // Assigning:
             station = bl.ClosestStation(drone.CurrLocation, true);
             distance = Extensions.CalculateDistance(drone.CurrLocation, station.Location);
             updateView();
 
-            // Going toward station
             //lock (bl)
             {
+                // Going toward station
                 while (distance > 0.01 && !checkStop())
                 {
                     if (!SleepDelayTime()) break;
-                    double delta = distance < STEP ? distance : STEP;
-                    distance -= delta;
-                    drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * PowerConsumptionFree);
+
+                    GoAhead(station.Location, drone);
                     updateView();
                 }
                 if (distance <= 0.01)
                 {
                     drone.CurrLocation = station.Location;
 
-                    // charging
+                    // charging 
                     while (drone.BatteryStatus < 1.0 && !checkStop())
                     {
                         if (!SleepDelayTime()) break;
                         //lock (bl) למה בפרויקט לדוג עשו כאן?
                         {
-                            drone.BatteryStatus = Math.Min(1.0, drone.BatteryStatus + chargingRate * TIME_STEP);
+                            drone.BatteryStatus = Math.Min(1.0, drone.BatteryStatus + (chargingRate * TIME_STEP));
                             updateView();
                         }
                     }
+
                     if (drone.BatteryStatus >= 1.0)
                     {
                         drone.DStatus = DroneStatus.Free;
@@ -172,34 +169,27 @@ namespace BL
             }
         }
 
-        private void Init(int parcelId)
+        private void Init(int parcelId, DroneToList drone)
         {
             parcel = dal.GetFromDalById<DO.Parcel>(parcelId);
             pickedUp = parcel.PickingUp.HasValue;
             customer = bl.GetCustomer(pickedUp ? parcel.GetterId : parcel.SenderId);
 
-            //distance = Extensions.CalculateDistance(drone.CurrLocation, customer.Location);
+            distance = Extensions.CalculateDistance(drone.CurrLocation, customer.Location);
 
             //batteryUsage = (int)Enum.Parse(typeof(BatteryUsage), parcel?.Weight.ToString());
         }
 
         private void CompleteDelivery(DroneToList drone)
         {
-            if (parcel.Equals(default)) Init((int)drone.DeliveredParcelId);
+           /* if (parcel.Equals(default)) */Init((int)drone.DeliveredParcelId, drone);
 
-            while (distance > 0.01 && drone.BatteryStatus != 0 && !checkStop())
+            while (distance > 0.01 && drone.BatteryStatus > 0 && !checkStop())
             {
                 if (!SleepDelayTime()) break;
                 lock (bl)
                 {
-                    double delta = distance < STEP ? distance : STEP;
-                    double proportion = delta / distance;
-                    drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - delta * (pickedUp ? PowerConsumptionFree : PowerConsumptionFree));
-                    double lat = drone.CurrLocation.Latitude + (customer.Location.Latitude - drone.CurrLocation.Latitude) * proportion;
-                    double lon = drone.CurrLocation.Longitude + (customer.Location.Longitude - drone.CurrLocation.Longitude) * proportion;
-                    drone.CurrLocation = new() { Latitude = lat, Longitude = lon };
-
-                    distance = Extensions.CalculateDistance(drone.CurrLocation, customer.Location);
+                    GoAhead(customer.Location, drone);
                     updateView();
                 }
             }
@@ -218,7 +208,31 @@ namespace BL
                     customer = bl.GetCustomer(parcel.GetterId);
                     pickedUp = true;
                 }
+                updateView();
             }
+        }
+
+        private void GoAhead(Location targetLocation, DroneToList drone)
+        {
+            double delta = distance < STEP ? distance : STEP;
+            distance -= delta;
+            double proportion = delta / distance;
+
+            drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - (delta * (pickedUp ? PowerConsumptionForParcelWeight() : PowerConsumptionFree)));
+            drone.CurrLocation = new()
+            {
+                Latitude = drone.CurrLocation.Latitude + ((targetLocation.Latitude - drone.CurrLocation.Latitude) * proportion),
+                Longitude = drone.CurrLocation.Longitude + ((targetLocation.Longitude - drone.CurrLocation.Longitude) * proportion),
+            };
+        }
+
+        private double PowerConsumptionForParcelWeight()
+        {
+            return parcel.Weight == DO.WeightCategories.Light
+                ? powerConsumptionLight
+                : parcel.Weight == DO.WeightCategories.Medium
+                ? powerConsumptionMedium
+                : powerConsumptionHeavy;
         }
 
         private static bool SleepDelayTime()

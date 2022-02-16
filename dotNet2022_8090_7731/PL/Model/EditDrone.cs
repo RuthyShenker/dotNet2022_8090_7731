@@ -55,7 +55,15 @@ namespace PO
         }
 
         //public DroneStatus Status { get; set; }
-        public Location Location { get; set; }
+        private Location location;
+
+        public Location Location
+        {
+            get => location;
+            set => Set(ref location, value);
+        }
+
+        //public Location Location { get; set; }
         public ParcelInTransfer ParcelInTransfer { get; set; }
 
         private bool automatic;

@@ -11,9 +11,9 @@ namespace BL
         internal List<DroneToList> lDroneToList;
         readonly Random rand;
         //internal static double powerConsumptionFree;
-        static double powerConsumptionLight;
-        static double powerConsumptionMedium;
-        static double powerConsumptionHeavy;
+        internal static double powerConsumptionLight { get; set; }
+        internal static double powerConsumptionMedium {get; set; }
+        internal static double powerConsumptionHeavy {get; set; }
         internal static double PowerConsumptionFree { get; set; }
         /// <summary>
         /// Charging rate per hour

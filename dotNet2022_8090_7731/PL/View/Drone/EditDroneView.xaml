@@ -80,6 +80,9 @@
                     materialDesign:HintAssist.Hint="Status"
                     IsEnabled="False"/>
 
+        <TextBox Text = "{Binding Drone.Status, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Status"
+                     IsEnabled="False"/>
         <!--<StackPanel x:Name="DeliveryContainer">
                     <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
                     <ComboBox x:Name = "DeliveryComboBox" ItemsSource="{Binding Source={StaticResource AvailableSlots}, Path=Name}"  />
