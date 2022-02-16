@@ -20,19 +20,22 @@ namespace BL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddingBaseStation(int id, string name, double longitude, double latitude, int numPositions)
         {
-            if (dal.IsIdExistInList<DO.BaseStation>(id))
+            lock (dal)
             {
-                throw new IdIsAlreadyExistException(typeof(DO.BaseStation), id);
+                if (dal.IsIdExistInList<DO.BaseStation>(id))
+                {
+                    throw new IdIsAlreadyExistException(typeof(DO.BaseStation), id);
+                }
+                DO.BaseStation station = new()
+                {
+                    Id = id,
+                    Latitude = latitude,
+                    Longitude = longitude,
+                    NameStation = name,
+                    NumberOfChargingPositions = numPositions
+                };
+                dal.Add(station);
             }
-            DO.BaseStation station = new()
-            {
-                Id = id,
-                Latitude = latitude,
-                Longitude = longitude,
-                NameStation = name,
-                NumberOfChargingPositions = numPositions
-            };
-            dal.Add<DO.BaseStation>(station);
         }
 
         /// <summary>
@@ -48,14 +51,17 @@ namespace BL
         {
             try
             {
-                var baseStation = dal.GetFromDalById<DO.BaseStation>(stationId);
-
-                if (!string.IsNullOrEmpty(stationName))
-                    dal.Update<DO.BaseStation>(stationId, stationName, nameof(baseStation.NameStation));
-
-                if (amountOfPositions > 0)
+                lock (dal)
                 {
-                    dal.Update<DO.BaseStation>(stationId, amountOfPositions, nameof(baseStation.NumberOfChargingPositions));
+                    var baseStation = dal.GetFromDalById<DO.BaseStation>(stationId);
+
+                    if (!string.IsNullOrEmpty(stationName))
+                        dal.Update<DO.BaseStation>(stationId, stationName, nameof(baseStation.NameStation));
+
+                    if (amountOfPositions > 0)
+                    {
+                        dal.Update<DO.BaseStation>(stationId, amountOfPositions, nameof(baseStation.NumberOfChargingPositions));
+                    }
                 }
                 //else  TODO  not always must update two fields? can change exception
                 //{
@@ -76,9 +82,13 @@ namespace BL
         /// <returns>a new list of charging drone of BL of specific station</returns>
         private IEnumerable<ChargingDrone> ChargingDroneBLList(int sId)
         {
-            var chargingDroneBLList = Enumerable.Empty<ChargingDrone>();
-            var chargingDroneDalList = dal.GetDalListByCondition<DO.ChargingDrone>(charge => charge.StationId == sId);
+            IEnumerable<DO.ChargingDrone> chargingDroneDalList;
             ChargingDrone chargingDrone;
+            var chargingDroneBLList = Enumerable.Empty<ChargingDrone>();
+            lock (dal)
+            {
+                chargingDroneDalList = dal.GetDalListByCondition<DO.ChargingDrone>(charge => charge.StationId == sId);
+            }
             foreach (var chargingPosition in chargingDroneDalList)
             {
                 chargingDrone = new()
@@ -108,16 +118,19 @@ namespace BL
             // TODO catch when the list is empty or there is no first...
             try
             {
-                var droneCoord = new GeoCoordinate(location.Latitude, location.Longitude);
+                lock (dal)
+                {
+                    var droneCoord = new GeoCoordinate(location.Latitude, location.Longitude);
 
-                var sortedList = dal.GetListFromDal<DO.BaseStation>()
-                    .OrderBy(station => new GeoCoordinate(station.Latitude, station.Longitude).GetDistanceTo(droneCoord));
+                    var sortedList = dal.GetListFromDal<DO.BaseStation>()
+                        .OrderBy(station => new GeoCoordinate(station.Latitude, station.Longitude).GetDistanceTo(droneCoord));
 
-                var closetStation = sendingToCharge
-                    ? sortedList.First()
-                    : sortedList.FirstOrDefault(s => GetNumOfAvailablePositionsInStation(s.Id) > 0);
+                    var closetStation = sendingToCharge
+                        ? sortedList.First()
+                        : sortedList.FirstOrDefault(s => GetNumOfAvailablePositionsInStation(s.Id) > 0);
 
-                return ConvertToBL(closetStation);
+                    return ConvertToBL(closetStation);
+                }
             }
             catch (ArgumentNullException)
             {
@@ -156,7 +169,10 @@ namespace BL
         {
             try
             {
-                dal.Remove(dal.GetFromDalById<DO.BaseStation>(stationId));
+                lock (dal)
+                {
+                    dal.Remove(dal.GetFromDalById<DO.BaseStation>(stationId));
+                }
             }
             catch (DO.IdDoesNotExistException)
             {
@@ -184,14 +200,17 @@ namespace BL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationToList> AvailableSlots(int numPositions = 0)
         {
-            return numPositions == 0
-                ? dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) > 0)
-                 .Select(station => ConvertToList(station))
+            lock (dal)
+            {
+                return numPositions == 0
+                    ? dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) > 0)
+                     .Select(station => ConvertToList(station))
 
-                : dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) == numPositions)
-                     .Select(station => ConvertToList(station));
+                    : dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) == numPositions)
+                         .Select(station => ConvertToList(station));
+            }
         }
-
+        /////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// A function that gets an object of IDAL.DO.BaseStation
         /// and expands it to StationToList object and returns it.

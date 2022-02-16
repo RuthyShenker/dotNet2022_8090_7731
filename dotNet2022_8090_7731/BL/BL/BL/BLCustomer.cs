@@ -44,10 +44,13 @@ namespace BL
         /// the new object of CustomerInParcel</returns>
         private CustomerInParcel NewCustomerInParcel(int Id)
         {
-           
+            string name;
             try
             {
-                string name = dal.GetFromDalById<DO.Customer>(Id).Name;
+                lock (dal)
+                {
+                    name = dal.GetFromDalById<DO.Customer>(Id).Name;
+                }
                 return new()
                 {
                     Id = Id,
@@ -153,8 +156,10 @@ namespace BL
             //return predicate!=null ?
             //    dal.GetDalListByCondition<DO.Customer>(customer => predicate(customer.Id))
             //    .Select(c=>ConvertToList(c)):
-             return dal.GetListFromDal<DO.Customer>()
-                    .Select(c => ConvertToList(c));
+
+            // TODO lock?
+            return dal.GetListFromDal<DO.Customer>()
+                   .Select(c => ConvertToList(c));
         }
 
         /// <summary>
@@ -211,7 +216,11 @@ namespace BL
         {
             try
             {
-                var dCustomer = dal.GetFromDalById<DO.Customer>(customerId);
+                DO.Customer dCustomer;
+                lock (dal)
+                {
+                    dCustomer = dal.GetFromDalById<DO.Customer>(customerId);
+                }
                 return ConvertToBL(dCustomer);
             }
             catch (DO.IdDoesNotExistException)
@@ -225,7 +234,10 @@ namespace BL
         {
             try
             {
-                dal.Remove(dal.GetFromDalById<DO.Customer>(customerId));
+                lock (dal)
+                {
+                    dal.Remove(dal.GetFromDalById<DO.Customer>(customerId));
+                }
             }
             catch (DO.IdDoesNotExistException)
             {

@@ -51,8 +51,6 @@ namespace PL.ViewModels
         {
             if (bl.GetStations().FirstOrDefault(s => s.Id == Station.Id) != default)
             {
-
-
                 Station = Map(bl.GetStation(station.Id));
             }
         }

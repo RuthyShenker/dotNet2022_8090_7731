@@ -18,11 +18,14 @@ namespace BL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public int AddingParcel(Parcel parcel)
         {
-            DO.Customer sender;
-            DO.Customer getter;
+            DO.Customer sender, getter;
+            int parcelId;
             try
             {
-                sender = dal.GetFromDalById<DO.Customer>(parcel.Sender.Id);
+                lock (dal)
+                {
+                    sender = dal.GetFromDalById<DO.Customer>(parcel.Sender.Id);
+                }
             }
             catch (DO.IdDoesNotExistException)
             {
@@ -31,29 +34,35 @@ namespace BL
 
             try
             {
-                getter = dal.GetFromDalById<DO.Customer>(parcel.Getter.Id);
+                lock (dal)
+                {
+                    getter = dal.GetFromDalById<DO.Customer>(parcel.Getter.Id);
+                }
             }
             catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException(typeof(DO.Customer), parcel.Getter.Id);
             }
 
-            int parcelId = dal.GetIndexParcel();
-            if (!dal.IsIdExistInList<DO.Parcel>(parcelId))
+            lock (dal)
             {
-                dal.Add(new DO.Parcel()
+                parcelId = dal.GetIndexParcel();
+                if (!dal.IsIdExistInList<DO.Parcel>(parcelId))
                 {
-                    Id = parcelId,
-                    SenderId = parcel.Sender.Id,
-                    GetterId = parcel.Getter.Id,
-                    Weight = (DO.WeightCategories)parcel.Weight,
-                    MPriority = (DO.UrgencyStatuses)parcel.MPriority,
-                    DroneId = null,
-                    CreatedTime = DateTime.Now,
-                    BelongParcel = null,
-                    PickingUp = null,
-                    Arrival = null,
-                });
+                    dal.Add(new DO.Parcel()
+                    {
+                        Id = parcelId,
+                        SenderId = parcel.Sender.Id,
+                        GetterId = parcel.Getter.Id,
+                        Weight = (DO.WeightCategories)parcel.Weight,
+                        MPriority = (DO.UrgencyStatuses)parcel.MPriority,
+                        DroneId = null,
+                        CreatedTime = DateTime.Now,
+                        BelongParcel = null,
+                        PickingUp = null,
+                        Arrival = null,
+                    });
+                }
             }
 
             return parcelId;
@@ -72,22 +81,26 @@ namespace BL
                 string dStatus = droneToList.DStatus.ToString();
                 throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is {dStatus} ");
             }
-            IOrderedEnumerable<DO.Parcel> optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation);
 
-            var parcel = optionParcels.FirstOrDefault(parcel => parcel.BelongParcel.HasValue);
-            if (!optionParcels.Any() || parcel.Equals(default(DO.Parcel)))
+            lock (dal)
             {
-                if (!dal.GetListFromDal<DO.Parcel>().Any())
+                IOrderedEnumerable<DO.Parcel> optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation);
+
+                var parcel = optionParcels.FirstOrDefault(parcel => parcel.BelongParcel.HasValue);
+                if (!optionParcels.Any() || parcel.Equals(default(DO.Parcel)))
                 {
-                    throw new BO.ListIsEmptyException(typeof(DO.Parcel));
+                    if (!dal.GetListFromDal<DO.Parcel>().Any())
+                    {
+                        throw new BO.ListIsEmptyException(typeof(DO.Parcel));
+                    }
+                    throw new ThereIsNoMatchObjectInListException(typeof(DO.Parcel), $"There is no match parcels to drone with id {dId} in");
                 }
-                throw new ThereIsNoMatchObjectInListException(typeof(DO.Parcel), $"There is no match parcels to drone with id {dId} in");
+
+                droneToList.DStatus = DroneStatus.Delivery;
+
+                dal.Update<DO.Parcel>(parcel.Id, dId, nameof(parcel.DroneId));
+                dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.BelongParcel));
             }
-
-            droneToList.DStatus = DroneStatus.Delivery;
-
-            dal.Update<DO.Parcel>(parcel.Id, dId, nameof(parcel.DroneId));
-            dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.BelongParcel));
         }
 
         //TODO what happens if the list is empty
@@ -98,14 +111,14 @@ namespace BL
 
             return dal.GetDalListByCondition<DO.Parcel>
                                 (parcel => parcel.Weight <= (DO.WeightCategories)weight &&
-                                batteryStatus >=  
+                                batteryStatus >=
                                 MinBattery(
-                                    Extensions.CalculateDistance( currLocation , GetCustomer(parcel.SenderId).Location )
+                                    Extensions.CalculateDistance(currLocation, GetCustomer(parcel.SenderId).Location)
                                     )
-                                + MinBattery( 
-                                    Extensions.CalculateDistance( GetCustomer(parcel.SenderId).Location , GetCustomer(parcel.GetterId).Location ), (WeightCategories)parcel.Weight
-                                    )+
-                                MinBattery( 
+                                + MinBattery(
+                                    Extensions.CalculateDistance(GetCustomer(parcel.SenderId).Location, GetCustomer(parcel.GetterId).Location), (WeightCategories)parcel.Weight
+                                    ) +
+                                MinBattery(
                                     Extensions.CalculateDistance(GetCustomer(parcel.GetterId).Location, ClosestStation(GetCustomer(parcel.GetterId).Location).Location)
                                     )
                                 )
@@ -134,27 +147,30 @@ namespace BL
                 throw new InValidActionException(typeof(DO.Drone), dId, $"there is no assined parcel ");
             }
 
-            DO.Parcel parcel;
-            try
+            lock (dal)
             {
-                parcel = dal.GetFromDalById<DO.Parcel>(drone.DeliveredParcelId.Value);
-            }
-            catch (DO.IdDoesNotExistException)
-            {
-                throw new IdIsNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
-            }
+                DO.Parcel parcel;
+                try
+                {
+                    parcel = dal.GetFromDalById<DO.Parcel>(drone.DeliveredParcelId.Value);
+                }
+                catch (DO.IdDoesNotExistException)
+                {
+                    throw new IdIsNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
+                }
 
-            if (parcel.PickingUp != null)
-            {
-                throw new InValidActionException("Parcel assigned to drone was already picked up");
-            }
+                if (parcel.PickingUp != null)
+                {
+                    throw new InValidActionException("Parcel assigned to drone was already picked up");
+                }
 
-            Location senderLocation = GetCustomer(parcel.SenderId).Location;
-            drone.BatteryStatus -= MinBattery(Extensions.CalculateDistance(drone.CurrLocation, senderLocation));
-            drone.CurrLocation = senderLocation;
-            // לא היה כתוב לשנות status
-            drone.DStatus = DroneStatus.Delivery;
-            dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.PickingUp));
+                Location senderLocation = GetCustomer(parcel.SenderId).Location;
+                drone.BatteryStatus -= MinBattery(Extensions.CalculateDistance(drone.CurrLocation, senderLocation));
+                drone.CurrLocation = senderLocation;
+                // לא היה כתוב לשנות status
+                drone.DStatus = DroneStatus.Delivery;
+                dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.PickingUp));
+            }
         }
 
         /// <summary>
@@ -179,22 +195,28 @@ namespace BL
             }
 
             DO.Parcel parcel;
-            try
+            lock (dal)
             {
-                parcel = dal.GetFromDalById<DO.Parcel>(drone.DeliveredParcelId.Value);
-            }
-            catch (DO.IdDoesNotExistException)
-            {
-                throw new IdIsNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
-            }
+                try
+                {
+                    parcel = dal.GetFromDalById<DO.Parcel>(drone.DeliveredParcelId.Value);
+                }
+                catch (DO.IdDoesNotExistException)
+                {
+                    throw new IdIsNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
+                }
 
-            if (parcel.PickingUp == null)
-            {
-                throw new InValidActionException("Parcel assigned to drone had not been picked up yet");
-            }
-            if (parcel.Arrival != null)
-            {
-                throw new InValidActionException("Parcel assigned has already supplied to destination");
+                if (parcel.PickingUp == null)
+                {
+                    throw new InValidActionException("Parcel assigned to drone had not been picked up yet");
+                }
+                if (parcel.Arrival != null)
+                {
+                    throw new InValidActionException("Parcel assigned has already supplied to destination");
+                }
+
+                dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
+                dal.Update<DO.Parcel>(parcel.Id, 0, nameof(parcel.DroneId));
             }
 
             Location getterLocation = GetCustomer(parcel.GetterId).Location;
@@ -202,8 +224,6 @@ namespace BL
             drone.CurrLocation = getterLocation;
             drone.DStatus = DroneStatus.Free;
             drone.DeliveredParcelId = null;
-            dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
-            dal.Update<DO.Parcel>(parcel.Id, 0, nameof(parcel.DroneId));
 
         }
 
@@ -265,8 +285,12 @@ namespace BL
         /// <returns>returns ParcelToList object</returns>
         private ParcelToList ConvertToList(DO.Parcel parcel)
         {
-            string senderName = dal.GetFromDalById<DO.Customer>(parcel.SenderId).Name;
-            string getterName = dal.GetFromDalById<DO.Customer>(parcel.GetterId).Name;
+            string senderName, getterName;
+            lock (dal)
+            {
+                senderName = dal.GetFromDalById<DO.Customer>(parcel.SenderId).Name;
+                getterName = dal.GetFromDalById<DO.Customer>(parcel.GetterId).Name;
+            }
 
             ParcelToList nParcel = new()
             {
@@ -285,8 +309,11 @@ namespace BL
         {
             try
             {
-                var dParcel = dal.GetFromDalById<DO.Parcel>(parcelId);
-                return ConvertToBL(dParcel);
+                lock (dal)
+                {
+                    var dParcel = dal.GetFromDalById<DO.Parcel>(parcelId);
+                    return ConvertToBL(dParcel);
+                }
             }
             catch (DO.IdDoesNotExistException)
             {
@@ -347,7 +374,10 @@ namespace BL
         {
             try
             {
-                dal.Remove(dal.GetFromDalById<DO.Parcel>(parcelId));
+                lock (dal)
+                {
+                    dal.Remove(dal.GetFromDalById<DO.Parcel>(parcelId));
+                }
             }
             catch (DO.IdDoesNotExistException)
             {

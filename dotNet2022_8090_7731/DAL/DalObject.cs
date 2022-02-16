@@ -100,7 +100,7 @@ namespace Dal
         public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
         {
             Type type = typeof(T);
-
+           
             var oldItem = GetFromDalById<T>(id);
 
             DataSource.Data[type].Remove(oldItem);
