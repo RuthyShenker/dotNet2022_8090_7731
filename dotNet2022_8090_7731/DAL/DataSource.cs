@@ -9,12 +9,15 @@ using DO;
 namespace Dal
 {
     /// <summary>
-    /// A class that contains:
-    /// rand, DroneList, BaseStationList, CustomerList, ParceList, 
-    /// ChargingDroneList, class Config and function-Initialize
+    /// A class DataSource that contains:
+    /// Rand, DroneList, BaseStationList, CustomerList, ParceList, 
+    /// ChargingDroneList, class Config and functions-Initialize
     /// </summary>
     internal class DataSource
     {
+        /// <summary>
+        /// const variables.
+        /// </summary>
         const int INITIALIZE_DRONE = 5;
         const int INITIALIZE_CUSTOMER = 10;
         const int INITIALIZE_BASE_STATION = 2;
@@ -25,7 +28,7 @@ namespace Dal
 
         /// <summary>
         /// A class Config that contains :
-        /// IndexParcel,chargingRate,heavyWeight,mediumWeight,lightWeight,available
+        /// IndexParcel,chargingRate,heavyWeight,mediumWeight,lightWeight,available and method :RandBetweenRange
         /// </summary>
         internal class Config
         {
@@ -42,10 +45,8 @@ namespace Dal
             }
         }
 
-        
-
         /// <summary>
-        /// an object of Random .
+        /// an internal object of Random .
         /// </summary>
         internal static Random Rand;
 
@@ -79,6 +80,9 @@ namespace Dal
         /// </summary>
         static internal Dictionary<Type, IList> Data;
 
+        /// <summary>
+        /// A static constructor of DataSource.
+        /// </summary>
         static DataSource()
         {
             Rand = new Random();
@@ -98,7 +102,7 @@ namespace Dal
         }
 
         /// <summary>
-        /// innitialize drones, customers,base stations, parcels.
+        /// innitialize: Drones, Customers,Base Stations, Parcels,ChargingDrone.
         /// </summary>
         internal static void Initialize()
         {
@@ -113,8 +117,9 @@ namespace Dal
             InitializeChargingDrone();
         }
 
-       
-
+        /// <summary>
+        /// A function that initalize Drones:
+        /// </summary>
         private static void InitializeDrones()
         {
             for (int i = 0; i < INITIALIZE_DRONE; ++i)
@@ -128,6 +133,9 @@ namespace Dal
             }
         }
 
+        /// <summary>
+        /// A function that initalize Customers:
+        /// </summary>
         private static void InitializeCustomers()
         {
             string[] initNames = { "Uria", "Aviad", "Odel", "Natan", "Or", "Keren" };
@@ -147,6 +155,9 @@ namespace Dal
             }
         }
 
+        /// <summary>
+        /// A function that initalize BaseStation:
+        /// </summary>
         private static void InitializeBaseStations()
         {
             string[] initNameStation = { "Tel-Tzion", "Tel-Aviv", "Rahanana", "Eilat", "Jerusalem" };
@@ -163,6 +174,9 @@ namespace Dal
             }
         }
 
+        /// <summary>
+        /// A function that initalize Parcels:
+        /// </summary>
         private static void InitializeParcels()
         {
             Parcel newParcel;
@@ -193,6 +207,9 @@ namespace Dal
             }
         }
 
+        /// <summary>
+        /// A function that initalize Charging Drones:
+        /// </summary>
         private static void InitializeChargingDrone()
         {
             //get all stations with numberofpositions >0
@@ -216,24 +233,6 @@ namespace Dal
             }
         }
 
-        //    Parcel fillParcel;
-        //        for (int i = 0; i<INITIALIZE_PARCEL; ++i)
-        //        {
-        //            fillParcel = new Parcel() { ParcelId = ++Config.IndexParcel };
-        //    fillParcel.SenderId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
-        //            do
-        //            {
-        //                fillParcel.GetterId = CustomerList[Rand.Next(0, CustomerList.Count)].Id.ToString();
-        //            } while (fillParcel.GetterId == fillParcel.SenderId);
-        //            fillParcel.Weight = (WeightCategories) Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length);
-        //            fillParcel.Status = (UrgencyStatuses) Rand.Next(0, Enum.GetNames(typeof(UrgencyStatuses)).Length);
-        //            fillParcel.DroneId = availableDrone();
-        //fillParcel.MakingParcel = DateTime.Now;
-        //            fillParcel.BelongParcel = fillParcel.DroneId == 0 ? new DateTime() :DateTime.Now;
-        //            fillParcel.PickingUp = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.BelongParcel.AddDays(Rand.Next(0, 11));
-        //            //fillParcel.Arrival = fillParcel.DroneId == 0 ? new DateTime() : fillParcel.PickingUp.AddDays(rand.Next(0, 11));
-        //            ParceList.Add(fillParcel);
-        //        }
     }
 }
 

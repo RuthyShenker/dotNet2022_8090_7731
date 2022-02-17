@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 namespace Dal
 {
     /// <summary>
-    /// sealed partial class of DalObject:IDal
+    /// internal sealed partial class of DalObject:IDal
     /// </summary>
     internal sealed partial class DalObject : Singleton<DalObject>, DalApi.IDal
     /// <summary>
