@@ -85,7 +85,7 @@ namespace Dal
         /// returns true if this id exists in the list of
         /// it's type or false if not.
         /// </returns>
-        public bool IsIdExistInList<T>(int Id) where T : IIdentifiable, IDalObject
+        public bool IsIdExistInList<T>(int Id) where T : IIdentifiable, IDalDo
         {
             if (typeof(T) == typeof(DO.Drone))
             {
@@ -104,7 +104,7 @@ namespace Dal
         /// <typeparam name="T"></typeparam>
         /// <param name="Id"></param>
         /// <returns>returns the entity that it's id is the same as the parameter id.</returns>
-        public T GetFromDalById<T>(int Id) where T : IDalObject, IIdentifiable
+        public T GetFromDalById<T>(int Id) where T : IDalDo, IIdentifiable
         {
             var item = GetFromDalByCondition<T>(item => item.Id == Id);
 
@@ -123,7 +123,7 @@ namespace Dal
         /// <param name="predicate"></param>
         /// <returns>the first or default 
         /// entity that stands on this predicate.</returns>
-        public T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IDalObject
+        public T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IDalDo
         {
             if (typeof(T) == typeof(DO.Drone))
             {
@@ -146,7 +146,7 @@ namespace Dal
         /// <typeparam name="T"></typeparam>
         /// <param name="predicate"></param>
         /// <returns>returns all the entities that stand on this predicate.</returns>
-        public IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalObject
+        public IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalDo
         {
             //problem:!!!
             if (typeof(T) == typeof(DO.Drone))
@@ -161,7 +161,7 @@ namespace Dal
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>returns IEnumerable<T> all the entities of type of T. </returns>
-        public IEnumerable<T> GetListFromDal<T>() where T : IDalObject
+        public IEnumerable<T> GetListFromDal<T>() where T : IDalDo
         {
             if (typeof(T) == typeof(DO.Drone))
                 return (IEnumerable<T>)XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone)));
@@ -169,7 +169,7 @@ namespace Dal
                 return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
         }
 
-        //public bool IsExistInList<T>(List<T> list, Predicate<T> predicate) where T : IDalObject
+        //public bool IsExistInList<T>(List<T> list, Predicate<T> predicate) where T : IDalDo
         //{
         //    return list.Find(predicate).Equals(default(T));
         //}
@@ -180,7 +180,7 @@ namespace Dal
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="item"></param>
-        public void Add<T>(T item) where T : IDalObject
+        public void Add<T>(T item) where T : IDalDo
         {
             Type type = typeof(T);
             if (DoesExistInList(item))
@@ -211,7 +211,7 @@ namespace Dal
         /// <param name="id"></param>
         /// <param name="newValue"></param>
         /// <param name="propertyName"></param>
-        public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
+        public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalDo
         {
             try
             {
@@ -270,7 +270,7 @@ namespace Dal
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="item"></param>
-        public void Remove<T>(T item) where T : IDalObject
+        public void Remove<T>(T item) where T : IDalDo
         {
 
             if (DoesExistInList(item))
@@ -302,29 +302,6 @@ namespace Dal
                     list.Remove(item);
                     XMLTools.SaveListToXmlSerializer(list, GetXmlFilePath(typeof(T)));
                 }
-            }
-        }
-
-        /// <summary>
-        /// A generic function that gets entity of type of T and returns if it exists in the list of type of T.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="item"></param>
-        /// <returns>returns true if it exists in the list of type of T else false.</returns>
-        private bool DoesExistInList<T>(T item) where T : IDalObject
-        {
-            //return ((List<T>)DataSource.Data[typeof(T)]).Any(i => i.Equals(item));
-
-            if (typeof(T) == typeof(Drone))
-                return XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone)))
-                    .ToList().Any(i => i.Equals(item));
-            else
-            {
-                StreamReader reader = new(GetXmlFilePath(typeof(T)));
-                XmlSerializer serializer = new(typeof(List<T>));
-                List<T> List = (List<T>)serializer.Deserialize(reader);
-                reader.Close();
-                return List.Any(i => i.Equals(item));
             }
         }
 
@@ -376,6 +353,29 @@ namespace Dal
             //}
             //document.Save(GetXmlFilePath(typeof(T)));
             #endregion
+        }
+
+        /// <summary>
+        /// A generic function that gets entity of type of T and returns if it exists in the list of type of T.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="item"></param>
+        /// <returns>returns true if it exists in the list of type of T else false.</returns>
+        private bool DoesExistInList<T>(T item) where T : IDalDo
+        {
+            //return ((List<T>)DataSource.Data[typeof(T)]).Any(i => i.Equals(item));
+
+            if (typeof(T) == typeof(Drone))
+                return XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone)))
+                    .ToList().Any(i => i.Equals(item));
+            else
+            {
+                StreamReader reader = new(GetXmlFilePath(typeof(T)));
+                XmlSerializer serializer = new(typeof(List<T>));
+                List<T> List = (List<T>)serializer.Deserialize(reader);
+                reader.Close();
+                return List.Any(i => i.Equals(item));
+            }
         }
     }
 }

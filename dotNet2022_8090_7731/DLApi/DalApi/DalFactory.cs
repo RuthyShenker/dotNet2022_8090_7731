@@ -3,6 +3,7 @@ using System.Reflection;
 
 namespace DalApi
 {
+    //A static class that its goal is to 
     public static class DalFactory
     {
         public static IDal GetDal()

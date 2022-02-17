@@ -22,6 +22,11 @@ namespace BO
         public string Name { get; set; }
         public int AvailablePositions { get; set; }
         public int FullPositions { get; set; }
+
+        /// <summary>
+        /// A function that returns the details of this Station To List
+        /// </summary>
+        /// <returns> the details of this Station To List</returns>
         public override string ToString()
         {
             return BL.Tools.ToStringProps(this);

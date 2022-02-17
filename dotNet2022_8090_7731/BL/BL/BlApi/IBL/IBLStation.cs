@@ -7,10 +7,19 @@ using System.Threading.Tasks;
 
 namespace BlApi
 {
+    /// <summary>
+    /// interface IBLStation includes:
+    /// AddingBaseStation
+    /// UpdatingStationDetails
+    /// GetStation
+    /// GetStations
+    /// AvailableSlots
+    /// DeleteStation
+    /// </summary>
     public interface IBLStation
     {
         //ADD:
-        public void AddingBaseStation(int id, string name, double longitude, double latitude, int numPositions);
+        public void AddingBaseStation(BO.Station station);
 
         //UPDATE:
         void UpdatingStationDetails(int stationId, string stationName, int amountOfPositions);

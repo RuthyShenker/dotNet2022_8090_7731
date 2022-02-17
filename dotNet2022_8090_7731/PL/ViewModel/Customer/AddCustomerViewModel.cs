@@ -37,7 +37,7 @@ namespace PL.ViewModels
                 Refresh.Invoke(); 
                 switchView(blCustomer);
             }
-            catch (BO.IdIsAlreadyExistException exception)
+            catch (BO.IdAlreadyExistsException exception)
             {
                 MessageBox.Show(exception.Message);
             }

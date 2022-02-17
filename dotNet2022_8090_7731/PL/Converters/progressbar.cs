@@ -10,8 +10,10 @@ using System.Windows.Media;
 using BO;
 
 namespace PL.Converters
-
 {
+    /// <summary>
+    /// A class StatusToBGColorConverter that impliments:IValueConverter.
+    /// </summary>
     internal class StatusToBGColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>

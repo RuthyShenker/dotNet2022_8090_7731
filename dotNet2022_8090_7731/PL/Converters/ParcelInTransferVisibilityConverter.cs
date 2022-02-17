@@ -10,6 +10,9 @@ using System.Windows.Data;
 
 namespace PL.Converters
 {
+    /// <summary>
+    /// A class ParcelInTransferVisibilityConverter that impliments:IValueConverter.
+    /// </summary>
     public class ParcelInTransferVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

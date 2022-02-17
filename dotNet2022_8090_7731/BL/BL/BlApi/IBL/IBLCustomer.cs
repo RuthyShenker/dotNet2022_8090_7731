@@ -7,6 +7,15 @@ using System.Threading.Tasks;
 
 namespace BlApi
 {
+
+    /// <summary>
+    /// interface IBLCustomer includes:
+    /// AddCustomer
+    /// UpdatingCustomerDetails
+    /// GetCustomers
+    /// GetCustomer
+    /// DeleteCustomer
+    /// </summary>
     public interface IBLCustomer
     {
         //ADD:

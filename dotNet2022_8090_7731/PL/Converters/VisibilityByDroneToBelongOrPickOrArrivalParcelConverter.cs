@@ -11,6 +11,9 @@ using System.Windows.Data;
 
 namespace PL.Converters
 {
+    /// <summary>
+    /// A class VisibilityByDroneToBelongOrPickOrArrivalParcelConverter that impliments:IValueConverter.
+    /// </summary>
     public class VisibilityByDroneToBelongOrPickOrArrivalParcelConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

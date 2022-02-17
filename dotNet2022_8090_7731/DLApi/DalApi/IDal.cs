@@ -8,29 +8,48 @@ using DO;
 
 namespace DalApi
 {
+    /// <summary>
+    /// An interface of IDal-functions to get db details ,contains:
+    /// Add
+    /// Update
+    /// Remove
+    /// GetFromDalById
+    /// GetFromDalByCondition
+    /// GetListFromDal
+    /// GetDalListByCondition
+    /// GetIndexParcel
+    /// IsIdExistInList
+    /// PowerConsumptionRequest
     /// </summary>
     public interface IDal
     {
+        //ADD:
+        void Add<T>(T item) where T : IDalDo;
 
-        void Add<T>(T item) where T : IDalObject;
-        void Update<T>(int Id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject;
-        void Remove<T>(T item) where T : IDalObject;
-        bool IsIdExistInList<T>(int Id) where T : IIdentifiable, IDalObject;
-        T GetFromDalById<T>(int Id) where T : IDalObject, IIdentifiable;
-        T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IDalObject;
+        //UPDATE:
+        void Update<T>(int Id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalDo;
 
-        IEnumerable<T> GetListFromDal<T>() where T : IDalObject;
-        IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalObject;
+        //REMOVE:
+        void Remove<T>(T item) where T : IDalDo;
 
-        // TODO this function public?
-        (double,double,double,double,double) PowerConsumptionRequest();
+        //GET:
+        T GetFromDalById<T>(int Id) where T : IDalDo, IIdentifiable;
+        T GetFromDalByCondition<T>(Predicate<T> predicate) where T : IDalDo;
+        IEnumerable<T> GetListFromDal<T>() where T : IDalDo;
+        IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalDo;
         int GetIndexParcel();
 
+        //EXIST:
+        bool IsIdExistInList<T>(int Id) where T : IIdentifiable, IDalDo;
 
+        //DATA:
+        (double, double, double, double, double) PowerConsumptionRequest();
+
+        #region
         // שיניתי להרשאה פרטית
         //int SumDronesInStation(int sId);
 
-        //bool IsExistInList<T>(List<T> list, Predicate<T> predicate) where T : IDalObject;
+        //bool IsExistInList<T>(List<T> list, Predicate<T> predicate) where T : IDalDo;
 
         //Adding:
         //void AddingBaseStation(BaseStation baseStation);
@@ -51,5 +70,6 @@ namespace DalApi
         //IEnumerable<Parcel> GetUnbelongParcels();
         //IEnumerable<BaseStation> AvailableSlots();
         //IEnumerable<ChargingDrone> GetChargingDrones();
+        #endregion
     }
 }

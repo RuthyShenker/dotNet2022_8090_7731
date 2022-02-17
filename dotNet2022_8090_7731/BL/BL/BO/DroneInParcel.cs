@@ -20,6 +20,11 @@ namespace BO
         public int Id { get; init; }
         public double BatteryStatus { get; set; }
         public Location CurrLocation { get; set; }
+
+        /// <summary>
+        /// A function that returns the details of this Drone
+        /// </summary>
+        /// <returns> the details of this Drone</returns>
         public override string ToString()
         {
             return BL.Tools.ToStringProps(this);

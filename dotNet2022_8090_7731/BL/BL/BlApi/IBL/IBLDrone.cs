@@ -7,6 +7,18 @@ using System.Threading.Tasks;
 
 namespace BlApi
 {
+    /// <summary>
+    /// interface IBLDrone includes:
+    /// AddingDrone
+    /// UpdatingDroneName
+    /// SendingDroneToCharge
+    /// ReleasingDrone
+    /// GetDrones
+    /// GetDrone
+    /// DeleteDrone
+    /// StartSimulator
+    /// GetPowerConsumption
+    /// </summary>
     public interface IBLDrone
     {
         //ADD:
@@ -25,7 +37,7 @@ namespace BlApi
         string DeleteDrone(int customerId);
 
 
-        bool IsDroneExist(int id);
+        //bool IsDroneExist(int id);
         void StartSimulator(int droneId, Action updateView, Func<bool> checkStop);
 
         IEnumerable<double> GetPowerConsumption();

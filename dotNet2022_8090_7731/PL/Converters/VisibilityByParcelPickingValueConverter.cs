@@ -9,6 +9,9 @@ using System.Windows.Data;
 
 namespace PL.Converters
 {
+    /// <summary>
+    /// A class VisibilityByParcelPickingValueConverter that impliments:IValueConverter.
+    /// </summary>
     public class VisibilityByParcelPickingValueConverter : IValueConverter
     {
 

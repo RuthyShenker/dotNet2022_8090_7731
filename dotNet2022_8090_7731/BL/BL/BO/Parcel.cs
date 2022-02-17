@@ -34,6 +34,11 @@ namespace BO
         public DateTime? BelongParcel { get; set; }
         public DateTime? PickingUp { get; set; }
         public DateTime? Arrival { get; set; }
+
+        /// <summary>
+        /// A function that returns the details of this Parcel
+        /// </summary>
+        /// <returns> the details of this Parcel</returns>
         public override string ToString()
         {
             return BL.Tools.ToStringProps(this);

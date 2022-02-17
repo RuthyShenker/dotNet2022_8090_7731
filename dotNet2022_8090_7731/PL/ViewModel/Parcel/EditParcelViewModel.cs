@@ -72,7 +72,6 @@ namespace PL.ViewModels
             }
         }
 
-
         private void DeleteParcel(object obj)
         {
 
@@ -104,6 +103,7 @@ namespace PL.ViewModels
             }
 
         }
+
         private void OpenDroneWindow(object obj)
         {
             if (Parcel.BelongParcel != null&& !Parcel.Arrival.HasValue)
@@ -134,7 +134,6 @@ namespace PL.ViewModels
         private void UpdateParcel(object obj)
         {
 
-            //TODO
         }
 
         private EditParcel Map(BO.Parcel parcel)
@@ -159,6 +158,7 @@ namespace PL.ViewModels
             //    parcel.Weight, parcel.MPriority, parcel.DInParcel,
             //    parcel.MakingParcel, parcel.BelongParcel, parcel.PickingUp, parcel.Arrival);
         }
+
         public EditParcel Parcel
         {
             get => parcel;

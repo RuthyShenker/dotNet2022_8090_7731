@@ -8,27 +8,185 @@ using System.Threading.Tasks;
 using static BL.Extensions;
 using System.Runtime.CompilerServices;
 
+//lDroneToList.Any(drone => drone.Id == Id);
 namespace BL
 {
-    partial class BL
+    /// <summary>
+    /// An internal sealed partial class BL inherits from Singleton<BL>,and impliments BlApi.IBL,
+    /// </summary>
+    partial class BL:BlApi.IBL
     {
+        /// <summary>
+        /// A function that gets drone-Id ,updateView ,checkStop and open simulator to this drone.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <param name="updateView"></param>
+        /// <param name="checkStop"></param>
         public void StartSimulator(int droneId, Action updateView, Func<bool> checkStop)
         {
             new Simulator(this, droneId, updateView, checkStop);
         }
 
-        private void InitializeDroneList()
+        /// <summary>
+        /// A function that gets Drone and station id and adds this Drone to the data base and sending
+        /// this drone to charging in the StationId that the function gets,
+        /// the function doesn't return anything.
+        /// </summary>
+        /// <param name="bLDrone"></param>
+        /// <param name="StationId"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void AddingDrone(Drone bLDrone, int StationId)
         {
-            lDroneToList = new List<DroneToList>();
             lock (dal)
             {
-                foreach (var drone in dal.GetListFromDal<DO.Drone>())
+
+                if (dal.IsIdExistInList<DO.Drone>(bLDrone.Id))
                 {
-                    lDroneToList.Add(ConvertToList(drone));
+                    throw new BO.IdAlreadyExistsException(typeof(Drone), bLDrone.Id);
+                }
+                try
+                {
+                    DO.BaseStation station = dal.GetFromDalById<DO.BaseStation>(StationId);
+                    if (GetNumOfAvailablePositionsInStation(StationId) == 0)
+                    {
+                        throw new BO.InValidActionException(typeof(DO.BaseStation), StationId, "There aren't free positions ");
+                    }
+
+                    bLDrone.BatteryStatus = 0;
+                    //bLDrone.BatteryStatus = rand.Next(20, 41);
+                    bLDrone.DroneStatus = DroneStatus.Maintenance;
+                    dal.Add(new DO.ChargingDrone() { DroneId = bLDrone.Id, StationId = StationId, EnteranceTime = DateTime.Now });
+
+                    lDroneToList.Add(new()
+                    {
+                        Id = bLDrone.Id,
+                        Model = bLDrone.Model,
+                        Weight = bLDrone.Weight,
+                        BatteryStatus = bLDrone.BatteryStatus,
+                        DStatus = bLDrone.DroneStatus,
+                        CurrLocation = new Location() { Longitude = station.Longitude, Latitude = station.Latitude },
+                        DeliveredParcelId = null
+                    });
+
+                    dal.Add(new DO.Drone()
+                    {
+                        Id = bLDrone.Id,
+                        MaxWeight = (DO.WeightCategories)bLDrone.Weight,
+                        Model = bLDrone.Model
+                    });
+                }
+                catch (DO.IdDoesNotExistException)
+                {
+                    throw new BO.IdIsNotExistException(typeof(DO.BaseStation), StationId);
                 }
             }
         }
 
+        /// <summary>
+        /// A function that gets droneId and newModel and updates the drone with the id of 
+        /// droneId to be with the model of newModel, the function doesn't return anything.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <param name="newModel"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void UpdatingDroneName(int droneId, string newModel)
+        {
+            DroneToList droneToList = FindDroneInList(droneId);
+            try
+            {
+                lock (dal)
+                {
+                    dal.Update<DO.Drone>(droneId, newModel, nameof(DO.Drone.Model));
+                }
+                droneToList.Model = newModel;
+            }
+            catch (DO.IdDoesNotExistException)
+            {
+                throw new BO.IdIsNotExistException(typeof(Drone), droneId);
+            }
+        }
+
+        /// <summary>
+        /// A function that gets predicate ,if the predicate is null returns the whole lDroneToList
+        /// else returns from lDroneToList all the drones that stands on this predicate.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns>if the predicate is null returns the whole lDroneToList
+        /// else returns from lDroneToList all the drones that stands on this predicate.</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public IEnumerable<DroneToList> GetDrones(Func<DroneToList, bool> predicate = null)
+        {
+            return predicate == null
+                ? lDroneToList.Select(d => new DroneToList()
+                {
+                    Id = d.Id,
+                    Weight = d.Weight,
+                    Model = d.Model,
+                    DStatus = d.DStatus,
+                    DeliveredParcelId = d.DeliveredParcelId,
+                    CurrLocation = d.CurrLocation,
+                    BatteryStatus = d.BatteryStatus
+                })
+                : lDroneToList.Where(predicate).Select(d => new DroneToList()
+                {
+                    Id = d.Id,
+                    Weight = d.Weight,
+                    Model = d.Model,
+                    DStatus = d.DStatus,
+                    DeliveredParcelId = d.DeliveredParcelId,
+                    CurrLocation = d.CurrLocation,
+                    BatteryStatus = d.BatteryStatus
+                });
+        }
+
+        /// <summary>
+        /// A function that gets id of drone land returns the instance with this id after converts it to bl type.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <returns> returns the instance with this id after convers it to bl type.</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public Drone GetDrone(int droneId)
+        {
+            try
+            {
+                lock (dal)
+                {
+                    var dDrone = dal.GetFromDalById<DO.Drone>(droneId);
+                    return ConvertToBL(dDrone);
+                }
+            }
+            catch (DO.IdDoesNotExistException)
+            {
+                throw new BO.IdIsNotExistException(typeof(Drone), droneId);
+            }
+        }
+
+        /// <summary>
+        /// A function that gets id of drone and deletes it from the db,returns string that the action performed successfully
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <returns>returns string that the action performed successfully</returns>
+        public string DeleteDrone(int droneId)
+        {
+            try
+            {
+                lock (dal)
+                {
+                    dal.Remove(dal.GetFromDalById<DO.Drone>(droneId));
+                }
+                lDroneToList.Remove(lDroneToList.Find(d => d.Id == droneId));
+            }
+            catch (DO.IdDoesNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(Drone), droneId);
+            }
+            return $"The drone with Id: {droneId} was successfully removed from the system";
+        }
+
+        /// <summary>
+        /// A function that returns list of Power Consumptions.
+        /// </summary>
+        /// <returns>returns list of Power Consumptions </returns>
         public IEnumerable<double> GetPowerConsumption()
         {
             return new List<double>
@@ -39,6 +197,88 @@ namespace BL
                 powerConsumptionHeavy,
                 chargingRate
             };
+        }
+
+        /// <summary>
+        /// A function that gets an id of drone and sending it to charging,the 
+        /// function doesn't return anything.
+        /// </summary>
+        /// <param name="IdDrone"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void SendingDroneToCharge(int IdDrone)
+        {
+            DroneToList drone = FindDroneInList(IdDrone);
+            switch (drone.DStatus)
+            {
+                case DroneStatus.Maintenance:
+                    throw new BO.InValidActionException(typeof(Drone), IdDrone, $"status of drone is Maintenance ");
+                case DroneStatus.Delivery:
+                    throw new BO.InValidActionException(typeof(Drone), IdDrone, $"status of drone is Delivery ");
+                default:
+                    break;
+            }
+
+            Station closetStation = ClosestStation(drone.CurrLocation, true);
+            if (closetStation.Equals(default))
+            {
+                throw new BO.InValidActionException("There ara no stations with available positions!");
+            }
+
+            double distanceFromDroneToStation = Extensions.CalculateDistance(drone.CurrLocation, closetStation.Location);
+            double minBattery = MinBattery(distanceFromDroneToStation);
+            if (minBattery > drone.BatteryStatus)
+            {
+                throw new BO.InValidActionException("The drone has no enough battery in order to get to the closest charging station");
+            }
+
+            drone.BatteryStatus -= minBattery;
+            drone.CurrLocation = closetStation.Location;
+            drone.DStatus = DroneStatus.Maintenance;
+            //--closetBaseStation.NumAvailablePositions;
+            //closetBaseStation.LBL_ChargingDrone.AddCustomer(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
+            dal.Add(new DO.ChargingDrone()
+            {
+                DroneId = drone.Id,
+                StationId = closetStation.Id,
+                EnteranceTime = DateTime.Now
+            }
+            );
+        }
+
+        /// <summary>
+        /// A function that gets an id of drone and releasing it from charging.
+        /// </summary>
+        /// <param name="dId"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void ReleasingDrone(int dId)
+        {
+            DroneToList drone = FindDroneInList(dId);
+            DO.ChargingDrone chargingDrone;
+            lock (dal)
+            {
+                chargingDrone = dal.GetFromDalByCondition<DO.ChargingDrone>(d => d.DroneId == dId);
+            }
+            double timeInCharging = DateTime.Now.Subtract(chargingDrone.EnteranceTime).TotalMinutes;
+
+            switch (drone.DStatus)
+            {
+                case DroneStatus.Free:
+                    throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is Free ");
+                case DroneStatus.Delivery:
+                    throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is Delivery ");
+                default:
+                    //is correct?
+
+                    drone.BatteryStatus = Math.Min(drone.BatteryStatus + timeInCharging * chargingRate, 100);
+                    drone.DStatus = DroneStatus.Free;
+
+                    lock (dal)
+                    {
+                        var ChargingDroneToRemove = dal.GetFromDalByCondition<DO.ChargingDrone>(charge => charge.DroneId == drone.Id);
+                        dal.Remove(ChargingDroneToRemove);
+                    }
+                    break;
+            }
         }
 
         /// <summary>
@@ -113,6 +353,12 @@ namespace BL
             return nDrone;
         }
 
+        /// <summary>
+        /// A function that gets min value and max value and rand a double number in this range.
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns>returns the number that is randed.</returns>
         private double RandBetweenRange(double min, double max)
         {
             return (rand.NextDouble() * (max - min)) + min;
@@ -234,6 +480,7 @@ namespace BL
             WeightCategories.Medium => powerConsumptionMedium * distance,
             _ => PowerConsumptionFree * distance,
         };
+
         /// <summary>
         /// A function that creates ParcelInTransferand
         /// Calculates bills for specific drone id 
@@ -270,87 +517,10 @@ namespace BL
         }
 
         /// <summary>
-        /// A function that gets an id of drone and sending it to charging,the 
-        /// function doesn't return anything.
-        /// </summary>
-        /// <param name="IdDrone"></param>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void SendingDroneToCharge(int IdDrone)
-        {
-            DroneToList drone = FindDroneInList(IdDrone);
-            switch (drone.DStatus)
-            {
-                case DroneStatus.Maintenance:
-                    throw new BO.InValidActionException(typeof(Drone), IdDrone, $"status of drone is Maintenance ");
-                case DroneStatus.Delivery:
-                    throw new BO.InValidActionException(typeof(Drone), IdDrone, $"status of drone is Delivery ");
-                default:
-                    break;
-            }
-
-            Station closetStation = ClosestStation(drone.CurrLocation, true);
-            if (closetStation.Equals(default))
-            {
-                throw new BO.InValidActionException("There ara no stations with available positions!");
-            }
-
-            double distanceFromDroneToStation = Extensions.CalculateDistance(drone.CurrLocation, closetStation.Location);
-            double minBattery = MinBattery(distanceFromDroneToStation);
-            if (minBattery>drone.BatteryStatus)
-            {
-                throw new BO.InValidActionException("The drone has no enough battery in order to get to the closest charging station");
-            }
-
-            drone.BatteryStatus -= minBattery;
-            drone.CurrLocation = closetStation.Location;
-            drone.DStatus = DroneStatus.Maintenance;
-            //--closetBaseStation.NumAvailablePositions;
-            //closetBaseStation.LBL_ChargingDrone.AddCustomer(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
-            dal.Add(new DO.ChargingDrone()
-            {
-                DroneId = drone.Id,
-                StationId = closetStation.Id,
-                EnteranceTime = DateTime.Now
-            }
-            );
-        }
-
-        /// <summary>
-        /// A function that gets an id of drone and releasing it from charging.
+        /// A function that gets id of drone and returns the drone with this id from the lDroneToList
         /// </summary>
         /// <param name="dId"></param>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void ReleasingDrone(int dId)
-        {
-            DroneToList drone = FindDroneInList(dId);
-            DO.ChargingDrone chargingDrone;
-            lock (dal)
-            {
-                chargingDrone = dal.GetFromDalByCondition<DO.ChargingDrone>(d => d.DroneId == dId);
-            }
-            double timeInCharging = DateTime.Now.Subtract(chargingDrone.EnteranceTime).TotalMinutes;
-
-            switch (drone.DStatus)
-            {
-                case DroneStatus.Free:
-                    throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is Free ");
-                case DroneStatus.Delivery:
-                    throw new BO.InValidActionException(typeof(Drone), dId, $"status of drone is Delivery ");
-                default:
-                    //is correct?
-
-                    drone.BatteryStatus = Math.Min(drone.BatteryStatus + timeInCharging * chargingRate, 100);
-                    drone.DStatus = DroneStatus.Free;
-
-                    lock (dal)
-                    {
-                        var ChargingDroneToRemove = dal.GetFromDalByCondition<DO.ChargingDrone>(charge => charge.DroneId == drone.Id);
-                        dal.Remove(ChargingDroneToRemove);
-                    }
-                    break;
-            }
-        }
-
+        /// <returns>returns the drone with this id from the lDroneToList</returns>
         private DroneToList FindDroneInList(int dId)
         {
             try
@@ -367,7 +537,6 @@ namespace BL
             }
         }
 
-
         /// <summary>
         /// A function that calculates the distance that the drone has to pass in order to give 
         /// a parcel to the destination and go the the closet base station in order to
@@ -382,149 +551,20 @@ namespace BL
             //Location getterLocation = GetCustomer(parcel.GetterId).Location;
             return Extensions.CalculateDistance(droneLocation, senderLocation/*, getterLocation, ClosestStation(getterLocation).Location*/);
         }
+
         /// <summary>
-        /// A function that gets Drone and station id and adds this Drone to the data base and sending
-        /// this drone to charging in the StationId that the function gets,
-        /// the function doesn't return anything.
+        /// A function that initializes the lDroneToListof the BL.
         /// </summary>
-        /// <param name="bLDrone"></param>
-        /// <param name="StationId"></param>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void AddingDrone(Drone bLDrone, int StationId)
+        private void InitializeDroneList()
         {
+            lDroneToList = new List<DroneToList>();
             lock (dal)
             {
-
-                if (dal.IsIdExistInList<DO.Drone>(bLDrone.Id))
+                foreach (var drone in dal.GetListFromDal<DO.Drone>())
                 {
-                    throw new BO.IdIsAlreadyExistException(typeof(Drone), bLDrone.Id);
-                }
-                try
-                {
-                    DO.BaseStation station = dal.GetFromDalById<DO.BaseStation>(StationId);
-                    if (GetNumOfAvailablePositionsInStation(StationId) == 0)
-                    {
-                        throw new BO.InValidActionException(typeof(DO.BaseStation), StationId, "There aren't free positions ");
-                    }
-
-                    bLDrone.BatteryStatus = 0;
-                    //bLDrone.BatteryStatus = rand.Next(20, 41);
-                    bLDrone.DroneStatus = DroneStatus.Maintenance;
-                    dal.Add(new DO.ChargingDrone() { DroneId = bLDrone.Id, StationId = StationId, EnteranceTime = DateTime.Now });
-
-                    lDroneToList.Add(new()
-                    {
-                        Id = bLDrone.Id,
-                        Model = bLDrone.Model,
-                        Weight = bLDrone.Weight,
-                        BatteryStatus = bLDrone.BatteryStatus,
-                        DStatus = bLDrone.DroneStatus,
-                        CurrLocation = new Location() { Longitude = station.Longitude, Latitude = station.Latitude },
-                        DeliveredParcelId = null
-                    });
-
-                    dal.Add(new DO.Drone()
-                    {
-                        Id = bLDrone.Id,
-                        MaxWeight = (DO.WeightCategories)bLDrone.Weight,
-                        Model = bLDrone.Model
-                    });
-                }
-                catch (DO.IdDoesNotExistException)
-                {
-                    throw new BO.IdIsNotExistException(typeof(DO.BaseStation), StationId);
+                    lDroneToList.Add(ConvertToList(drone));
                 }
             }
-        }
-
-        /// <summary>
-        /// A function that gets droneId and newModel and updates the drone with the id of 
-        /// droneId to be with the model of newModel, the function doesn't return anything.
-        /// </summary>
-        /// <param name="droneId"></param>
-        /// <param name="newModel"></param>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdatingDroneName(int droneId, string newModel)
-        {
-            DroneToList droneToList = FindDroneInList(droneId);
-            try
-            {
-                lock (dal)
-                {
-                    dal.Update<DO.Drone>(droneId, newModel, nameof(DO.Drone.Model));
-                }
-                droneToList.Model = newModel;
-            }
-            catch (DO.IdDoesNotExistException)
-            {
-                throw new BO.IdIsNotExistException(typeof(Drone), droneId);
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<DroneToList> GetDrones(Func<DroneToList, bool> predicate = null)
-        {
-            return predicate == null
-                ? lDroneToList.Select(d => new DroneToList()
-                {
-                    Id = d.Id,
-                    Weight = d.Weight,
-                    Model = d.Model,
-                    DStatus = d.DStatus,
-                    DeliveredParcelId = d.DeliveredParcelId,
-                    CurrLocation = d.CurrLocation,
-                    BatteryStatus = d.BatteryStatus
-                })
-                : lDroneToList.Where(predicate).Select(d => new DroneToList()
-                {
-                    Id = d.Id,
-                    Weight = d.Weight,
-                    Model = d.Model,
-                    DStatus = d.DStatus,
-                    DeliveredParcelId = d.DeliveredParcelId,
-                    CurrLocation = d.CurrLocation,
-                    BatteryStatus = d.BatteryStatus
-                });
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public bool IsDroneExist(int Id)
-        {
-            return lDroneToList.Any(drone => drone.Id == Id);
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public Drone GetDrone(int droneId)
-        {
-            try
-            {
-                lock (dal)
-                {
-                    var dDrone = dal.GetFromDalById<DO.Drone>(droneId);
-                    return ConvertToBL(dDrone);
-                }
-            }
-            catch (DO.IdDoesNotExistException)
-            {
-                throw new BO.IdIsNotExistException(typeof(Drone), droneId);
-            }
-        }
-
-        public string DeleteDrone(int droneId)
-        {
-            try
-            {
-                lock (dal)
-                {
-                    dal.Remove(dal.GetFromDalById<DO.Drone>(droneId));
-                }
-                lDroneToList.Remove(lDroneToList.Find(d => d.Id == droneId));
-            }
-            catch (DO.IdDoesNotExistException)
-            {
-                throw new IdIsNotExistException(typeof(Drone), droneId);
-            }
-            return $"The drone with Id: {droneId} was successfully removed from the system";
         }
     }
 }

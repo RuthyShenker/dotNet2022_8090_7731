@@ -10,6 +10,9 @@ using System.Windows.Data;
 
 namespace PL.Converters
 {
+    /// <summary>
+    /// A class VisibilityByDroneInParcelPickOrDeliveryParcelConverter that impliments:IValueConverter.
+    /// </summary>
     class VisibilityByDroneInParcelPickOrDeliveryParcelConverter : IValueConverter
     {
 

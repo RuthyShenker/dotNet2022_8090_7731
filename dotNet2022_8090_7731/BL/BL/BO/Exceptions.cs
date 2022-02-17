@@ -47,14 +47,14 @@ namespace BO
     }
 
     [Serializable]
-    public class IdIsAlreadyExistException : IdException
+    public class IdAlreadyExistsException : IdException
     {
-        public IdIsAlreadyExistException() : base() { }
-        public IdIsAlreadyExistException(string message) : base(message) { }
-        public IdIsAlreadyExistException(string message, Exception inner) : base(message, inner) { }
-        protected IdIsAlreadyExistException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public IdAlreadyExistsException() : base() { }
+        public IdAlreadyExistsException(string message) : base(message) { }
+        public IdAlreadyExistsException(string message, Exception inner) : base(message, inner) { }
+        protected IdAlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
-        public IdIsAlreadyExistException(Type type, int id) : base(type, id) { }
+        public IdAlreadyExistsException(Type type, int id) : base(type, id) { }
 
         protected override string GetMessage()
         {
