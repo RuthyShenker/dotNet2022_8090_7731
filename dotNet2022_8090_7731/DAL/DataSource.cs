@@ -29,10 +29,10 @@ namespace Dal
         /// </summary>
         internal class Config
         {
-            static public double Available = RandBetweenRange(0, 0.001);
-            static public double LightWeight = RandBetweenRange(Available, 0.002);
-            static public double MediumWeight = RandBetweenRange(LightWeight, 0.003);
-            static public double HeavyWeight = RandBetweenRange(MediumWeight, 0.004);
+            static public double Available = RandBetweenRange(0, 0.0000001);
+            static public double LightWeight = RandBetweenRange(Available, 0.0000002);
+            static public double MediumWeight = RandBetweenRange(LightWeight, 0.0000003);
+            static public double HeavyWeight = RandBetweenRange(MediumWeight, 0.0000004);
             static public double ChargingRate = 20;//TODO לאתחל
             internal static int IndexParcel = 1000;
 
@@ -139,8 +139,8 @@ namespace Dal
                     Id = Rand.Next(100000000, 1000000000),
                     Name = initNames[Rand.Next(0, initNames.Length)],
                     Phone = initDigitsPhone[Rand.Next(0, initDigitsPhone.Length)],
-                    Longitude = Rand.Next(25, 28) + Rand.NextDouble(),
-                    Latitude = Rand.Next(25, 28) + Rand.NextDouble()
+                    Longitude = Rand.Next(0, 90) + Rand.NextDouble(),
+                    Latitude = Rand.Next(-90, 90) + Rand.NextDouble()
                 };
                 customer.Phone += (Rand.Next(100000, 1000000)).ToString();
             CustomerList.Add(customer);
@@ -157,8 +157,8 @@ namespace Dal
                     Id = Rand.Next(100000000, 1000000000),
                     NameStation = initNameStation[Rand.Next(0, initNameStation.Length)],
                     NumberOfChargingPositions = Rand.Next(0, 50),
-                    Longitude = Rand.Next(25, 28) + Rand.NextDouble(),
-                    Latitude = Rand.Next(25, 28) + Rand.NextDouble()
+                    Longitude = Rand.Next(0, 90) + Rand.NextDouble(),
+                    Latitude = Rand.Next(-90, 90) + Rand.NextDouble()
                 });
             }
         }

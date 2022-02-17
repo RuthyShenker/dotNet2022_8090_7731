@@ -86,49 +86,50 @@ namespace BL
             {
                 IOrderedEnumerable<DO.Parcel> optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation);
 
-            if (!dal.GetListFromDal<DO.Parcel>().Any())
-            {
-                throw new BO.ListIsEmptyException(typeof(DO.Parcel));
-            }
+                if (!dal.GetListFromDal<DO.Parcel>().Any())
+                {
+                    throw new BO.ListIsEmptyException(typeof(DO.Parcel));
+                }
 
-            var optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation).ToList();
-            var parcel = optionParcels.FirstOrDefault(parcel => !parcel.BelongParcel.HasValue);
+                //var optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation).ToList();
+                var parcel = optionParcels.FirstOrDefault(parcel => !parcel.BelongParcel.HasValue);
 
-            if (!optionParcels.Any() || parcel.Equals(default))
-            {
-                throw new ThereIsNoMatchObjectInListException(typeof(DO.Parcel), $"There is no match parcels to drone with id {dId} in");
-            }
+                if (!optionParcels.Any() || parcel.Equals(default))
+                {
+                    throw new ThereIsNoMatchObjectInListException(typeof(DO.Parcel), $"There is no match parcels to drone with id {dId} in");
+                }
 
                 droneToList.DStatus = DroneStatus.Delivery;
-
+                droneToList.DeliveredParcelId = parcel.Id;
                 dal.Update<DO.Parcel>(parcel.Id, dId, nameof(parcel.DroneId));
                 dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.BelongParcel));
+
             }
         }
 
         //TODO what happens if the list is empty
         internal IOrderedEnumerable<DO.Parcel> OptionalParcelsForSpecificDrone(double batteryStatus, WeightCategories weight, Location currLocation)
         {
-            //MinBattery(CalculateDistance(currLocation, destination), (WeightCategories)parcel.Weight)
-            //    + MinBattery(CalculateDistance(destination, nearestDestinationStation))
-
-            return dal.GetDalListByCondition<DO.Parcel>
-                                (parcel => parcel.Weight <= (DO.WeightCategories)weight
-                                &&
-                                batteryStatus >=
-                                MinBattery(
-                                    Extensions.CalculateDistance(currLocation, GetCustomer(parcel.SenderId).Location)
-                                    )
-                                + MinBattery(
-                                    Extensions.CalculateDistance(GetCustomer(parcel.SenderId).Location, GetCustomer(parcel.GetterId).Location), (WeightCategories)parcel.Weight
-                                    ) +
-                                MinBattery(
-                                    Extensions.CalculateDistance(GetCustomer(parcel.GetterId).Location, ClosestStation(GetCustomer(parcel.GetterId).Location).Location)
-                                    )
-                                )
-                                ?.OrderByDescending(parcel => parcel.MPriority)
-                                .ThenByDescending(parcel => parcel.Weight)
+            var a = dal.GetDalListByCondition<DO.Parcel>(parcel => (parcel.Weight <= (DO.WeightCategories)weight &&
+                                 batteryStatus >= CalculateBatteryToWay(currLocation, parcel))).ToList();
+            return a?.OrderByDescending(parcel => parcel.MPriority)
+                .ThenByDescending(parcel => parcel.Weight)
                                 .ThenBy(parcel => GetDistance(currLocation, parcel));
+        
+        }
+
+        private double CalculateBatteryToWay(Location currLocation, DO.Parcel parcel)
+        {
+           var b= MinBattery(
+                                                Extensions.CalculateDistance(currLocation, GetCustomer(parcel.SenderId).Location)
+                                                )
+                                            + MinBattery(
+                                                Extensions.CalculateDistance(GetCustomer(parcel.SenderId).Location, GetCustomer(parcel.GetterId).Location), (WeightCategories)parcel.Weight
+                                                ) +
+                                            MinBattery(
+                                                Extensions.CalculateDistance(GetCustomer(parcel.GetterId).Location, ClosestStation(GetCustomer(parcel.GetterId).Location).Location)
+                                                );
+            return b;
         }
 
         /// <summary>
@@ -172,7 +173,7 @@ namespace BL
                 drone.BatteryStatus -= MinBattery(Extensions.CalculateDistance(drone.CurrLocation, senderLocation));
                 drone.CurrLocation = senderLocation;
                 // לא היה כתוב לשנות status
-                drone.DStatus = DroneStatus.Delivery;
+                //drone.DStatus = DroneStatus.Delivery;
                 dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.PickingUp));
             }
         }
@@ -220,7 +221,8 @@ namespace BL
                 }
 
                 dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
-                dal.Update<DO.Parcel>(parcel.Id, 0, nameof(parcel.DroneId));
+                //???
+               // dal.Update<DO.Parcel>(parcel.Id, null, nameof(parcel.DroneId));
             }
 
             Location getterLocation = GetCustomer(parcel.GetterId).Location;
@@ -228,8 +230,7 @@ namespace BL
             drone.CurrLocation = getterLocation;
             drone.DStatus = DroneStatus.Free;
             drone.DeliveredParcelId = null;
-            dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
-            dal.Update<DO.Parcel>(parcel.Id, null, nameof(parcel.DroneId));
+            //dal.Update<DO.Parcel>(parcel.Id, null, nameof(parcel.DroneId));
 
         }
 

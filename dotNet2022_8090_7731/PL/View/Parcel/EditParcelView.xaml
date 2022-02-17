@@ -64,6 +64,7 @@
                 <x:Type TypeName="BO:Priority"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <Converters:VisibilityByDroneInParcelPickOrDeliveryParcelConverter x:Key="VisibilityByDroneInParcelPickOrDeliveryParcelConverter"/>
         <Converters:VisibilityByParcelPickingValueConverter x:Key="VisibilityByParcelPickingValueConverter"/>
         <Converters:ContentByDroneInParcelPickOrDeliveryParcelConverter x:Key="ContentByDroneInParcelPickOrDeliveryParcelConverter"/>
     </UserControl.Resources>
@@ -175,7 +176,7 @@
                  materialDesign:HintAssist.Hint="Making Parcel"
                  IsEnabled="False"/>
 
-        <TextBox Text="{Binding Parcel.BelongParcel}" Visibility="{Binding Parcel.PickingUp ,Converter={StaticResource VisibilityByParcelPickingValueConverter}}" 
+        <TextBox Text="{Binding Parcel.BelongParcel}" Visibility="{Binding Parcel.BelongParcel ,Converter={StaticResource VisibilityByParcelPickingValueConverter}}" 
                  materialDesign:HintAssist.Hint="Belong Parcel"
                  IsEnabled="False"/>
         
@@ -183,7 +184,7 @@
                  materialDesign:HintAssist.Hint="Picking Up Parcel"
                  IsEnabled="False"/>
 
-        <TextBox Text="{Binding Parcel.Arrival}" Visibility="{Binding Parcel.PickingUp ,Converter={StaticResource VisibilityByParcelPickingValueConverter}}" 
+        <TextBox Text="{Binding Parcel.Arrival}" Visibility="{Binding Parcel.Arrival ,Converter={StaticResource VisibilityByParcelPickingValueConverter}}" 
                  materialDesign:HintAssist.Hint="Arrival Parcel"
                  IsEnabled="False"/>
 
@@ -193,7 +194,10 @@
         <Button Content="Delete"
                 Command="{Binding DeleteParcelCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+        
         <Button Content="{Binding Parcel ,Converter={StaticResource ContentByDroneInParcelPickOrDeliveryParcelConverter}}"
+                
+                Visibility="{Binding Parcel ,Converter={StaticResource VisibilityByDroneInParcelPickOrDeliveryParcelConverter}}"
                 Command="{Binding CollectAndDeliverPackageCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
 

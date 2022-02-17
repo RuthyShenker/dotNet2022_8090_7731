@@ -5,13 +5,27 @@
     <Name>ruti</Name>
     <Phone>0561111111</Phone>
     <Longitude>24</Longitude>
-    <Latitude>23</Latitude>
+    <Latitude>24</Latitude>
   </Customer>
   <Customer>
     <Id>222222222</Id>
     <Name>chani</Name>
     <Phone>0502222222</Phone>
-    <Longitude>25</Longitude>
-    <Latitude>23</Latitude>
+    <Longitude>28</Longitude>
+    <Latitude>28</Latitude>
+  </Customer>
+  <Customer>
+    <Id>333333333</Id>
+    <Name>yudi</Name>
+    <Phone>0523333333</Phone>
+    <Longitude>20</Longitude>
+    <Latitude>20</Latitude>
+  </Customer>
+  <Customer>
+    <Id>444444444</Id>
+    <Name>dini</Name>
+    <Phone>0584444444</Phone>
+    <Longitude>26</Longitude>
+    <Latitude>26</Latitude>
   </Customer>
 </ArrayOfCustomer>

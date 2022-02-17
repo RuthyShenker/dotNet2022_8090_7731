@@ -3,6 +3,11 @@
   <Drone>
     <Id>1111</Id>
     <MaxWeight>Heavy</MaxWeight>
-    <Model>d</Model>
+    <Model>1111</Model>
+  </Drone>
+  <Drone>
+    <Id>9999</Id>
+    <MaxWeight>Heavy</MaxWeight>
+    <Model>9999</Model>
   </Drone>
 </ArrayOfDrones>

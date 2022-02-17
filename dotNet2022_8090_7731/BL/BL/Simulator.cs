@@ -15,9 +15,9 @@ namespace BL
         // maybe good for calculate distances
         // https://www.google.com/search?q=geography+location+and+calculate+distance+c%23&oq=geography+location+and+calculate+distance+c%23&aqs=chrome..69i57.22174j0j9&sourceid=chrome&ie=UTF-8
 
-        private const int DELAY = 500;
+        private const int DELAY = 40;
         private const double VELOCITY = 1.0;
-        private const double TIME_STEP = DELAY / 3000.0;
+        private const double TIME_STEP = DELAY / 1000.0;
         private const double STEP = VELOCITY / TIME_STEP;
         private BL bl;
         Action updateView;
@@ -70,44 +70,52 @@ namespace BL
         {
             lock (bl)
             {
-                DO.Parcel parcel;
-                List<DO.Parcel> optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
-
-                if (!optionalParcels.Any())
+                lock (dal)
                 {
-                    if (drone.BatteryStatus >= 1.0)
-                    {
-                        while (!optionalParcels.Any() && !checkStop())
-                        {
-                            drone.DStatus = DroneStatus.Free;
-                            updateView();
-                            if (!SleepDelayTime()) break;
-                            optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
-                        }
-                    }
-                    else
-                    {
-                        station = bl.ClosestStation(drone.CurrLocation, true);
+                    DO.Parcel parcel;
+                    List<DO.Parcel> optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
 
-                        if (station.Id != default)
+                    if (!optionalParcels.Any())
+                    {
+                        if (drone.BatteryStatus >= 100)
                         {
-                            drone.DStatus = DroneStatus.Maintenance;
-                            dal.Add(new DO.ChargingDrone() { DroneId = drone.Id, StationId = station.Id, EnteranceTime = DateTime.Now });
-                            bl.GetDrone(drone.Id);
-                            updateView();
+                            //while (!optionalParcels.Any() && !checkStop())
+                            //{
+                            //    {///i add:
+                            //        if (!SleepDelayTime()) break;
+                            //    }
+                            //    drone.DStatus = DroneStatus.Free;
+                            //    updateView();
+                            //    if (!SleepDelayTime()) break;
+                            //    optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
+                            //}
                             return;
                         }
+                        else
+                        {
+                            station = bl.ClosestStation(drone.CurrLocation, true);
+
+                            if (station.Id != default)
+                            {
+                                drone.DStatus = DroneStatus.Maintenance;
+                                dal.Add(new DO.ChargingDrone() { DroneId = drone.Id, StationId = station.Id, EnteranceTime = DateTime.Now });
+                                //????why
+                                //bl.GetDrone(drone.Id);
+                                updateView();
+                                return;
+                            }
+                        }
                     }
+
+                    parcel = optionalParcels.First(item=>!item.BelongParcel.HasValue);
+                    Init(parcel.Id, drone);
+
+                    drone.DStatus = DroneStatus.Delivery;
+                    drone.DeliveredParcelId = parcel.Id;
+                    dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(DO.Parcel.BelongParcel));
+                    dal.Update<DO.Parcel>(parcel.Id, drone.Id, nameof(DO.Parcel.DroneId));
+                    //drone.DeliveredParcelId = parcel.Id;
                 }
-
-                parcel = optionalParcels.First();
-                Init(parcel.Id, drone);
-                drone.DStatus = DroneStatus.Delivery;
-                drone.DeliveredParcelId = parcel.Id;
-
-                dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(DO.Parcel.BelongParcel));
-                dal.Update<DO.Parcel>(parcel.Id, drone.Id, nameof(DO.Parcel.DroneId));
-                drone.DeliveredParcelId = parcel.Id;
             }
         }
 
@@ -137,7 +145,7 @@ namespace BL
             distance = Extensions.CalculateDistance(drone.CurrLocation, station.Location);
             updateView();
 
-            //lock (bl)
+            lock (bl)
             {
                 // Going toward station
                 while (distance > 0.01 && !checkStop())
@@ -155,15 +163,16 @@ namespace BL
                     while (drone.BatteryStatus < 100 && !checkStop())
                     {
                         if (!SleepDelayTime()) break;
-                        //lock (bl) למה בפרויקט לדוג עשו כאן?
+                        lock (bl) // why בפרויקט לדוג עשו כאן?
                         {
-                            drone.BatteryStatus = Math.Min(100, drone.BatteryStatus + (chargingRate * TIME_STEP));
+                            drone.BatteryStatus = Math.Min(drone.BatteryStatus + (chargingRate * TIME_STEP),100);
                             updateView();
                         }
                     }
 
                     if (drone.BatteryStatus >= 100)
                     {
+                       
                         drone.DStatus = DroneStatus.Free;
                         updateView();
                     }
@@ -177,6 +186,7 @@ namespace BL
             pickedUp = parcel.PickingUp.HasValue;
             customer = bl.GetCustomer(pickedUp ? parcel.GetterId : parcel.SenderId);
 
+            //why???
             distance = Extensions.CalculateDistance(drone.CurrLocation, customer.Location);
 
             //batteryUsage = (int)Enum.Parse(typeof(BatteryUsage), parcel?.Weight.ToString());
@@ -195,21 +205,28 @@ namespace BL
                     updateView();
                 }
             }
-            if ((distance <= 0.01 || drone.BatteryStatus == 0.0) && !checkStop())
+            lock (bl)
             {
-                drone.CurrLocation = customer.Location;
-                if (pickedUp)
+                lock (dal)
                 {
-                    dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
-                    drone.DStatus = DroneStatus.Free;
+                    if ((distance <= 0.01 || drone.BatteryStatus == 0.0) && !checkStop())
+                    {
+                        drone.CurrLocation = customer.Location;
+                        if (pickedUp)
+                        {
+                            dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
+
+                            drone.DStatus = DroneStatus.Free;
+                        }
+                        else
+                        {
+                            dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.PickingUp));
+                            customer = bl.GetCustomer(parcel.GetterId);
+                            pickedUp = true;
+                        }
+                        updateView();
+                    }
                 }
-                else
-                {
-                    dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.PickingUp));
-                    customer = bl.GetCustomer(parcel.GetterId);
-                    pickedUp = true;
-                }
-                updateView();
             }
         }
 

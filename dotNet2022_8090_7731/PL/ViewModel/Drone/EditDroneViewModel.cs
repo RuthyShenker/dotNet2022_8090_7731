@@ -49,9 +49,7 @@ namespace PL.ViewModels
             Refresh.Invoke();
 
             // update distance
-
             //drone.Distance = args.ProgressPercentage;
-
             //DroneForList droneForList = Model.Drones.FirstOrDefault(d => d.Id == Drone.Id);
             //int index = Model.Drones.IndexOf(droneForList);
             //drone = bl.GetDrone(Drone.Id);

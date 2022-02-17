@@ -294,7 +294,7 @@ namespace BL
                 throw new BO.InValidActionException("There ara no stations with available positions!");
             }
 
-            double distanceFromDroneToStation = Extensions.CalculateDistance(drone.CurrLocation, closetdStation.Location);
+            double distanceFromDroneToStation = Extensions.CalculateDistance(drone.CurrLocation, closetStation.Location);
             double minBattery = MinBattery(distanceFromDroneToStation);
             if (minBattery>drone.BatteryStatus)
             {

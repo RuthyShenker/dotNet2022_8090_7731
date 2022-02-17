@@ -81,8 +81,6 @@ namespace DalXml
                         reader.Close();
 
                         return list;
-                    
-
                 }
                 else
                     return new List<T>();

@@ -9,7 +9,7 @@ namespace PL.ViewModels
     public class EditParcelViewModel : INotify
     {
         readonly BlApi.IBL bl;
-        readonly Action refreshParcels;
+        //readonly Action refreshParcels;
         private EditParcel parcel;
 
         public RelayCommand<object> DeleteParcelCommand { get; set; }
@@ -27,10 +27,10 @@ namespace PL.ViewModels
             //this.refreshParcels = refreshParcels;
             UpdateParcelCommand = new RelayCommand<object>(UpdateParcel, param => Parcel.BelongParcel == default);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
-            EditCustomerCommand = new RelayCommand<object>(EditSender, param => !(Parcel.BelongParcel != default && Parcel.Arrival == default));
+            EditCustomerCommand = new RelayCommand<object>(EditSender);
             DeleteParcelCommand = new RelayCommand<object>(DeleteParcel);
-            CollectAndDeliverPackageCommand = new RelayCommand<object>(GivingPermissionToCollectAndDeliverPackage/*,param=> Parcel.BelongParcel!=default*/);
-            OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow, param => Parcel.BelongParcel ==null);
+            CollectAndDeliverPackageCommand = new RelayCommand<object>(GivingPermissionToCollectAndDeliverPackage);
+            OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow);
         }
 
         private void GivingPermissionToCollectAndDeliverPackage(object obj)
@@ -106,15 +106,29 @@ namespace PL.ViewModels
         }
         private void OpenDroneWindow(object obj)
         {
-            //problem::
-            var carringDrone = bl.GetDrone(Parcel.DInParcel.Id);
-            new DroneView(bl, carringDrone).Show();
+            if (Parcel.BelongParcel != null&& !Parcel.Arrival.HasValue)
+            {
+                var carringDrone = bl.GetDrone(Parcel.DInParcel.Id);
+                new DroneView(bl, carringDrone).Show();
+            }
+            else
+            {
+                MessageBox.Show("You can't see more because the parcel doesnt meet the conditions", "Error Open Drone",MessageBoxButton.OK,MessageBoxImage.Stop);
+            }
+           
         }
 
         private void EditSender(object customerId)
         {
-            BO.Customer blCustomer = bl.GetCustomer((int)customerId);
-            new CustomerView(bl, blCustomer).Show();
+            if (Parcel.BelongParcel != default && Parcel.Arrival == default)
+            {
+                BO.Customer blCustomer = bl.GetCustomer((int)customerId);
+                new CustomerView(bl, blCustomer).Show();
+            }
+            else
+            {
+                MessageBox.Show("You can't see more because the parcel doesnt meet the conditions", "Error Open Customer", MessageBoxButton.OK, MessageBoxImage.Stop);
+            }
         }
 
         private void UpdateParcel(object obj)
