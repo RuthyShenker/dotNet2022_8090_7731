@@ -24,11 +24,12 @@
     </Window.Resources>
     <ScrollViewer>
         <StackPanel Orientation="Vertical" ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <TextBlock Text="Filter list"/>
+            <TextBlock Text="Filter:"/>
             <ComboBox ItemsSource="{Binding FilterParcelOptions}" 
-                  SelectedItem="{Binding FilterParcels}" />
+                  SelectedItem="{Binding FilterParcels}" VerticalAlignment="Top" HorizontalContentAlignment="Left"
+                      HorizontalAlignment="Left"  MaxWidth="120" MaxHeight="60" MinHeight="40" MinWidth="100" />
 
-            <StackPanel>
+            <!--<StackPanel>
                 <TextBlock Text="Filter"/>
                 <StackPanel>
                     <DockPanel>
@@ -47,10 +48,13 @@
                        materialDesign:HintAssist.Hint="Choose Date" />
                     </DockPanel>
                 </StackPanel>
-            </StackPanel>
-
+            </StackPanel>-->
+            <Label>
+                Group:
+            </Label>
             <ComboBox ItemsSource="{Binding GroupOptions }"
-                  SelectedItem="{Binding GroupBy}" />
+                  SelectedItem="{Binding GroupBy}" VerticalAlignment="Top" HorizontalContentAlignment="Left"
+                      HorizontalAlignment="Left"  MaxWidth="120" MaxHeight="60" MinHeight="40" MinWidth="100"  />
 
             <ListView x:Name="ParcelList" ItemsSource="{Binding ParcelList}"  >
                 <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->

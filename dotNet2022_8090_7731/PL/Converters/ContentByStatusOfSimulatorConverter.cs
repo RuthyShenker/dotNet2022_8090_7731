@@ -27,7 +27,7 @@ namespace PL.Converters
         {
             var droneId = ((PO.EditDrone)value).Id;
 
-            return Refresh.workers.ContainsKey(droneId) && Refresh.workers[droneId].IsBusy ? "Manual" : "Auto";
+            return Refresh.workers.ContainsKey(droneId) && Refresh.workers[droneId].CancellationPending ? "Manual" : "Auto";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
