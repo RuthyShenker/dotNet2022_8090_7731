@@ -50,12 +50,15 @@
                  materialDesign:HintAssist.Hint="Positions"
                  materialDesign:TextFieldAssist.HasClearButton="True" />
 
-        <TextBox Text="{Binding Station.Location.Longitude}"
+        <!--<TextBox Text="{Binding Station.Location.Longitude}"
                  materialDesign:HintAssist.Hint="Longitude"
                  IsEnabled="False"/>
 
         <TextBox Text="{Binding Station.Location.Latitude}" 
                  materialDesign:HintAssist.Hint="Latitude"
+                 IsEnabled="False"/>-->
+        <TextBox Text="{Binding Station.Location}"
+                 materialDesign:HintAssist.Hint="Location"
                  IsEnabled="False"/>
 
         <ListView x:Name="DronesInStationListView"  ItemsSource="{Binding Station.ListChargingDrone}">

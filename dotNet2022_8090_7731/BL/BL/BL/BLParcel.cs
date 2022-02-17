@@ -176,6 +176,7 @@ namespace BL
 
                 droneToList.DStatus = DroneStatus.Delivery;
                 droneToList.DeliveredParcelId = parcel.Id;
+               
                 dal.Update<DO.Parcel>(parcel.Id, dId, nameof(parcel.DroneId));
                 dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.BelongParcel));
             }

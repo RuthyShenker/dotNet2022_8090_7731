@@ -175,7 +175,7 @@ namespace PL.ViewModels
             }
             else if (Drone.Status == PO.DroneStatus.Delivery)
             {
-                if (Drone.ParcelInTransfer == null) 
+                if (bl.GetParcel(Drone.ParcelInTransfer.PId).PickingUp==null) 
                     PickingUpParcel();
                 else
                     DeliveryPackage();

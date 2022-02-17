@@ -58,7 +58,7 @@
                   materialDesign:HintAssist.Hint="Phone"
                   materialDesign:TextFieldAssist.HasClearButton="True"  />
 
-        <TextBox Text="{Binding Customer.Location.Longitude,
+        <!--<TextBox Text="{Binding Customer.Location.Longitude,
                                 UpdateSourceTrigger=PropertyChanged }"
                  materialDesign:HintAssist.Hint="Longitude"
                  IsEnabled="False"/>
@@ -66,8 +66,11 @@
         <TextBox Text="{Binding Customer.Location.Latitude,
                                 UpdateSourceTrigger=PropertyChanged}"
                  materialDesign:HintAssist.Hint="Latitude"
-                 IsEnabled="False" />
-
+                 IsEnabled="False" />-->
+        <TextBox Text="{Binding Customer.Location,
+                                UpdateSourceTrigger=PropertyChanged }"
+                 materialDesign:HintAssist.Hint="Location"
+                 IsEnabled="False"/>
 
         <Label>For:</Label>
         <ListView Grid.Row="1"  

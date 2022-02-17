@@ -90,7 +90,7 @@
 
                 </StackPanel>-->
 
-        <StackPanel x:Name="Location">
+        <!--<StackPanel x:Name="Location">
             <TextBox Text = "{Binding Drone.Location.Longitude, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Longitude"
                      IsEnabled="False" />
@@ -98,7 +98,11 @@
             <TextBox Text = "{Binding Drone.Location.Latitude, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Latitude"
                      IsEnabled="False"/>
-        </StackPanel>
+        </StackPanel>-->
+        <TextBox Text = "{Binding Drone.Location, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Location"
+                     IsEnabled="False" />
+
 
         <Button Style="{StaticResource MaterialDesignFlatButton}"
                 HorizontalAlignment="Center"

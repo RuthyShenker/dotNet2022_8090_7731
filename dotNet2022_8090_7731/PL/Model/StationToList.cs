@@ -15,6 +15,10 @@ namespace PO
     /// </summary>
     public class StationToList
     {
+        /// <summary>
+        /// A constructor that gets BO.StationToList and bulids 
+        /// </summary>
+        /// <param name="stationToList"></param>
         public StationToList(BO.StationToList stationToList)
         {
             Id = stationToList.Id;
