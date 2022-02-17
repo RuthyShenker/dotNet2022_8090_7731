@@ -397,7 +397,6 @@ namespace BL
         };
 
         /// <summary>
-        ///  
         /// A function that gets an object of IDAL.DO.Drone
         /// and Expands it to Drone object and returns this object.
         /// </summary>

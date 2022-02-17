@@ -13,7 +13,7 @@ namespace PL.Converters
     /// <summary>
     /// A class ContentByStatusOfSimulatorConverter that impliments:IMultiValueConverter.
     /// </summary>
-    public class ContentByStatusOfSimulatorConverter : IMultiValueConverter
+    public class ContentByStatusOfSimulatorConverter : IValueConverter
     {
         /// <summary>
         /// A function that converts bool to string
@@ -25,7 +25,9 @@ namespace PL.Converters
         /// <returns>returns string</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (bool)value ? "Manual" : "Auto";
+            var droneId = ((PO.EditDrone)value).Id;
+
+            return Refresh.workers.ContainsKey(droneId) && Refresh.workers[droneId].IsBusy ? "Manual" : "Auto";
         }
 
         /// <summary>

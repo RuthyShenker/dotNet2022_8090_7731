@@ -36,20 +36,15 @@ namespace PO
         /// <param name="status"></param>
         /// <param name="location"></param>
         /// <param name="parcelInTransfer"></param>
-        public EditDrone(int id, string model, WeightCategories weight, double batteryStatus,
-            DroneStatus status, Location location, ParcelInTransfer parcelInTransfer)
-        {
-            Id = id;
-            Model = model;
-            Weight = weight;
-            BatteryStatus = batteryStatus;
-            Status = status;
-            Location = location;
-            ParcelInTransfer = parcelInTransfer;
-        }
 
-      
         public int Id { get; init; }
+        //private int id;
+
+        //public int Id
+        //{
+        //    get { return id; }
+        //    set { Set(ref id, value); }
+        //}
 
         private string _model;
         public string Model
@@ -135,6 +130,15 @@ namespace PO
             get { return parcelInTransfer; }
             set { Set(ref parcelInTransfer, value);  }
         }
+
+        private bool simulatorStatus;
+
+        public bool SimulatorStatus
+        {
+            get { return simulatorStatus; }
+            set { Set(ref simulatorStatus, value); }
+        }
+
 
         private bool automatic;
         public bool Automatic

@@ -10,13 +10,7 @@ namespace PO
     {
         public double Longitude { get; set; }
         public double Latitude { get; set; }
-        public Location(double latitude,double longitude)
-        {
-            Latitude = latitude;
-            Longitude = longitude;
-        }
-        public Location() { }
-
+       
         public override string ToString()
         {
             double latitude = Latitude;

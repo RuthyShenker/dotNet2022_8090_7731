@@ -35,7 +35,7 @@ namespace PO
             Id = id;
             Name = name;
             Phone = phone;
-            Location = new Location(latitude,longitude );
+            Location = new Location() { Latitude = latitude, Longitude = longitude };
             LFromCustomer = lFromCustomer;
             LForCustomer = lForCustomer;
         }

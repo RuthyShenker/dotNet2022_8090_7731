@@ -161,7 +161,6 @@ namespace PL.ViewModels
 
         private void OpenParcelWindowC(object MyParcel)
         {
-            
             var parcel = MyParcel as BO.ParcelInTransfer;
             var blParcel = bl.GetParcel(/*Drone.ParcelInTransfer.PId/**/parcel.PId);
             new ParcelView(bl, blParcel).Show();
@@ -175,7 +174,7 @@ namespace PL.ViewModels
             }
             else if (Drone.Status == PO.DroneStatus.Delivery)
             {
-                if (bl.GetParcel(Drone.ParcelInTransfer.PId).PickingUp==null) // CalculateParcelInTransfer(drone.Id)....
+                if (bl.GetParcel(Drone.ParcelInTransfer.PId).PickingUp == null) // CalculateParcelInTransfer(drone.Id)....
                     PickingUpParcel();
                 else
                     DeliveryPackage();
@@ -278,9 +277,20 @@ namespace PL.ViewModels
 
         private EditDrone Map(Drone drone)
         {
-            return new EditDrone(drone.Id, drone.Model, (PO.WeightCategories)drone.Weight, drone.BatteryStatus,
-               (PO.DroneStatus)drone.DroneStatus, new PO.Location(drone.CurrLocation.Latitude, drone.CurrLocation.Longitude)
-                ,Map(drone.PInTransfer));
+            return new EditDrone()
+            {
+                Id = drone.Id,
+                Model = drone.Model,
+                Weight = (PO.WeightCategories)drone.Weight,
+                BatteryStatus = drone.BatteryStatus,
+                Status = (PO.DroneStatus)drone.DroneStatus,
+                Location = new PO.Location()
+                {
+                    Latitude = drone.CurrLocation.Latitude,
+                    Longitude = drone.CurrLocation.Longitude
+                },
+                ParcelInTransfer = Map(drone.PInTransfer)
+            };
         }
 
         private PO.ParcelInTransfer Map(BO.ParcelInTransfer pInTransfer)

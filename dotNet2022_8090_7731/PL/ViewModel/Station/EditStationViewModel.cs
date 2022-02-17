@@ -96,7 +96,11 @@ namespace PL.ViewModels
                 Id = station.Id,
                 Name = station.NameStation,
                 NumPositions = station.NumAvailablePositions,
-                Location = new PO.Location(station.Location.Latitude, station.Location.Longitude),
+                Location = new PO.Location()
+                {
+                    Latitude = station.Location.Latitude,
+                    Longitude = station.Location.Longitude
+                },
                 ListChargingDrone = station.LBL_ChargingDrone?.Select(position => new PO.ChargingDrone(position.DroneId, position.BatteryStatus))
             };
         }

@@ -80,7 +80,12 @@
                     SelectedItem="{Binding Drone.Status, UpdateSourceTrigger=PropertyChanged}" 
                     materialDesign:HintAssist.Hint="Status"
                     IsEnabled="False"/>
-
+        
+        <ProgressBar
+                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                Value="0"
+                IsIndeterminate="{Binding Drone.SimulatorStatus}" />
+        
         <TextBox Text = "{Binding Drone.Status, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Status"
                      IsEnabled="False"/>
@@ -135,15 +140,17 @@
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
 
         <!-- Simulator -->
-        <Button Command="{Binding StartOrStopSimulatorCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
-            <Button.Content>
-                <MultiBinding Converter="{StaticResource ContentByStatusOfSimulatorConverter}">
-                    <Binding ElementName="Id"/>
-                </MultiBinding>
-            </Button.Content>
-        </Button>
+        <Button Content="{Binding Drone, Converter={StaticResource ContentByStatusOfSimulatorConverter}}"
+                Command="{Binding StartOrStopSimulatorCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+                
 
+
+        <!--<Button.Content>
+                <MultiBinding Converter="{StaticResource ContentByStatusOfSimulatorConverter}">
+                    <Binding  ElementName="Id"/>
+                </MultiBinding>
+            </Button.Content>-->
 
             <!--Content="{Binding Drone.Automatic, ConverterParameter={ RelativeSource="{RelativeSource Mode=FindAncestor,
                                                      AncestorType=UserControl}"}, Converter={StaticResource ContentByStatusOfSimulatorConverter}}">-->
