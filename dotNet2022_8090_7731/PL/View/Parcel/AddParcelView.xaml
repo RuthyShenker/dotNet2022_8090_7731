@@ -7,7 +7,7 @@
              mc:Ignorable="d"   
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:BO="clr-namespace:BO;assembly=BL"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" >
     <UserControl.Resources>
         <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
@@ -31,6 +31,7 @@
         </Style>
 
     </UserControl.Resources>
+    
     <StackPanel>
 
         <ComboBox 

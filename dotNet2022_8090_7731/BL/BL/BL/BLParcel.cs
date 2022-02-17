@@ -92,7 +92,7 @@ namespace BL
                 }
 
                 //var optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation).ToList();
-                var parcel = optionParcels.FirstOrDefault(parcel => !parcel.BelongParcel.HasValue);
+                var parcel = optionParcels.FirstOrDefault();
 
                 if (!optionParcels.Any() || parcel.Equals(default))
                 {
@@ -103,15 +103,17 @@ namespace BL
                 droneToList.DeliveredParcelId = parcel.Id;
                 dal.Update<DO.Parcel>(parcel.Id, dId, nameof(parcel.DroneId));
                 dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.BelongParcel));
-
             }
         }
 
         //TODO what happens if the list is empty
         internal IOrderedEnumerable<DO.Parcel> OptionalParcelsForSpecificDrone(double batteryStatus, WeightCategories weight, Location currLocation)
         {
-            var a = dal.GetDalListByCondition<DO.Parcel>(parcel => (parcel.Weight <= (DO.WeightCategories)weight &&
-                                 batteryStatus >= CalculateBatteryToWay(currLocation, parcel))).ToList();
+            var a = dal.GetDalListByCondition<DO.Parcel>(parcel =>
+                    !parcel.BelongParcel.HasValue
+                    && parcel.Weight <= (DO.WeightCategories)weight 
+                    && batteryStatus >= CalculateBatteryToWay(currLocation, parcel)
+                ).ToList();
             return a?.OrderByDescending(parcel => parcel.MPriority)
                 .ThenByDescending(parcel => parcel.Weight)
                                 .ThenBy(parcel => GetDistance(currLocation, parcel));

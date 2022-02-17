@@ -125,8 +125,8 @@ namespace BL
                     var sortedList = dal.GetListFromDal<DO.BaseStation>()
                         .OrderBy(station => new GeoCoordinate(station.Latitude, station.Longitude).GetDistanceTo(droneCoord));
 
-                var closetStation = sendingToCharge == true
-                    ? sortedList.FirstOrDefault(s => GetNumOfAvailablePositionsInStation(s.Id) > 0) : sortedList.First();
+                    var closetStation = sendingToCharge == true
+                        ? sortedList.FirstOrDefault(s => GetNumOfAvailablePositionsInStation(s.Id) > 0) : sortedList.First();
 
                     return ConvertToBL(closetStation);
                 }
@@ -209,7 +209,7 @@ namespace BL
                          .Select(station => ConvertToList(station));
             }
         }
-        /////////////////////////////////////////////////////////////////////////
+
         /// <summary>
         /// A function that gets an object of IDAL.DO.BaseStation
         /// and expands it to StationToList object and returns it.
@@ -235,8 +235,11 @@ namespace BL
         {
             try
             {
-                var dStation = dal.GetFromDalById<DO.BaseStation>(stationId);
-                return ConvertToBL(dStation);
+                lock (dal)
+                {
+                    var dStation = dal.GetFromDalById<DO.BaseStation>(stationId);
+                    return ConvertToBL(dStation);
+                }
             }
             catch (DO.IdDoesNotExistException)
             {
@@ -264,9 +267,12 @@ namespace BL
 
         private int GetNumOfAvailablePositionsInStation(int stationId)
         {
-            var station = dal.GetFromDalById<DO.BaseStation>(stationId);
-            int numOfChargingDroneInStation = dal.GetDalListByCondition<DO.ChargingDrone>(s => s.StationId == stationId).Count();
-            return station.NumberOfChargingPositions - numOfChargingDroneInStation;
+            lock (dal)
+            {
+                var station = dal.GetFromDalById<DO.BaseStation>(stationId);
+                int numOfChargingDroneInStation = dal.GetDalListByCondition<DO.ChargingDrone>(s => s.StationId == stationId).Count();
+                return station.NumberOfChargingPositions - numOfChargingDroneInStation;
+            }
         }
     }
 }
