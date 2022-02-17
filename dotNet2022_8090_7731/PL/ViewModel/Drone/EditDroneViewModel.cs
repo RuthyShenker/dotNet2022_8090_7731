@@ -175,7 +175,7 @@ namespace PL.ViewModels
             }
             else if (Drone.Status == DroneStatus.Delivery)
             {
-                if (Drone.ParcelInTransfer == null) 
+                if (Drone.ParcelInTransfer == null) // CalculateParcelInTransfer(drone.Id)....
                     PickingUpParcel();
                 else
                     DeliveryPackage();

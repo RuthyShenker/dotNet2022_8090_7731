@@ -74,29 +74,33 @@ namespace BL
         {
             if (!SleepDelayTime()) return;
 
+            List<DO.Parcel> optionalParcels;
             lock (bl)
             {
                 lock (dal)
                 {
-                    List<DO.Parcel> optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
+                    optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
+                }
+            }
 
-                    if (!optionalParcels.Any())
+            if (!optionalParcels.Any())
+            {
+                if (drone.BatteryStatus >= 100)
+                {
+                    while (!optionalParcels.Any() && !checkStop())
                     {
-                        if (drone.BatteryStatus >= 100)
-                        {
-                            //while (!optionalParcels.Any() && !checkStop())
-                            //{
-                            //    {///i add:
-                            //        if (!SleepDelayTime()) break;
-                            //    }
-                            //    drone.DStatus = DroneStatus.Free;
-                            //    updateView();
-                            //    if (!SleepDelayTime()) break;
-                            //    optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
-                            //}
-                            return;
-                        }
-                        else
+                        if (!SleepDelayTime()) break;
+                        if (!SleepDelayTime()) break;
+                        optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
+                    }
+                    return;
+                }
+
+                else
+                {
+                    lock (bl)
+                    {
+                        lock (dal)
                         {
                             station = bl.ClosestStation(drone.CurrLocation, true);
 
@@ -104,20 +108,28 @@ namespace BL
                             {
                                 drone.DStatus = DroneStatus.Maintenance;
                                 dal.Add(new DO.ChargingDrone() { DroneId = drone.Id, StationId = station.Id, EnteranceTime = DateTime.Now });
-                                //????why
-                                //bl.GetDrone(drone.Id);
+
                                 updateView();
                                 return;
                             }
                         }
                     }
+                }
+            }
 
-                    parcel = optionalParcels.First();
+            AssumingParcel(optionalParcels.First());
+        }
+
+        private void AssumingParcel(DO.Parcel matchParcel)
+        {
+            lock (bl)
+            {
+                lock (dal)
+                {
+                    parcel = matchParcel;
                     pickedUp = parcel.PickingUp.HasValue;
                     customer = bl.GetCustomer(pickedUp ? parcel.GetterId : parcel.SenderId);
                     distance = Extensions.CalculateDistance(drone.CurrLocation, customer.Location);
-
-                    //Init(parcel.Id, drone);
 
                     drone.DStatus = DroneStatus.Delivery;
                     drone.DeliveredParcelId = parcel.Id;
@@ -126,7 +138,6 @@ namespace BL
                     dal.Update<DO.Parcel>(parcel.Id, drone.Id, nameof(DO.Parcel.DroneId));
 
                     updateView();
-                    //drone.DeliveredParcelId = parcel.Id;
                 }
             }
         }

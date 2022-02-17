@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfDrones>
   <Drone>
-    <Id>5555</Id>
+    <Id>4444</Id>
     <MaxWeight>Light</MaxWeight>
-    <Model>5</Model>
+    <Model>p</Model>
   </Drone>
 </ArrayOfDrones>
