@@ -138,7 +138,7 @@ namespace PL.ViewModels
 
         private EditParcel Map(BO.Parcel parcel)
         {
-            return new EditParcel
+            return new EditParcel()
             {
                 Id = parcel.Id,
                 Sender = new CustomerInParcel(parcel.Sender.Id, parcel.Sender.Name),
@@ -146,19 +146,23 @@ namespace PL.ViewModels
                 Arrival = parcel.Arrival,
                 PickingUp = parcel.PickingUp,
                 BelongParcel = parcel.BelongParcel,
-                Weight = parcel.Weight,
-                MPriority = parcel.MPriority,
-                DInParcel = parcel.DInParcel,
-                MakingParcel = parcel.MakingParcel
+                Weight = (PO.WeightCategories)parcel.Weight,
+                MPriority = (PO.Priority)parcel.MPriority,
+                MakingParcel= parcel.MakingParcel,
+                DInParcel = new()
+                {
+                    Id = parcel.DInParcel.Id,
+                    BatteryStatus = parcel.DInParcel.BatteryStatus,
+                    CurrLocation = new()
+                    {
+                        Longitude = parcel.DInParcel.CurrLocation.Longitude,
+                        Latitude = parcel.DInParcel.CurrLocation.Latitude
+                    }
+                }    
             };
-
-            //parcel.Id,
-            //    new CustomerInParcel( parcel.Sender.Id, parcel.Sender.Name),
-            //    new CustomerInParcel(parcel.Getter.Id, parcel.Getter.Name),
-            //    parcel.Weight, parcel.MPriority, parcel.DInParcel,
-            //    parcel.MakingParcel, parcel.BelongParcel, parcel.PickingUp, parcel.Arrival);
         }
 
+        
         public EditParcel Parcel
         {
             get => parcel;

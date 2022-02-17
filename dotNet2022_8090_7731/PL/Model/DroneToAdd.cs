@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,12 +9,20 @@ using static PO.ValidityMessages;
 
 namespace PO
 {
+    /// <summary>
+    /// A public class DroneToAdd impliments: ObservableBase, IDataErrorInfo
+    /// includes:
+    /// Id
+    /// Model
+    /// MaxWeight
+    /// StationId
+
+    /// </summary>
     public class DroneToAdd : ObservableBase, IDataErrorInfo
     {
         const int ID_LENGTH = 4;
 
         private int? _id;
-
         public object Id
         {
             get => _id == null ? null : _id;
@@ -39,7 +48,6 @@ namespace PO
         }
 
         private string _model;
-
         public string Model
         {
             get => _model;
@@ -52,8 +60,8 @@ namespace PO
             }
         }
 
-        private BO.WeightCategories _maxWeight;
-        public BO.WeightCategories MaxWeight
+        private WeightCategories _maxWeight;
+        public WeightCategories MaxWeight
         {
             get => _maxWeight;
             set => Set(ref _maxWeight, value);
@@ -83,7 +91,9 @@ namespace PO
                 return string.Empty;
             }
         }
-
+        /// <summary>
+        /// A dictionary of validation.
+        /// </summary>
         private readonly Dictionary<string, string> validityMessages = new()
         {
             [nameof(Id)] = string.Empty,

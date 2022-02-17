@@ -1,4 +1,5 @@
-﻿using BO;
+﻿
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,11 +7,71 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static PO.ValidityMessages;
+//public override string ToString()
+//{
+//    double latitude = Latitude;
+//    double longitude = Longitude;
+//    string lat()
+//    {
+//        string ch = "N";
+//        if (latitude < 0)
+//        {
+//            ch = "S";
+//            latitude = -latitude;
+//        }
+//        int deg = (int)latitude;
+//        int min = (int)(60 * (latitude - deg));
+//        double sec = (latitude - deg) * 3600 - min * 60;
+//        return $"{deg}° {min}′ {sec}″ {ch}";
+//    }
 
+//    string lng()
+//    {
+//        string ch = "E";
+//        if (longitude < 0)
+//        {
+//            ch = "W";
+//            longitude = -longitude;
+//        }
+
+//        int deg = (int)longitude;
+//        int min = (int)(60 * (longitude - deg));
+//        double sec = (longitude - deg) * 3600 - min * 60;
+//        return $"{deg}° {min}′ {sec}″ {ch}";
+//    }
+
+//    return $"{lat()} {lng()}";
+//}
+
+//public Location Location { get; set; }
 namespace PO
 {
+    /// <summary>
+    /// A public class EditDrone impliments:ObservableBase, IDataErrorInfo
+    /// includes:
+    ///Id
+    ///Model
+    ///Weight
+    ///BatteryStatus
+    ///Status
+    ///Location
+    ///ParcelInTransfer
+    ///Automatic
+    ///Distance
+    /// </summary>
+    /// 
     public class EditDrone : ObservableBase, IDataErrorInfo
     {
+        /// <summary>
+        /// A constructor of EditDrone with params.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="model"></param>
+        /// <param name="weight"></param>
+        /// <param name="batteryStatus"></param>
+        /// <param name="status"></param>
+        /// <param name="location"></param>
+        /// <param name="parcelInTransfer"></param>
         public EditDrone(int id, string model, WeightCategories weight, double batteryStatus,
             DroneStatus status, Location location, ParcelInTransfer parcelInTransfer)
         {
@@ -23,18 +84,10 @@ namespace PO
             ParcelInTransfer = parcelInTransfer;
         }
 
-        private int id;
+      
+        public int Id { get; init; }
 
-        //// dependency property for simulator converter
-        //public int Id
-        //{
-        //    get { return id; }
-        //    set { Set(ref id, value); }
-        //}
-
-        public int Id { get; set; }
         private string _model;
-
         public string Model
         {
             get => _model;
@@ -46,9 +99,10 @@ namespace PO
                                                                 OnlyStringAndNumberMessage(value);
             }
         }
-        public WeightCategories Weight { get; set; }
-        private double batteryStatus;
 
+        public WeightCategories Weight { get; set; }
+
+        private double batteryStatus;
         public double BatteryStatus
         {
             get => batteryStatus;
@@ -56,7 +110,6 @@ namespace PO
         }
 
         private DroneStatus status;
-
         public DroneStatus Status
         {
             get => status;
@@ -127,7 +180,6 @@ namespace PO
         }
 
         private double distance;
-
         public double Distance
         {
             get => distance;
@@ -147,6 +199,10 @@ namespace PO
                 return string.Empty;
             }
         }
+
+        /// <summary>
+        /// A dictionary of validation.
+        /// </summary>
         private readonly Dictionary<string, string> validityMessages = new()
         {
             [nameof(Model)] = string.Empty,

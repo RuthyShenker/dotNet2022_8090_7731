@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using static PO.ValidityMessages;
 namespace PO
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class EditStation : ObservableBase, IDataErrorInfo
     {
         public int Id { get; init; }
@@ -17,7 +20,6 @@ namespace PO
         public IEnumerable<ChargingDrone> ListChargingDrone { get; set; }
 
         private string _name;
-
         public string Name
         {
             get => _name;
@@ -31,7 +33,6 @@ namespace PO
         }
 
         private int? _numPositions;
-        //[Required][MaxLength(11)][]
         public object NumPositions
         {
             get => _numPositions == null ? null : _numPositions;
@@ -48,12 +49,6 @@ namespace PO
                 validityMessages[nameof(NumPositions)] = IntMessage(value);
             }
         }
-
-        private readonly Dictionary<string, string> validityMessages = new()
-        {
-            [nameof(Name)] = string.Empty,
-            [nameof(NumPositions)] = string.Empty,
-        };
 
         // --------------IDataErrorInfo---------------------
         public string Error
@@ -74,5 +69,14 @@ namespace PO
                 return string.Empty;
             }
         }
+
+        /// <summary>
+        /// A dictionary of validation.
+        /// </summary>
+        private readonly Dictionary<string, string> validityMessages = new()
+        {
+            [nameof(Name)] = string.Empty,
+            [nameof(NumPositions)] = string.Empty,
+        };
     }
 }

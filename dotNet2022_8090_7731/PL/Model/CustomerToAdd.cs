@@ -7,14 +7,18 @@ using System.Threading.Tasks;
 using static PO.ValidityMessages;
 namespace PO
 {
+    /// <summary>
+    /// A public class CustomerToAdd impliments: ObservableBase, IDataErrorInfo
+    /// contains:
+    /// Id
+    /// Name
+    /// Prefix
+    /// Phone
+    /// Longitude
+    /// Latitude
+    /// </summary>
     public class CustomerToAdd : ObservableBase, IDataErrorInfo
     {
-        public CustomerToAdd()
-        {
-        }
-
-        const int ID_LENGTH = 9;
-
         const int MIN_LATITUDE = -90;
         const int MAX_LATITUDE = 90;
 
@@ -22,7 +26,6 @@ namespace PO
         const int MAX_LONGITUDE = 90;
 
         private int? _id;
-
         public object Id
         {
             get => _id == null ? null : _id;
@@ -48,7 +51,6 @@ namespace PO
         }
 
         private string _name;
-
         public string Name
         {
             get => _name;
@@ -62,7 +64,6 @@ namespace PO
 
 
         private string _prefix;
-
         public string Prefix
         {
             get => _prefix;
@@ -75,7 +76,6 @@ namespace PO
         }
 
         private string _phone;
-
         public string Phone
         {
             get => _phone;
@@ -88,7 +88,6 @@ namespace PO
         }
 
         private double? _longitude;
-
         public object Longitude
         {
             get => _longitude == null ? null : _longitude;
@@ -113,7 +112,6 @@ namespace PO
         }
 
         private double? _latitude;
-
         public object Latitude
         {
             get => _latitude == null ? null : _latitude;
@@ -136,6 +134,7 @@ namespace PO
                 }
             }
         }
+
         // --------------IDataErrorInfo---------------------
         public string Error => validityMessages.Values.All(value => value == string.Empty) ? string.Empty : "Invalid input";
 
@@ -149,6 +148,9 @@ namespace PO
             }
         }
 
+        /// <summary>
+        /// A dictionary of vaildation.
+        /// </summary>
         private readonly Dictionary<string, string> validityMessages = new()
         {
             [nameof(Id)] = string.Empty,

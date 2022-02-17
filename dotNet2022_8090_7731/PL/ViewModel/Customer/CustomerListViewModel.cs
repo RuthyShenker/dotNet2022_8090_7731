@@ -6,8 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using BO;
+
 using PL.View;
+using PO;
 
 namespace PL.ViewModels
 {
@@ -25,7 +26,7 @@ namespace PL.ViewModels
             Refresh.CustomersList += RefreshCustomersList;
 
             this.bl = bl;
-            CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers());
+            CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers().MapListFromBLToPL());
             RefreshCustomersList();
             AddCustomerCommand = new RelayCommand<object>(AddingCustomer);
             MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);  
@@ -66,7 +67,7 @@ namespace PL.ViewModels
 
         private void RefreshCustomersList()
         {
-            CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers());
+            CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers().MapListFromBLToPL());
         }
     }
 }

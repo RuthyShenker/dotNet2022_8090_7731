@@ -1,5 +1,4 @@
-﻿using BO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,8 +7,28 @@ using System.Threading.Tasks;
 using static PO.ValidityMessages;
 namespace PO
 {
+    /// <summary>
+    /// A public class EditCustomer impliments : ObservableBase, IDataErrorInfo
+    /// includes:
+    /// Id
+    /// Name
+    /// Phone
+    /// Location
+    /// LFromCustomer
+    /// LForCustomer
+    /// </summary>
     public class EditCustomer : ObservableBase, IDataErrorInfo
     {
+        /// <summary>
+        /// A constructor with params of EditCustomer.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="phone"></param>
+        /// <param name="longitude"></param>
+        /// <param name="latitude"></param>
+        /// <param name="lFromCustomer"></param>
+        /// <param name="lForCustomer"></param>
         public EditCustomer(int id, string name, string phone, double longitude, double latitude,
             IEnumerable<ParcelInCustomer> lFromCustomer, IEnumerable<ParcelInCustomer> lForCustomer)
         {
@@ -21,11 +40,9 @@ namespace PO
             LForCustomer = lForCustomer;
         }
 
-
         public int Id { get; init; }
 
         private string _name;
-
         public string Name
         {
             get => _name;
@@ -36,8 +53,8 @@ namespace PO
                 validityMessages[nameof(Name)] = NameMessage(value);
             }
         }
-        private string _phone;
 
+        private string _phone;
         public string Phone
         {
             get => _phone;
@@ -48,11 +65,24 @@ namespace PO
                 validityMessages[nameof(Phone)] = PhoneMessage(value,10);
             }
         }
-        //TODO
-        //NEED TO EB]NABLE EDIT
-        public Location Location { get; set; }
-        // two lists
+
+       // public Location Location { get; set; }
+        private Location location;
+        public Location Location
+        {
+            get { return location; }
+            set { location = value; }
+        }
+
+
+        /// <summary>
+        /// A list of parcels from this customer:
+        /// </summary>
         public IEnumerable<ParcelInCustomer> LFromCustomer { get; set; }
+
+        /// <summary>
+        /// A list of parcels for this customer:
+        /// </summary>
         public IEnumerable<ParcelInCustomer> LForCustomer { get; set; }
 
         // --------------IDataErrorInfo---------------------
@@ -68,6 +98,9 @@ namespace PO
             }
         }
 
+        /// <summary>
+        /// A dictionary of validation.
+        /// </summary>
         private readonly Dictionary<string, string> validityMessages = new()
         {
             [nameof(Name)] = string.Empty,

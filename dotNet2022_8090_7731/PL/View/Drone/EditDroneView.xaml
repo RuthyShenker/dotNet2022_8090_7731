@@ -135,11 +135,9 @@
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
             <Button.Content>
                 <MultiBinding Converter="{StaticResource ContentByStatusOfSimulatorConverter}">
-                    <Binding ElementName="Id" />
-                    
+                    <Binding ElementName="Id"/>
                 </MultiBinding>
             </Button.Content>
-                 
         </Button>
 
 

@@ -1,4 +1,4 @@
-﻿using PL.Model;
+﻿
 using PL.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,34 +11,38 @@ using System.Windows.Data;
 namespace PL.Converters
 {
     /// <summary>
-    /// A class ContentByStatusOfSimulatorConverter that impliments:IValueConverter.
+    /// A class ContentByStatusOfSimulatorConverter that impliments:IMultiValueConverter.
     /// </summary>
     public class ContentByStatusOfSimulatorConverter : IMultiValueConverter
     {
+        /// <summary>
+        /// A function that converts bool to string
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns>returns string</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-
-            //if (Refresh.workers.ContainsKey(value.)
-            {
-
-            }
-            //SimulatorStatus status = ((Simulator)value).Status;
             return (bool)value ? "Manual" : "Auto";
         }
 
+        /// <summary>
+        /// A function that converts back
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var text = ((System.Windows.Controls.TextBox)values[0]).Text;
 
-            var a = int.TryParse(text, out int droneId);
+            var result = int.TryParse(text, out int droneId);
 
-            return a && Refresh.workers.ContainsKey(droneId) && Refresh.workers[droneId].IsBusy ? "Manual" : "Auto";
-            
-            //return Refresh.workers[int.Parse(((System.Windows.Controls.TextBox)values[0]).Text)].IsBusy ? "Manual" : "Auto";
-
-            //return Refresh.workers[(int )((System.Windows.Controls.TextBox)values[0]).Text)]. ?"Manual":"Auto";
-
-            //throw new NotImplementedException();
+            return result && Refresh.workers.ContainsKey(droneId) && Refresh.workers[droneId].IsBusy ? "Manual" : "Auto";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

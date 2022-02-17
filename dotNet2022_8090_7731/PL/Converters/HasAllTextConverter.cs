@@ -13,6 +13,14 @@ namespace PL.Converters
     /// </summary>
     public class HasAllTextConverter : IMultiValueConverter
     {
+        /// <summary>
+        /// A function that 
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             bool res = true;
@@ -35,6 +43,14 @@ namespace PL.Converters
             return res;
         }
 
+        /// <summary>
+        /// A function that converts back
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetTypes"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();

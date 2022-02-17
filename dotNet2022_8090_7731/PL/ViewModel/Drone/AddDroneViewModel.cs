@@ -15,7 +15,7 @@ namespace PL.ViewModels
         //BlApi.IBL bl;
         Action<BO.Drone> switchView;
         //Action refreshDrones;
-        public Array WeightOptions { get; set; } = Enum.GetValues(typeof(BO.WeightCategories));
+        public Array WeightOptions { get; set; } = System.Enum.GetValues(typeof(BO.WeightCategories));
         public List<int> StationOptions { get; set; }
         public RelayCommand<object> AddDroneCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
@@ -53,9 +53,9 @@ namespace PL.ViewModels
             {
                 Id = (int)drone.Id,
                 Model = drone.Model,
-                Weight = drone.MaxWeight,
+                Weight = (BO.WeightCategories)drone.MaxWeight,
                 BatteryStatus = 0,
-                DroneStatus = DroneStatus.Maintenance,
+                DroneStatus = (BO.DroneStatus)PO.DroneStatus.Maintenance,
                 PInTransfer = null,
                 CurrLocation = BlApi.BlFactory.GetBl().GetStation(Drone.StationId).Location
             };
