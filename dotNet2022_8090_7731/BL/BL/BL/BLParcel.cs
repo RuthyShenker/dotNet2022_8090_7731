@@ -84,7 +84,7 @@ namespace BL
 
             lock (dal)
             {
-                IOrderedEnumerable<DO.Parcel> optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation);
+                List<DO.Parcel> optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation).ToList();
 
                 if (!dal.GetListFromDal<DO.Parcel>().Any())
                 {
@@ -109,6 +109,9 @@ namespace BL
         //TODO what happens if the list is empty
         internal IOrderedEnumerable<DO.Parcel> OptionalParcelsForSpecificDrone(double batteryStatus, WeightCategories weight, Location currLocation)
         {
+            lock (dal)
+            {
+
             var a = dal.GetDalListByCondition<DO.Parcel>(parcel =>
                     !parcel.BelongParcel.HasValue
                     && parcel.Weight <= (DO.WeightCategories)weight 
@@ -118,6 +121,7 @@ namespace BL
                 .ThenByDescending(parcel => parcel.Weight)
                                 .ThenBy(parcel => GetDistance(currLocation, parcel));
         
+            }
         }
 
         private double CalculateBatteryToWay(Location currLocation, DO.Parcel parcel)

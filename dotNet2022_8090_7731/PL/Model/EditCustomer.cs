@@ -16,7 +16,7 @@ namespace PO
             Id = id;
             Name = name;
             Phone = phone;
-            Location = new Location(longitude, latitude);
+            Location = new Location(latitude,longitude );
             LFromCustomer = lFromCustomer;
             LForCustomer = lForCustomer;
         }

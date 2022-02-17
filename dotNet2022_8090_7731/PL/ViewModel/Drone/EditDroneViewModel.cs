@@ -39,7 +39,7 @@ namespace PL.ViewModels
             UpdateModelOfDroneCommand = new RelayCommand<object>(UpdateDroneModel);
             ChargeDroneCommand = new RelayCommand<object>(SendOrReleaseDroneFromCharging);
             AssignParcelToDroneCommand = new RelayCommand<object>(AssignParcelToDrone);
-            OpenParcelWindowCommand = new RelayCommand<object>(OpenParcelWindowC, param => Drone.Status == DroneStatus.Delivery);
+            OpenParcelWindowCommand = new RelayCommand<object>(OpenParcelWindowC, param => Drone.Status == DroneStatus.Delivery/* && Drone.ParcelInTransfer != null*/);
             DeleteDroneCommand = new RelayCommand<object>(DeleteDrone);
             StartOrStopSimulatorCommand = new RelayCommand<object>(StartOrStopSimulator);
         }
@@ -161,8 +161,9 @@ namespace PL.ViewModels
 
         private void OpenParcelWindowC(object MyParcel)
         {
+            
             var parcel = MyParcel as BO.ParcelInTransfer;
-            var blParcel = bl.GetParcel(parcel.PId);
+            var blParcel = bl.GetParcel(/*Drone.ParcelInTransfer.PId/**/parcel.PId);
             new ParcelView(bl, blParcel).Show();
         }
 
@@ -174,10 +175,10 @@ namespace PL.ViewModels
             }
             else if (Drone.Status == DroneStatus.Delivery)
             {
-                if (Drone.ParcelInTransfer.IsInWay)
-                    DeliveryPackage();
-                else
+                if (Drone.ParcelInTransfer == null) 
                     PickingUpParcel();
+                else
+                    DeliveryPackage();
             }
         }
 

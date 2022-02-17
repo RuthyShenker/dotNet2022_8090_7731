@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <ArrayOfParcel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Parcel>
-    <Id>1019</Id>
-    <SenderId>222222222</SenderId>
-    <GetterId>444444444</GetterId>
+    <Id>1034</Id>
+    <SenderId>111111111</SenderId>
+    <GetterId>222222222</GetterId>
     <Weight>Light</Weight>
     <MPriority>Normal</MPriority>
-    <DroneId>1111</DroneId>
-    <CreatedTime>2022-02-17T01:05:40.8794043+02:00</CreatedTime>
-    <BelongParcel>2022-02-17T01:05:40.8939064+02:00</BelongParcel>
-    <PickingUp xsi:nil="true" />
-    <Arrival xsi:nil="true" />
+    <DroneId>5555</DroneId>
+    <CreatedTime>2022-02-17T19:45:46.8137415+02:00</CreatedTime>
+    <BelongParcel>2022-02-17T19:46:56.6562138+02:00</BelongParcel>
+    <PickingUp>2022-02-17T19:59:18.7247701+02:00</PickingUp>
+    <Arrival>2022-02-17T20:00:09.6578444+02:00</Arrival>
   </Parcel>
 </ArrayOfParcel>

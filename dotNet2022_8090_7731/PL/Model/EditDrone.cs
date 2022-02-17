@@ -73,7 +73,15 @@ namespace PO
         }
 
         //public Location Location { get; set; }
-        public ParcelInTransfer ParcelInTransfer { get; set; }
+        //public ParcelInTransfer ParcelInTransfer { get; set; }
+
+        private ParcelInTransfer parcelInTransfer;
+
+        public ParcelInTransfer ParcelInTransfer
+        {
+            get { return parcelInTransfer; }
+            set { Set(ref parcelInTransfer, value);  }
+        }
 
         private bool automatic;
         public bool Automatic

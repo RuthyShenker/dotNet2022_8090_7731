@@ -90,7 +90,7 @@ namespace BL
             Location destination = GetCustomer(parcel.GetterId).Location;
             Location nearestDestinationStation = ClosestStation(destination).Location;
             double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, source))
-                + MinBattery(CalculateDistance(source, destination),(WeightCategories)parcel.Weight)
+                + MinBattery(CalculateDistance(source, destination), (WeightCategories)parcel.Weight)
                 + MinBattery(CalculateDistance(destination, nearestDestinationStation));
 
             if (minBattry > 100)
@@ -243,30 +243,51 @@ namespace BL
         /// <returns>returns ParcelInTransfer object.</returns>
         private ParcelInTransfer CalculateParcelInTransfer(int droneId)
         {
-            DO.Parcel belongedParcel = dal.GetFromDalByCondition<DO.Parcel>(parcel => parcel.DroneId == droneId);
-            if (belongedParcel.Equals(default(DO.Parcel)))
+            //DO.Parcel belongedParcel = dal.GetFromDalByCondition<DO.Parcel>(
+            //    parcel => parcel.DroneId == droneId
+            //    //&& parcel.PickingUp.HasValue 
+            //    //&& !parcel.Arrival.HasValue
+            //    );
+            IEnumerable<DO.Parcel> belongedParcels = dal.GetDalListByCondition<DO.Parcel>(p => p.DroneId == droneId);
+
+            if (belongedParcels.Count() == 0) 
             {
                 return null;
             }
-            else
+
+            // הורמה ולא הגיעה
+            var parcel = belongedParcels.FirstOrDefault(p => p.PickingUp != null && p.Arrival == null);
+
+            if (parcel.Equals(default(DO.Parcel)))
             {
-                var parcel = ConvertToBL(belongedParcel);
-                Location senderLocation = GetCustomer(parcel.Sender.Id).Location;
-                Location getterLocation = GetCustomer(parcel.Getter.Id).Location;
-                double distance = Extensions.CalculateDistance(senderLocation, getterLocation);
-                return new()
-                {
-                    PId = parcel.Id,
-                    IsInWay = parcel.PickingUp.HasValue,
-                    MPriority = parcel.MPriority,
-                    Weight = parcel.Weight,
-                    Sender = parcel.Sender,
-                    Getter = parcel.Getter,
-                    CollectionLocation = senderLocation,
-                    DeliveryLocation = getterLocation,
-                    TransDistance = distance
-                };
+                // שויכה ולא הורמה
+                parcel = belongedParcels.FirstOrDefault(p => p.BelongParcel != null && p.PickingUp == null);
             }
+            if (parcel.SenderId==0)
+            {
+                var a = 9;
+            }
+            if (parcel.Equals(default(DO.Parcel)))
+            {
+                // שויכה ולא הורמה
+                return null;
+            }
+            var BLParcel = ConvertToBL(parcel);
+            Location senderLocation = GetCustomer(BLParcel.Sender.Id).Location;
+            Location getterLocation = GetCustomer(BLParcel.Getter.Id).Location;
+            double distance = Extensions.CalculateDistance(senderLocation, getterLocation);
+            return new()
+            {
+                PId = BLParcel.Id,
+                IsInWay = BLParcel.PickingUp.HasValue,
+                MPriority = BLParcel.MPriority,
+                Weight = BLParcel.Weight,
+                Sender = BLParcel.Sender,
+                Getter = BLParcel.Getter,
+                CollectionLocation = senderLocation,
+                DeliveryLocation = getterLocation,
+                TransDistance = distance
+            };
         }
 
         /// <summary>
@@ -296,7 +317,7 @@ namespace BL
 
             double distanceFromDroneToStation = Extensions.CalculateDistance(drone.CurrLocation, closetStation.Location);
             double minBattery = MinBattery(distanceFromDroneToStation);
-            if (minBattery>drone.BatteryStatus)
+            if (minBattery > drone.BatteryStatus)
             {
                 throw new BO.InValidActionException("The drone has no enough battery in order to get to the closest charging station");
             }

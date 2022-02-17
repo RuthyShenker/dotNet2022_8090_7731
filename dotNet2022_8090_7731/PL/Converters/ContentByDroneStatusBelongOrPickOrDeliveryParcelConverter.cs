@@ -19,7 +19,7 @@ namespace PL.Converters
             {
                 if (drone.Status == DroneStatus.Free)
                     return "Belong Parcel";
-                else if (drone.Status == DroneStatus.Delivery && !drone.ParcelInTransfer.IsInWay)
+                else if (drone.Status == DroneStatus.Delivery && (drone.ParcelInTransfer == null || !drone.ParcelInTransfer.IsInWay)) 
                     return "Pick parcel";
                 else if (drone.Status == DroneStatus.Delivery && drone.ParcelInTransfer.IsInWay)
                     return "Delivery Parcel";
