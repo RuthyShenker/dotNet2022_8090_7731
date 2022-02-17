@@ -75,7 +75,6 @@ namespace Dal
             #endregion
         }
 
-
         /// <summary>
         /// A generic function that gets id of entity of type of T and checks if
         /// it is in the list of it's type or not.
@@ -90,7 +89,7 @@ namespace Dal
         {
             if (typeof(T) == typeof(DO.Drone))
             {
-                return XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone))).Any(item => item.Id == Id);
+                return XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone))).Any(item => item.Id == Id);
             }
             else
             {
@@ -98,7 +97,6 @@ namespace Dal
                 .Any(item => item.Id == Id);
             }
         }
-
 
         /// <summary>
         /// A generic function that gets id of entity  of type of T and returns this entity.
@@ -117,7 +115,6 @@ namespace Dal
             return item;
         }
 
-
         /// <summary>
         /// A generic function that gets generic predicate of type of T and returns the first or default 
         /// entity that stands on this predicate.
@@ -130,7 +127,7 @@ namespace Dal
         {
             if (typeof(T) == typeof(DO.Drone))
             {
-                var drone = XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone))).FirstOrDefault(item =>
+                var drone = XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone))).FirstOrDefault(item =>
                             predicate((T)Convert.ChangeType(item, typeof(T))));
                 return (T)Convert.ChangeType(drone, typeof(T));
             }
@@ -153,7 +150,7 @@ namespace Dal
         {
             //problem:!!!
             if (typeof(T) == typeof(DO.Drone))
-                return XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone))).Cast<T>().Where(item => predicate(item));
+                return XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone))).Cast<T>().Where(item => predicate(item));
             else
                 return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)))
               .FindAll(predicate);
@@ -167,7 +164,7 @@ namespace Dal
         public IEnumerable<T> GetListFromDal<T>() where T : IDalObject
         {
             if (typeof(T) == typeof(DO.Drone))
-                return (IEnumerable<T>)XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone)));
+                return (IEnumerable<T>)XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone)));
             else
                 return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
         }
@@ -185,30 +182,6 @@ namespace Dal
         /// <param name="item"></param>
         public void Add<T>(T item) where T : IDalObject
         {
-            #region
-            //Type type = typeof(T);
-            //if (DoesExistInList(item))
-            //{
-            //    throw new InValidActionException($" This item already exists in list {type}");
-            //}
-            //((List<T>)DataSource.Data[typeof(T)]).Add(item);
-
-            //ToDo:
-
-
-            //StreamWriter writer = new StreamWriter(GetXmlFilePath(typeof(T)));
-            //XmlSerializer serializer2 = new XmlSerializer(typeof(List<T>));
-            //serializer.Serialize(writer, list);
-            //writer.Close();
-            //Type type = typeof(T);
-            //if (DoesExistInList(item))
-            //{
-
-            //}
-
-            //List<T> list1 = new List<T>();
-            #endregion
-
             Type type = typeof(T);
             if (DoesExistInList(item))
             {
@@ -217,10 +190,10 @@ namespace Dal
 
             if (typeof(T) == typeof(DO.Drone))
             {
-                var droneList = XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone))).ToList();
+                var droneList = XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone))).ToList();
                 Drone drone = (Drone)Convert.ChangeType(item, typeof(Drone));
                 droneList.Add(drone);
-                XMLTools.SaveDroneListToXml(droneList, GetXmlFilePath(typeof(Drone)));
+                XMLTools.SaveDroneListToXmlWithXElement(droneList, GetXmlFilePath(typeof(Drone)));
             }
             else
             {
@@ -228,16 +201,7 @@ namespace Dal
                 list.Add(item);
                 XMLTools.SaveListToXmlSerializer<T>(list, GetXmlFilePath(typeof(T)));
             }
-            #region
-            //XDocument document = XDocument.Load(GetXmlFilePath(typeof(T)));
-            //string xmlString = ConvertObjectToXMLString(item);
-            //// Save C# class object into Xml file
-            //XElement xElement = XElement.Parse(xmlString);
-            //document.Root.Elements().Append(xElement);
-            //document.Save(GetXmlFilePath(typeof(T)));
-            #endregion
         }
-
 
         /// <summary>
         /// A generic function that gets id of entity of type of T to update and new value and the propertyName
@@ -249,24 +213,6 @@ namespace Dal
         /// <param name="propertyName"></param>
         public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalObject
         {
-            #region
-            //Type type = typeof(T);
-
-            //var oldItem = GetFromDalById<T>(id);
-
-            //DataSource.Data[type].Remove(oldItem);
-            //if (newValue != null)//TODO: //האם צרחך את הבדיקה הזאת?
-            //{
-            //    //type.GetProperty(propertyName).SetValue(oldItem, newValue);
-            //    T obj = oldItem;
-            //    PropertyInfo propertyInfo = typeof(T).GetProperty(propertyName);
-            //    object boxed = obj;
-            //    propertyInfo.SetValue(boxed, newValue, null);
-            //    obj = (T)boxed;
-            //    oldItem = obj;
-            //}
-            //DataSource.Data[type].Add(oldItem);
-            #endregion
             try
             {
                 if (typeof(T) == typeof(DO.Drone))
@@ -319,7 +265,8 @@ namespace Dal
         }
 
         /// <summary>
-        /// A  generic function  
+        /// A generic function that gets entity of type of T and remove it 
+        /// from the list of type of T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="item"></param>
@@ -344,9 +291,9 @@ namespace Dal
                 #endregion
                 if (typeof(T) == typeof(Drone))
                 {
-                    var droneList = XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone))).ToList();
+                    var droneList = XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone))).ToList();
                     droneList.Remove((Drone)Convert.ChangeType(item, typeof(Drone)));
-                    XMLTools.SaveDroneListToXml(droneList, GetXmlFilePath(typeof(T)));
+                    XMLTools.SaveDroneListToXmlWithXElement(droneList, GetXmlFilePath(typeof(T)));
                     //list.Remove();
                 }
                 else
@@ -359,17 +306,17 @@ namespace Dal
         }
 
         /// <summary>
-        /// 
+        /// A generic function that gets entity of type of T and returns if it exists in the list of type of T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="item"></param>
-        /// <returns></returns>
+        /// <returns>returns true if it exists in the list of type of T else false.</returns>
         private bool DoesExistInList<T>(T item) where T : IDalObject
         {
             //return ((List<T>)DataSource.Data[typeof(T)]).Any(i => i.Equals(item));
 
             if (typeof(T) == typeof(Drone))
-                return XMLTools.LoadDroneListFromXmlToDrone(GetXmlFilePath(typeof(DO.Drone)))
+                return XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone)))
                     .ToList().Any(i => i.Equals(item));
             else
             {

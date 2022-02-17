@@ -53,6 +53,12 @@ namespace DalXml
         //#endregion
 
         #region SaveLoadWithXMLSerializer
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="filePath"></param>
         public static void SaveListToXmlSerializer<T>(IEnumerable<T> list, string filePath)
         {
             try
@@ -68,6 +74,12 @@ namespace DalXml
                 throw;
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public static List<T> LoadListFromXmlSerializer<T>(string filePath)
         {
             try
@@ -92,7 +104,13 @@ namespace DalXml
             }
         }
         #endregion
-        public static void SaveDroneListToXml(IEnumerable<DO.Drone> list, string filePath)
+
+        /// <summary>
+        /// A function that write - save Drone list to xml by XElement
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="filePath"></param>
+        public static void SaveDroneListToXmlWithXElement(IEnumerable<DO.Drone> list, string filePath)
         {
             XElement Drones = new("ArrayOfDrones",
                                             from drone in list
@@ -105,8 +123,12 @@ namespace DalXml
             Drones.Save(filePath);
         }
 
-
-        public static IEnumerable<DO.Drone> LoadDroneListFromXmlToDrone(string filePath)
+        /// <summary>
+        /// <returns> A function that load the drone list from xml file with 
+        /// XElement and convert it to type of DO.Drone.</returns>
+        /// </summary>
+        /// <param name="filePath"></param>
+        public static IEnumerable<DO.Drone> LoadDroneListFromXmlWithXElement(string filePath)
         {
             var document = XElement.Load(filePath);
             var list =
@@ -120,16 +142,6 @@ namespace DalXml
             document.Save(filePath);
             return list;
         }
-
-        //private DO.Drone ConvertFromXmlToDrone/*<T>*/(XElement element) /*where T : new()*/
-        //{
-
-        //}
     }
-    //public static class XmlDrone
-    //{
-
-    //}
-
 }
 
