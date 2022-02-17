@@ -162,6 +162,10 @@ namespace PL.ViewModels
         private void OpenParcelWindowC(object MyParcel)
         {
             var parcel = MyParcel as BO.ParcelInTransfer;
+            if (parcel == null)
+            {
+                parcel = bl.GetDrone(Drone.Id).PInTransfer;
+            }
             var blParcel = bl.GetParcel(/*Drone.ParcelInTransfer.PId/**/parcel.PId);
             new ParcelView(bl, blParcel).Show();
         }

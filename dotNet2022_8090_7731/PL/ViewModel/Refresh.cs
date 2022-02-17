@@ -22,8 +22,6 @@ namespace PL.ViewModels
         public static event DelEventHandler Station;
         public static event DelEventHandler Customer;
 
-        public static IEnumerable<BackgroundWorker> Workers { get; set; }
-
         public static Dictionary<int, BackgroundWorker> workers = new();
 
 

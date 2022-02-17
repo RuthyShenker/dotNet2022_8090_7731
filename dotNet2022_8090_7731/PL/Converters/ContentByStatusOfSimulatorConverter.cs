@@ -26,8 +26,11 @@ namespace PL.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var droneId = ((PO.EditDrone)value).Id;
-
-            return Refresh.workers.ContainsKey(droneId) && Refresh.workers[droneId].IsBusy ? "Manual" : "Auto";
+            return !Refresh.workers.ContainsKey(droneId)
+                ? "Auto"
+                : Refresh.workers[droneId].CancellationPending
+                ? "Auto"
+                : "Manual";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
