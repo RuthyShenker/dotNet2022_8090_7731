@@ -8,6 +8,17 @@ using System.Threading.Tasks;
 
 namespace BlApi
 {
+    /// <summary>
+    /// interface IBLParcel includes:
+    /// AddingParcel
+    /// BelongingParcel
+    /// PickingUpParcel
+    /// DeliveryPackage
+    /// GetParcels
+    /// GetUnbelongParcels
+    /// GetParcel
+    /// DeleteParcel
+    /// </summary>
     public interface IBLParcel
     {
         //ADD:

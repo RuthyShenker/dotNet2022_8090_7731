@@ -10,12 +10,13 @@ using System.Device.Location;
 
 namespace BL
 {
+    /// <summary>
+    /// A public static class of extensions includes general functions .
+    /// </summary>
     public static class Extensions
     {
         /// <summary>
-        /// A function that Calculates distance between all places in the array
-        /// Places to be sent to function in the order of the flight
-        /// This is a fishing plane that takes a package that travels from a customer to a destination to a charging station
+        /// A function that Calculates distance between all the places in the params,returns the distance in double.
         /// </summary>
         /// <param name="locations"></param>
         ///<returns>the function gets an array of locations and returns
@@ -34,18 +35,18 @@ namespace BL
         }
 
         /// <summary>
-        /// A function that gets an object of Location and bulids from it an object of  
+        /// A function that gets an instance of Location and bulids from it an instance of  
         /// GeoCoordinate and returns it.
         /// </summary>
         /// <param name="location"></param>
-        /// <returns>returns an object of GeoCoordinate</returns>
-        private static GeoCoordinate geoCoordinate(Location location)
+        /// <returns>returns an instance of GeoCoordinate</returns>
+        public static GeoCoordinate geoCoordinate(Location location)
         {
             return new GeoCoordinate(location.Latitude, location.Longitude);
         }
     }
 }
-//#region Erase?
+#region Erase?
 
 
 
@@ -96,4 +97,4 @@ namespace BL
 //        //    [typeof(IDAL.DO.Parcel)] =typeof (ParcelToList),
 //        //    [typeof(IDAL.DO.BaseStation)] = typeof(StationToList),
 //        //};
-//#endregion
+#endregion

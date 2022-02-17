@@ -1,18 +1,16 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace DO
 {
-    ///// <summary>
-    ///// A struct that of Drone constains:
-    ///// Id, Model, MaxWeight, BatteryStatus, Status.
-    ///// </summary>
+    /// <summary>
+    /// A struct of Drone that impliments IIdentifiable, IDalDo, constains:
+    /// Id, Model, MaxWeight.
+    /// </summary>
     [Serializable]
-    public struct Drone : IIdentifiable, IDalObject
+    public struct Drone : IIdentifiable, IDalDo
     {
         /// <summary>
         /// this field is init

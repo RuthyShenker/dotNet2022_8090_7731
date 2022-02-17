@@ -1,20 +1,15 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+
 
 namespace DO
 {
     /// <summary>
-    /// A struct of base station,contains:
+    /// A struct of base station that implements IIdentifiable, IDalDo, contains:
     /// Id,Name of Station,Number of Available Positions,Longitude,Latitude.
     /// </summary>
     [Serializable]
-    public struct BaseStation : IIdentifiable, IDalObject
+    public struct BaseStation : IIdentifiable, IDalDo
     {
-        
         /// <summary>
         /// this field is init
         /// </summary>

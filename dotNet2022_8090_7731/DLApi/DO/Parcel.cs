@@ -1,18 +1,15 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DO
 {
     /// <summary>
-    /// A struct of Parcel contains:
-    /// Id of Parcel, Id of Sender, Id of Getter, Weight, Status, Id of Drone.
+    /// A struct of Parcel that impliments IIdentifiable, IDalDo, contains:
+    /// Id of Parcel, Id of Sender, Id of Getter, Weight, Status, Id of Drone,
+    /// CreatedTime of parcel ,BelongParcel of parcel ,PickingUp of parcel ,Arrival of parcel
     /// </summary>
     [Serializable]
-    public struct Parcel : IIdentifiable, IDalObject
+    public struct Parcel : IIdentifiable, IDalDo
     {       
         /// <summary>
         /// this field is init

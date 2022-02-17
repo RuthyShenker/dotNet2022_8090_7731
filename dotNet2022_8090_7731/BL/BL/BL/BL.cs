@@ -5,21 +5,46 @@ using System.Collections.Generic;
 
 namespace BL
 {
+    /// <summary>
+    /// An internal sealed partial class BL inherits from Singleton<BL>,and impliments BlApi.IBL,
+    /// </summary>
     internal sealed partial class BL : Singleton<BL>, BlApi.IBL
     {
+
+        /// <summary>
+        /// instance of dal.
+        /// </summary>
         internal DalApi.IDal dal = DalApi.DalFactory.GetDal();
+
+        /// <summary>
+        /// list of drones of type DroneToList.
+        /// </summary>
         internal List<DroneToList> lDroneToList;
+
+        /// <summary>
+        /// an instance of class Random.
+        /// </summary>
         readonly Random rand;
+
         //internal static double powerConsumptionFree;
+
+        /// <summary>
+        ///data of Power Consumptions.
+        /// </summary>
         internal static double powerConsumptionLight { get; set; }
         internal static double powerConsumptionMedium {get; set; }
         internal static double powerConsumptionHeavy {get; set; }
         internal static double PowerConsumptionFree { get; set; }
+
         /// <summary>
         /// Charging rate per hour
         /// </summary>
         //static double chargingRate; שינית לinternal צריך גם בsimulator
         internal static double chargingRate { get; set; }
+
+        /// <summary>
+        /// A private constructor of BL that Initialize Power Consumptions, Initialize Drone List,initialize an instance of dal and rand.
+        /// </summary>
         private BL()
         {
             rand = new Random();
@@ -31,11 +56,11 @@ namespace BL
         /// <summary>
         /// A function that Pulls out from that data base the data of the fields:
         /// powerConsumptionFree
-        //powerConsumptionLight
-        // powerConsumptionMedium
-        //powerConsumptionHeavy
-        //chargingRate
-        //this function doesn't return any thing.
+        /// powerConsumptionLight
+        /// powerConsumptionMedium
+        /// powerConsumptionHeavy
+        /// chargingRate
+        /// this function doesn't return any thing.
         /// </summary>
         private void InitializePowerConsumption()
         {
@@ -50,7 +75,7 @@ namespace BL
 
     }
 }
-//#region Erase?
+#region Erase?
 ///// <summary>
 ///// Get drone which his status is not 'Delivery'
 ///// Calculate his fields and returns it.
@@ -87,7 +112,7 @@ namespace BL
 ///// <typeparam name="BL"></typeparam>
 ///// <param name="Id"></param>
 ///// <returns>returns an object of BL type</returns>
-//public BL GetBLById<DL, BL>(int Id) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject
+//public BL GetBLById<DL, BL>(int Id) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalDo
 //{
 //    try
 //    {
@@ -109,7 +134,7 @@ namespace BL
 ///// <typeparam name="DL"></typeparam>
 ///// <typeparam name="BL"></typeparam>
 ///// <returns>returns list of data with type of BL. </returns>
-//public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject
+//public IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalDo
 //{
 //    var bLList = new List<BL>();
 //    var dalList = dal.GetListFromDal<DL>();
@@ -129,7 +154,7 @@ namespace BL
 ///// <typeparam name="DL"></typeparam>
 ///// <typeparam name="BLToList"></typeparam>
 ///// <returns>returns list of data with the BLToList</returns>
-//public IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject
+//public IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalDo
 //{
 //    try
 //    {
@@ -175,7 +200,7 @@ namespace BL
 //        throw new InValidActionException("There is no match object in the list ");
 //    }
 //}
-//#endregion
+#endregion
 
 
 

@@ -10,6 +10,9 @@ using BO;
 
 namespace PL.Converters
 {
+    /// <summary>
+    /// A class DroneStatusToVisibilityConverter that impliments:IValueConverter.
+    /// </summary>
     public class DroneStatusToVisibilityConverter : IValueConverter
     {
         public object Convert(object value,Type targetType,object parameter,CultureInfo culture)

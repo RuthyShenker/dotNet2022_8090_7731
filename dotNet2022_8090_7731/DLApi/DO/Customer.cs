@@ -1,18 +1,15 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace DO
 {
     /// <summary>
-    /// A struct of Customer contains:
+    /// A struct of Customer that impliments IIdentifiable, IDalDo , contains:
     /// Id,Name,Phone,Longitude,Latitude
     /// </summary>
     [Serializable]
-    public struct Customer : IIdentifiable, IDalObject
+    public struct Customer : IIdentifiable, IDalDo
     {
         /// <summary>
         /// this field is init.

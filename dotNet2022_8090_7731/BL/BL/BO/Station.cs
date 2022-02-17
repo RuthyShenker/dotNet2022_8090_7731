@@ -23,8 +23,15 @@ namespace BO
         public string NameStation { get; set; }
         public Location Location { get; set; }
         public int NumAvailablePositions { get; set; }
-        //  רשימת רחפנם בטעינה
+        /// <summary>
+        ///  list of drones in charging.
+        /// </summary>
         public IEnumerable<ChargingDrone> LBL_ChargingDrone { get; set; }
+
+        /// <summary>
+        /// A function that returns the details of this Station
+        /// </summary>
+        /// <returns> the details of this Station</returns>
         public override string ToString()
         {
             return BL.Tools.ToStringProps(this);

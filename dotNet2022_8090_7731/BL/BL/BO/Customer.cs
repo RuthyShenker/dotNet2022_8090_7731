@@ -26,14 +26,25 @@ namespace BO
         public string Name { get; set; }
         public string Phone { get; set; }
         public Location Location { get; set; }
-        // two lists
+
+        /// <summary>
+        /// A list of parcels from this customer
+        /// </summary>
         public IEnumerable<ParcelInCustomer> LFromCustomer { get; set; }
+
+        /// <summary>
+        /// A list of parcels for this customer
+        /// </summary>
         public IEnumerable<ParcelInCustomer> LForCustomer { get; set; }
+
+        /// <summary>
+        /// A function that returns the details of this customer
+        /// </summary>
+        /// <returns> the details of this customer</returns>
         public override string ToString()
         {
             return BL.Tools.ToStringProps(this);
         }
-
     }
 }
 

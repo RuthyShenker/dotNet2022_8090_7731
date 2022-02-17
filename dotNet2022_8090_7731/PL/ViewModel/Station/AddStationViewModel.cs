@@ -28,16 +28,17 @@ namespace PL.ViewModels
             //try
             //{
 
-                BlApi.BlFactory.GetBl().AddingBaseStation
-                (
-                    (int)station.Id,
-                    station.Name,
-                    (double)station.Longitude,
-                    (double)station.Latitude,
-                    (int)station.NumPositions
-                );
-                Refresh.Invoke();
-                switchView(Map(station));
+            BlApi.BlFactory.GetBl().AddingBaseStation
+            (new()
+                {
+                    Id = (int)station.Id,
+                    NameStation = station.Name,
+                    Location = new() { Longitude = (double)station.Longitude, Latitude = (double)station.Latitude },
+                    NumAvailablePositions = (int)station.NumPositions
+                }
+            );
+            Refresh.Invoke();
+            switchView(Map(station));
             //}
             //catch (Exception)
             //{
@@ -54,7 +55,7 @@ namespace PL.ViewModels
                 NameStation = station.Name,
                 Location = location,
                 NumAvailablePositions = (int)station.NumPositions,
-                 LBL_ChargingDrone=null
+                LBL_ChargingDrone = null
             };
         }
     }

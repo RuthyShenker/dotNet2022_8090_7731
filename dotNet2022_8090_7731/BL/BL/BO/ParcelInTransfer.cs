@@ -20,6 +20,9 @@ namespace BO
     /// </summary>
     public class ParcelInTransfer
     { 
+        /// <summary>
+        /// this fiels is init.
+        /// </summary>
         public int PId { get; init; }
         public bool IsInWay { get; set; }
         public Priority MPriority { get; set; }
@@ -29,6 +32,11 @@ namespace BO
         public Location CollectionLocation { get; set; }
         public Location DeliveryLocation { get; set; }
         public double TransDistance { get; set; }
+
+        /// <summary>
+        /// A function that returns the details of this Parcel In Transfer
+        /// </summary>
+        /// <returns> the details of this Parcel In Transfer</returns>
         public override string ToString()
         {
             return BL.Tools.ToStringProps(this);

@@ -20,27 +20,6 @@ namespace BO
     public class Drone
     {
         /// <summary>
-        /// A constructor of Drone with fields.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="model"></param>
-        /// <param name="weight"></param>
-        /// <param name="batteryStatus"></param>
-        /// <param name="droneStatus"></param>
-        /// <param name="pInTransfer"></param>
-        /// <param name="currLocation"></param>
-        //public Drone(int id, string model, WeightCategories weight, double batteryStatus, DroneStatus droneStatus, ParcelInTransfer pInTransfer, Location currLocation)
-        //{
-        //    Id = id;
-        //    Model = model;
-        //    Weight = weight;
-        //    BatteryStatus = batteryStatus;
-        //    DroneStatus = droneStatus;
-        //    PInTransfer = pInTransfer;
-        //    CurrLocation = currLocation;
-        //}
-
-        /// <summary>
         /// this field is init.
         /// </summary>
         public int Id { get; init; }
@@ -50,6 +29,11 @@ namespace BO
         public DroneStatus DroneStatus { get; set; }
         public ParcelInTransfer PInTransfer { get; set; }
         public Location CurrLocation { get; set; }
+
+        /// <summary>
+        /// A function that returns the details of this Drone
+        /// </summary>
+        /// <returns> the details of this Drone</returns>
         public override string ToString()
         {
             return BL.Tools.ToStringProps(this);

@@ -8,85 +8,11 @@ using System.Runtime.CompilerServices;
 
 namespace BL
 {
-    partial class BL
+    /// <summary>
+    /// An internal sealed partial class BL inherits from Singleton<BL>,and impliments BlApi.IBL,
+    /// </summary>
+    partial class BL:BlApi.IBL
     {
-        /// <summary>
-        /// A function that gets an object of IDAL.DO.Parcel and creates
-        /// a new object of ParcelInCustomerand 
-        /// copies the the commmon fields from IDAL.DO.Parcel
-        /// to ParcelInCustomer and returns it
-        /// </summary>
-        /// <param name="parcel"></param>
-        /// <param name="Id"></param>
-        /// <returns>returns an object of ParcelInCustomer</returns>
-        private ParcelInCustomer CopyCommon(DO.Parcel parcel, int Id)
-        {
-            var PStatus = GetParcelStatus(parcel);
-            var OnTheOtherHand = NewCustomerInParcel(Id);
-
-            return new ParcelInCustomer()
-            {
-                Id = parcel.Id,
-                Weight = (WeightCategories)parcel.Weight,
-                MPriority = (Priority)parcel.MPriority,
-                PStatus = PStatus,
-                OnTheOtherHand = OnTheOtherHand
-            };
-        }
-
-        /// <summary>
-        /// A function that gets id of customer and builds from it an object
-        /// of CustomerInParcel and Of course considering logic and returns 
-        /// the new object of CustomerInParcel.
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns>eturns 
-        /// the new object of CustomerInParcel</returns>
-        private CustomerInParcel NewCustomerInParcel(int Id)
-        {
-            string name;
-            try
-            {
-                lock (dal)
-                {
-                    name = dal.GetFromDalById<DO.Customer>(Id).Name;
-                }
-                return new()
-                {
-                    Id = Id,
-                    Name = name
-                };
-            }
-            catch (DO.IdDoesNotExistException)
-            {
-                throw new IdIsNotExistException();
-                //throw new IdDoesNotExistException(typeof(Customer), Id);
-            }
-        }
-        /// <summary>
-        /// A function that 
-        /// returns the list of customers that have packages delivered to them.
-        /// </summary>
-        /// <returns> returns the list of customers that have packages delivered to them. </returns>
-        private IEnumerable<Customer> CustomersWithProvidedParcels()
-        {
-            DO.Customer customer;
-            var reqiredCustomersList = Enumerable.Empty<Customer>();
-            lock (dal)
-            {
-                var customersDalList = dal.GetListFromDal<DO.Customer>();
-                var parcelsDalList = dal.GetListFromDal<DO.Parcel>();
-                foreach (var parcel in parcelsDalList)
-                {
-                    if (parcel.Arrival.HasValue)
-                    {
-                        customer = customersDalList.First(customer => customer.Id == parcel.GetterId);
-                        reqiredCustomersList = reqiredCustomersList.Append(ConvertToBL(customer));
-                    }
-                }
-            }
-            return reqiredCustomersList;
-        }
 
         /// <summary>
         /// A function that gets Customer and adds it to the data base the
@@ -100,7 +26,7 @@ namespace BL
             {
                 if (dal.IsIdExistInList<DO.Customer>(bLCustomer.Id))
                 {
-                    throw new IdIsAlreadyExistException(typeof(Customer), bLCustomer.Id);
+                    throw new IdAlreadyExistsException(typeof(Customer), bLCustomer.Id);
                 }
 
                 var newCustomer = new DO.Customer()
@@ -150,68 +76,25 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// A function that returns all the customers from the db.
+        /// </summary>
+        /// <returns>returns all the customers from the db</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<CustomerToList> GetCustomers(/*Func<int, bool> predicate = null*/)
+        public IEnumerable<CustomerToList> GetCustomers()
         {
-            //return predicate!=null ?
-            //    dal.GetDalListByCondition<DO.Customer>(customer => predicate(customer.Id))
-            //    .Select(c=>ConvertToList(c)):
-
-            // TODO lock?
+            //lock (dal) 
+            //{
             return dal.GetListFromDal<DO.Customer>()
                    .Select(c => ConvertToList(c));
+            //}
         }
 
         /// <summary>
-        /// A function that gets an object of IDAL.DO.Customer
-        /// and Expands it to CustomerToList object and returns this object.
+        /// A function that gets id of customer and searchs this customer in the db and returns it after converts to bl type.
         /// </summary>
-        /// <param name="customer"></param>
-        /// <returns>returns CustomerToList object </returns>
-        private CustomerToList ConvertToList(DO.Customer customer)
-        {
-            //problem:!!!!
-            CustomerToList nCustomer = new()
-            {
-                Id = customer.Id,
-                Name = customer.Name,
-                Phone = customer.Phone
-            };
-
-            lock (dal)
-            {
-                var dParcelslist = dal.GetListFromDal<DO.Parcel>();
-                foreach (var parcel in dParcelslist)
-                {
-                    if (parcel.SenderId == nCustomer.Id)
-                    {
-                        switch (GetParcelStatus(parcel))
-                        {
-                            case ParcelStatus.InDestination:
-                                ++nCustomer.SentSupplied;
-                                break;
-                            default:
-                                ++nCustomer.SentNotSupplied;
-                                break;
-                        }
-                    }
-                    else if (parcel.GetterId == nCustomer.Id)
-                    {
-                        switch (GetParcelStatus(parcel))
-                        {
-                            case ParcelStatus.InDestination:
-                                ++nCustomer.Got;
-                                break;
-                            default:
-                                ++nCustomer.InWayToCustomer;
-                                break;
-                        }
-                    }
-                }
-            }
-            return nCustomer;
-        }
-
+        /// <param name="customerId"></param>
+        /// <returns>returns customer after convers it to bl type.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomer(int customerId)
         {
@@ -229,7 +112,12 @@ namespace BL
                 throw new IdIsNotExistException(typeof(Customer), customerId);
             }
         }
-
+        /// <summary>
+        /// A function that gets id of customer and deletes the instance with this id from the db,
+        /// returns string that the action Performed successfully.
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns>returns string that the action Performed successfully</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
         public string DeleteCustomer(int customerId)
         {
@@ -248,11 +136,150 @@ namespace BL
         }
 
         /// <summary>
-        /// A function that gets an object of IDAL.DO.Customer
-        /// and Expands it to Customer object and returns this object.
+        /// A function that gets an insatnce of IDAL.DO.Parcel and creates
+        /// a new insatnce of ParcelInCustomerand 
+        /// copies the the commmon fields from IDAL.DO.Parcel
+        /// to ParcelInCustomer and returns it
+        /// </summary>
+        /// <param name="parcel"></param>
+        /// <param name="Id"></param>
+        /// <returns>returns an insatnce of ParcelInCustomer</returns>
+        private ParcelInCustomer CopyCommon(DO.Parcel parcel, int Id)
+        {
+            var PStatus = GetParcelStatus(parcel);
+            var OnTheOtherHand = NewCustomerInParcel(Id);
+
+            return new ParcelInCustomer()
+            {
+                Id = parcel.Id,
+                Weight = (WeightCategories)parcel.Weight,
+                MPriority = (Priority)parcel.MPriority,
+                PStatus = PStatus,
+                OnTheOtherHand = OnTheOtherHand
+            };
+        }
+
+        /// <summary>
+        /// A function that gets id of customer and builds from it an object
+        /// of CustomerInParcel and Of course considering logic and returns 
+        /// the new insatnce of CustomerInParcel.
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns>eturns 
+        /// the new object of CustomerInParcel</returns>
+        private CustomerInParcel NewCustomerInParcel(int Id)
+        {
+            string name;
+            try
+            {
+                lock (dal)
+                {
+                    name = dal.GetFromDalById<DO.Customer>(Id).Name;
+                }
+                return new()
+                {
+                    Id = Id,
+                    Name = name
+                };
+            }
+            catch (DO.IdDoesNotExistException)
+            {
+                throw new IdIsNotExistException();
+                //throw new IdDoesNotExistException(typeof(Customer), Id);
+            }
+            catch (ArgumentNullException )
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// A function that 
+        /// returns the list of customers that have packages delivered to them.
+        /// </summary>
+        /// <returns> returns the list of customers that have packages delivered to them. </returns>
+        private IEnumerable<Customer> CustomersWithProvidedParcels()
+        {
+            DO.Customer customer;
+            var reqiredCustomersList = Enumerable.Empty<Customer>();
+            lock (dal)
+            {
+                var customersDalList = dal.GetListFromDal<DO.Customer>();
+                var parcelsDalList = dal.GetListFromDal<DO.Parcel>();
+                foreach (var parcel in parcelsDalList)
+                {
+                    if (parcel.Arrival.HasValue)
+                    {
+                        customer = customersDalList.First(customer => customer.Id == parcel.GetterId);
+                        reqiredCustomersList = reqiredCustomersList.Append(ConvertToBL(customer));
+                    }
+                }
+            }
+            return reqiredCustomersList;
+        }
+
+        /// <summary>
+        /// A function that gets an instance of IDAL.DO.Customer
+        /// and converts it to CustomerToList instance and returns this instance.
         /// </summary>
         /// <param name="customer"></param>
-        /// <returns>returns Customer object </returns>
+        /// <returns>returns CustomerToList instance </returns>
+        private CustomerToList ConvertToList(DO.Customer customer)
+        {
+            CustomerToList nCustomer = new()
+            {
+                Id = customer.Id,
+                Name = customer.Name,
+                Phone = customer.Phone
+            };
+            lock (dal)
+            {
+                #region
+                //var dParcelslist = dal.GetListFromDal<DO.Parcel>();
+                //foreach (var parcel in dParcelslist)
+                //{
+                //    if (parcel.SenderId == nCustomer.Id)
+                //    {
+                //        switch (GetParcelStatus(parcel))
+                //        {
+                //            case ParcelStatus.InDestination:
+                //                ++nCustomer.SentSupplied;
+                //                break;
+                //            default:
+                //                ++nCustomer.SentNotSupplied;
+                //                break;
+                //        }
+                //    }
+                //    else if (parcel.GetterId == nCustomer.Id)
+                //    {
+                //        switch (GetParcelStatus(parcel))
+                //        {
+                //            case ParcelStatus.InDestination:
+                //                ++nCustomer.Got;
+                //                break;
+                //            default:
+                //                ++nCustomer.InWayToCustomer;
+                //                break;
+                //        }
+                //    }
+                //}
+                #endregion
+                //??????????????????????????????problem????
+                nCustomer.SentNotSupplied = dal.GetDalListByCondition<DO.Parcel>(p => p.SenderId == customer.Id && p.Arrival != null).Count();
+                nCustomer.SentSupplied = dal.GetDalListByCondition<DO.Parcel>(p => p.SenderId == customer.Id && p.BelongParcel != null).Count();
+                nCustomer.Got = dal.GetDalListByCondition<DO.Parcel>(p => p.GetterId == customer.Id && p.Arrival != null).Count();
+                nCustomer.InWayToCustomer = dal.GetDalListByCondition<DO.Parcel>(p => p.GetterId == customer.Id && p.PickingUp != null).Count();
+
+            }
+            return nCustomer;
+        }
+
+        /// <summary>
+        /// A function that gets an instance of IDAL.DO.Customer
+        /// and converts it to Customer instance and returns this instance.
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>returns Customer instance </returns>
         private Customer ConvertToBL(DO.Customer customer)
         {
             Customer nCustomer = new()

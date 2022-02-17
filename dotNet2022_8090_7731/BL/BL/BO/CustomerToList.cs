@@ -28,6 +28,11 @@ namespace BO
         public int SentNotSupplied { get; set; }
         public int Got { get; set; }
         public int InWayToCustomer { get; set; }
+
+        /// <summary>
+        /// A function that returns the details of this customer
+        /// </summary>
+        /// <returns> the details of this customer</returns>
         public override string ToString()
         {
             return BL.Tools.ToStringProps(this);

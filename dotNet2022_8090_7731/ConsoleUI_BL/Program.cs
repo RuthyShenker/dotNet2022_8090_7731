@@ -40,7 +40,7 @@ namespace ConsoleUI_BL
                 {
                     Console.WriteLine(idIsNotExistException);
                 }
-                catch (BO.IdIsAlreadyExistException idIsAlreadyExistException)
+                catch (BO.IdAlreadyExistsException idIsAlreadyExistException)
                 {
                     Console.WriteLine(idIsAlreadyExistException);
                 }

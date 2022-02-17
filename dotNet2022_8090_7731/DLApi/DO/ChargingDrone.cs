@@ -1,14 +1,14 @@
-﻿
-using System;
+﻿using System;
+
 
 namespace DO
 {
     /// <summary>
-    /// A struct of ChargingDrone, contains:
-    /// Id of Station,Id of Drone.
+    /// A struct of ChargingDrone that impliments IDalDo, contains:
+    /// Id of Station,Id of Drone,EnteranceTime to charging.
     /// </summary>
     [Serializable]
-    public struct ChargingDrone : IDalObject
+    public struct ChargingDrone : IDalDo
     {
         public int StationId { get; set; }
         public int DroneId { get; set; }

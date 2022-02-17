@@ -10,9 +10,19 @@ using System.Windows.Data;
 
 namespace PL.Converters
 {
+    /// <summary>
+    /// A class ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter that impliments:IValueConverter.
+    /// </summary>
     public class ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter : IValueConverter
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is EditDrone drone)

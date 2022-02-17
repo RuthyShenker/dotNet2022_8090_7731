@@ -8,6 +8,9 @@ using System.Windows.Data;
 
 namespace PL.Converters
 {
+    /// <summary>
+    /// A class HasAllTextConverter that impliments:IMultiValueConverter.
+    /// </summary>
     public class HasAllTextConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)

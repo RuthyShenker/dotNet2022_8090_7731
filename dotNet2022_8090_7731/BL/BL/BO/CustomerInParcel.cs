@@ -19,6 +19,11 @@ namespace BO
         /// </summary>
         public int Id { get; init; }
         public string Name { get; set; }
+
+        /// <summary>
+        /// A function that returns the details of this customer
+        /// </summary>
+        /// <returns> the details of this customer</returns>
         public override string ToString()
         {
             return BL.Tools.ToStringProps(this);

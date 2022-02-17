@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BO;
+using System;
 using static ConsoleUI_BL.MEnum;
-using BO;
 namespace ConsoleUI_BL
 {
     partial class Program
@@ -69,15 +65,15 @@ namespace ConsoleUI_BL
             return new Parcel()
             {
                 Id = 0,
-                Sender =new() { Id = senderId, Name = string.Empty },
-                Getter=new() { Id = getterId, Name = string.Empty },
-                Weight=weight,
-                MPriority= mPriority,
-                DInParcel= null,
-               MakingParcel= DateTime.Now,
-               BelongParcel= null,
-               PickingUp= null,
-               Arrival= null
+                Sender = new() { Id = senderId, Name = string.Empty },
+                Getter = new() { Id = getterId, Name = string.Empty },
+                Weight = weight,
+                MPriority = mPriority,
+                DInParcel = null,
+                MakingParcel = DateTime.Now,
+                BelongParcel = null,
+                PickingUp = null,
+                Arrival = null
             };
         }
 
@@ -124,7 +120,7 @@ namespace ConsoleUI_BL
             ///●	מספר עמדות טעינה (פנויות) - כל העמדות פנויות בהוספה
             int numAvailablePositions = CheckValids.InputNumberValidity("number of positions");
 
-            bl.AddingBaseStation(id, nameStation, longitude, latitude, numAvailablePositions);
+            bl.AddingBaseStation(new() { Id = id, NameStation = nameStation, Location = new() { Longitude = longitude, Latitude = latitude },NumAvailablePositions = numAvailablePositions });
         }
 
         /// <summary>

@@ -10,25 +10,7 @@ using System.Collections;
 namespace BlApi
 {
     /// <summary>
-    ///An interface of IBL that contains:
-    ///BelongingParcel
-    ///PickingUpParcel
-    ///DeliveryPackage
-    ///SendingDroneToCharge
-    ///ReleasingDrone
-    ///AddingBaseStation
-    ///AddingDrone
-    ///AddingCustomer
-    ///AddingParcel
-    ///UpdatingDroneName
-    ///UpdatingStationDetails
-    ///UpdatingCustomerDetails
-    ///GetListOfBL
-    ///GetListToList
-    ///AvailableSlots
-    ///GetBLById
-    ///GetUnbelongParcels
-    /// </summary>
+    ///An interface of IBL that impliments :IBLCustomer, IBLDrone, IBLParcel, IBLStation
     public interface IBL : IBLCustomer, IBLDrone, IBLParcel, IBLStation
     {
     }
@@ -36,9 +18,9 @@ namespace BlApi
 
 #region canErase?
 
-////IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject;
-////IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject;
-////BL GetBLById<DL, BL>(int Id) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject;
+////IEnumerable<BL> GetListOfBL<DL, BL>() where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalDo;
+////IEnumerable<BLToList> GetListToList<DL, BLToList>(Predicate<DL> predicate = null) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalDo;
+////BL GetBLById<DL, BL>(int Id) where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalDo;
 
 
 
@@ -69,7 +51,7 @@ namespace BlApi
 
 ////get lists
 
-////IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalObject;
+////IEnumerable<BLToList> GetListToList<DL, BLToList>() where DL : IDAL.DO.IIdentifiable, IDAL.DO.IDalDo;
 
 
 ////list of: Available Slots

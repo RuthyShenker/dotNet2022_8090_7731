@@ -8,6 +8,9 @@ using System.Windows.Data;
 
 namespace PL.Converters
 {
+    /// <summary>
+    /// A class IsDigitConverter that impliments:IValueConverter.
+    /// </summary>
     public class IsDigitConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

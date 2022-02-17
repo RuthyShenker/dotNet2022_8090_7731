@@ -15,7 +15,7 @@ namespace BO
     ///BatteryStatus
     ///DStatus
     ///CurrLocation
-    ///NumOfParcel
+    ///DeliveredParcelId
     /// </summary>
     public class DroneToList
     {
@@ -30,12 +30,12 @@ namespace BO
         public Location CurrLocation { get; set; }
         public int? DeliveredParcelId { get; set; }
 
+        /// <summary>
+        /// A function that returns the details of this Drone
+        /// </summary>
+        /// <returns> the details of this Drone</returns>
         public override string ToString()
         {
-            //return string.Format("Id: {0}" ,"Model: {1}", "Weight: {2}", "BatteryStatus: {3}", "DStatus: {4}",
-            //    "longitude: {5}", "latitude: {6}", "DeliveredParcelId: {7}"
-            //    ,Id,Model,Weight,BatteryStatus,DStatus,CurrLocation.Longitude,CurrLocation.Latitude,DeliveredParcelId);
-            //TODO:
             return BL.Tools.ToStringProps(this);
         }
     }

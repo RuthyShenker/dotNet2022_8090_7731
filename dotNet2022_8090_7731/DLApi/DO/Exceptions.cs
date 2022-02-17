@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DO
 {
+    /// <summary>
+    /// An abstract class of id exception.
+    /// </summary>
     [Serializable]
     public abstract class IdException : Exception
     {
@@ -29,6 +28,9 @@ namespace DO
         }
     }
 
+    /// <summary>
+    /// A class of id does not exist exception.
+    /// </summary>
     [Serializable]
     public class IdDoesNotExistException : Exception
     {
@@ -45,15 +47,18 @@ namespace DO
         //}
     }
 
+    /// <summary>
+    /// A class of id already exists exception.
+    /// </summary>
     [Serializable]
-    public class IdIsAlreadyExistException : IdException
+    public class IdAlreadyExistsException : IdException
     {
-        public IdIsAlreadyExistException() : base() { }
-        public IdIsAlreadyExistException(string message) : base(message) { }
-        public IdIsAlreadyExistException(string message, Exception inner) : base(message, inner) { }
-        protected IdIsAlreadyExistException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public IdAlreadyExistsException() : base() { }
+        public IdAlreadyExistsException(string message) : base(message) { }
+        public IdAlreadyExistsException(string message, Exception inner) : base(message, inner) { }
+        protected IdAlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
-        public IdIsAlreadyExistException(Type type, int id) : base(type, id) { }
+        public IdAlreadyExistsException(Type type, int id) : base(type, id) { }
 
         protected override string GetMessage()
         {
@@ -61,6 +66,9 @@ namespace DO
         }
     }
 
+    /// <summary>
+    /// A class of List Is Empty Exception.
+    /// </summary>
     [Serializable]
     public class ListIsEmptyException : Exception
     {
@@ -80,6 +88,9 @@ namespace DO
         }
     }
 
+    /// <summary>
+    /// A class of InValid Action Exception.
+    /// </summary>
     [Serializable]
     public class InValidActionException : IdException
     {

@@ -9,32 +9,35 @@ using System.Runtime.CompilerServices;
 
 namespace BL
 {
-    partial class BL
+    /// <summary>
+    /// An internal sealed partial class BL inherits from Singleton<BL>,and impliments BlApi.IBL,
+    /// </summary>
+    partial class BL : BlApi.IBL
     {
         /// <summary>
         /// A function that gets a base station and adds it to the data base,
         /// the function doesn't return anything.
         /// </summary>
         /// <param name="bLStation"></param>
-        //public void AddingBaseStation(Station bLStation)
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void AddingBaseStation(int id, string name, double longitude, double latitude, int numPositions)
+        public void AddingBaseStation(BO.Station blStation)
         {
             lock (dal)
             {
-                if (dal.IsIdExistInList<DO.BaseStation>(id))
+                if (dal.IsIdExistInList<DO.BaseStation>(blStation.Id))
                 {
-                    throw new IdIsAlreadyExistException(typeof(DO.BaseStation), id);
+                    throw new IdAlreadyExistsException(typeof(DO.BaseStation), blStation.Id);
                 }
-                DO.BaseStation station = new()
+
+                DO.BaseStation dlStation = new()
                 {
-                    Id = id,
-                    Latitude = latitude,
-                    Longitude = longitude,
-                    NameStation = name,
-                    NumberOfChargingPositions = numPositions
+                    Id = blStation.Id,
+                    Latitude = blStation.Location.Latitude,
+                    Longitude = blStation.Location.Longitude,
+                    NameStation = blStation.NameStation,
+                    NumberOfChargingPositions = blStation.NumAvailablePositions
                 };
-                dal.Add(station);
+                dal.Add(dlStation);
             }
         }
 
@@ -75,32 +78,81 @@ namespace BL
         }
 
         /// <summary>
-        /// A function that gets id of station and
-        /// returns a new list of charging drone of BL of this station.
+        /// A function that gets id of station and deletes it from the db.
         /// </summary>
-        /// <param name="sId"></param>
-        /// <returns>a new list of charging drone of BL of specific station</returns>
-        private IEnumerable<ChargingDrone> ChargingDroneBLList(int sId)
+        /// <param name="stationId"></param>
+        /// <returns>returns string that the action performs successfully </returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public string DeleteStation(int stationId)
         {
-            IEnumerable<DO.ChargingDrone> chargingDroneDalList;
-            ChargingDrone chargingDrone;
-            var chargingDroneBLList = Enumerable.Empty<ChargingDrone>();
+            try
+            {
+                lock (dal)
+                {
+                    dal.Remove(dal.GetFromDalById<DO.BaseStation>(stationId));
+                }
+            }
+            catch (DO.IdDoesNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(DO.BaseStation), stationId);
+            }
+            return $"Station with Id: {stationId} was successfully removed from the system";
+        }
+
+        //-----Get-----------------------------------------------
+        /// <summary>
+        /// A function that returns all the Stations from the db after converts them to bl type.
+        /// </summary>
+        /// <returns>returns all the Stations from the db after converts them to bl type.</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public IEnumerable<StationToList> GetStations()
+        {
+            return dal.GetListFromDal<DO.BaseStation>()
+                .Select(station => ConvertToList(station));
+        }
+
+        /// <summary>
+        /// if numPositions == 0 returns available slots,
+        /// else returns the stations which num of available positions == numPositions
+        /// the return list is typeof StationToList.
+        /// </summary>
+        /// <param name="numPositions"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public IEnumerable<StationToList> AvailableSlots(int numPositions = 0)
+        {
             lock (dal)
             {
-                chargingDroneDalList = dal.GetDalListByCondition<DO.ChargingDrone>(charge => charge.StationId == sId);
+                return numPositions == 0
+                    ? dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) > 0)
+                     .Select(station => ConvertToList(station))
+
+                    : dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) == numPositions)
+                         .Select(station => ConvertToList(station));
             }
-            foreach (var chargingPosition in chargingDroneDalList)
+        }
+      
+        /// <summary>
+        /// A function that gets station id and returns the station with this id after converts it to BL.Station
+        /// </summary>
+        /// <param name="stationId"></param>
+        /// <returns>returns the station with this id after converts it to BL.Station</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public Station GetStation(int stationId)
+        {
+            DO.BaseStation dStation;
+            try
             {
-                chargingDrone = new()
+                lock (dal)
                 {
-                    DroneId = chargingPosition.DroneId,
-                    BatteryStatus = lDroneToList.FirstOrDefault(drone => drone.Id == chargingPosition.DroneId)?.BatteryStatus ?? 0
-                };
-                // TODO: the problem was that there werent use in the return Append. to check
-                // if there more places like that.
-                chargingDroneBLList = chargingDroneBLList.Append(chargingDrone);
+                    dStation = dal.GetFromDalById<DO.BaseStation>(stationId);
+                }
+                return ConvertToBL(dStation);
             }
-            return chargingDroneBLList;
+            catch (DO.IdDoesNotExistException)
+            {
+                throw new IdIsNotExistException(typeof(Station), stationId);
+            }
         }
 
         /// <summary>
@@ -108,11 +160,10 @@ namespace BL
         /// closet base station-BL to this location.
         /// </summary>
         /// <param name="location"></param>
-        /// <returns>returns Station that closet to the location that the function gets.</returns>
-        /// //
-        // return the station with the closest location to the gotten location
-        // if sending to charge is true- return the station with the closest location which is has free slots to charge in,
-        // otherwise the first station in the list.
+        /// <returns>
+        /// returns the station with the closest location to the gotten location
+        /// if sending to charge is true- return the station with the closest location which has free slots to charge in,
+        /// otherwise the first station in the list-the -the closet station even if it doesn't have free slots.
         internal Station ClosestStation(Location location, bool sendingToCharge = false)
         {
             // TODO catch when the list is empty or there is no first...
@@ -120,10 +171,10 @@ namespace BL
             {
                 lock (dal)
                 {
-                    var droneCoord = new GeoCoordinate(location.Latitude, location.Longitude);
+                    var droneCoord = Extensions.geoCoordinate(location); //new GeoCoordinate(location.Latitude, location.Longitude);
 
                     var sortedList = dal.GetListFromDal<DO.BaseStation>()
-                        .OrderBy(station => new GeoCoordinate(station.Latitude, station.Longitude).GetDistanceTo(droneCoord));
+                        .OrderBy(station => Extensions.geoCoordinate(new() { Latitude = station.Latitude, Longitude = station.Longitude }).GetDistanceTo(droneCoord));
 
                     var closetStation = sendingToCharge == true
                         ? sortedList.FirstOrDefault(s => GetNumOfAvailablePositionsInStation(s.Id) > 0) : sortedList.First();
@@ -163,36 +214,9 @@ namespace BL
             #endregion
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public string DeleteStation(int stationId)
-        {
-            try
-            {
-                lock (dal)
-                {
-                    dal.Remove(dal.GetFromDalById<DO.BaseStation>(stationId));
-                }
-            }
-            catch (DO.IdDoesNotExistException)
-            {
-                throw new IdIsNotExistException(typeof(DO.BaseStation), stationId);
-            }
-            return $"Station with Id: {stationId} was successfully removed from the system";
-        }
-
-        //-----Get-----------------------------------------------
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<StationToList> GetStations()
-        {
-            return dal.GetListFromDal<DO.BaseStation>()
-                .Select(station => ConvertToList(station));
-        }
-
         /// <summary>
-        /// if numPositions == 0 returns available slots,
-        /// else returns the stations which num of available positions == numPositions
-        /// the return list is typeof StationToList.
+        /// A function that gets an instance of IDAL.DO.BaseStation
+        /// and converts it to StationToList instance and returns it.
         /// </summary>
         /// <param name="numPositions"></param>
         /// <returns></returns>
@@ -215,7 +239,7 @@ namespace BL
         /// and expands it to StationToList object and returns it.
         /// </summary>
         /// <param name="station"></param>
-        /// <returns>returns StationToList object</returns>
+        /// <returns>returns StationToList instance</returns>
         private StationToList ConvertToList(DO.BaseStation station)
         {
             var numOfAvailablePositions = GetNumOfAvailablePositionsInStation(station.Id);
@@ -248,11 +272,11 @@ namespace BL
         }
 
         /// <summary>
-        /// A function that gets an object of IDAL.DO.BaseStation
-        /// and expands it to Station type and returns it.
+        /// A function that gets an instance of IDAL.DO.BaseStation
+        /// and convets it to BO.Station type and returns it.
         /// </summary>
         /// <param name="station"></param>
-        /// <returns>returns Station object</returns>
+        /// <returns>returns Station instance</returns>
         private Station ConvertToBL(DO.BaseStation station)
         {
             if (station.Equals(default))
@@ -265,14 +289,70 @@ namespace BL
             return new Station() { Id = station.Id, NameStation = station.NameStation, Location = nLocation, NumAvailablePositions = numAvailablePositions, LBL_ChargingDrone = chargingDroneBList };
         }
 
+        /// <summary>
+        /// A function that gets id of station and returns the Number Of Available Positions In this Station
+        /// </summary>
+        /// <param name="stationId"></param>
+        /// <returns>returns the Number Of Available Positions In this Station</returns>
         private int GetNumOfAvailablePositionsInStation(int stationId)
         {
-            lock (dal)
+            try
             {
-                var station = dal.GetFromDalById<DO.BaseStation>(stationId);
-                int numOfChargingDroneInStation = dal.GetDalListByCondition<DO.ChargingDrone>(s => s.StationId == stationId).Count();
+                DO.BaseStation station;
+                int numOfChargingDroneInStation;
+                lock (dal)
+                {
+
+                    station = dal.GetFromDalById<DO.BaseStation>(stationId);
+                    numOfChargingDroneInStation = dal.GetDalListByCondition<DO.ChargingDrone>(s => s.StationId == stationId).Count();
+
+
+                }
                 return station.NumberOfChargingPositions - numOfChargingDroneInStation;
             }
+            catch (ArgumentNullException)
+            {
+                throw new ListIsEmptyException(typeof(BO.Station));
+            }
         }
+
+        /// <summary>
+        /// A function that gets id of station and
+        /// returns a new list of charging drone of BL of this station.
+        /// </summary>
+        /// <param name="sId"></param>
+        /// <returns>a new list of charging drone of BL of specific station</returns>
+        private IEnumerable<ChargingDrone> ChargingDroneBLList(int sId)
+        {
+
+            IEnumerable<DO.ChargingDrone> chargingDroneDalList;
+            ChargingDrone chargingDrone;
+            var chargingDroneBLList = Enumerable.Empty<ChargingDrone>();
+            try
+            {
+                lock (dal)
+                {
+                    chargingDroneDalList = dal.GetDalListByCondition<DO.ChargingDrone>(charge => charge.StationId == sId);
+                }
+                foreach (var chargingPosition in chargingDroneDalList)
+                {
+                    chargingDrone = new()
+                    {
+                        DroneId = chargingPosition.DroneId,
+                        BatteryStatus = lDroneToList.FirstOrDefault(drone => drone.Id == chargingPosition.DroneId)?.BatteryStatus ?? 0
+                    };
+                    // TODO: the problem was that there werent use in the return Append. to check
+                    // if there more places like that.
+                    chargingDroneBLList.Append(chargingDrone);
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                throw new ListIsEmptyException();
+            }
+            return chargingDroneBLList;
+
+        }
+
     }
 }
