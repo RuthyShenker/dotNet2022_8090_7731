@@ -15,6 +15,14 @@ namespace PL.Converters
     /// </summary>
     public class DroneStatusToVisibilityConverter : IValueConverter
     {
+        /// <summary>
+        /// A function that converts Drone status to visibility
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns>returns type of visibility</returns>
         public object Convert(object value,Type targetType,object parameter,CultureInfo culture)
         {
             DroneStatus status = (DroneStatus)value;
@@ -27,6 +35,15 @@ namespace PL.Converters
                 return Visibility.Collapsed;
             }
         }
+
+        /// <summary>
+        /// A function that converts back
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public object ConvertBack(object value,Type targetType,object parameter,CultureInfo culture)
         {
             throw new NotImplementedException();

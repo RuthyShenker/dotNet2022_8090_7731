@@ -1,5 +1,7 @@
-﻿using BO;
+﻿
+using BO;
 using PL.View;
+using PO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using static PL.Model.Enum;
+
 
 namespace PL.ViewModels
 {
@@ -27,21 +29,12 @@ namespace PL.ViewModels
         public Array GroupOptions { get; set; } = Enum.GetValues(typeof(GroupBy));
         public IEnumerable FilterParcelOptions { get; } = new List<object>() { "All" }.Union(Enum.GetValues(typeof(BO.ParcelStatus)).Cast<object>());
        
-        //public ListCollectionView parcelList;
-
-        //PropertyGroupDescription groupDescription;
-        //groupDescription.PropertyName = "Category";
-        //listingDataView.GroupDescriptions.Add(groupDescription);
-
-
-
-        //view.GroupDescriptions.Add(groupDescription);
         public ParcelListViewModel(BlApi.IBL bl)
         {
             Refresh.ParcelsList += RefreshParcelsList;
 
             this.bl = bl;
-            ParcelList = new(bl.GetParcels().ToList());
+            ParcelList = new(bl.GetParcels().MapListFromBLToPL().ToList());
             ParcelList.Filter = FilterCondition;
 
             MouseDoubleCommand = new RelayCommand<object>(EditParcel);
@@ -56,7 +49,7 @@ namespace PL.ViewModels
 
         private void RefreshParcelsList()
         {
-            ParcelList = new(bl.GetParcels().ToList());
+            ParcelList = new(bl.GetParcels().MapListFromBLToPL().ToList());
 
             // keep group and filter status
             FilterParcels = selectedFilter;
@@ -112,7 +105,7 @@ namespace PL.ViewModels
 
         private bool FilterCondition(object obj)
         {
-            ParcelToList parcel = obj as ParcelToList;
+            PO.ParcelToList parcel = obj as PO.ParcelToList;
             return selectedFilter is null or "All" || parcel.Status.Equals(selectedFilter);
         }
 
@@ -126,7 +119,7 @@ namespace PL.ViewModels
 
         private void EditParcel(object obj)
         {
-            var parcel = obj as BO.ParcelToList;
+            var parcel = obj as PO.ParcelToList;
             var blParcel = bl.GetParcel(parcel.Id);
             new ParcelView(bl, blParcel).Show();
         }

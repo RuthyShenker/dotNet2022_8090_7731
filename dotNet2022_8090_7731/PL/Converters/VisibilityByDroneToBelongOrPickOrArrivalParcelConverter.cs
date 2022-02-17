@@ -20,7 +20,7 @@ namespace PL.Converters
         {
             if (value is EditDrone drone)
             {
-                if (drone.Status == DroneStatus.Free || drone.Status == DroneStatus.Delivery)
+                if (drone.Status == PO.DroneStatus.Free || drone.Status == PO.DroneStatus.Delivery)
                     return Visibility.Visible;
             }
             return Visibility.Collapsed;

@@ -7,12 +7,27 @@ using System.Threading.Tasks;
 using static PO.ValidityMessages;
 namespace PO
 {
+    /// <summary>
+    /// A public class CustomerInParcel impliments:ObservableBase
+    /// contains:
+    /// Id
+    /// Name
+    /// </summary>
     public class CustomerInParcel : ObservableBase
     {
+        /// <summary>
+        /// An empty constructor of CustomerInParcel.
+        /// </summary>
         public CustomerInParcel()
         {
 
         }
+
+        /// <summary>
+        /// A constructor of CustomerInParcel with params.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
         public CustomerInParcel(int id, string name)
         {
             Id = id;
@@ -26,8 +41,6 @@ namespace PO
             set
             {
                 Set(ref id, value);
-
-                //SetMessage();
             }
         }
 

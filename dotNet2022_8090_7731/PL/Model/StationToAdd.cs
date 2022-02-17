@@ -12,9 +12,12 @@ namespace PO
     public class StationToAdd : ObservableBase, IDataErrorInfo
     {
         const int ID_LENGTH = 4;
+        const int MIN_LONGITUDE = 0;
+        const int MAX_LONGITUDE = 90;
+        const int MIN_LATITUDE = -90;
+        const int MAX_LATITUDE = 90;
 
         private int? _id;
-
         public object Id
         {
             get => _id == null ? null : _id;
@@ -40,7 +43,6 @@ namespace PO
         }
 
         private string name;
-
         public string Name
         {
             get => name;
@@ -54,8 +56,6 @@ namespace PO
         }
 
         private double? _longitude;
-        const int MIN_LONGITUDE = 0;
-        const int MAX_LONGITUDE = 90;
         public object Longitude
         {
             get => _longitude == null ? null : _longitude;
@@ -80,8 +80,6 @@ namespace PO
         }
 
         private double? _latitude;
-        const int MIN_LATITUDE = -90;
-        const int MAX_LATITUDE = 90;
         public object Latitude
         {
             get => _latitude == null ? null : _latitude;
@@ -149,7 +147,9 @@ namespace PO
                 return string.Empty;
             }
         }
-
+        /// <summary>
+        /// A dictionary of validation:
+        /// </summary>
         private readonly Dictionary<string, string> validityMessages = new()
         {
             [nameof(Id)] = string.Empty,
@@ -161,13 +161,3 @@ namespace PO
     }
 }
 
-//public string Error { get; }
-
-//public string this[string propertyName]
-//{
-//    get
-//    {
-//        return !validityMessages.ContainsKey(propertyName) ? null :
-//            string.Join(Environment.NewLine, validityMessages[propertyName]);
-//    }
-//}

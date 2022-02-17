@@ -1,4 +1,5 @@
-﻿using BO;
+﻿
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,8 +10,32 @@ using static PO.ValidityMessages;
 
 namespace PO
 {
+    /// <summary>
+    /// A public class EditDrone impliments:ObservableBase, IDataErrorInfo
+    /// includes:
+    ///Id
+    ///Model
+    ///Weight
+    ///BatteryStatus
+    ///Status
+    ///Location
+    ///ParcelInTransfer
+    ///Automatic
+    ///Distance
+    /// </summary>
+    /// 
     public class EditDrone : ObservableBase, IDataErrorInfo
     {
+        /// <summary>
+        /// A constructor of EditDrone with params.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="model"></param>
+        /// <param name="weight"></param>
+        /// <param name="batteryStatus"></param>
+        /// <param name="status"></param>
+        /// <param name="location"></param>
+        /// <param name="parcelInTransfer"></param>
         public EditDrone(int id, string model, WeightCategories weight, double batteryStatus,
             DroneStatus status, Location location, ParcelInTransfer parcelInTransfer)
         {
@@ -23,18 +48,10 @@ namespace PO
             ParcelInTransfer = parcelInTransfer;
         }
 
-        private int id;
+      
+        public int Id { get; init; }
 
-        //// dependency property for simulator converter
-        //public int Id
-        //{
-        //    get { return id; }
-        //    set { Set(ref id, value); }
-        //}
-
-        public int Id { get; set; }
         private string _model;
-
         public string Model
         {
             get => _model;
@@ -46,9 +63,10 @@ namespace PO
                                                                 OnlyStringAndNumberMessage(value);
             }
         }
-        public WeightCategories Weight { get; set; }
-        private double batteryStatus;
 
+        public WeightCategories Weight { get; set; }
+
+        private double batteryStatus;
         public double BatteryStatus
         {
             get => batteryStatus;
@@ -56,7 +74,6 @@ namespace PO
         }
 
         private DroneStatus status;
-
         public DroneStatus Status
         {
             get => status;
@@ -127,7 +144,6 @@ namespace PO
         }
 
         private double distance;
-
         public double Distance
         {
             get => distance;
@@ -147,6 +163,10 @@ namespace PO
                 return string.Empty;
             }
         }
+
+        /// <summary>
+        /// A dictionary of validation.
+        /// </summary>
         private readonly Dictionary<string, string> validityMessages = new()
         {
             [nameof(Model)] = string.Empty,

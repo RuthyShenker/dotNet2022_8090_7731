@@ -95,11 +95,11 @@ CurrLocation-->
         DisplayMemberBinding="{Binding DStatus}"
         Header="Drone Status" />
                         <GridViewColumn
-        DisplayMemberBinding="{Binding CurrLocation.Longitude}"
-        Header="Longitude" />
-                        <GridViewColumn
+        DisplayMemberBinding="{Binding CurrLocation}"
+        Header="Drone Location" />
+                        <!--<GridViewColumn
         DisplayMemberBinding="{Binding CurrLocation.Latitude}"
-        Header="Latitude" />
+        Header="Latitude" />-->
                         <GridViewColumn
         DisplayMemberBinding="{Binding DeliveredParcelId }"
         Header="Parcel Id" />

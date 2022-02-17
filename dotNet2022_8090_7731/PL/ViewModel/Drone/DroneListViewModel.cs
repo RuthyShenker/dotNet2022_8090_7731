@@ -1,5 +1,6 @@
-﻿using BO;
+﻿
 using PL.View;
+using PO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using static PL.Model.Enum;
+
 
 namespace PL.ViewModels
 {
@@ -21,8 +22,8 @@ namespace PL.ViewModels
 
         GroupByDroneStatus currentGroup;
 
-        public IEnumerable WeightCategoriesEnum { get; } = new List<object>() { "Defalut" }.Union(Enum.GetValues(typeof(WeightCategories)).Cast<object>());
-        public IEnumerable DroneStatusEnum { get; } = new List<object>() { "Defalut" }.Union(Enum.GetValues(typeof(DroneStatus)).Cast<object>());
+        public IEnumerable WeightCategoriesEnum { get; } = new List<object>() { "Defalut" }.Union(Enum.GetValues(typeof(PO.WeightCategories)).Cast<object>());
+        public IEnumerable DroneStatusEnum { get; } = new List<object>() { "Defalut" }.Union(Enum.GetValues(typeof(PO.DroneStatus)).Cast<object>());
         public Array GroupOptions { get; set; } = Enum.GetValues(typeof(GroupByDroneStatus));
         public RelayCommand<object> AddDroneCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
@@ -35,7 +36,7 @@ namespace PL.ViewModels
 
             this.bl = bl;
 
-            DroneList = new(bl.GetDrones().ToList());
+            DroneList = new(bl.GetDrones().MapListFromBLToPL().ToList());
             DroneList.Filter = FilterDrone;
 
             AddDroneCommand = new RelayCommand<object>(AddingDrone);
@@ -59,30 +60,21 @@ namespace PL.ViewModels
 
         private bool FilterDrone(object obj)
         {
-            //if (obj is DroneToList droneToList)
-            //{
-                //if ((WeightSelectedItem == null && StatusSelectedItem == null) || (WeightSelectedItem == "Default" && StatusSelectedItem == "Default"))//*|| droneToList.DStatus == statusSelectedItem*/
-                //    return true;
-                //else if (WeightSelectedItem == null && (statusSelectedItem == "Default" || droneToList.DStatus == (DroneStatus)statusSelectedItem))
-                //    return true;
-                //else if ((WeightSelectedItem == "Default" || droneToList.Weight == (WeightCategories)WeightSelectedItem) && statusSelectedItem == null)
-                //    return true;
-                //else if ((statusSelectedItem == "Default" || droneToList.DStatus == (DroneStatus)statusSelectedItem) && (weightSelectedItem == "Default" || droneToList.Weight == (WeightCategories)weightSelectedItem))
-                //    return true;
-            //}
-
-            if (obj is DroneToList droneToList)
+            if (obj is PO.DroneToList droneToList)
             {
-               if(Enum.IsDefined(typeof(WeightCategories),WeightSelectedItem)&& Enum.IsDefined(typeof(DroneStatus), statusSelectedItem))
-                   return (WeightCategories)WeightSelectedItem == droneToList.Weight&& (DroneStatus)statusSelectedItem == droneToList.DStatus;
-               if (Enum.IsDefined(typeof(WeightCategories), WeightSelectedItem))
-                   return (WeightCategories)WeightSelectedItem == droneToList.Weight;
-               if (Enum.IsDefined(typeof(DroneStatus), statusSelectedItem))
-                   return (DroneStatus)statusSelectedItem == droneToList.DStatus;
+               if(Enum.IsDefined(typeof(PO.WeightCategories),WeightSelectedItem)&& Enum.IsDefined(typeof(PO.DroneStatus), statusSelectedItem))
+                   return (PO.WeightCategories)WeightSelectedItem == droneToList.Weight&& (PO.DroneStatus)statusSelectedItem == droneToList.DStatus;
+               if (Enum.IsDefined(typeof(PO.WeightCategories), WeightSelectedItem))
+                   return (PO.WeightCategories)WeightSelectedItem == droneToList.Weight;
+               if (Enum.IsDefined(typeof(PO.DroneStatus), statusSelectedItem))
+                   return (PO.DroneStatus)statusSelectedItem == droneToList.DStatus;
             }
             return true;
         }
 
+        /// <summary>
+        /// מה הולך פה????????
+        /// </summary>
         public GroupByDroneStatus GroupDrones
         {
             get => currentGroup;
@@ -140,7 +132,7 @@ namespace PL.ViewModels
 
         private void RefreshDronesList()
         {
-            DroneList = new(bl.GetDrones().ToList());
+            DroneList = new(bl.GetDrones().MapListFromBLToPL().ToList());
            
             // keep group and filter status
             GroupDrones = currentGroup;
@@ -150,7 +142,7 @@ namespace PL.ViewModels
         //TODOTODO:
         private void MouseDoubleClick(object sender)
         {
-            var selectedDrone = sender as DroneToList;
+            var selectedDrone = sender as PO.DroneToList;
             var drone = bl.GetDrone(selectedDrone.Id);
             new DroneView(bl, drone)
                 .Show();
@@ -158,6 +150,7 @@ namespace PL.ViewModels
 
     }
 }
+#region
 //private void button_Close_Click(object sender, RoutedEventArgs e)
 //{
 //    //Hide();
@@ -213,3 +206,4 @@ namespace PL.ViewModels
 //        drone.DStatus == StatusSelectedItem
 //        && drone.Weight == WeightSelectedItem).ToList());
 //}
+#endregion

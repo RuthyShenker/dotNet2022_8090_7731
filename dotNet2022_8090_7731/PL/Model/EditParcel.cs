@@ -1,4 +1,4 @@
-﻿using BO;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,20 +7,35 @@ using System.Threading.Tasks;
 
 namespace PO
 {
+    /// <summary>
+    /// A public class EditParcel
+    /// </summary>
     public class EditParcel
     {
-
+        /// <summary>
+        /// An empty constructor.
+        /// </summary>
         public EditParcel()
         {
 
         }
+
+        /// <summary>
+        /// A constructor of EditParcel with part of params.
+        /// </summary>
+        /// <param name="senderId"></param>
+        /// <param name="getterId"></param>
+        /// <param name="weight"></param>
+        /// <param name="mPriority"></param>
+        /// <param name="dInParcel"></param>
         public EditParcel(int senderId, int getterId, WeightCategories weight, Priority mPriority, DroneInParcel dInParcel)
            : this(0, new CustomerInParcel(senderId, string.Empty), new CustomerInParcel(getterId, string.Empty),
                 weight, mPriority, dInParcel, DateTime.Now, null, null, null)
         {
         }
+
         /// <summary>
-        /// A constructor of Parcel with fields.
+        /// A constructor of Parcel with all the fields.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="sender"></param>
@@ -47,6 +62,7 @@ namespace PO
             DInParcel = dInParcel;
             MakingParcel = parcelMakingParcel;
         }
+
         /// <summary>
         /// this field is init.
         /// </summary>

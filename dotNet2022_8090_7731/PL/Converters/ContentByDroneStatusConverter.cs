@@ -14,22 +14,38 @@ namespace PL.Converters
     /// </summary>
     public class ContentByDroneStatusConverter :IValueConverter
     {
+
+        /// <summary>
+        /// A function that converts status to string
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns>returns string</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
            DroneStatus status = (DroneStatus)value;
-            object obj="";
+           
             if (status == DroneStatus.Free)
             {
-                 obj = "Send To Charge:";
+               return "Send To Charge:";
             }
             else if(status == DroneStatus.Maintenance)
             {
-                 obj = "Release From Charge:";
+                return "Release From Charge:";
             }
-            return obj;
+            return string.Empty;
         }
 
-
+        /// <summary>
+        /// A function that converts back
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

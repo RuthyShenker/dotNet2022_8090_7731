@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using static PL.Model.Enum;
+using static PL.Extensions;
 
 namespace PL.ViewModels
 {
@@ -33,7 +33,7 @@ namespace PL.ViewModels
             Refresh.StationsList += RefreshStationList;
 
             this.bl = bl;
-            StationList = new(bl.GetStations().ToList());
+            StationList = new(bl.GetStations().MapListFromBLToPL().ToList());
             StationList.Filter = FilterCondition;
             AvailablePositions();
 
@@ -104,7 +104,7 @@ namespace PL.ViewModels
 
         private void ShowStation(object sender)
         {
-            var selectedStation = sender as StationToList;
+            var selectedStation = sender as PO.StationToList;
             var blStation = bl.GetStation(selectedStation.Id);
             new StationView(bl, /*RefreshStationList,*/ blStation)
                     .Show();
@@ -124,13 +124,13 @@ namespace PL.ViewModels
 
         private bool FilterCondition(object obj)
         {
-            StationToList station = obj as StationToList;
+            PO.StationToList station = obj as PO.StationToList;
             return choosenNumPositions is null or "All" || station.AvailablePositions.Equals(choosenNumPositions);
         }
 
         private void RefreshStationList()
         {
-            StationList = new(bl.GetStations().ToList());
+            StationList = new(bl.GetStations().MapListFromBLToPL().ToList());
             AvailablePositions();
 
             // keep filter and group status

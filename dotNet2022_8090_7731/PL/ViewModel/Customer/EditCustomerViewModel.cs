@@ -99,10 +99,30 @@ namespace PL.ViewModels
 
         private EditCustomer MapFromBOToPO(BO.Customer customer)
         {
+         
             return new EditCustomer(customer.Id, customer.Name, customer.Phone,
                 customer.Location.Longitude, customer.Location.Latitude,
-                customer.LFromCustomer, customer.LForCustomer);
+               Map( customer.LFromCustomer), Map(customer.LFromCustomer));
         }
+
+        private IEnumerable<ParcelInCustomer> Map(IEnumerable<BO.ParcelInCustomer> lFromCustomer)
+        {
+            return lFromCustomer.Select(p => convert(p));
+        }
+
+        private ParcelInCustomer convert(BO.ParcelInCustomer p)
+        {
+            return new()
+            {
+                Id = p.Id,
+                MPriority = (PO.Priority)p.MPriority,
+                OnTheOtherHand = new() { Id =p.OnTheOtherHand.Id, Name = p.OnTheOtherHand.Name },
+                PStatus =(PO.ParcelStatus)p.PStatus,
+                Weight =(PO.WeightCategories)p.Weight
+            };
+        }
+
+       
 
         public EditCustomer Customer
         {

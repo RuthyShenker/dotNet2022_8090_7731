@@ -39,7 +39,7 @@ namespace PL.ViewModels
             UpdateModelOfDroneCommand = new RelayCommand<object>(UpdateDroneModel);
             ChargeDroneCommand = new RelayCommand<object>(SendOrReleaseDroneFromCharging);
             AssignParcelToDroneCommand = new RelayCommand<object>(AssignParcelToDrone);
-            OpenParcelWindowCommand = new RelayCommand<object>(OpenParcelWindowC, param => Drone.Status == DroneStatus.Delivery/* && Drone.ParcelInTransfer != null*/);
+            OpenParcelWindowCommand = new RelayCommand<object>(OpenParcelWindowC, param => Drone.Status == PO.DroneStatus.Delivery);
             DeleteDroneCommand = new RelayCommand<object>(DeleteDrone);
             StartOrStopSimulatorCommand = new RelayCommand<object>(StartOrStopSimulator);
         }
@@ -150,7 +150,7 @@ namespace PL.ViewModels
         }
         private void SendOrReleaseDroneFromCharging(object sender)
         {
-            if (Drone.Status == DroneStatus.Free)
+            if (Drone.Status == PO.DroneStatus.Free)
                 bl.SendingDroneToCharge(Drone.Id);
             else
                 bl.ReleasingDrone(Drone.Id);
@@ -169,13 +169,13 @@ namespace PL.ViewModels
 
         private void AssignParcelToDrone(object sender)
         {
-            if (Drone.Status == DroneStatus.Free)
+            if (Drone.Status == PO.DroneStatus.Free)
             {
                 BelongingParcel();
             }
-            else if (Drone.Status == DroneStatus.Delivery)
+            else if (Drone.Status == PO.DroneStatus.Delivery)
             {
-                if (Drone.ParcelInTransfer == null) // CalculateParcelInTransfer(drone.Id)....
+                if (bl.GetParcel(Drone.ParcelInTransfer.PId).PickingUp==null) // CalculateParcelInTransfer(drone.Id)....
                     PickingUpParcel();
                 else
                     DeliveryPackage();
@@ -232,13 +232,13 @@ namespace PL.ViewModels
         }
         private void DeleteDrone(object obj)
         {
-            if (Drone.Status == DroneStatus.Delivery)
+            if (Drone.Status == PO.DroneStatus.Delivery)
             {
                 MessageBox.Show("You Can't Delete Me!" +
                   ",I Am On Way To Brong Parcel  ! ", "Delete Parcel", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
-            else if (Drone.Status == DroneStatus.Maintenance)
+            else if (Drone.Status == PO.DroneStatus.Maintenance)
             {
                 MessageBox.Show("You Can't Delete Me!" +
                   ",I Am On Charging ! ", "Delete Parcel", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -278,9 +278,33 @@ namespace PL.ViewModels
 
         private EditDrone Map(Drone drone)
         {
-            return new EditDrone(drone.Id, drone.Model, drone.Weight, drone.BatteryStatus,
-                drone.DroneStatus, new PO.Location(drone.CurrLocation.Latitude, drone.CurrLocation.Longitude)
-                , drone.PInTransfer);
+            return new EditDrone(drone.Id, drone.Model, (PO.WeightCategories)drone.Weight, drone.BatteryStatus,
+               (PO.DroneStatus)drone.DroneStatus, new PO.Location(drone.CurrLocation.Latitude, drone.CurrLocation.Longitude)
+                ,Map(drone.PInTransfer));
+        }
+
+        private PO.ParcelInTransfer Map(BO.ParcelInTransfer pInTransfer)
+        {
+            if (pInTransfer == null)
+            {
+                return null;
+            }
+            return new()
+            {
+                PId = pInTransfer.PId,
+                Sender = new() { Id = pInTransfer.Sender.Id, Name = pInTransfer.Sender.Name },
+                Getter = new() { Id = pInTransfer.Getter.Id, Name = pInTransfer.Getter.Name },
+                MPriority = (PO.Priority)pInTransfer.MPriority,
+                IsInWay = pInTransfer.IsInWay,
+                Weight = (PO.WeightCategories)pInTransfer.Weight,
+                DeliveryLocation = new()
+                {
+                    Latitude = pInTransfer.DeliveryLocation.Latitude,
+                    Longitude = pInTransfer.DeliveryLocation.Longitude
+                },
+                TransDistance = pInTransfer.TransDistance,
+                CollectionLocation = new() { Latitude = pInTransfer.CollectionLocation.Latitude, Longitude = pInTransfer.CollectionLocation.Longitude }
+            };
         }
 
         public EditDrone Drone
