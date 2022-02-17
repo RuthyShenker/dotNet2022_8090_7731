@@ -57,7 +57,8 @@
     </UserControl.Resources>
     <StackPanel   ScrollViewer.VerticalScrollBarVisibility="Auto">
 
-        <TextBox Text = "{Binding Drone.Id, UpdateSourceTrigger=PropertyChanged}"
+        <TextBox x:Name="Id"
+            Text = "{Binding Drone.Id, UpdateSourceTrigger=PropertyChanged}"
                  IsEnabled="False"/>
 
         <TextBox Text = "{Binding Drone.BatteryStatus,  UpdateSourceTrigger=PropertyChanged}" 
@@ -107,7 +108,8 @@
         </Button>
 
 
-        <Button Content = "Update Model:" 
+        <Button x:Name="Model"
+            Content = "Update Model:" 
                 Command="{Binding UpdateModelOfDroneCommand }"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
 
@@ -130,9 +132,20 @@
 
         <!-- Simulator -->
         <Button Command="{Binding StartOrStopSimulatorCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                    Content="{Binding Drone.Automatic, Converter={StaticResource ContentByStatusOfSimulatorConverter}}">
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+            <Button.Content>
+                <MultiBinding Converter="{StaticResource ContentByStatusOfSimulatorConverter}">
+                    <Binding ElementName="Id" />
+                    
+                </MultiBinding>
+            </Button.Content>
+                 
         </Button>
+
+
+            <!--Content="{Binding Drone.Automatic, ConverterParameter={ RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                     AncestorType=UserControl}"}, Converter={StaticResource ContentByStatusOfSimulatorConverter}}">-->
+       
         <ProgressBar Name="BatteryProgressBar" Value="{Binding Drone.BatteryStatus,Converter={StaticResource batteryToProgressBarConverter}}" Width="Auto" Foreground="{Binding Drone.BatteryStatus, Converter={StaticResource batteryToColorConverter}}"/>
 
         <TextBox Text = "{Binding Drone.Distance, UpdateSourceTrigger=PropertyChanged}"

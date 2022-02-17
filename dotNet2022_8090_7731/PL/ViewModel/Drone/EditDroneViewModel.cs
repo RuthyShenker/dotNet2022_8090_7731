@@ -68,10 +68,19 @@ namespace PL.ViewModels
 
         private void StartOrStopSimulator(object obj)
         {
-            if (!Drone.Automatic)
+            if (Refresh.workers.ContainsKey(Drone.Id))
             {
-                Drone.Automatic = true;
-
+                if (!Refresh.workers[Drone.Id].IsBusy)
+                {
+                    Refresh.workers[Drone.Id].RunWorkerAsync(Drone.Id);
+                }
+                else
+                {
+                    Refresh.workers[Drone.Id]?.CancelAsync();
+                }
+            }
+            else
+            {
                 worker = new()
                 {
                     WorkerReportsProgress = true,
@@ -80,12 +89,44 @@ namespace PL.ViewModels
                 worker.DoWork += (sender, args) => bl.StartSimulator(Drone.Id, updateDrone, checkStop);
                 worker.RunWorkerCompleted += (sender, args) => Drone.Automatic = false;
                 worker.ProgressChanged += (sender, args) => updateDroneView();
-                worker.RunWorkerAsync(Drone.Id);
+
+                Refresh.workers.Add(Drone.Id, worker);
+
+                Refresh.workers[Drone.Id].RunWorkerAsync(Drone.Id);
+
+                //worker.RunWorkerAsync(Drone.Id);
             }
-            else //Drone.Automatic = false
-            {
-                worker?.CancelAsync();
-            }
+
+
+            //if (!Drone.Automatic)
+            //{
+            //    Drone.Automatic = true;
+
+
+
+
+            //        .Add(Drone.Id, new BackgroundWorker());
+
+
+
+            //    var w = Refresh.workers[drone.Id];
+
+            //    Refresh.workers[drone.Id] = worker;
+
+            //    worker = new()
+            //    {
+            //        WorkerReportsProgress = true,
+            //        WorkerSupportsCancellation = true,
+            //    };
+            //    worker.DoWork += (sender, args) => bl.StartSimulator(Drone.Id, updateDrone, checkStop);
+            //    worker.RunWorkerCompleted += (sender, args) => Drone.Automatic = false;
+            //    worker.ProgressChanged += (sender, args) => updateDroneView();
+            //    worker.RunWorkerAsync(Drone.Id);
+            //}
+            //else //Drone.Automatic = false
+            //{
+            //    worker?.CancelAsync();
+            //}
         }
 
         private void UpdateDroneModel(object sender)

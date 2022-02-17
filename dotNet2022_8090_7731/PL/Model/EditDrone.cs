@@ -23,6 +23,15 @@ namespace PO
             ParcelInTransfer = parcelInTransfer;
         }
 
+        private int id;
+
+        //// dependency property for simulator converter
+        //public int Id
+        //{
+        //    get { return id; }
+        //    set { Set(ref id, value); }
+        //}
+
         public int Id { get; set; }
         private string _model;
 

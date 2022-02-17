@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,11 @@ namespace PL.ViewModels
         public static event DelEventHandler Drone;
         public static event DelEventHandler Station;
         public static event DelEventHandler Customer;
+
+        public static IEnumerable<BackgroundWorker> Workers { get; set; }
+
+        public static Dictionary<int, BackgroundWorker> workers = new();
+
 
         public static void Invoke()
         {
