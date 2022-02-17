@@ -110,7 +110,7 @@ namespace BL
             return dal.GetListFromDal<DO.BaseStation>()
                 .Select(station => ConvertToList(station));
         }
-
+        
         /// <summary>
         /// if numPositions == 0 returns available slots,
         /// else returns the stations which num of available positions == numPositions
@@ -131,7 +131,7 @@ namespace BL
                          .Select(station => ConvertToList(station));
             }
         }
-      
+       
         /// <summary>
         /// A function that gets station id and returns the station with this id after converts it to BL.Station
         /// </summary>
@@ -215,26 +215,6 @@ namespace BL
         }
 
         /// <summary>
-        /// A function that gets an instance of IDAL.DO.BaseStation
-        /// and converts it to StationToList instance and returns it.
-        /// </summary>
-        /// <param name="numPositions"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<StationToList> AvailableSlots(int numPositions = 0)
-        {
-            lock (dal)
-            {
-                return numPositions == 0
-                    ? dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) > 0)
-                     .Select(station => ConvertToList(station))
-
-                    : dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) == numPositions)
-                         .Select(station => ConvertToList(station));
-            }
-        }
-
-        /// <summary>
         /// A function that gets an object of IDAL.DO.BaseStation
         /// and expands it to StationToList object and returns it.
         /// </summary>
@@ -252,23 +232,6 @@ namespace BL
             };
 
             return nStation;
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public Station GetStation(int stationId)
-        {
-            try
-            {
-                lock (dal)
-                {
-                    var dStation = dal.GetFromDalById<DO.BaseStation>(stationId);
-                    return ConvertToBL(dStation);
-                }
-            }
-            catch (DO.IdDoesNotExistException)
-            {
-                throw new IdIsNotExistException(typeof(Station), stationId);
-            }
         }
 
         /// <summary>

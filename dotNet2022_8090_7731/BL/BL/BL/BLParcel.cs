@@ -182,6 +182,13 @@ namespace BL
         }
 
         //TODO what happens if the list is empty
+        /// <summary>
+        /// A function that gets data of drone and calculate all the possible parcels to this drone ,returns them .
+        /// </summary>
+        /// <param name="batteryStatus"></param>
+        /// <param name="weight"></param>
+        /// <param name="currLocation"></param>
+        /// <returns>returns optional parcels to specific data of drone</returns>
         internal IOrderedEnumerable<DO.Parcel> OptionalParcelsForSpecificDrone(double batteryStatus, WeightCategories weight, Location currLocation)
         {
             lock (dal)
@@ -199,20 +206,31 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// A function that gets location and parcel and returns the 
+        /// distance of the all way from the location to the parcel includes the way from the getter to the closet station.
+        /// </summary>
+        /// <param name="currLocation"></param>
+        /// <param name="parcel"></param>
+        /// <returns>
+        /// returns the 
+        /// distance of the all way from the location to the parcel 
+        /// includes the way from the getter to the closet station.
+        /// </summary>
         private double CalculateBatteryToWay(Location currLocation, DO.Parcel parcel)
         {
-           var b= MinBattery(
-                                                Extensions.CalculateDistance(currLocation, GetCustomer(parcel.SenderId).Location)
-                                                )
-                                            + MinBattery(
-                                                Extensions.CalculateDistance(GetCustomer(parcel.SenderId).Location, GetCustomer(parcel.GetterId).Location), (WeightCategories)parcel.Weight
-                                                ) +
-                                            MinBattery(
-                                                Extensions.CalculateDistance(GetCustomer(parcel.GetterId).Location, ClosestStation(GetCustomer(parcel.GetterId).Location).Location)
-                                                );
-            return b;
-        }
+            return MinBattery(
+                                                    Extensions.CalculateDistance(currLocation, GetCustomer(parcel.SenderId).Location)
+                                                    )
+                                                + MinBattery(
+                                                    Extensions.CalculateDistance(GetCustomer(parcel.SenderId).Location, GetCustomer(parcel.GetterId).Location), (WeightCategories)parcel.Weight
+                                                    ) +
+                                                MinBattery(
+                                                    Extensions.CalculateDistance(GetCustomer(parcel.GetterId).Location, ClosestStation(GetCustomer(parcel.GetterId).Location).Location)
+                                                    );
 
+        }
+        
         /// <summary>
         /// A function that gets an id of drone and
         /// causes the drone to pick up the parcel that 
@@ -315,48 +333,7 @@ namespace BL
 
         }
 
-        //TODO what happens if the list is empty
-        /// <summary>
-        /// A function that gets data of drone and calculate all the possible parcels to this drone ,returns them .
-        /// </summary>
-        /// <param name="batteryStatus"></param>
-        /// <param name="weight"></param>
-        /// <param name="currLocation"></param>
-        /// <returns>returns optional parcels to specific data of drone</returns>
-        internal IOrderedEnumerable<DO.Parcel> OptionalParcelsForSpecificDrone(double batteryStatus, WeightCategories weight, Location currLocation)
-        {
-            var a = dal.GetDalListByCondition<DO.Parcel>(parcel => (parcel.Weight <= (DO.WeightCategories)weight &&
-                                 batteryStatus >= CalculateBatteryToWay(currLocation, parcel))).ToList();
-            return a?.OrderByDescending(parcel => parcel.MPriority)
-                .ThenByDescending(parcel => parcel.Weight)
-                                .ThenBy(parcel => GetDistance(currLocation, parcel));
         
-        }
-
-        /// <summary>
-        /// A function that gets location and parcel and returns the 
-        /// distance of the all way from the location to the parcel includes the way from the getter to the closet station.
-        /// </summary>
-        /// <param name="currLocation"></param>
-        /// <param name="parcel"></param>
-        /// <returns>
-        /// returns the 
-        /// distance of the all way from the location to the parcel 
-        /// includes the way from the getter to the closet station.
-        /// </summary>
-        private double CalculateBatteryToWay(Location currLocation, DO.Parcel parcel)
-        {
-        return MinBattery(
-                                                Extensions.CalculateDistance(currLocation, GetCustomer(parcel.SenderId).Location)
-                                                )
-                                            + MinBattery(
-                                                Extensions.CalculateDistance(GetCustomer(parcel.SenderId).Location, GetCustomer(parcel.GetterId).Location), (WeightCategories)parcel.Weight
-                                                ) +
-                                            MinBattery(
-                                                Extensions.CalculateDistance(GetCustomer(parcel.GetterId).Location, ClosestStation(GetCustomer(parcel.GetterId).Location).Location)
-                                                );
-          
-        }
 
         /// <summary>
         /// A function that gets IDAL.DO.Parcel instance and returns its status

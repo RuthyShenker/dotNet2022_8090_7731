@@ -199,51 +199,6 @@ namespace BL
             };
         }
 
-        /// <summary>
-        /// A function that gets an id of drone and sending it to charging,the 
-        /// function doesn't return anything.
-        /// </summary>
-        /// <param name="IdDrone"></param>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void SendingDroneToCharge(int IdDrone)
-        {
-            DroneToList drone = FindDroneInList(IdDrone);
-            switch (drone.DStatus)
-            {
-                case DroneStatus.Maintenance:
-                    throw new BO.InValidActionException(typeof(Drone), IdDrone, $"status of drone is Maintenance ");
-                case DroneStatus.Delivery:
-                    throw new BO.InValidActionException(typeof(Drone), IdDrone, $"status of drone is Delivery ");
-                default:
-                    break;
-            }
-
-            Station closetStation = ClosestStation(drone.CurrLocation, true);
-            if (closetStation.Equals(default))
-            {
-                throw new BO.InValidActionException("There ara no stations with available positions!");
-            }
-
-            double distanceFromDroneToStation = Extensions.CalculateDistance(drone.CurrLocation, closetStation.Location);
-            double minBattery = MinBattery(distanceFromDroneToStation);
-            if (minBattery > drone.BatteryStatus)
-            {
-                throw new BO.InValidActionException("The drone has no enough battery in order to get to the closest charging station");
-            }
-
-            drone.BatteryStatus -= minBattery;
-            drone.CurrLocation = closetStation.Location;
-            drone.DStatus = DroneStatus.Maintenance;
-            //--closetBaseStation.NumAvailablePositions;
-            //closetBaseStation.LBL_ChargingDrone.AddCustomer(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
-            dal.Add(new DO.ChargingDrone()
-            {
-                DroneId = drone.Id,
-                StationId = closetStation.Id,
-                EnteranceTime = DateTime.Now
-            }
-            );
-        }
 
         /// <summary>
         /// A function that gets an id of drone and releasing it from charging.
