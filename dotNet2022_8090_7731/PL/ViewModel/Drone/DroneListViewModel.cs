@@ -140,7 +140,7 @@ namespace PL.ViewModels
         }
 
         /// <summary>
-        /// A function that refreshesvthe Drone List.
+        /// A function that refreshes the Drone List.
         /// </summary>
         private void RefreshDronesList()
         {
