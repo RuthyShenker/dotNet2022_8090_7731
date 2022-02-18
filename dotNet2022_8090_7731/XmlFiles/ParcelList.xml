@@ -18,11 +18,11 @@
     <GetterId>999999999</GetterId>
     <Weight>Light</Weight>
     <MPriority>Normal</MPriority>
-    <DroneId xsi:nil="true" />
+    <DroneId>4444</DroneId>
     <CreatedTime>2022-02-18T10:32:07.8772505+02:00</CreatedTime>
-    <BelongParcel xsi:nil="true" />
-    <PickingUp xsi:nil="true" />
-    <Arrival xsi:nil="true" />
+    <BelongParcel>2022-02-18T10:39:30.3030584+02:00</BelongParcel>
+    <PickingUp>2022-02-18T10:39:30.3129342+02:00</PickingUp>
+    <Arrival>2022-02-18T10:39:30.3149836+02:00</Arrival>
   </Parcel>
   <Parcel>
     <Id>1040</Id>
@@ -30,10 +30,10 @@
     <GetterId>542253322</GetterId>
     <Weight>Light</Weight>
     <MPriority>Normal</MPriority>
-    <DroneId xsi:nil="true" />
+    <DroneId>4444</DroneId>
     <CreatedTime>2022-02-18T10:35:27.119502+02:00</CreatedTime>
-    <BelongParcel xsi:nil="true" />
-    <PickingUp xsi:nil="true" />
+    <BelongParcel>2022-02-18T10:39:30.4231582+02:00</BelongParcel>
+    <PickingUp>2022-02-18T10:39:30.4292303+02:00</PickingUp>
     <Arrival xsi:nil="true" />
   </Parcel>
   <Parcel>
