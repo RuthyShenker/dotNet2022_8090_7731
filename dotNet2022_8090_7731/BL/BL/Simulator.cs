@@ -22,9 +22,19 @@ namespace BL
             internal bool inWayToStation;
             public override string ToString()
             {
-                return $"Distance: {remainDistance}, PickedUp: { pickedUp}, Station Id{stationId} , Is in way to station? {inWayToStation}";
+                return pickedUp
+                    ? $"Distance to target: {remainDistance}"
+                    : inWayToStation
+                    ? $"Ditance to station #{stationId}: {remainDistance}"
+                    : (stationId == 0 && remainDistance > 0)
+                    ? $"Distance to sender: {remainDistance}"
+                    : stationId != 0
+                    ? $"Drone is charging in station #{stationId}"
+                    : $"No match parcel to assign the drone";
             }
+            //return $"Distance: {remainDistance}, PickedUp: { pickedUp}, Station Id{stationId} , Is in way to station? {inWayToStation}";
         }
+
         private const int DELAY = 100;//40
         private const double VELOCITY = 1.0;
         private const double TIME_STEP = DELAY / 1000.0;// 5000.0;
@@ -38,7 +48,7 @@ namespace BL
         DalApi.IDal dal;
         double distance;
         bool parcelPickedUp;
-        int droneFree = 0;
+        //int droneFree = 0;
         DroneToList drone;
         //double[] powerConsumption;
 
@@ -102,6 +112,7 @@ namespace BL
                         if (!SleepDelayTime()) break;
                         if (!SleepDelayTime()) break;
                         optionalParcels = bl.OptionalParcelsForSpecificDrone(drone.BatteryStatus, drone.Weight, drone.CurrLocation).ToList();
+                        updateView(new State() { remainDistance = 0, pickedUp = false, stationId = 0, inWayToStation = false });
                     }
                     return;
                 }
@@ -148,7 +159,7 @@ namespace BL
                     dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(DO.Parcel.BelongParcel));
                     dal.Update<DO.Parcel>(parcel.Id, drone.Id, nameof(DO.Parcel.DroneId));
 
-                    updateView(new State() { remainDistance=distance  , pickedUp = parcelPickedUp, stationId = 0, inWayToStation = false });
+                    updateView(new State() { remainDistance = distance, pickedUp = parcelPickedUp, stationId = 0, inWayToStation = false });
                 }
             }
         }
@@ -274,7 +285,7 @@ namespace BL
             }
         }
 
-        private void GoAhead(Location targetLocation, DroneToList drone)     
+        private void GoAhead(Location targetLocation, DroneToList drone)
         {
             double delta = distance < STEP ? distance : STEP;
             //distance = Extensions.CalculateDistance(drone.CurrLocation, targetLocation);

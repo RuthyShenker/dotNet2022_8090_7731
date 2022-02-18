@@ -12,4 +12,28 @@
     <PickingUp>2022-02-17T21:57:42.869892+02:00</PickingUp>
     <Arrival>2022-02-17T21:57:42.8738961+02:00</Arrival>
   </Parcel>
+  <Parcel>
+    <Id>1037</Id>
+    <SenderId>777777777</SenderId>
+    <GetterId>999999999</GetterId>
+    <Weight>Light</Weight>
+    <MPriority>Normal</MPriority>
+    <DroneId>4444</DroneId>
+    <CreatedTime>2022-02-18T09:05:01.1425214+02:00</CreatedTime>
+    <BelongParcel>2022-02-18T09:05:01.3591279+02:00</BelongParcel>
+    <PickingUp>2022-02-18T09:34:26.5080529+02:00</PickingUp>
+    <Arrival>2022-02-18T09:34:26.5151438+02:00</Arrival>
+  </Parcel>
+  <Parcel>
+    <Id>1038</Id>
+    <SenderId>777777777</SenderId>
+    <GetterId>999999999</GetterId>
+    <Weight>Light</Weight>
+    <MPriority>Normal</MPriority>
+    <DroneId>4444</DroneId>
+    <CreatedTime>2022-02-18T09:54:34.306862+02:00</CreatedTime>
+    <BelongParcel>2022-02-18T09:54:34.6220381+02:00</BelongParcel>
+    <PickingUp>2022-02-18T10:13:34.1374879+02:00</PickingUp>
+    <Arrival>2022-02-18T10:13:34.1444322+02:00</Arrival>
+  </Parcel>
 </ArrayOfParcel>

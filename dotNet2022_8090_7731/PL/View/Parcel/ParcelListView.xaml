@@ -10,13 +10,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         Title="ParcelListView" Height="450" Width="800">
     <Window.Resources>
-        <!--<ObjectDataProvider x:Key="ParcelStatusEnum" MethodName="GetValues" 
-                            ObjectType="{x:Type System:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="BO:ParcelStatus"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>-->
-
+        
         <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
@@ -25,69 +19,47 @@
     <ScrollViewer>
         <StackPanel Orientation="Vertical" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <TextBlock Text="Filter:"/>
+           
             <ComboBox ItemsSource="{Binding FilterParcelOptions}" 
-                  SelectedItem="{Binding FilterParcels}" VerticalAlignment="Top" HorizontalContentAlignment="Left"
-                      HorizontalAlignment="Left"  MaxWidth="120" MaxHeight="60" MinHeight="40" MinWidth="100" />
+                      SelectedItem="{Binding FilterParcels}" 
+                      VerticalAlignment="Top" 
+                      HorizontalContentAlignment="Left"
+                      HorizontalAlignment="Left"  
+                      MaxWidth="120" MaxHeight="60" MinHeight="40" MinWidth="100" />
 
-            <!--<StackPanel>
-                <TextBlock Text="Filter"/>
-                <StackPanel>
-                    <DockPanel>
-                        <TextBlock Text="Created After"/>
-                        <DatePicker x:Name="click" 
-                        Width="120"
-                        FlowDirection="RightToLeft"
-                        materialDesign:HintAssist.Hint="Choose Date"/>
-                    </DockPanel>
+            <Label>Group:</Label>
 
-                    <DockPanel>
-                        <TextBlock Text="Created Before"/>
-                        <DatePicker
-                       Width="120"
-                       FlowDirection="RightToLeft"
-                       materialDesign:HintAssist.Hint="Choose Date" />
-                    </DockPanel>
-                </StackPanel>
-            </StackPanel>-->
-            <Label>
-                Group:
-            </Label>
             <ComboBox ItemsSource="{Binding GroupOptions }"
-                  SelectedItem="{Binding GroupBy}" VerticalAlignment="Top" HorizontalContentAlignment="Left"
-                      HorizontalAlignment="Left"  MaxWidth="120" MaxHeight="60" MinHeight="40" MinWidth="100"  />
+                      SelectedItem="{Binding GroupBy}" 
+                      VerticalAlignment="Top" 
+                      HorizontalContentAlignment="Left"
+                      HorizontalAlignment="Left" 
+                      MaxWidth="120" MaxHeight="60" MinHeight="40" MinWidth="100"  />
 
             <ListView x:Name="ParcelList" ItemsSource="{Binding ParcelList}"  >
-                <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
-                <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
                 <ListView.View>
-                    
-
-
-
-
-
                     <GridView>
                         <GridViewColumn
-        DisplayMemberBinding="{Binding Id}"
-        Header="Id" />
+                             DisplayMemberBinding="{Binding Id}"
+                             Header="Id" />
                         <GridViewColumn
-        DisplayMemberBinding="{Binding SenderName}"
-        Header="SenderName" />
+                             DisplayMemberBinding="{Binding SenderName}"
+                             Header="SenderName" />
                         <GridViewColumn
-        DisplayMemberBinding="{Binding GetterName}"
-        Header="GetterName" />
+                             DisplayMemberBinding="{Binding GetterName}"
+                             Header="GetterName" />
                         <GridViewColumn
-        DisplayMemberBinding="{Binding Weight}"
-        Header="Weight" />
+                             DisplayMemberBinding="{Binding Weight}"
+                             Header="Weight" />
                         <GridViewColumn
-        DisplayMemberBinding="{Binding MyPriority}"
-        Header="MyPriority" />
+                             DisplayMemberBinding="{Binding MyPriority}"
+                             Header="MyPriority" />
                         <GridViewColumn
-        DisplayMemberBinding="{Binding Status}"
-        Header="Status" />
-
+                             DisplayMemberBinding="{Binding Status}"
+                             Header="Status" />
                     </GridView>
                 </ListView.View>
+
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction 
@@ -95,15 +67,6 @@
                         CommandParameter="{Binding ElementName=ParcelList, Path=SelectedItem}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-                <!--<ListView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </ListView.GroupStyle>-->
             </ListView>
 
             <!--<ListView ItemsSource="{Binding ParcelListBySender}"  >

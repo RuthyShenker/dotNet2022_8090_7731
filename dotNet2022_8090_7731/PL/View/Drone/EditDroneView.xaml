@@ -7,7 +7,7 @@
              xmlns:BO="clr-namespace:BO;assembly=BL"
              xmlns:PO="clr-namespace:PO"
              xmlns:Converters="clr-namespace:PL.Converters"
- mc:Ignorable="d" 
+             mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -56,60 +56,44 @@
         <Converters:VisibilityByDroneToBelongOrPickOrArrivalParcelConverter x:Key="VisibilityByDroneToBelongOrPickOrArrivalParcelConverter"/>
         <Converters:ParcelInTransferVisibilityConverter x:Key="ParcelInTransferVisibilityConverter"/>
     </UserControl.Resources>
+    
     <StackPanel   ScrollViewer.VerticalScrollBarVisibility="Auto">
 
-        <TextBox x:Name="Id"
-            Text = "{Binding Drone.Id, UpdateSourceTrigger=PropertyChanged}"
-                 IsEnabled="False"  materialDesign:HintAssist.Hint="Id" />
+        <TextBox Text="{Binding Drone.Id, UpdateSourceTrigger=PropertyChanged}"
+                 IsEnabled="False"  
+                 materialDesign:HintAssist.Hint="Id" />
 
-        <TextBox Text = "{Binding Drone.BatteryStatus,  UpdateSourceTrigger=PropertyChanged}" 
-                    materialDesign:HintAssist.Hint="Battery" 
-                    IsEnabled="False" />
+        <TextBox Text="{Binding Drone.BatteryStatus, UpdateSourceTrigger=PropertyChanged}" 
+                 materialDesign:HintAssist.Hint="Battery" 
+                 IsEnabled="False" />
 
         <TextBlock Text = "MaxWeight:" HorizontalAlignment="Center"/>
+        
         <ComboBox ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" 
                   SelectedItem="{Binding Drone.Weight}"  
                   materialDesign:HintAssist.Hint="MaxWeight" 
                   IsEnabled="False" />
 
-        <TextBox Text = "{Binding Drone.Model, UpdateSourceTrigger=PropertyChanged ,ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true}"
+        <TextBox Text="{Binding Drone.Model, 
+                    UpdateSourceTrigger=PropertyChanged, 
+                    ValidatesOnDataErrors=true,
+                    NotifyOnValidationError=true}"
                  materialDesign:HintAssist.Hint="Model" />
 
-        <TextBlock  Text = "Status:" HorizontalAlignment="Center" />
+        <TextBlock Text = "Status:" HorizontalAlignment="Center" />
         <ComboBox ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" 
-                    SelectedItem="{Binding Drone.Status, UpdateSourceTrigger=PropertyChanged}" 
-                    materialDesign:HintAssist.Hint="Status"
-                    IsEnabled="False"/>
+                  SelectedItem="{Binding Drone.Status, UpdateSourceTrigger=PropertyChanged}" 
+                  materialDesign:HintAssist.Hint="Status"
+                  IsEnabled="False"/>
         
-        <ProgressBar
-                Style="{StaticResource MaterialDesignCircularProgressBar}"
-                Value="0"
-                IsIndeterminate="{Binding Drone.SimulatorStatus}" />
+        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                     Value="0"
+                     IsIndeterminate="{Binding Drone.SimulatorStatus}" />
         
-        <!--<TextBox Text = "{Binding Drone.Status, UpdateSourceTrigger=PropertyChanged}"
-                     materialDesign:HintAssist.Hint="Status"
-                     IsEnabled="False"/>-->
-        <!--<StackPanel x:Name="DeliveryContainer">
-                    <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
-                    <ComboBox x:Name = "DeliveryComboBox" ItemsSource="{Binding Source={StaticResource AvailableSlots}, Path=Name}"  />
-
-                </StackPanel>-->
-
-        <!--<StackPanel x:Name="Location">
-            <TextBox Text = "{Binding Drone.Location.Longitude, UpdateSourceTrigger=PropertyChanged}"
-                     materialDesign:HintAssist.Hint="Longitude"
-                     IsEnabled="False" />
-
-            <TextBox Text = "{Binding Drone.Location.Latitude, UpdateSourceTrigger=PropertyChanged}"
-                     materialDesign:HintAssist.Hint="Latitude"
-                     IsEnabled="False"/>
-        </StackPanel>-->
         <TextBox Text = "{Binding Drone.Location, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                      materialDesign:HintAssist.Hint="Location"
                      IsEnabled="False" MinWidth="420"/>
-
-
+        
         <Button Style="{StaticResource MaterialDesignFlatButton}"
                 HorizontalAlignment="Center"
                 Content="See delivered parcel"
@@ -117,20 +101,19 @@
                 CommandParameter="{Binding Drone.ParcelInTransfer}" >
         </Button>
 
-
         <Button x:Name="Model"
             Content = "Update Model:" 
                 Command="{Binding UpdateModelOfDroneCommand }"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
 
-        <Button Visibility="{Binding Drone.Status ,Converter={StaticResource DroneStatusToVisibilityConverter}}" 
+        <Button Visibility="{Binding Drone.Status, Converter={StaticResource DroneStatusToVisibilityConverter}}" 
                 Height="50"
                 Content="{Binding Drone.Status, Converter={StaticResource ContentByDroneStatusConverter}}"
                 Command="{Binding ChargeDroneCommand}" />
 
         <Button Command="{Binding AssignParcelToDroneCommand}"
-                Visibility="{Binding Drone,  Converter={StaticResource VisibilityByDroneToBelongOrPickOrArrivalParcelConverter }}" 
-                Content="{Binding Drone,  Converter={StaticResource ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter}}" />
+                Visibility="{Binding Drone, Converter={StaticResource VisibilityByDroneToBelongOrPickOrArrivalParcelConverter }}" 
+                Content="{Binding Drone, Converter={StaticResource ContentByDroneStatusBelongOrPickOrDeliveryParcelConverter}}" />
 
         <Button Content="close" 
                 Command="{Binding CloseWindowCommand }"
@@ -144,94 +127,19 @@
         <Button Content="{Binding Drone, Converter={StaticResource ContentByStatusOfSimulatorConverter}}"
                 Command="{Binding StartOrStopSimulatorCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
-                
-
-
-        <!--<Button.Content>
-                <MultiBinding Converter="{StaticResource ContentByStatusOfSimulatorConverter}">
-                    <Binding  ElementName="Id"/>
-                </MultiBinding>
-            </Button.Content>-->
-
-            <!--Content="{Binding Drone.Automatic, ConverterParameter={ RelativeSource="{RelativeSource Mode=FindAncestor,
-                                                     AncestorType=UserControl}"}, Converter={StaticResource ContentByStatusOfSimulatorConverter}}">-->
-       
-        <ProgressBar Name="BatteryProgressBar" Value="{Binding Drone.BatteryStatus,Converter={StaticResource batteryToProgressBarConverter}}" Width="Auto" Foreground="{Binding Drone.BatteryStatus, Converter={StaticResource batteryToColorConverter}}"/>
+           
+        <ProgressBar Name="BatteryProgressBar" 
+                     Value="{Binding Drone.BatteryStatus,
+                     Converter={StaticResource batteryToProgressBarConverter}}"
+                     Width="Auto" Foreground="{Binding Drone.BatteryStatus, 
+                     Converter={StaticResource batteryToColorConverter}}"/>
 
         <TextBlock Text = "{Binding Drone.Info, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Distance"
                      IsEnabled="False"/>
-        <!--<Button x:Name="close_window_button" Content="close" Command="{Binding CloseWindowCommand }" CommandParameter="{Binding RelativeSource=self}"></Button>-->
-        <!--<Button x:Name="close_window_button" Content="close" Command="{x:Static}"  CommandParameter="{Binding RelativeSource=self}"></Button>-->
-
+      
         <StackPanel x:Name="message">
         </StackPanel>
     </StackPanel>
 
-
-    <!--<Expander Header="Parcel in transfer" >
-            <StackPanel x:Name="PInTransfer"
-                        Visibility="{Binding Drone,Converter={StaticResource ParcelInTransferVisibilityConverter}}">
-                        
-                <TextBlock x:Name="PInTransferPId" Text = "Id" IsEnabled="True" TextWrapping="Wrap"/>
-                <TextBox x:Name="PInTransferPIdTextBox" Text = "{Binding Drone.ParcelInTransfer.PId, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-
-                <TextBlock x:Name="PInTransferIsInWay" Text = "Is picked up?" IsEnabled="True" TextWrapping="Wrap"/>
-                <TextBox x:Name="PInTransferIsInWayTextBox" Text = "{Binding Drone.ParcelInTransfer.IsInWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-
-                <TextBlock x:Name="PInTransferMPriority" Text = "Priority" IsEnabled="True" TextWrapping="Wrap"/>
-                <TextBox x:Name="PInTransferMPriorityTextBox" Text = "{Binding Drone.ParcelInTransfer.MPriority, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-
-                <TextBlock x:Name="PInTransferWeight" Text = "Weight" IsEnabled="True" TextWrapping="Wrap"/>
-                <TextBox x:Name="PInTransferWeightTextBox" Text = "{Binding Drone.ParcelInTransfer.Weight, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-
-                <Expander x:Name="ParInTransferSender" Header="Sender">
-                    <StackPanel x:Name="PInTransferSenderContainer">
-                        <TextBlock  Text = "Id:" TextWrapping = "Wrap"/>
-                        <TextBox x:Name="PInTransferSenderId" Text = "{Binding Drone.ParcelInTransfer.Sender.Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-
-                        <TextBlock Text = "Name:" TextWrapping = "Wrap" />
-                        <TextBox x:Name="PInTransferSenderName" Text = "{Binding Drone.ParcelInTransfer.Sender.Name, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-
-                        <Expander Header="Location">
-                            <StackPanel x:Name="PInTransferCollectionLocation">
-                                <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
-                                <TextBox x:Name = "PInTransferCollectionLongitudeLocationTextBox" Text = "{Binding Drone.ParcelInTransfer.CollectionLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"  TextWrapping="Wrap"/>
-
-                                <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
-                                <TextBox x:Name = "PInTransferCollectionLatitudeLocationTextBox" Text = "{Binding Drone.ParcelInTransfer.CollectionLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-                            </StackPanel>
-                        </Expander>
-
-                    </StackPanel>
-                </Expander>
-
-                <Expander x:Name="ParInTransferGetter" Header="Getter">
-                    <StackPanel  x:Name="PInTransferGetterContainer">
-                        <TextBlock  Text = "Id:" TextWrapping = "Wrap"/>
-                        <TextBox x:Name="PInTransferGetterIdTextBox" 
-                                 Text = "{Binding Drone.ParcelInTransfer.Getter.Id, UpdateSourceTrigger=PropertyChanged}" 
-                                 IsEnabled="False" TextWrapping="Wrap"/>
-
-                        <TextBlock  Text = "Name:" TextWrapping = "Wrap" />
-                        <TextBox x:Name="PInTransferGetterNameTextBox" Text = "{Binding Drone.ParcelInTransfer.Getter.Name, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-
-                        <Expander Header="Location">
-                            <StackPanel x:Name="PInTransferDeliveryLocation">
-                                <TextBlock  Text = "Longitude:" TextWrapping = "Wrap" />
-                                <TextBox x:Name = "PInTransferDeliveryLocationLongitudeLocationTextBox" Text = "{Binding Drone.ParcelInTransfer.CollectionLocation.Longitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-
-                                <TextBlock  Text = "Latitude:" TextWrapping = "Wrap" />
-                                <TextBox x:Name = "PInTransferDeliveryLocationLatitudeLocationTextBox" Text = "{Binding Drone.ParcelInTransfer.CollectionLocation.Latitude, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" TextWrapping="Wrap"/>
-                            </StackPanel>
-                        </Expander>
-
-                    </StackPanel>
-                </Expander>
-
-
-                <TextBlock  Text = "TransDistance:" TextWrapping = "Wrap" ></TextBlock>
-                <TextBox x:Name="PInTransferTransDistanceTextBox" Text = "{Binding Drone.ParcelInTransfer.TransDistance, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
-            </StackPanel>
-        </Expander>-->
 </UserControl>

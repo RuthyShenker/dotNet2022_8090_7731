@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using static BL.Extensions;
 using System.Runtime.CompilerServices;
 
-//lDroneToList.Any(drone => drone.Id == Id);
 namespace BL
 {
     /// <summary>
@@ -58,18 +57,20 @@ namespace BL
                         throw new BO.InValidActionException(typeof(DO.BaseStation), StationId, "There aren't free positions ");
                     }
 
-                    bLDrone.BatteryStatus = 0;
-                    //bLDrone.BatteryStatus = rand.Next(20, 41);
-                    bLDrone.DroneStatus = DroneStatus.Maintenance;
-                    dal.Add(new DO.ChargingDrone() { DroneId = bLDrone.Id, StationId = StationId, EnteranceTime = DateTime.Now });
+                    dal.Add( new DO.ChargingDrone()
+                    {
+                        DroneId = bLDrone.Id,
+                        StationId = StationId, 
+                        EnteranceTime = DateTime.Now
+                    });
 
                     lDroneToList.Add(new()
                     {
                         Id = bLDrone.Id,
                         Model = bLDrone.Model,
                         Weight = bLDrone.Weight,
-                        BatteryStatus = bLDrone.BatteryStatus,
-                        DStatus = bLDrone.DroneStatus,
+                        BatteryStatus = 0,
+                        DStatus = DroneStatus.Maintenance,
                         CurrLocation = new Location() { Longitude = station.Longitude, Latitude = station.Latitude },
                         DeliveredParcelId = null
                     });

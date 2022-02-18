@@ -45,16 +45,16 @@
                  IsEnabled="False" />
 
         <TextBox Text="{Binding Customer.Name,
-            ValidatesOnDataErrors=true, 
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
-                  materialDesign:HintAssist.Hint="Name"
-                  materialDesign:TextFieldAssist.HasClearButton="True"  />
+                            ValidatesOnDataErrors=true, 
+                            NotifyOnValidationError=true,
+                            UpdateSourceTrigger=PropertyChanged}"
+                 materialDesign:HintAssist.Hint="Name"
+                 materialDesign:TextFieldAssist.HasClearButton="True"  />
 
         <TextBox Text="{Binding Customer.Phone, 
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
+                            ValidatesOnDataErrors=true,
+                            NotifyOnValidationError=true,
+                            UpdateSourceTrigger=PropertyChanged}"
                   materialDesign:HintAssist.Hint="Phone"
                   materialDesign:TextFieldAssist.HasClearButton="True"  />
 
