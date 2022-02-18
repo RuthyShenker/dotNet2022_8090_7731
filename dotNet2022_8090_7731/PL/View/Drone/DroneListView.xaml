@@ -10,25 +10,11 @@
         mc:Ignorable="d"
         Title="DroneListView" Height="450" Width="800" >
     <!--Closing="Window_Closing"-->
+    
     <Window.Resources>
         <ObjectDataProvider x:Key="close" MethodName="CloseWindowCommand"></ObjectDataProvider>
-        <!--<ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
-                            ObjectType="{x:Type System:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="BO:WeightCategories"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>-->
-
-        <!--<ObjectDataProvider x:Key="DroneStatusEnum" MethodName="GetValues" 
-                            ObjectType="{x:Type System:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="BO:DroneStatus"/>
-            </ObjectDataProvider.MethodParameters>
-        
-        
-        </ObjectDataProvider>-->
-
     </Window.Resources>
+    
     <ScrollViewer>
         <Grid ScrollViewer.VerticalScrollBarVisibility="Auto">
             <Grid.RowDefinitions>
@@ -47,66 +33,60 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions >
-                <Label Content="Drone Status:" Grid.Column="0" HorizontalAlignment="Left"
-                   Margin="81,19,0,0" VerticalAlignment="Top"/>
+                
+                <Label Content="Drone Status:"
+                       Grid.Column="0" 
+                       HorizontalAlignment="Left"
+                       Margin="81,19,0,0" 
+                       VerticalAlignment="Top"/>
                 <ComboBox  
                       ItemsSource="{Binding DroneStatusEnum}" 
                       SelectedItem="{Binding StatusSelectedItem}"
                       Margin="40,9,40,10"  Width="120" Grid.Column="1" />
-                <Label Content="Drone Max Weight:" Grid.Column="2" HorizontalAlignment="Center"
-                   Margin="0,19,0,0" VerticalAlignment="Top"/>
+                
+                <Label Content="Drone Max Weight:" 
+                       Grid.Column="2" 
+                       HorizontalAlignment="Center"
+                       Margin="0,19,0,0" VerticalAlignment="Top"/>
+                
                 <ComboBox  ItemsSource="{Binding WeightCategoriesEnum}"
                     SelectedItem="{Binding WeightSelectedItem}"
                     Grid.Column="3" Margin="39,9,39,11"/>
-                <!--Source={StaticResource-->
 
                 <ComboBox ItemsSource="{Binding GroupOptions }" 
-                  SelectedItem="{Binding GroupDrones}"
-                  Grid.Column="4"/>
+                          SelectedItem="{Binding GroupDrones}"
+                          Grid.Column="4"/>
             </Grid>
+            
             <ListView x:Name="DroneList" Grid.Row="1" ItemsSource="{Binding DroneList}" >
-
-
-
-
-
-
-                <!--BatteryStatus
-DroneStatus
-PInTransfer
-CurrLocation-->
-
 
                 <ListView.View>
                     <GridView>
                         <GridViewColumn
-        DisplayMemberBinding="{Binding Id}"
-        Header="Id" />
+                             DisplayMemberBinding="{Binding Id}"
+                             Header="Id" />
                         <GridViewColumn
-        DisplayMemberBinding="{Binding Model}"
-        Header="Model" />
+                             DisplayMemberBinding="{Binding Model}"
+                             Header="Model" />
                         <GridViewColumn
-        DisplayMemberBinding="{Binding Weight}"
-        Header="Weight" />
+                             DisplayMemberBinding="{Binding Weight}"
+                             Header="Weight" />
                         <GridViewColumn
-        DisplayMemberBinding="{Binding BatteryStatus}"
-        Header="Battery Status" />
+                             DisplayMemberBinding="{Binding BatteryStatus}"
+                             Header="Battery Status" />
                         <GridViewColumn
-        DisplayMemberBinding="{Binding DStatus}"
-        Header="Drone Status" />
+                             DisplayMemberBinding="{Binding DStatus}"
+                             Header="Drone Status" />
                         <GridViewColumn
-        DisplayMemberBinding="{Binding CurrLocation}"
-        Header="Drone Location" />
-                        <!--<GridViewColumn
-        DisplayMemberBinding="{Binding CurrLocation.Latitude}"
-        Header="Latitude" />-->
+                             DisplayMemberBinding="{Binding CurrLocation}"
+                             Header="Drone Location" />
+
                         <GridViewColumn
-        DisplayMemberBinding="{Binding DeliveredParcelId }"
-        Header="Parcel Id" />
+                             DisplayMemberBinding="{Binding DeliveredParcelId }"
+                             Header="Parcel Id" />
                     </GridView>
-
-
                 </ListView.View>
+                
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction 
@@ -115,15 +95,8 @@ CurrLocation-->
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                <!--<ContentControl Content="{Binding }" MouseDoubleClick="ContentControl_MouseDoubleClick"/>-->
-                <!--</DataTemplate>
-            </ListView.ItemTemplate>-->
             </ListView>
-            <!--<Button Content="AddDrone:" Grid.Row="1"
-                Command="{Binding AddDroneCommand}" Margin="0,214,0,140" />-->
-            <!--<Button x:Name="close_window" Content="close" Width="90" Grid.Row="3" Grid.Column="4"
-                Command="{Binding CloseWindowCommand }"
-                CommandParameter="{Binding ElementName=close_window}" />-->
+          
             <Button Content="ADD" Grid.Row="2"
                 Command="{Binding AddDroneCommand}"
                 Style="{StaticResource MaterialDesignFlatButton}"

@@ -8,7 +8,7 @@
         Title="CustomerView" Height="450" Width="800">
     <ScrollViewer>
         <StackPanel>
-            <ContentControl  Content="{Binding }" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+            <ContentControl  Content="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         </StackPanel>
     </ScrollViewer>
 </Window>

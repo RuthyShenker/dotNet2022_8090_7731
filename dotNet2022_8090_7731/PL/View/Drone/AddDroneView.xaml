@@ -8,9 +8,7 @@
              xmlns:CustomControls="clr-namespace:PL.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <!--<UserControl.DataContext>
-        <local:AddDroneViewModel/>
-    </UserControl.DataContext>-->
+   
     <UserControl.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
             <Setter Property="Margin" Value="0,15" />
@@ -31,20 +29,31 @@
 
         <TextBlock FontSize="25" FontWeight="Bold" Text="Add a Drone" Margin="40,20" Foreground="#505050"/>
 
-        <CustomControls:NumericTextBox   Text="{Binding Drone.Id, ValidatesOnDataErrors=true, NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Id" />
-        <TextBox   Text="{Binding Drone.Id, ValidatesOnDataErrors=true, NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Id" />
+        <TextBox  Text="{Binding Drone.Id,
+            ValidatesOnDataErrors=true,
+            NotifyOnValidationError=true,
+            UpdateSourceTrigger=PropertyChanged}"
+                  materialDesign:HintAssist.Hint="Id" />
         
-        <TextBox Text="{Binding Drone.Model, ValidatesOnDataErrors=true, NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Model" />
-        <ComboBox SelectedItem="{Binding Drone.StationId, ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged}"
-                  ItemsSource="{Binding StationOptions}" materialDesign:HintAssist.Hint="Base station Id" />
+        <TextBox Text="{Binding Drone.Model,
+            ValidatesOnDataErrors=true,
+            NotifyOnValidationError=true,
+            UpdateSourceTrigger=PropertyChanged}" 
+                 materialDesign:HintAssist.Hint="Model" />
         
-        <ComboBox SelectedItem="{Binding Drone.MaxWeight, ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged}"
-                  ItemsSource="{Binding WeightOptions}" materialDesign:HintAssist.Hint="Weight Category" />
+        <ComboBox SelectedItem="{Binding Drone.StationId,
+            ValidatesOnDataErrors=true,
+            NotifyOnValidationError=true,
+            UpdateSourceTrigger=PropertyChanged}"
+                ItemsSource="{Binding StationOptions}"
+                materialDesign:HintAssist.Hint="Base station Id" />
+        
+        <ComboBox SelectedItem="{Binding Drone.MaxWeight, 
+            ValidatesOnDataErrors=true,
+            NotifyOnValidationError=true, 
+            UpdateSourceTrigger=PropertyChanged}"
+                ItemsSource="{Binding WeightOptions}" 
+                materialDesign:HintAssist.Hint="Weight Category" />
         
         
         <Button Content="ADD"

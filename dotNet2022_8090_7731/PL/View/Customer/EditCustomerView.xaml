@@ -58,15 +58,6 @@
                   materialDesign:HintAssist.Hint="Phone"
                   materialDesign:TextFieldAssist.HasClearButton="True"  />
 
-        <!--<TextBox Text="{Binding Customer.Location.Longitude,
-                                UpdateSourceTrigger=PropertyChanged }"
-                 materialDesign:HintAssist.Hint="Longitude"
-                 IsEnabled="False"/>
-
-        <TextBox Text="{Binding Customer.Location.Latitude,
-                                UpdateSourceTrigger=PropertyChanged}"
-                 materialDesign:HintAssist.Hint="Latitude"
-                 IsEnabled="False" />-->
         <TextBox Text="{Binding Customer.Location,
                                 UpdateSourceTrigger=PropertyChanged }"
                  materialDesign:HintAssist.Hint="Location"
@@ -77,34 +68,29 @@
                   ItemsSource="{Binding Customer.LForCustomer}"
                   x:Name="ParcelsForCustomerListView">
 
-
-
-
-
             <ListView.View>
                 <GridView>
                     <GridViewColumn
-        DisplayMemberBinding="{Binding Id}"
-        Header="Id" />
+                        DisplayMemberBinding="{Binding Id}"
+                        Header="Id" />
                     <GridViewColumn
-        DisplayMemberBinding="{Binding Weight}"
-        Header="Weight" />
+                        DisplayMemberBinding="{Binding Weight}"
+                        Header="Weight" />
                     <GridViewColumn
-        DisplayMemberBinding="{Binding MPriority}"
-        Header="MPriority" />
+                        DisplayMemberBinding="{Binding MPriority}"
+                        Header="MPriority" />
                     <GridViewColumn
-        DisplayMemberBinding="{Binding PStatus}"
-        Header="Parcel Status" />
+                        DisplayMemberBinding="{Binding PStatus}"
+                        Header="Parcel Status" />
                     <GridViewColumn
-        DisplayMemberBinding="{Binding OnTheOtherHand.Id}"
-        Header="Sender Id" />
+                        DisplayMemberBinding="{Binding OnTheOtherHand.Id}"
+                        Header="Sender Id" />
                     <GridViewColumn
-        DisplayMemberBinding="{Binding OnTheOtherHand.Name}"
-        Header="Sender Name" />
+                        DisplayMemberBinding="{Binding OnTheOtherHand.Name}"
+                        Header="Sender Name" />
                 </GridView>
             </ListView.View>
-            <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
-            <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
+
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 
@@ -114,7 +100,6 @@
             </i:Interaction.Triggers>
         </ListView>
 
-
         <Label>From:</Label>
         <ListView Grid.Row="1"  
                   ItemsSource="{Binding Customer.LFromCustomer}"
@@ -122,27 +107,26 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn
-        DisplayMemberBinding="{Binding Id}"
-        Header="Id" />
+                        DisplayMemberBinding="{Binding Id}"
+                        Header="Id" />
                     <GridViewColumn
-        DisplayMemberBinding="{Binding Weight}"
-        Header="Weight" />
+                        DisplayMemberBinding="{Binding Weight}"
+                        Header="Weight" />
                     <GridViewColumn
-        DisplayMemberBinding="{Binding MPriority}"
-        Header="MPriority" />
+                        DisplayMemberBinding="{Binding MPriority}"
+                        Header="MPriority" />
                     <GridViewColumn
-        DisplayMemberBinding="{Binding PStatus}"
-        Header="PStatus" />
+                        DisplayMemberBinding="{Binding PStatus}"
+                        Header="PStatus" />
                     <GridViewColumn
-        DisplayMemberBinding="{Binding OnTheOtherHand.Id}"
-        Header="Getter Id" />
+                        DisplayMemberBinding="{Binding OnTheOtherHand.Id}"
+                        Header="Getter Id" />
                     <GridViewColumn
-        DisplayMemberBinding="{Binding OnTheOtherHand.Name}"
-        Header="Getter Name" />
+                        DisplayMemberBinding="{Binding OnTheOtherHand.Name}"
+                        Header="Getter Name" />
                 </GridView>
             </ListView.View>
-            <!--SelectedItem="{Binding SelectedDisplayItem, Mode=TwoWay}"-->
-            <!--ItemTemplate="{StaticResource SelectedDisplayItemTemplate}"-->
+           
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction 

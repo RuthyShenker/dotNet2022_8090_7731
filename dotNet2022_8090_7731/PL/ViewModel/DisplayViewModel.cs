@@ -28,7 +28,6 @@ namespace PL.ViewModels
             DroneListViewCommand = new RelayCommand<object>(ShowDroneListView);
             StationListViewCommand = new RelayCommand<object>(ShowStationListView);
             ParcelListViewCommand = new RelayCommand<object>(ShowParcelListView);
-
         }
         
         private void ShowParcelListView(object obj)
