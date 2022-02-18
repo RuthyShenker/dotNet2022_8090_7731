@@ -29,7 +29,7 @@ namespace PO
         /// <param name="mPriority"></param>
         /// <param name="dInParcel"></param>
         public EditParcel(int senderId, int getterId, WeightCategories weight, Priority mPriority, DroneInParcel dInParcel)
-           : this(0, new CustomerInParcel(senderId, string.Empty), new CustomerInParcel(getterId, string.Empty),
+           : this(0, new CustomerInParcel() { Id = senderId, Name = string.Empty }, new CustomerInParcel() { Id = getterId, Name = string.Empty },
                 weight, mPriority, dInParcel, DateTime.Now, null, null, null)
         {
         }
