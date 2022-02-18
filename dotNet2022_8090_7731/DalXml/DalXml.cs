@@ -60,19 +60,7 @@ namespace Dal
         private DalXml()
         {
             xmlFilesLocation = $@"{Directory.GetCurrentDirectory()}\..\..\XmlFiles";
-            #region
-            //List<Drone> list = new List<Drone>();
-            //List<Customer> list1 = new List<Customer>();
-            //List<BaseStation> list2 = new List<BaseStation>();
-            //List<Parcel> list3 = new List<Parcel>();
-            //List<Drone> list = new List<Drone>();
-            //List<T> list1 = new List<T>();
-            //list.Add(item);
-            //XMLTools.SaveListToXmlSerializer<Drone>(list, GetXmlFilePath(typeof(Drone)));
-            //XMLTools.SaveListToXmlSerializer<Customer>(list1, GetXmlFilePath(typeof(Customer)));
-            //XMLTools.SaveListToXmlSerializer<BaseStation>(list2, GetXmlFilePath(typeof(BaseStation)));
-            //XMLTools.SaveListToXmlSerializer<Parcel>(list3, GetXmlFilePath(typeof(Parcel)));
-            #endregion
+           
         }
 
         /// <summary>
@@ -150,9 +138,9 @@ namespace Dal
         {
             //problem:!!!
             if (typeof(T) == typeof(DO.Drone))
-                return XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone))).Cast<T>().Where(item => predicate(item));
+                return XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone)))?.Cast<T>().Where(item => predicate(item));
             else
-                return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)))
+                return XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)))?
               .FindAll(predicate);
         }
 
@@ -363,7 +351,6 @@ namespace Dal
         /// <returns>returns true if it exists in the list of type of T else false.</returns>
         private bool DoesExistInList<T>(T item) where T : IDalDo
         {
-            //return ((List<T>)DataSource.Data[typeof(T)]).Any(i => i.Equals(item));
 
             if (typeof(T) == typeof(Drone))
                 return XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone)))
@@ -376,6 +363,7 @@ namespace Dal
                 reader.Close();
                 return List.Any(i => i.Equals(item));
             }
+
         }
     }
 }
