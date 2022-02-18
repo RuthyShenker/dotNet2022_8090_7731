@@ -11,24 +11,27 @@ using PL.View;
 using PO;
 namespace PL.ViewModels
 {
+    /// <summary>
+    /// A  public class EditDroneViewModel impliments INotify
+    /// </summary>
     public class EditDroneViewModel : INotify
     {
         readonly BlApi.IBL bl;
-        //readonly Action refreshDrones;
         private EditDrone drone;
 
         public RelayCommand<object> ChargeDroneCommand { get; set; }
-
         public RelayCommand<object> AssignParcelToDroneCommand { get; set; }
-
         public RelayCommand<object> UpdateModelOfDroneCommand { get; set; }
-
         public RelayCommand<object> CloseWindowCommand { get; set; }
-
         public RelayCommand<object> DeleteDroneCommand { get; set; }
         public RelayCommand<object> OpenParcelWindowCommand { get; set; }
         public RelayCommand<object> StartOrStopSimulatorCommand { get; set; }
 
+        /// <summary>
+        /// A constructor of EditDroneViewModel that gets bl,BO.Drone.
+        /// </summary>
+        /// <param name="bl"></param>
+        /// <param name="drone"></param>
         public EditDroneViewModel(BlApi.IBL bl, BO.Drone drone)
         {
             Refresh.Drone += RefreshDrone;
@@ -44,6 +47,9 @@ namespace PL.ViewModels
             StartOrStopSimulatorCommand = new RelayCommand<object>(StartOrStopSimulator);
         }
 
+        /// <summary>
+        /// A function that updates Drone View.
+        /// </summary>
         private void updateDroneView()
         {
             Refresh.Invoke();
@@ -64,8 +70,10 @@ namespace PL.ViewModels
         private void updateDrone() => worker.ReportProgress(0);
         private bool checkStop() => worker.CancellationPending;
 
-        // private void Manual_Click(object sender, RoutedEventArgs e) => worker?.CancelAsync();
-
+        /// <summary>
+        /// A function that Starts Or Stops Simulator.
+        /// </summary>
+        /// <param name="obj"></param>
         private void StartOrStopSimulator(object obj)
         {
             if (Refresh.workers.ContainsKey(Drone.Id))
@@ -129,6 +137,10 @@ namespace PL.ViewModels
             //}
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
         private void UpdateDroneModel(object sender)
         {
             // when we changed bl.GetDrones to return new list 

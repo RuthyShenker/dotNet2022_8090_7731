@@ -122,8 +122,6 @@ namespace PL.ViewModels
             };
         }
 
-       
-
         public EditCustomer Customer
         {
             get => customer;
