@@ -158,7 +158,7 @@
        
         <ProgressBar Name="BatteryProgressBar" Value="{Binding Drone.BatteryStatus,Converter={StaticResource batteryToProgressBarConverter}}" Width="Auto" Foreground="{Binding Drone.BatteryStatus, Converter={StaticResource batteryToColorConverter}}"/>
 
-        <TextBox Text = "{Binding Drone.Distance, UpdateSourceTrigger=PropertyChanged}"
+        <TextBlock Text = "{Binding Drone.Info, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Distance"
                      IsEnabled="False"/>
         <!--<Button x:Name="close_window_button" Content="close" Command="{Binding CloseWindowCommand }" CommandParameter="{Binding RelativeSource=self}"></Button>-->

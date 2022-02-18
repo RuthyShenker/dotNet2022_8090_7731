@@ -19,26 +19,6 @@ namespace PO
     /// </summary>
     public class EditCustomer : ObservableBase, IDataErrorInfo
     {
-        /// <summary>
-        /// A constructor with params of EditCustomer.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="phone"></param>
-        /// <param name="longitude"></param>
-        /// <param name="latitude"></param>
-        /// <param name="lFromCustomer"></param>
-        /// <param name="lForCustomer"></param>
-        public EditCustomer(int id, string name, string phone, double longitude, double latitude,
-            IEnumerable<ParcelInCustomer> lFromCustomer, IEnumerable<ParcelInCustomer> lForCustomer)
-        {
-            Id = id;
-            Name = name;
-            Phone = phone;
-            Location = new Location() { Latitude = latitude, Longitude = longitude };
-            LFromCustomer = lFromCustomer;
-            LForCustomer = lForCustomer;
-        }
 
         public int Id { get; init; }
 

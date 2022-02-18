@@ -234,41 +234,10 @@ namespace BL
             };
             lock (dal)
             {
-                #region
-                //var dParcelslist = dal.GetListFromDal<DO.Parcel>();
-                //foreach (var parcel in dParcelslist)
-                //{
-                //    if (parcel.SenderId == nCustomer.Id)
-                //    {
-                //        switch (GetParcelStatus(parcel))
-                //        {
-                //            case ParcelStatus.InDestination:
-                //                ++nCustomer.SentSupplied;
-                //                break;
-                //            default:
-                //                ++nCustomer.SentNotSupplied;
-                //                break;
-                //        }
-                //    }
-                //    else if (parcel.GetterId == nCustomer.Id)
-                //    {
-                //        switch (GetParcelStatus(parcel))
-                //        {
-                //            case ParcelStatus.InDestination:
-                //                ++nCustomer.Got;
-                //                break;
-                //            default:
-                //                ++nCustomer.InWayToCustomer;
-                //                break;
-                //        }
-                //    }
-                //}
-                #endregion
-                //??????????????????????????????problem????
-                nCustomer.SentNotSupplied = dal.GetDalListByCondition<DO.Parcel>(p => p.SenderId == customer.Id && p.Arrival != null).Count();
-                nCustomer.SentSupplied = dal.GetDalListByCondition<DO.Parcel>(p => p.SenderId == customer.Id && p.BelongParcel != null).Count();
+                nCustomer.SentNotSupplied = dal.GetDalListByCondition<DO.Parcel>(p => p.SenderId == customer.Id && p.Arrival == null).Count();
+                nCustomer.SentSupplied = dal.GetDalListByCondition<DO.Parcel>(p => p.SenderId == customer.Id && p.Arrival != null).Count();
                 nCustomer.Got = dal.GetDalListByCondition<DO.Parcel>(p => p.GetterId == customer.Id && p.Arrival != null).Count();
-                nCustomer.InWayToCustomer = dal.GetDalListByCondition<DO.Parcel>(p => p.GetterId == customer.Id && p.PickingUp != null).Count();
+                nCustomer.InWayToCustomer = dal.GetDalListByCondition<DO.Parcel>(p => p.GetterId == customer.Id && p.Arrival == null).Count();
 
             }
             return nCustomer;

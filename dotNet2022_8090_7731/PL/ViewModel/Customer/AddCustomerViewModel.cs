@@ -18,6 +18,7 @@ namespace PL.ViewModels
         public CustomerToAdd Customer { get; set; }
         public RelayCommand<object> AddCustomerCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
+
         public AddCustomerViewModel(BlApi.IBL bl,  Action<BO.Customer> switchView)
         {
             Customer = new();

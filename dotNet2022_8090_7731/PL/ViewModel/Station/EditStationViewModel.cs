@@ -27,7 +27,6 @@ namespace PL.ViewModels
             this.bl = bl;
             Refresh.Station += RefreshStation;
 
-            //this.refreshStations = refreshStations;
             Station = Map(station);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             UpdateStationCommand = new RelayCommand<object>(UpdateStation, param => Station.Error == string.Empty);
@@ -57,6 +56,8 @@ namespace PL.ViewModels
 
         private void DeleteStation(object closeButton)
         {
+            if (Extensions.WorkerTurnOn()) return;
+
             try
             {
                 MessageBox.Show(bl.DeleteStation(Station.Id));

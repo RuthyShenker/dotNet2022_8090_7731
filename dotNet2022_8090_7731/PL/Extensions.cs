@@ -1,8 +1,10 @@
-﻿using System;
+﻿using PL.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PL
 {
@@ -26,6 +28,16 @@ namespace PL
         public static IEnumerable<PO.CustomerToList> MapListFromBLToPL(this IEnumerable<BO.CustomerToList> list)
         {
             return list.Select(c => new PO.CustomerToList(c));
+        }
+
+        public static bool WorkerTurnOn()
+        {
+            if (Refresh.workers.Any(w => w.Value.IsBusy))
+            {
+                MessageBox.Show("Action inValid when auto state is turn on", "Auto State IsTurn On", MessageBoxButton.OK);
+                return true;
+            }
+            return false;
         }
     }
 }

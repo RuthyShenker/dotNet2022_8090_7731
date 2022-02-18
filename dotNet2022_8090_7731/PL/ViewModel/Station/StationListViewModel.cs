@@ -106,10 +106,8 @@ namespace PL.ViewModels
         {
             var selectedStation = sender as PO.StationToList;
             var blStation = bl.GetStation(selectedStation.Id);
-            new StationView(bl, /*RefreshStationList,*/ blStation)
+            new StationView(bl, blStation)
                     .Show();
-            //StationList = new(bl.AvailableSlots().ToList());
-
         }
 
         public object FilterList

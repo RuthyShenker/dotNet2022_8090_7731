@@ -13,7 +13,7 @@ namespace PL.ViewModels
     public class EditCustomerViewModel : INotify
     {
         readonly BlApi.IBL bl;
-      
+
         private EditCustomer customer;
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> UpdateCustomerCommand { get; set; }
@@ -25,15 +25,17 @@ namespace PL.ViewModels
             Refresh.Customer += RefreshCustomer;
             this.bl = bl;
             Customer = MapFromBOToPO(customer);
-            //this.refreshCustomers = refreshCustomers;
+
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             UpdateCustomerCommand = new RelayCommand<object>(UpdateCustomer, param => Customer.Error == "");
-            DeleteCustomerCommand = new RelayCommand<object>(DeleteCustomer);
-            ShowParcelOfCustomerCommand = new RelayCommand<object>(MouseDoubleClick);
+            DeleteCustomerCommand = new RelayCommand<object>(DeleteCustomer, param => param != null);
+            ShowParcelOfCustomerCommand = new RelayCommand<object>(MouseDoubleClick, param => param != null);
         }
 
         private void MouseDoubleClick(object obj)
         {
+            if (Extensions.WorkerTurnOn()) return;
+
             var parcel = obj as BO.ParcelInCustomer;
             var blParcel = bl.GetParcel(parcel.Id);
             new ParcelView(bl, blParcel).Show();
@@ -41,6 +43,8 @@ namespace PL.ViewModels
 
         private void DeleteCustomer(object obj)
         {
+            if (Extensions.WorkerTurnOn()) return;
+           
             if (Customer.LForCustomer.Any() || Customer.LFromCustomer.Any())
             {
                 if (Customer.LForCustomer.Any() && Customer.LFromCustomer.Any())
@@ -48,9 +52,9 @@ namespace PL.ViewModels
                 else if (Customer.LForCustomer.Any())
                     MessageBox.Show("You Can't Delete Me!" +
                  ",I Have Parcels For Me ! ");
-                else if(Customer.LFromCustomer.Any())
-                       MessageBox.Show("You Can't Delete Me!" +
-                    ",I Have Parcels From Me ! ");
+                else if (Customer.LFromCustomer.Any())
+                    MessageBox.Show("You Can't Delete Me!" +
+                 ",I Have Parcels From Me ! ");
                 return;
             }
 
@@ -80,7 +84,6 @@ namespace PL.ViewModels
             {
                 bl.UpdatingCustomerDetails(Customer.Id, Customer.Name, Customer.Phone);
                 Refresh.Invoke();
-                //refreshCustomers();
             }
             catch (BO.IdIsNotExistException exception)
             {
@@ -99,10 +102,15 @@ namespace PL.ViewModels
 
         private EditCustomer MapFromBOToPO(BO.Customer customer)
         {
-         
-            return new EditCustomer(customer.Id, customer.Name, customer.Phone,
-                customer.Location.Longitude, customer.Location.Latitude,
-               Map( customer.LFromCustomer), Map(customer.LFromCustomer));
+            return new EditCustomer()
+            {
+                Id = customer.Id,
+                Name = customer.Name,
+                Phone = customer.Phone,
+                Location = new Location() { Latitude = customer.Location.Latitude, Longitude = customer.Location.Longitude },
+                LForCustomer = Map(customer.LFromCustomer),
+                LFromCustomer = Map(customer.LFromCustomer)
+            };
         }
 
         private IEnumerable<ParcelInCustomer> Map(IEnumerable<BO.ParcelInCustomer> lFromCustomer)
@@ -115,10 +123,10 @@ namespace PL.ViewModels
             return new()
             {
                 Id = p.Id,
-                MPriority = (PO.Priority)p.MPriority,
-                OnTheOtherHand = new() { Id =p.OnTheOtherHand.Id, Name = p.OnTheOtherHand.Name },
-                PStatus =(PO.ParcelStatus)p.PStatus,
-                Weight =(PO.WeightCategories)p.Weight
+                MPriority = (Priority)p.MPriority,
+                OnTheOtherHand = new() { Id = p.OnTheOtherHand.Id, Name = p.OnTheOtherHand.Name },
+                PStatus = (ParcelStatus)p.PStatus,
+                Weight = (WeightCategories)p.Weight
             };
         }
 
@@ -131,6 +139,5 @@ namespace PL.ViewModels
                 RaisePropertyChanged(nameof(Customer));
             }
         }
-
     }
 }

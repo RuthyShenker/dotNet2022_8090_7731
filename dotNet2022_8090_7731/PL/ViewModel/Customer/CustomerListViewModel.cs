@@ -51,18 +51,7 @@ namespace PL.ViewModels
         }
         private void AddingCustomer(object sender)
         {
-            //if (bl.AvailableSlots().Select(slot => slot.Id).Count() > 0)
-            //{
-            //    //var viewModel = new AddDroneViewModel(bl,FilterDroneListByCondition);
-            //    new DroneView(bl, FilterDroneListByCondition);
-            //    //new DroneView(/*bl,*/FilterDroneListByCondition).Show();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-            new CustomerView(bl)
-                .Show();
+            new CustomerView(bl).Show();
         }
 
         private void RefreshCustomersList()

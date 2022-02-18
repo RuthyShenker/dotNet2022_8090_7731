@@ -25,7 +25,6 @@ namespace PL.ViewModels
             Drone = new();
             this.switchView = switchView;
             //this.bl = bl;
-            //this.refreshDrones = refreshDrones;
             StationOptions = BlApi.BlFactory.GetBl().AvailableSlots().Select(station => station.Id).ToList();
             AddDroneCommand = new RelayCommand<object>(AddDrone, param => Drone.Error == "");
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);

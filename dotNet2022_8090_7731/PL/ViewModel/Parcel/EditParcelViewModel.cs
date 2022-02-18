@@ -9,7 +9,6 @@ namespace PL.ViewModels
     public class EditParcelViewModel : INotify
     {
         readonly BlApi.IBL bl;
-        //readonly Action refreshParcels;
         private EditParcel parcel;
 
         public RelayCommand<object> DeleteParcelCommand { get; set; }
@@ -24,13 +23,13 @@ namespace PL.ViewModels
             this.bl = bl;
             Refresh.Parcel += RefreshParcel;
             Parcel = Map(parcel);
-            //this.refreshParcels = refreshParcels;
+
             UpdateParcelCommand = new RelayCommand<object>(UpdateParcel, param => Parcel.BelongParcel == default);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
-            EditCustomerCommand = new RelayCommand<object>(EditCustomer);
+            EditCustomerCommand = new RelayCommand<object>(EditCustomer, param => param != null);
             DeleteParcelCommand = new RelayCommand<object>(DeleteParcel);
             CollectAndDeliverPackageCommand = new RelayCommand<object>(GivingPermissionToCollectAndDeliverPackage);
-            OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow);
+            OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow, param => param != null);
         }
 
         private void GivingPermissionToCollectAndDeliverPackage(object obj)
@@ -74,6 +73,7 @@ namespace PL.ViewModels
 
         private void DeleteParcel(object obj)
         {
+            if (Extensions.WorkerTurnOn()) return;
 
             if (Parcel.BelongParcel.HasValue)
             {

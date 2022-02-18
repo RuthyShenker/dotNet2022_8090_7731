@@ -20,10 +20,14 @@ namespace BL
             internal bool pickedUp;
             internal int stationId;
             internal bool inWayToStation;
+            public override string ToString()
+            {
+                return $"Distance: {remainDistance}, PickedUp: { pickedUp}, Station Id{stationId} , Is in way to station? {inWayToStation}";
+            }
         }
-        private const int DELAY = 40;
+        private const int DELAY = 100;//40
         private const double VELOCITY = 1.0;
-        private const double TIME_STEP = DELAY / 5000.0;
+        private const double TIME_STEP = DELAY / 1000.0;// 5000.0;
         private const double STEP = VELOCITY / TIME_STEP;
         private BL bl;
         Action<object> updateView;
@@ -270,7 +274,7 @@ namespace BL
             }
         }
 
-        private void GoAhead(Location targetLocation, DroneToList drone)
+        private void GoAhead(Location targetLocation, DroneToList drone)     
         {
             double delta = distance < STEP ? distance : STEP;
             //distance = Extensions.CalculateDistance(drone.CurrLocation, targetLocation);

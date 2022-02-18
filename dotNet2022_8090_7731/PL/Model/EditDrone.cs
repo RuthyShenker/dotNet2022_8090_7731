@@ -153,11 +153,11 @@ namespace PO
             set => Set(ref automatic, value);
         }
 
-        private double distance;
-        public double Distance
+        private object info;
+        public object Info
         {
-            get => distance;
-            set => Set(ref distance, value);
+            get => info;
+            set => Set(ref info, value);
         }
 
         // --------------IDataErrorInfo---------------------
