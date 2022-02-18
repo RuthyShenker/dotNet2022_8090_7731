@@ -81,6 +81,8 @@ namespace PL.ViewModels
 
         private void UpdateStation(object obj)
         {
+            if (Extensions.WorkerTurnOn()) return;
+
             var station = obj as EditStation;
 
             //TODO: two feilds has to be full?

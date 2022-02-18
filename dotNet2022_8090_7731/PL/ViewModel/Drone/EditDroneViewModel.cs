@@ -100,8 +100,9 @@ namespace PL.ViewModels
         /// <param name="sender"></param>
         private void UpdateDroneModel(object sender)
         {
-            // when we changed bl.GetDrones to return new list 
-            // before it changed ldronetolist and in the dal ?why??????????
+
+            if (Extensions.WorkerTurnOn()) return;
+
 
             if (MessageBox.Show($"Are You Sure You Want To Change The Model Of The Drone With Id:{Drone.Id} ?",
                    "Update Model",

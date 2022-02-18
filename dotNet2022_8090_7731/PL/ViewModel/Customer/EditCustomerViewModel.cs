@@ -101,6 +101,8 @@ namespace PL.ViewModels
         /// <param name="obj"></param>
         private void UpdateCustomer(object obj)
         {
+            if (Extensions.WorkerTurnOn()) return;
+
             try
             {
                 bl.UpdatingCustomerDetails(Customer.Id, Customer.Name, Customer.Phone);
