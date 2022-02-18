@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:BO="clr-namespace:BO;assembly=BL"
+             xmlns:PO="clr-namespace:PO"
              xmlns:Converters="clr-namespace:PL.Converters"
  mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -37,14 +38,14 @@
         <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="BO:WeightCategories"/>
+                <x:Type TypeName="PO:WeightCategories"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
         <ObjectDataProvider x:Key="DroneStatusEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="BO:DroneStatus"/>
+                <x:Type TypeName="PO:DroneStatus"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
@@ -59,13 +60,13 @@
 
         <TextBox x:Name="Id"
             Text = "{Binding Drone.Id, UpdateSourceTrigger=PropertyChanged}"
-                 IsEnabled="False"/>
+                 IsEnabled="False"  materialDesign:HintAssist.Hint="Id" />
 
         <TextBox Text = "{Binding Drone.BatteryStatus,  UpdateSourceTrigger=PropertyChanged}" 
                     materialDesign:HintAssist.Hint="Battery" 
                     IsEnabled="False" />
 
-        <TextBlock Text = "MaxWeight:" />
+        <TextBlock Text = "MaxWeight:" HorizontalAlignment="Center"/>
         <ComboBox ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" 
                   SelectedItem="{Binding Drone.Weight}"  
                   materialDesign:HintAssist.Hint="MaxWeight" 
@@ -75,7 +76,7 @@
             NotifyOnValidationError=true}"
                  materialDesign:HintAssist.Hint="Model" />
 
-        <TextBlock  Text = "Status:" />
+        <TextBlock  Text = "Status:" HorizontalAlignment="Center" />
         <ComboBox ItemsSource="{Binding Source={StaticResource DroneStatusEnum}}" 
                     SelectedItem="{Binding Drone.Status, UpdateSourceTrigger=PropertyChanged}" 
                     materialDesign:HintAssist.Hint="Status"
@@ -86,9 +87,9 @@
                 Value="0"
                 IsIndeterminate="{Binding Drone.SimulatorStatus}" />
         
-        <TextBox Text = "{Binding Drone.Status, UpdateSourceTrigger=PropertyChanged}"
+        <!--<TextBox Text = "{Binding Drone.Status, UpdateSourceTrigger=PropertyChanged}"
                      materialDesign:HintAssist.Hint="Status"
-                     IsEnabled="False"/>
+                     IsEnabled="False"/>-->
         <!--<StackPanel x:Name="DeliveryContainer">
                     <TextBlock  Text = "Deliery:" TextWrapping = "Wrap" />
                     <ComboBox x:Name = "DeliveryComboBox" ItemsSource="{Binding Source={StaticResource AvailableSlots}, Path=Name}"  />
@@ -104,9 +105,9 @@
                      materialDesign:HintAssist.Hint="Latitude"
                      IsEnabled="False"/>
         </StackPanel>-->
-        <TextBox Text = "{Binding Drone.Location, UpdateSourceTrigger=PropertyChanged}"
+        <TextBox Text = "{Binding Drone.Location, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                      materialDesign:HintAssist.Hint="Location"
-                     IsEnabled="False" />
+                     IsEnabled="False" MinWidth="420"/>
 
 
         <Button Style="{StaticResource MaterialDesignFlatButton}"

@@ -18,23 +18,5 @@
     </Window.Resources>
     <Grid>
         <ContentPresenter Content="{Binding MainViewModel}"/>
-        <!--<ContentControl x:Name="mDroneView" Content="{Binding }" ScrollViewer.VerticalScrollBarVisibility="Auto"/>-->
-
-        <!--<Button Content="ParcelList:" VerticalAlignment="Stretch"
-                Height="46" Width="92" 
-                Command="{Binding ParcelListViewCommand}"/>
-
-        <Button Content="DroneList:" VerticalAlignment="Top"
-                Height="46" Width="92" 
-                Command="{Binding DroneListViewCommand}"/>
-
-        <Button Content="stationList:" VerticalAlignment="Bottom"
-                Height="46" Width="92" 
-                Command="{Binding StationListViewCommand}"/>
-
-        <Button Content="CustomerList:" VerticalAlignment="Top"
-                 Height="46" Width="92" 
-                Command="{Binding CustomerListViewCommand}" Margin="0,90,0,0" />-->
     </Grid>
-
 </Window>

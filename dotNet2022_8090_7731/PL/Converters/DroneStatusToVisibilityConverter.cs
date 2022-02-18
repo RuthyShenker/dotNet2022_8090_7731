@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using BO;
+using PO;
 
 namespace PL.Converters
 {

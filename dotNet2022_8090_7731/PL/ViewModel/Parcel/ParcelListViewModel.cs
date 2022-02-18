@@ -106,7 +106,7 @@ namespace PL.ViewModels
         private bool FilterCondition(object obj)
         {
             PO.ParcelToList parcel = obj as PO.ParcelToList;
-            return selectedFilter is null or "All" || parcel.Status.Equals(selectedFilter);
+            return selectedFilter is null or "All" || parcel.Status.Equals((PO.ParcelStatus)selectedFilter);
         }
 
         private void AddParcel(object obj)
