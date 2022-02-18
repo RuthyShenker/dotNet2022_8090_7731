@@ -14,20 +14,26 @@ namespace BL
     {
         // maybe good for calculate distances
         // https://www.google.com/search?q=geography+location+and+calculate+distance+c%23&oq=geography+location+and+calculate+distance+c%23&aqs=chrome..69i57.22174j0j9&sourceid=chrome&ie=UTF-8
-
+        class State
+        {
+            internal double remainDistance;
+            internal bool pickedUp;
+            internal int stationId;
+            internal bool inWayToStation;
+        }
         private const int DELAY = 40;
         private const double VELOCITY = 1.0;
         private const double TIME_STEP = DELAY / 5000.0;
         private const double STEP = VELOCITY / TIME_STEP;
         private BL bl;
-        Action updateView;
+        Action<object> updateView;
         Func<bool> checkStop;
         DO.Parcel parcel;
         Station station;
         Customer customer;
         DalApi.IDal dal;
         double distance;
-        bool pickedUp;
+        bool parcelPickedUp;
         int droneFree = 0;
         DroneToList drone;
         //double[] powerConsumption;
@@ -40,7 +46,7 @@ namespace BL
         //public enum Maintenance { Assigning, GoingTowardStation, Charging };
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Simulator(BL blInstance, int droneId, Action updateViewAction, Func<bool> checkStopFunc)
+        public Simulator(BL blInstance, int droneId, Action<object> updateViewAction, Func<bool> checkStopFunc)
         {
             bl = blInstance;
             dal = blInstance.dal;
@@ -109,7 +115,8 @@ namespace BL
                                 drone.DStatus = DroneStatus.Maintenance;
                                 dal.Add(new DO.ChargingDrone() { DroneId = drone.Id, StationId = station.Id, EnteranceTime = DateTime.Now });
 
-                                updateView();
+                                updateView(new State() { remainDistance = 0, pickedUp = false, stationId = station.Id, inWayToStation = true });
+
                                 return;
                             }
                         }
@@ -127,8 +134,8 @@ namespace BL
                 lock (dal)
                 {
                     parcel = matchParcel;
-                    pickedUp = parcel.PickingUp.HasValue;
-                    customer = bl.GetCustomer(pickedUp ? parcel.GetterId : parcel.SenderId);
+                    parcelPickedUp = parcel.PickingUp.HasValue;
+                    customer = bl.GetCustomer(parcelPickedUp ? parcel.GetterId : parcel.SenderId);
                     distance = Extensions.CalculateDistance(drone.CurrLocation, customer.Location);
 
                     drone.DStatus = DroneStatus.Delivery;
@@ -137,7 +144,7 @@ namespace BL
                     dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(DO.Parcel.BelongParcel));
                     dal.Update<DO.Parcel>(parcel.Id, drone.Id, nameof(DO.Parcel.DroneId));
 
-                    updateView();
+                    updateView(new State() { remainDistance=distance  , pickedUp = parcelPickedUp, stationId = 0, inWayToStation = false });
                 }
             }
         }
@@ -145,8 +152,8 @@ namespace BL
         private void Init(int parcelId, DroneToList drone)
         {
             parcel = dal.GetFromDalById<DO.Parcel>(parcelId);
-            pickedUp = parcel.PickingUp.HasValue;
-            customer = bl.GetCustomer(pickedUp ? parcel.GetterId : parcel.SenderId);
+            parcelPickedUp = parcel.PickingUp.HasValue;
+            customer = bl.GetCustomer(parcelPickedUp ? parcel.GetterId : parcel.SenderId);
 
             //why???
             distance = Extensions.CalculateDistance(drone.CurrLocation, customer.Location);
@@ -183,7 +190,8 @@ namespace BL
                 }
             }
             distance = Extensions.CalculateDistance(drone.CurrLocation, station.Location);
-            updateView();
+            updateView(new State() { remainDistance = distance, pickedUp = false, stationId = station.Id, inWayToStation = true });
+
 
             // Going toward station
             while (distance > 0.01 && !checkStop())
@@ -192,7 +200,7 @@ namespace BL
                 lock (bl)
                 {
                     GoAhead(station.Location, drone);
-                    updateView();
+                    updateView(new State() { remainDistance = distance, pickedUp = false, stationId = station.Id, inWayToStation = true });
                 }
             }
 
@@ -207,14 +215,15 @@ namespace BL
                     lock (bl) // why בפרויקט לדוג עשו כאן?
                     {
                         drone.BatteryStatus = Math.Min(drone.BatteryStatus + (chargingRate * TIME_STEP), 100);
-                        updateView();
+                        updateView(new State() { remainDistance = 0, pickedUp = false, stationId = station.Id, inWayToStation = false });
                     }
                 }
 
                 if (drone.BatteryStatus >= 100)
                 {
                     drone.DStatus = DroneStatus.Free;
-                    updateView();
+                    updateView(new State() { remainDistance = 0, pickedUp = false, stationId = 0, inWayToStation = false });
+
                 }
             }
         }
@@ -232,7 +241,7 @@ namespace BL
                 lock (bl)
                 {
                     GoAhead(customer.Location, drone);
-                    updateView();
+                    updateView(new State() { remainDistance = distance, pickedUp = parcelPickedUp, stationId = 0, inWayToStation = false });
                 }
             }
             lock (bl)
@@ -242,19 +251,20 @@ namespace BL
                     if ((distance <= 0.01 /*|| drone.BatteryStatus == 0.0*/) && !checkStop())
                     {
                         drone.CurrLocation = customer.Location;
-                        if (pickedUp)
+                        if (parcelPickedUp)
                         {
                             dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
 
                             drone.DStatus = DroneStatus.Free;
+                            updateView(new State() { remainDistance = distance, pickedUp = parcelPickedUp, stationId = 0, inWayToStation = false });
                         }
                         else
                         {
                             dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.PickingUp));
                             customer = bl.GetCustomer(parcel.GetterId);
-                            pickedUp = true;
+                            parcelPickedUp = true;
+                            updateView(new State() { remainDistance = 0, pickedUp = parcelPickedUp, stationId = 0, inWayToStation = false });
                         }
-                        updateView();
                     }
                 }
             }
@@ -267,7 +277,7 @@ namespace BL
 
             double proportion = delta / distance;
 
-            drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - (delta * (pickedUp ? PowerConsumptionForParcelWeight() : PowerConsumptionFree)));
+            drone.BatteryStatus = Math.Max(0.0, drone.BatteryStatus - (delta * (parcelPickedUp ? PowerConsumptionForParcelWeight() : PowerConsumptionFree)));
             drone.CurrLocation = new()
             {
                 Latitude = drone.CurrLocation.Latitude + ((targetLocation.Latitude - drone.CurrLocation.Latitude) * proportion),

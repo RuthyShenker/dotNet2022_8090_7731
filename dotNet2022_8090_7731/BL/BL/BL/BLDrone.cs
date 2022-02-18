@@ -22,7 +22,7 @@ namespace BL
         /// <param name="droneId"></param>
         /// <param name="updateView"></param>
         /// <param name="checkStop"></param>
-        public void StartSimulator(int droneId, Action updateView, Func<bool> checkStop)
+        public void StartSimulator(int droneId, Action<object> updateView, Func<bool> checkStop)
         {
             new Simulator(this, droneId, updateView, checkStop);
         }

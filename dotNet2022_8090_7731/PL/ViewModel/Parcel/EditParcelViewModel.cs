@@ -27,7 +27,7 @@ namespace PL.ViewModels
             //this.refreshParcels = refreshParcels;
             UpdateParcelCommand = new RelayCommand<object>(UpdateParcel, param => Parcel.BelongParcel == default);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
-            EditCustomerCommand = new RelayCommand<object>(EditSender);
+            EditCustomerCommand = new RelayCommand<object>(EditCustomer);
             DeleteParcelCommand = new RelayCommand<object>(DeleteParcel);
             CollectAndDeliverPackageCommand = new RelayCommand<object>(GivingPermissionToCollectAndDeliverPackage);
             OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow);
@@ -118,17 +118,17 @@ namespace PL.ViewModels
 
         }
 
-        private void EditSender(object customerId)
+        private void EditCustomer(object customerId)
         {
-            if (Parcel.BelongParcel != default && Parcel.Arrival == default)
+            //if (Parcel.BelongParcel != default && Parcel.Arrival == default)
             {
                 BO.Customer blCustomer = bl.GetCustomer((int)customerId);
                 new CustomerView(bl, blCustomer).Show();
             }
-            else
-            {
-                MessageBox.Show("You can't see more because the parcel doesnt meet the conditions", "Error Open Customer", MessageBoxButton.OK, MessageBoxImage.Stop);
-            }
+            //else
+            //{
+            //    MessageBox.Show("You can't see more because the parcel doesnt meet the conditions", "Error Open Customer", MessageBoxButton.OK, MessageBoxImage.Stop);
+            //}
         }
 
         private void UpdateParcel(object obj)

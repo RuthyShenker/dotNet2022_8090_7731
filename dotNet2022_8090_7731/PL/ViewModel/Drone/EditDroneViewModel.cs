@@ -44,9 +44,10 @@ namespace PL.ViewModels
             StartOrStopSimulatorCommand = new RelayCommand<object>(StartOrStopSimulator);
         }
 
-        private void updateDroneView()
+        private void updateDroneView(object sender, ProgressChangedEventArgs args)
         {
             Refresh.Invoke();
+              //args.UserState
 
             // update distance
             //drone.Distance = args.ProgressPercentage;
@@ -61,7 +62,7 @@ namespace PL.ViewModels
 
         //--worker--
         BackgroundWorker worker;
-        private void updateDrone() => worker.ReportProgress(0);
+        private void updateDrone(object state) => worker.ReportProgress(0, state);
         private bool checkStop() => worker.CancellationPending;
 
         // private void Manual_Click(object sender, RoutedEventArgs e) => worker?.CancelAsync();
@@ -88,7 +89,7 @@ namespace PL.ViewModels
                 };
                 worker.DoWork += (sender, args) => bl.StartSimulator(Drone.Id, updateDrone, checkStop);
                 worker.RunWorkerCompleted += (sender, args) => Drone.Automatic = false;
-                worker.ProgressChanged += (sender, args) => updateDroneView();
+                worker.ProgressChanged += (sender, args) => updateDroneView(sender, args);
 
                 Refresh.workers.Add(Drone.Id, worker);
 
