@@ -41,7 +41,7 @@ namespace PL.ViewModels
 
             AddDroneCommand = new RelayCommand<object>(AddingDrone);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
-            MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
+            MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick, param => param != null);
 
             //GroupCommand = new RelayCommand<object>(GroupDrones);
             //droneList = Enumerable.Empty<DroneToList>();
@@ -62,12 +62,12 @@ namespace PL.ViewModels
         {
             if (obj is PO.DroneToList droneToList)
             {
-               if(Enum.IsDefined(typeof(PO.WeightCategories),WeightSelectedItem)&& Enum.IsDefined(typeof(PO.DroneStatus), statusSelectedItem))
-                   return (PO.WeightCategories)WeightSelectedItem == droneToList.Weight&& (PO.DroneStatus)statusSelectedItem == droneToList.DStatus;
-               if (Enum.IsDefined(typeof(PO.WeightCategories), WeightSelectedItem))
-                   return (PO.WeightCategories)WeightSelectedItem == droneToList.Weight;
-               if (Enum.IsDefined(typeof(PO.DroneStatus), statusSelectedItem))
-                   return (PO.DroneStatus)statusSelectedItem == droneToList.DStatus;
+                if (Enum.IsDefined(typeof(PO.WeightCategories), WeightSelectedItem) && Enum.IsDefined(typeof(PO.DroneStatus), statusSelectedItem))
+                    return (PO.WeightCategories)WeightSelectedItem == droneToList.Weight && (PO.DroneStatus)statusSelectedItem == droneToList.DStatus;
+                if (Enum.IsDefined(typeof(PO.WeightCategories), WeightSelectedItem))
+                    return (PO.WeightCategories)WeightSelectedItem == droneToList.Weight;
+                if (Enum.IsDefined(typeof(PO.DroneStatus), statusSelectedItem))
+                    return (PO.DroneStatus)statusSelectedItem == droneToList.DStatus;
             }
             return true;
         }
@@ -132,11 +132,14 @@ namespace PL.ViewModels
 
         private void RefreshDronesList()
         {
-            DroneList = new(bl.GetDrones().MapListFromBLToPL().ToList());
-           
-            // keep group and filter status
-            GroupDrones = currentGroup;
-            DroneList.Filter = FilterDrone;
+            lock (bl)
+            {
+                DroneList = new(bl.GetDrones().MapListFromBLToPL().ToList());
+
+                // keep group and filter status
+                GroupDrones = currentGroup;
+                DroneList.Filter = FilterDrone;
+            }
         }
 
         //TODOTODO:
