@@ -173,11 +173,20 @@ namespace BL
                 {
                     var droneCoord = Extensions.geoCoordinate(location); //new GeoCoordinate(location.Latitude, location.Longitude);
 
-                    var sortedList = dal.GetListFromDal<DO.BaseStation>()
-                        .OrderBy(station => Extensions.geoCoordinate(new() { Latitude = station.Latitude, Longitude = station.Longitude }).GetDistanceTo(droneCoord));
+                    var closetStation = dal.GetListFromDal<DO.BaseStation>()
+                        .OrderBy(station => Extensions.geoCoordinate(new() { Latitude = station.Latitude, Longitude = station.Longitude }).GetDistanceTo(droneCoord)).First();
 
-                    var closetStation = sendingToCharge == true
-                        ? sortedList.FirstOrDefault(s => GetNumOfAvailablePositionsInStation(s.Id) > 0) : sortedList.First();
+                    if (!sendingToCharge)
+                    {
+                        return ConvertToBL(closetStation);
+                    }
+
+                    // if closet station is full, releasing the most charged drone from the station
+                    if (GetNumOfAvailablePositionsInStation(closetStation.Id) == 0)
+                    {
+                        var mostChargedDrone = ChargingDroneBLList(closetStation.Id).OrderByDescending(s => s.BatteryStatus).First();
+                        ReleasingDrone(mostChargedDrone.DroneId);
+                    }
 
                     return ConvertToBL(closetStation);
                 }

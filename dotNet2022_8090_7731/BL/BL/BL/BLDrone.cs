@@ -517,7 +517,7 @@ namespace BL
                 throw new BO.InValidActionException("There ara no stations with available positions!");
             }
 
-            double distanceFromDroneToStation = Extensions.CalculateDistance(drone.CurrLocation, closetStation.Location);
+            double distanceFromDroneToStation = CalculateDistance(drone.CurrLocation, closetStation.Location);
             double minBattery = MinBattery(distanceFromDroneToStation);
             if (minBattery > drone.BatteryStatus)
             {
@@ -527,15 +527,13 @@ namespace BL
             drone.BatteryStatus -= minBattery;
             drone.CurrLocation = closetStation.Location;
             drone.DStatus = DroneStatus.Maintenance;
-            //--closetBaseStation.NumAvailablePositions;
-            //closetBaseStation.LBL_ChargingDrone.AddCustomer(new BL_ChargingDrone(drone.Id, closetBaseStation.Id));
+           
             dal.Add(new DO.ChargingDrone()
             {
                 DroneId = drone.Id,
                 StationId = closetStation.Id,
                 EnteranceTime = DateTime.Now
-            }
-            );
+            });
         }
 
         /// <summary>

@@ -57,7 +57,7 @@
         <TextBox Text="{Binding Station.Location.Latitude}" 
                  materialDesign:HintAssist.Hint="Latitude"
                  IsEnabled="False"/>-->
-        <TextBox Text="{Binding Station.Location}"
+        <TextBox Text="{Binding Station.Location, Mode=OneWay}"
                  materialDesign:HintAssist.Hint="Location"
                  IsEnabled="False"/>
 
@@ -75,12 +75,13 @@
                 HorizontalAlignment="Center"
                 Content="Update"
                 Command="{Binding UpdateStationCommand}" CommandParameter="{Binding Station}" >
-        </Button><!--CommandManager.CanExecute="{}"-->
+        </Button>
 
         <Button Content="Close" 
                 Command="{Binding CloseWindowCommand }" 
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                Style="{StaticResource MaterialDesignFlatButton}"/>
+                Style="{StaticResource MaterialDesignFlatButton}">
+        </Button>
 
         <Button Style="{StaticResource MaterialDesignFlatButton}"
                 HorizontalAlignment="Center"

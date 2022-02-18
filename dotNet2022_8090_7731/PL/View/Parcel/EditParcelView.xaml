@@ -75,10 +75,10 @@
             <TextBlock Text="Id  \" Style="{StaticResource Header}"/>
             <TextBlock Text="{Binding Parcel.Id}" Style="{StaticResource Header}"/>
         </DockPanel>
-        
+
         <DockPanel  >
             <StackPanel Width="200"/>
-                
+
             <StackPanel >
                 <TextBlock Text="Sender" 
                                 Style="{StaticResource Header}"/>
@@ -88,60 +88,38 @@
                                 Style="{StaticResource Link}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding EditCustomerCommand}"
-                                    MouseAction="LeftClick"
-                                    CommandParameter="{Binding Parcel.Sender.Id}"/>
+                                      MouseAction="LeftClick"
+                                      CommandParameter="{Binding Parcel.Sender.Id}"/>
                     </TextBlock.InputBindings>
                 </TextBlock>
             </StackPanel>
-                
+
             <StackPanel Width="200"/>
-                
+
             <StackPanel>
                 <TextBlock Text="Getter" Style="{StaticResource Header}"/>
                 <TextBlock Text="{Binding Parcel.Getter.Id}"/>
                 <TextBlock Text="{Binding Parcel.Getter.Name}"/>
                 <TextBlock Text="See more" 
                             Style="{StaticResource Link}">
-                        <TextBlock.InputBindings>
-                            <MouseBinding Command="{Binding EditCustomerCommand}"
-                                        MouseAction="LeftClick"
-                                        CommandParameter="{Binding Parcel.Getter.Id}"/>
-                        </TextBlock.InputBindings>
+                    <TextBlock.InputBindings>
+                        <MouseBinding Command="{Binding EditCustomerCommand}"
+                                      MouseAction="LeftClick"
+                                      CommandParameter="{Binding Parcel.Getter.Id}"/>
+                    </TextBlock.InputBindings>
                 </TextBlock>
             </StackPanel>
-            
+
             <StackPanel Width="200"/>
         </DockPanel>
 
-        <!--<TextBox Text="{Binding Parcel.Weight}"  
-                 materialDesign:HintAssist.Hint="Weight"
-                 IsEnabled="False"/>
-
-        <TextBox Text="{Binding Parcel.MPriority}"
-                 materialDesign:HintAssist.Hint="Priority"
-                 VerticalAlignment="Center"
-                 IsEnabled="False"/>-->
-        
-        <!--<ComboBox Name="listComboBox" SelectionChanged="listComboBox_SelectionChanged" SelectedIndex="0" SelectedValuePath="Content" Margin="5,0" Height="35" Width="150" VerticalAlignment="Center" HorizontalAlignment="Left">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding ListTypeComboSelectionChangedCmd}" CommandParameter="{Binding ElementName=listComboBox, Path=SelectedValue}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <ComboBoxItem Content="ItemOne" />
-            <ComboBoxItem Content="ItemTwo" />
-            <ComboBoxItem Content="ItemThree" />
-        </ComboBox>-->
-        
         <ComboBox ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}"
                   SelectedItem="{Binding Parcel.Weight}"
                   materialDesign:HintAssist.Hint="Weight"/>
-            <!--IsEnabled="False"-->
 
         <ComboBox ItemsSource="{Binding Source={StaticResource PriorityEnum}}"
                   SelectedItem="{Binding Parcel.MPriority}"
                   materialDesign:HintAssist.Hint="Priority"/>
-                  <!--IsEnabled="False"-->
 
         <TextBlock Text="See carring drone"
                    Style="{StaticResource Link}">
@@ -151,27 +129,7 @@
                               CommandParameter="{Binding Parcel.DInParcel}"/>
             </TextBlock.InputBindings>
         </TextBlock>
-        <!--<Expander Header="Drone In Parcal">
-            <StackPanel>
-            <TextBox Text="{Binding Parcel.DInParcel.Id}" materialDesign:HintAssist.Hint="Drone In Parcel"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"
-                 IsEnabled="False"/>
-            <TextBox Text="{Binding Parcel.DInParcel.BatteryStatus}" materialDesign:HintAssist.Hint="Drone In Parcel-Battery Status"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"
-                 IsEnabled="False"/>
-            <TextBox Text="{Binding Parcel.DInParcel.CurrLocation.Longitude}" materialDesign:HintAssist.Hint="Drone In Parcel-Longitude"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"
-                 IsEnabled="False"/>
-                <TextBox Text="{Binding Parcel.DInParcel.CurrLocation.Latitude}" materialDesign:HintAssist.Hint="Drone In Parcel-Latitude"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
-                 VerticalAlignment="Center"
-                 IsEnabled="False"/>
-            </StackPanel>
-        </Expander>-->
-
+        
         <TextBox Text="{Binding Parcel.MakingParcel}" 
                  materialDesign:HintAssist.Hint="Making Parcel"
                  IsEnabled="False"/>
@@ -194,16 +152,16 @@
         <Button Content="Delete"
                 Command="{Binding DeleteParcelCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
-        
+
         <Button Content="{Binding Parcel ,Converter={StaticResource ContentByDroneInParcelPickOrDeliveryParcelConverter}}"
                 
                 Visibility="{Binding Parcel ,Converter={StaticResource VisibilityByDroneInParcelPickOrDeliveryParcelConverter}}"
                 Command="{Binding CollectAndDeliverPackageCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
 
-        
         <Button Content="close" 
                 Command="{Binding CloseWindowCommand }"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+        
     </StackPanel>
 </UserControl>

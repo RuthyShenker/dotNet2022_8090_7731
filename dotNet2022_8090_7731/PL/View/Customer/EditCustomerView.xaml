@@ -59,7 +59,8 @@
                   materialDesign:TextFieldAssist.HasClearButton="True"  />
 
         <TextBox Text="{Binding Customer.Location,
-                                UpdateSourceTrigger=PropertyChanged }"
+                                UpdateSourceTrigger=PropertyChanged,
+                                Mode=OneWay}"
                  materialDesign:HintAssist.Hint="Location"
                  IsEnabled="False"/>
 

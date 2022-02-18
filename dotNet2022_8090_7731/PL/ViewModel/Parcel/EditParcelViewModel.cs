@@ -106,16 +106,16 @@ namespace PL.ViewModels
 
         private void OpenDroneWindow(object obj)
         {
-            if (Parcel.BelongParcel != null&& !Parcel.Arrival.HasValue)
+            if (Parcel.BelongParcel != null && !Parcel.Arrival.HasValue)
             {
                 var carringDrone = bl.GetDrone(Parcel.DInParcel.Id);
                 new DroneView(bl, carringDrone).Show();
             }
             else
             {
-                MessageBox.Show("You can't see more because the parcel doesnt meet the conditions", "Error Open Drone",MessageBoxButton.OK,MessageBoxImage.Stop);
+                MessageBox.Show("You can't see more because the parcel doesnt meet the conditions", "Error Open Drone", MessageBoxButton.OK, MessageBoxImage.Stop);
             }
-           
+
         }
 
         private void EditSender(object customerId)
@@ -138,6 +138,19 @@ namespace PL.ViewModels
 
         private EditParcel Map(BO.Parcel parcel)
         {
+            DroneInParcel droneInParcel = parcel.DInParcel == null
+                ? null
+                : (new()
+                {
+                    Id = parcel.DInParcel.Id,
+                    BatteryStatus = parcel.DInParcel.BatteryStatus,
+                    CurrLocation = new()
+                    {
+                        Longitude = parcel.DInParcel.CurrLocation.Longitude,
+                        Latitude = parcel.DInParcel.CurrLocation.Latitude
+                    }
+                });
+
             return new EditParcel()
             {
                 Id = parcel.Id,
@@ -148,21 +161,12 @@ namespace PL.ViewModels
                 BelongParcel = parcel.BelongParcel,
                 Weight = (PO.WeightCategories)parcel.Weight,
                 MPriority = (PO.Priority)parcel.MPriority,
-                MakingParcel= parcel.MakingParcel,
-                DInParcel = new()
-                {
-                    Id = parcel.DInParcel.Id,
-                    BatteryStatus = parcel.DInParcel.BatteryStatus,
-                    CurrLocation = new()
-                    {
-                        Longitude = parcel.DInParcel.CurrLocation.Longitude,
-                        Latitude = parcel.DInParcel.CurrLocation.Latitude
-                    }
-                }    
+                MakingParcel = parcel.MakingParcel,
+                DInParcel = droneInParcel
             };
         }
 
-        
+
         public EditParcel Parcel
         {
             get => parcel;
