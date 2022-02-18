@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using BO;
+
 using PL.View;
 using PO;
 namespace PL.ViewModels
@@ -42,7 +42,7 @@ namespace PL.ViewModels
             UpdateModelOfDroneCommand = new RelayCommand<object>(UpdateDroneModel);
             ChargeDroneCommand = new RelayCommand<object>(SendOrReleaseDroneFromCharging);
             AssignParcelToDroneCommand = new RelayCommand<object>(AssignParcelToDrone);
-            OpenParcelWindowCommand = new RelayCommand<object>(OpenParcelWindowC, param => Drone.Status == PO.DroneStatus.Delivery);
+            OpenParcelWindowCommand = new RelayCommand<object>(OpenParcelWindow, param => Drone.Status == PO.DroneStatus.Delivery);
             DeleteDroneCommand = new RelayCommand<object>(DeleteDrone);
             StartOrStopSimulatorCommand = new RelayCommand<object>(StartOrStopSimulator);
         }
@@ -95,7 +95,7 @@ namespace PL.ViewModels
         }
 
         /// <summary>
-        /// 
+        /// A function that Updates Drone Model
         /// </summary>
         /// <param name="sender"></param>
         private void UpdateDroneModel(object sender)
@@ -116,6 +116,10 @@ namespace PL.ViewModels
             }
         }
 
+        /// <summary>
+        /// A function that Sends Or Releases Drone From Charging
+        /// </summary>
+        /// <param name="sender"></param>
         private void SendOrReleaseDroneFromCharging(object sender)
         {
             if (Extensions.WorkerTurnOn()) return;
@@ -128,7 +132,11 @@ namespace PL.ViewModels
             Refresh.Invoke();
         }
 
-        private void OpenParcelWindowC(object MyParcel)
+        /// <summary>
+        /// A function that opens parcel.
+        /// </summary>
+        /// <param name="MyParcel"></param>
+        private void OpenParcelWindow(object MyParcel)
         {
             var parcel = MyParcel as BO.ParcelInTransfer;
             if (parcel == null)
@@ -139,6 +147,11 @@ namespace PL.ViewModels
             new ParcelView(bl, blParcel).Show();
         }
 
+
+        /// <summary>
+        /// A function that belongs parcel to drone.
+        /// </summary>
+        /// <param name="sender"></param>
         private void AssignParcelToDrone(object sender)
         {
             if (Extensions.WorkerTurnOn()) return;
@@ -156,6 +169,10 @@ namespace PL.ViewModels
             }
         }
 
+
+        /// <summary>
+        /// A function that Delivery Package to destination.
+        /// </summary>
         private void DeliveryPackage()
         {
             try
@@ -163,12 +180,15 @@ namespace PL.ViewModels
                 bl.DeliveryPackage(Drone.Id);
                 Refresh.Invoke();
             }
-            catch (InValidActionException exception)
+            catch (BO.InValidActionException exception)
             {
                 MessageBox.Show(exception.Message, "Error Delivery Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        /// <summary>
+        /// A function that Picking Up Parcel by drone.
+        /// </summary>
         private void PickingUpParcel()
         {
             try
@@ -176,12 +196,15 @@ namespace PL.ViewModels
                 bl.PickingUpParcel(Drone.Id);
                 Refresh.Invoke();
             }
-            catch (InValidActionException exception)
+            catch (BO.InValidActionException exception)
             {
                 MessageBox.Show(exception.Message, "Error Pick Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        /// <summary>
+        /// A function that Belonging Parcel to drone.
+        /// </summary>
         private void BelongingParcel()
         {
             //if( drone.PInTransfer.Equals(default(ParcelInTransfer)))
@@ -190,17 +213,21 @@ namespace PL.ViewModels
                 bl.BelongingParcel(Drone.Id);
                 Refresh.Invoke();
             }
-            catch (ThereIsNoMatchObjectInListException exception)
+            catch (BO.ThereIsNoMatchObjectInListException exception)
             {
                 MessageBox.Show(exception.ExceptionDetails, "Error Belong Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            catch (ListIsEmptyException ex)
+            catch (BO.ListIsEmptyException ex)
             {
                 MessageBox.Show(ex.Message, "Error Belong Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        /// <summary>
+        /// A function that Deletes Drone.
+        /// </summary>
+        /// <param name="obj"></param>
         private void DeleteDrone(object obj)
         {
             if (Extensions.WorkerTurnOn()) return;
@@ -239,6 +266,9 @@ namespace PL.ViewModels
             }
         }
 
+        /// <summary>
+        /// A function that Refreshes Drone.
+        /// </summary>
         private void RefreshDrone()
         {
             if (bl.GetDrones().FirstOrDefault(d => d.Id == Drone.Id) != default)
@@ -249,7 +279,12 @@ namespace PL.ViewModels
             }
         }
 
-        private EditDrone Map(Drone drone)
+        /// <summary>
+        /// A function that converts from BO.Drone to EditDrone
+        /// </summary>
+        /// <param name="drone"></param>
+        /// <returns></returns>
+        private EditDrone Map(BO.Drone drone)
         {
             return new EditDrone()
             {
@@ -267,6 +302,11 @@ namespace PL.ViewModels
             };
         }
 
+        /// <summary>
+        /// A function that converts from BO.ParcelInTransfer to PO.ParcelInTransfer.
+        /// </summary>
+        /// <param name="pInTransfer"></param>
+        /// <returns></returns>
         private PO.ParcelInTransfer Map(BO.ParcelInTransfer pInTransfer)
         {
             if (pInTransfer == null)

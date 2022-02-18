@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using static BL.Extensions;
 using System.Runtime.CompilerServices;
 
-//lDroneToList.Any(drone => drone.Id == Id);
+
 namespace BL
 {
     /// <summary>

@@ -10,6 +10,9 @@ namespace PL.ViewModels
 {
     public delegate void DelEventHandler();
 
+    /// <summary>
+    /// Responsible to Refresh all the entities:
+    /// </summary>
     public class Refresh
     {
         public static event DelEventHandler DronesList;
@@ -22,6 +25,9 @@ namespace PL.ViewModels
         public static event DelEventHandler Station;
         public static event DelEventHandler Customer;
 
+        /// <summary>
+        /// Dictionary of all the workers:
+        /// </summary>
         public static Dictionary<int, BackgroundWorker> workers = new();
 
 

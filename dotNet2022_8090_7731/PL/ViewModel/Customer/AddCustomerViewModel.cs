@@ -8,6 +8,9 @@ using System.Windows;
 
 namespace PL.ViewModels
 {
+    /// <summary>
+    /// public class AddCustomerViewModel
+    /// </summary>
     public class AddCustomerViewModel
     {
         public List<string> PhoneOptions { get; set; }
@@ -18,7 +21,11 @@ namespace PL.ViewModels
         public CustomerToAdd Customer { get; set; }
         public RelayCommand<object> AddCustomerCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
-
+        /// <summary>
+        /// constructor of AddCustomerViewModel gets bl,Action
+        /// </summary>
+        /// <param name="bl"></param>
+        /// <param name="switchView"></param>
         public AddCustomerViewModel(BlApi.IBL bl,  Action<BO.Customer> switchView)
         {
             Customer = new();
@@ -29,6 +36,10 @@ namespace PL.ViewModels
             PhoneOptions = new List<string>() {"052","050","054","058","053" ,"055","056"};
         }
 
+        /// <summary>
+        /// A function that adds customer.
+        /// </summary>
+        /// <param name="obj"></param>
         private void AddCustomer(object obj)
         {
             try

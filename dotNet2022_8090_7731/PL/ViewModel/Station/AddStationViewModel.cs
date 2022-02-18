@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using BO;
+
 using PO;
 namespace PL.ViewModels
 {
@@ -46,10 +46,10 @@ namespace PL.ViewModels
             //}
         }
 
-        private Station Map(StationToAdd station)
+        private BO.Station Map(StationToAdd station)
         {
             BO.Location location = new() { Longitude = (double)station.Longitude, Latitude = (double)station.Latitude };
-            return new Station()
+            return new BO.Station()
             {
                 Id = (int)station.Id,
                 NameStation = station.Name,

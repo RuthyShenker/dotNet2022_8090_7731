@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:BO="clr-namespace:BO;assembly=BL"
+             xmlns:PO="clr-namespace:PO"
              xmlns:local="clr-namespace:PL.View"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -39,7 +39,7 @@
             <Setter Property="TextBlock.FontStyle" Value="Italic"/>
             <Setter Property="Margin" Value="15,0,0,0"/>
         </Style>
-        
+
         <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton }">
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="500" />
@@ -54,14 +54,14 @@
         <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                         ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="BO:WeightCategories"/>
+                <x:Type TypeName="PO:WeightCategories"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-        
+
         <ObjectDataProvider x:Key="PriorityEnum" MethodName="GetValues"
                         ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="BO:Priority"/>
+                <x:Type TypeName="PO:Priority"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <Converters:VisibilityByDroneInParcelPickOrDeliveryParcelConverter x:Key="VisibilityByDroneInParcelPickOrDeliveryParcelConverter"/>
@@ -69,7 +69,7 @@
         <Converters:ContentByDroneInParcelPickOrDeliveryParcelConverter x:Key="ContentByDroneInParcelPickOrDeliveryParcelConverter"/>
     </UserControl.Resources>
 
-    
+
     <StackPanel>
         <DockPanel  Margin="20" >
             <TextBlock Text="Id  \" Style="{StaticResource Header}"/>
@@ -129,7 +129,7 @@
                               CommandParameter="{Binding Parcel.DInParcel}"/>
             </TextBlock.InputBindings>
         </TextBlock>
-        
+
         <TextBox Text="{Binding Parcel.MakingParcel}" 
                  materialDesign:HintAssist.Hint="Making Parcel"
                  IsEnabled="False"/>
@@ -137,7 +137,7 @@
         <TextBox Text="{Binding Parcel.BelongParcel}" Visibility="{Binding Parcel.BelongParcel ,Converter={StaticResource VisibilityByParcelPickingValueConverter}}" 
                  materialDesign:HintAssist.Hint="Belong Parcel"
                  IsEnabled="False"/>
-        
+
         <TextBox Text="{Binding Parcel.PickingUp}" Visibility="{Binding Parcel.PickingUp ,Converter={StaticResource VisibilityByParcelPickingValueConverter}}" 
                  materialDesign:HintAssist.Hint="Picking Up Parcel"
                  IsEnabled="False"/>
@@ -162,6 +162,6 @@
         <Button Content="close" 
                 Command="{Binding CloseWindowCommand }"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
-        
+
     </StackPanel>
 </UserControl>
