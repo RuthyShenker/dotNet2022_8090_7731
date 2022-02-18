@@ -154,8 +154,8 @@ namespace PL.ViewModels
             return new EditParcel()
             {
                 Id = parcel.Id,
-                Sender = new CustomerInParcel(parcel.Sender.Id, parcel.Sender.Name),
-                Getter = new CustomerInParcel(parcel.Getter.Id, parcel.Getter.Name),
+                Sender = new CustomerInParcel() { Id = parcel.Sender.Id, Name = parcel.Sender.Name },
+                Getter = new CustomerInParcel() { Id = parcel.Getter.Id, Name = parcel.Getter.Name },
                 Arrival = parcel.Arrival,
                 PickingUp = parcel.PickingUp,
                 BelongParcel = parcel.BelongParcel,

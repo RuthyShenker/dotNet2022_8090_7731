@@ -101,7 +101,7 @@ namespace PL.ViewModels
                     Latitude = station.Location.Latitude,
                     Longitude = station.Location.Longitude
                 },
-                ListChargingDrone = station.LBL_ChargingDrone?.Select(position => new PO.ChargingDrone(position.DroneId, position.BatteryStatus))
+                ListChargingDrone = station.LBL_ChargingDrone?.Select(position => new PO.ChargingDrone() { DroneId = position.DroneId, BatteryStatus = position.BatteryStatus })
             };
         }
     }

@@ -13,7 +13,7 @@ namespace PL.ViewModels
     public class EditCustomerViewModel : INotify
     {
         readonly BlApi.IBL bl;
-        //readonly Action refreshCustomers;
+      
         private EditCustomer customer;
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> UpdateCustomerCommand { get; set; }
@@ -121,8 +121,6 @@ namespace PL.ViewModels
                 Weight =(PO.WeightCategories)p.Weight
             };
         }
-
-       
 
         public EditCustomer Customer
         {
