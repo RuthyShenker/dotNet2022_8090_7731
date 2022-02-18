@@ -137,7 +137,7 @@ namespace PL.ViewModels
                 Name = customer.Name,
                 Phone = customer.Phone,
                 Location = new Location() { Latitude = customer.Location.Latitude, Longitude = customer.Location.Longitude },
-                LForCustomer = Map(customer.LFromCustomer),
+                LForCustomer = Map(customer.LForCustomer),
                 LFromCustomer = Map(customer.LFromCustomer)
             };
         }

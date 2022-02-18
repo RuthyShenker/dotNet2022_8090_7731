@@ -114,12 +114,12 @@
         </DockPanel>
 
         <ComboBox ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}"
-                  SelectedItem="{Binding Parcel.Weight}"
+                  SelectedItem="{Binding Parcel.Weight}" IsEnabled="False"
                   materialDesign:HintAssist.Hint="Weight"/>
 
         <ComboBox ItemsSource="{Binding Source={StaticResource PriorityEnum}}"
                   SelectedItem="{Binding Parcel.MPriority}"
-                  materialDesign:HintAssist.Hint="Priority"/>
+                  materialDesign:HintAssist.Hint="Priority" IsEnabled="False"/>
 
         <TextBlock Text="See carring drone"
                    Style="{StaticResource Link}">

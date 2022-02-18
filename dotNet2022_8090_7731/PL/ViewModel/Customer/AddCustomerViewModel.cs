@@ -14,13 +14,13 @@ namespace PL.ViewModels
     public class AddCustomerViewModel
     {
         public List<string> PhoneOptions { get; set; }
-        public string Cidomet { get; set; }
-
+        public string Prefix { get; set; }
         readonly BlApi.IBL bl;
         readonly Action<BO.Customer> switchView;
         public CustomerToAdd Customer { get; set; }
         public RelayCommand<object> AddCustomerCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
+
         /// <summary>
         /// constructor of AddCustomerViewModel gets bl,Action
         /// </summary>

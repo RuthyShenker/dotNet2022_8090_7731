@@ -18,15 +18,7 @@ namespace PO
     /// </summary>
     public class ParcelToList
     {
-        public ParcelToList(BO.ParcelToList parcel)
-        {
-            Id = parcel.Id;
-            SenderName = parcel.SenderName;
-            GetterName = parcel.GetterName;
-            Weight = (PO.WeightCategories)parcel.Weight;
-            MyPriority = (PO.Priority)parcel.MyPriority;
-            Status = (PO.ParcelStatus)parcel.Status;
-        }
+        
 
         public int Id { get; init; }
         public string SenderName { get; set; }

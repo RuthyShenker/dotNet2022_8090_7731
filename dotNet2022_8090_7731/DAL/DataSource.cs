@@ -106,14 +106,10 @@ namespace Dal
         /// </summary>
         internal static void Initialize()
         {
-            InitializeDrones();
-
-            InitializeCustomers();
-
             InitializeBaseStations();
-
+            InitializeCustomers();
+            InitializeDrones();
             InitializeParcels();
-
             InitializeChargingDrone();
         }
 

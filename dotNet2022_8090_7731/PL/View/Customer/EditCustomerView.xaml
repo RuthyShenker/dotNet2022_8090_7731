@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+              xmlns:Converters="clr-namespace:PL.Converters"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -35,6 +36,8 @@
             <Setter Property="Margin" Value="0,15" />
         </Style>
 
+        <Converters:CountOfForListToVisibilityOfListConverter x:Key="CountOfForListToVisibilityOfListConverter"/>
+        <Converters:CountOfFromListToVisibilityOfListConverter x:Key="CountOfFromListToVisibilityOfListConverter"/>
     </UserControl.Resources>
 
     <StackPanel>
@@ -64,8 +67,8 @@
                  materialDesign:HintAssist.Hint="Location"
                  IsEnabled="False"/>
 
-        <Label>For:</Label>
-        <ListView Grid.Row="1"  
+        <Label Visibility="{Binding Customer ,Converter={StaticResource CountOfForListToVisibilityOfListConverter}}">For:</Label>
+        <ListView Grid.Row="1"  Visibility="{Binding Customer ,Converter={StaticResource CountOfForListToVisibilityOfListConverter}}"
                   ItemsSource="{Binding Customer.LForCustomer}"
                   x:Name="ParcelsForCustomerListView">
 
@@ -101,9 +104,10 @@
             </i:Interaction.Triggers>
         </ListView>
 
-        <Label>From:</Label>
-        <ListView Grid.Row="1"  
-                  ItemsSource="{Binding Customer.LFromCustomer}"
+        <Label Visibility="{Binding Customer ,Converter={StaticResource CountOfFromListToVisibilityOfListConverter}}">From:</Label>
+       
+        <ListView Grid.Row="1"   
+                  ItemsSource="{Binding Customer.LFromCustomer}" Visibility="{Binding Customer ,Converter={StaticResource CountOfFromListToVisibilityOfListConverter}}"
                   x:Name="ParcelsFromCustomerListView">
             <ListView.View>
                 <GridView>

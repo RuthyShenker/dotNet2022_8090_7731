@@ -8,9 +8,6 @@
              xmlns:local1="clr-namespace:PL.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <!--<UserControl.DataContext>
-        <local1:AddStationViewModel/>
-    </UserControl.DataContext>-->
     <UserControl.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
             <Setter Property="Margin" Value="0,15" />
@@ -42,17 +39,17 @@
         </TextBox>
         
         <TextBox
-            Text="{Binding Station.Longitude,
+            Text="{Binding Station.Longitude,Mode=OneWay,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
+            UpdateSourceTrigger=LostFocus}"
             materialDesign:HintAssist.Hint="Longitude" />
 
         <TextBox 
-            Text="{Binding Station.Latitude,
+            Text="{Binding Station.Latitude,Mode=OneTime,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
+            UpdateSourceTrigger=LostFocus }"
             materialDesign:HintAssist.Hint="Latitude" />
 
         <TextBox 

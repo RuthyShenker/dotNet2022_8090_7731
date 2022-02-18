@@ -19,16 +19,7 @@ namespace PO
     /// </summary>
     public class CustomerToList
     {
-        public CustomerToList(BO.CustomerToList customer)
-        {
-            Id = customer.Id;
-            Name = customer.Name;
-            Phone = customer.Phone;
-            SentSupplied = customer.SentSupplied;
-            SentNotSupplied = customer.SentNotSupplied;
-            Got = customer.Got;
-            InWayToCustomer = customer.InWayToCustomer;
-        }
+        
 
         public int Id { get; init; }
         public string Name { get; set; }
