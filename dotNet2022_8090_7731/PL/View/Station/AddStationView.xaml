@@ -39,14 +39,14 @@
         </TextBox>
         
         <TextBox
-            Text="{Binding Station.Longitude,Mode=OneWay,
+            Text="{Binding Station.Longitude,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=LostFocus}"
             materialDesign:HintAssist.Hint="Longitude" />
 
         <TextBox 
-            Text="{Binding Station.Latitude,Mode=OneTime,
+            Text="{Binding Station.Latitude,
             ValidatesOnDataErrors=true,
             NotifyOnValidationError=true,
             UpdateSourceTrigger=LostFocus }"

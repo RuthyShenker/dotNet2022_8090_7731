@@ -14,4 +14,11 @@
     <Longitude>4</Longitude>
     <Latitude>5</Latitude>
   </Customer>
+  <Customer>
+    <Id>542253322</Id>
+    <Name>fee</Name>
+    <Phone>0504343232</Phone>
+    <Longitude>34</Longitude>
+    <Latitude>54</Latitude>
+  </Customer>
 </ArrayOfCustomer>

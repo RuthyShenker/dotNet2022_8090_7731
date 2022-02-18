@@ -18,7 +18,7 @@ namespace PL.ViewModels
         //BlApi.IBL bl;
         Action<BO.Drone> switchView;
         //Action refreshDrones;
-        public Array WeightOptions { get; set; } = System.Enum.GetValues(typeof(BO.WeightCategories));
+        public Array WeightOptions { get; set; } = System.Enum.GetValues(typeof(PO.WeightCategories));
         public List<int> StationOptions { get; set; }
         public RelayCommand<object> AddDroneCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
