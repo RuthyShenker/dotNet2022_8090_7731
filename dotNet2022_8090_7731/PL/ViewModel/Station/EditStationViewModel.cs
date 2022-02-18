@@ -1,4 +1,4 @@
-﻿using BO;
+﻿
 using PL.View;
 using PO;
 using System;
@@ -65,7 +65,7 @@ namespace PL.ViewModels
 
                 Functions.CloseWindow(closeButton);
             }
-            catch (IdIsNotExistException exception)
+            catch (BO.IdIsNotExistException exception)
             {
                 MessageBox.Show(exception.Message);
             }

@@ -29,7 +29,7 @@ namespace PL.ViewModels
             EditCustomerCommand = new RelayCommand<object>(EditCustomer, param => param != null);
             DeleteParcelCommand = new RelayCommand<object>(DeleteParcel);
             CollectAndDeliverPackageCommand = new RelayCommand<object>(GivingPermissionToCollectAndDeliverPackage);
-            OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow, param => param != null);
+            OpenDroneWindowCommand = new RelayCommand<object>(OpenDroneWindow);
         }
 
         private void GivingPermissionToCollectAndDeliverPackage(object obj)

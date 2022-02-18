@@ -13,6 +13,9 @@ using System.Windows.Data;
 
 namespace PL.ViewModels
 {
+    /// <summary>
+    ///  public class DroneListViewModel : INotify
+    /// </summary>
     public class DroneListViewModel : INotify
     {
         private readonly BlApi.IBL bl;
@@ -30,6 +33,10 @@ namespace PL.ViewModels
         public RelayCommand<object> MouseDoubleCommand { get; set; }
         //public RelayCommand<object> GroupCommand { get; set; }
 
+        /// <summary>
+        /// A constructor of DroneListViewModel that gets bl.
+        /// </summary>
+        /// <param name="bl"></param>
         public DroneListViewModel(BlApi.IBL bl)
         {
             Refresh.DronesList += RefreshDronesList;
@@ -54,6 +61,11 @@ namespace PL.ViewModels
             }
         }
 
+        /// <summary>
+        /// A function that filter drones.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         private bool FilterDrone(object obj)
         {
             if (obj is PO.DroneToList droneToList)
@@ -111,6 +123,10 @@ namespace PL.ViewModels
             }
         }
 
+        /// <summary>
+        /// A function that adds a drone .
+        /// </summary>
+        /// <param name="sender"></param>
         private void AddingDrone(object sender)
         {
             if (bl.AvailableSlots().Select(slot => slot.Id).Any())
@@ -123,6 +139,9 @@ namespace PL.ViewModels
             }
         }
 
+        /// <summary>
+        /// A function that refreshes the Drone List.
+        /// </summary>
         private void RefreshDronesList()
         {
             lock (bl)
@@ -135,7 +154,10 @@ namespace PL.ViewModels
             }
         }
 
-        //TODOTODO:
+        /// <summary>
+        /// A function that opens specific drone.
+        /// </summary>
+        /// <param name="sender"></param>
         private void MouseDoubleClick(object sender)
         {
             var selectedDrone = sender as PO.DroneToList;

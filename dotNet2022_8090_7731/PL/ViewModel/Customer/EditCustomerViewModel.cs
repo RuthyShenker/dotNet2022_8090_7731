@@ -10,6 +10,9 @@ using System.Windows;
 
 namespace PL.ViewModels
 {
+    /// <summary>
+    ///  public class EditCustomerViewModel : INotify
+    /// </summary>
     public class EditCustomerViewModel : INotify
     {
         readonly BlApi.IBL bl;
@@ -20,6 +23,11 @@ namespace PL.ViewModels
         public RelayCommand<object> DeleteCustomerCommand { get; set; }
         public RelayCommand<object> ShowParcelOfCustomerCommand { get; set; }
 
+        /// <summary>
+        /// A constructor of EditCustomerViewModel that gets bl, BO.Customer.
+        /// </summary>
+        /// <param name="bl"></param>
+        /// <param name="customer"></param>
         public EditCustomerViewModel(BlApi.IBL bl, BO.Customer customer)
         {
             Refresh.Customer += RefreshCustomer;
@@ -32,6 +40,11 @@ namespace PL.ViewModels
             ShowParcelOfCustomerCommand = new RelayCommand<object>(MouseDoubleClick, param => param != null);
         }
 
+
+        /// <summary>
+        /// A function that opens parcel of customer.
+        /// </summary>
+        /// <param name="sender"></param>
         private void MouseDoubleClick(object obj)
         {
             if (Extensions.WorkerTurnOn()) return;
@@ -41,6 +54,10 @@ namespace PL.ViewModels
             new ParcelView(bl, blParcel).Show();
         }
 
+        /// <summary>
+        /// A function that deletes specific customer.
+        /// </summary>
+        /// <param name="obj"></param>
         private void DeleteCustomer(object obj)
         {
             if (Extensions.WorkerTurnOn()) return;
@@ -78,6 +95,10 @@ namespace PL.ViewModels
             }
         }
 
+        /// <summary>
+        /// A function that Updates Customer
+        /// </summary>
+        /// <param name="obj"></param>
         private void UpdateCustomer(object obj)
         {
             try
@@ -91,6 +112,9 @@ namespace PL.ViewModels
             }
         }
 
+        /// <summary>
+        /// A function that Refreshes Customer
+        /// </summary>
         private void RefreshCustomer()
         {
             if (bl.GetCustomers().FirstOrDefault(c => c.Id == Customer.Id) != default)
@@ -100,6 +124,11 @@ namespace PL.ViewModels
 
         }
 
+        /// <summary>
+        /// A function that converts BO.Customer to EditCustomer
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>EditCustomer</returns>
         private EditCustomer MapFromBOToPO(BO.Customer customer)
         {
             return new EditCustomer()
@@ -108,16 +137,26 @@ namespace PL.ViewModels
                 Name = customer.Name,
                 Phone = customer.Phone,
                 Location = new Location() { Latitude = customer.Location.Latitude, Longitude = customer.Location.Longitude },
-                LForCustomer = Map(customer.LFromCustomer),
+                LForCustomer = Map(customer.LForCustomer),
                 LFromCustomer = Map(customer.LFromCustomer)
             };
         }
 
+        /// <summary>
+        /// A function that converts IEnumerable<BO.ParcelInCustomer> to IEnumerable<ParcelInCustomer>
+        /// </summary>
+        /// <param name="lFromCustomer"></param>
+        /// <returns>IEnumerable<ParcelInCustomer></returns>
         private IEnumerable<ParcelInCustomer> Map(IEnumerable<BO.ParcelInCustomer> lFromCustomer)
         {
             return lFromCustomer.Select(p => convert(p));
         }
 
+        /// <summary>
+        /// a function that converts BO.ParcelInCustomer to ParcelInCustomer
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         private ParcelInCustomer convert(BO.ParcelInCustomer p)
         {
             return new()

@@ -1,4 +1,4 @@
-﻿using BO;
+﻿
 using PO;
 using System;
 using System.Collections.Generic;
@@ -40,15 +40,15 @@ namespace PL.ViewModels
                 MessageBox.Show("The Parcel Added Succeesfully!");
                 switchView(parcel);
             }
-            catch (IdIsNotExistException exception)
+            catch (BO.IdIsNotExistException exception)
             {
                 MessageBox.Show(exception.Message);
             }
         }
 
-        private Parcel Map(ParcelToAdd parcel)
+        private BO.Parcel Map(ParcelToAdd parcel)
         {
-            return new Parcel(){
+            return new BO.Parcel(){
 
                Id= 0,
                Sender= new() {  Id=parcel.Sender.Id,Name=string.Empty },

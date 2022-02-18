@@ -8,10 +8,15 @@ using System.Windows.Input;
 
 namespace PL
 {
+    /// <summary>
+    ///  public class RelayCommand<T> impliments ICommand
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class RelayCommand<T> : ICommand
     {
         readonly Action<object> _execute;
         readonly Predicate<object> _canExecute;
+
         [DebuggerStepThrough]
         public RelayCommand(Action<object> execute)
             : this(execute, null)

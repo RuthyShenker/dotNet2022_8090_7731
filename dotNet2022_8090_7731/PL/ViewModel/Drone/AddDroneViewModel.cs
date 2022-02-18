@@ -1,4 +1,4 @@
-﻿using BO;
+﻿
 using PO;
 using System;
 using System.Collections.Generic;
@@ -9,18 +9,25 @@ using System.Windows;
 
 namespace PL.ViewModels
 {
+    /// <summary>
+    ///  public class AddDroneViewModel
+    /// </summary>
     public class AddDroneViewModel
     {
         public DroneToAdd Drone { get; set; }
         //BlApi.IBL bl;
         Action<BO.Drone> switchView;
         //Action refreshDrones;
-        public Array WeightOptions { get; set; } = System.Enum.GetValues(typeof(BO.WeightCategories));
+        public Array WeightOptions { get; set; } = System.Enum.GetValues(typeof(PO.WeightCategories));
         public List<int> StationOptions { get; set; }
         public RelayCommand<object> AddDroneCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
 
-        public AddDroneViewModel(Action<BO.Drone> switchView /*BlApi.IBL bl,*//* Action refreshDrones*/)
+        /// <summary>
+        /// A constructor that gets action.
+        /// </summary>
+        /// <param name="switchView"></param>
+        public AddDroneViewModel(Action<BO.Drone> switchView )
         {
             Drone = new();
             this.switchView = switchView;
@@ -30,6 +37,10 @@ namespace PL.ViewModels
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
         }
 
+        /// <summary>
+        /// A function that adds drone.
+        /// </summary>
+        /// <param name="parameters"></param>
         private void AddDrone(object parameters)
         {
             try
@@ -46,7 +57,12 @@ namespace PL.ViewModels
             }
         }
 
-        private Drone Map(DroneToAdd drone)
+        /// <summary>
+        /// A function that converts DroneToAdd to BO.Drone
+        /// </summary>
+        /// <param name="drone"></param>
+        /// <returns></returns>
+        private BO.Drone Map(DroneToAdd drone)
         {
             return new()
             {

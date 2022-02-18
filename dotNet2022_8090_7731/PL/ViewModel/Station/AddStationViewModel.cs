@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using BO;
+
 using PO;
 namespace PL.ViewModels
 {
@@ -25,31 +25,36 @@ namespace PL.ViewModels
         private void AddStation(object obj)
         {
             StationToAdd station = Station;
-            //try
-            //{
+            try
+            {
 
-            BlApi.BlFactory.GetBl().AddingBaseStation
-            (new()
+                    BlApi.BlFactory.GetBl().AddingBaseStation
+                (new()
                 {
                     Id = (int)station.Id,
                     NameStation = station.Name,
                     Location = new() { Longitude = (double)station.Longitude, Latitude = (double)station.Latitude },
                     NumAvailablePositions = (int)station.NumPositions
                 }
-            );
+                );
+            }
+            catch (BO.IdAlreadyExistsException)
+            {
+                MessageBox.Show("id is already exist in this list");
+            }
+            catch (BO.XMLFileLoadCreateException ex )
+            {
+                MessageBox.Show(ex.Message+",the xml file not exists");
+            }
             Refresh.Invoke();
             switchView(Map(station));
-            //}
-            //catch (Exception)
-            //{
-            //    MessageBox.Show("id is already exist");
-            //}
+
         }
 
-        private Station Map(StationToAdd station)
+        private BO.Station Map(StationToAdd station)
         {
             BO.Location location = new() { Longitude = (double)station.Longitude, Latitude = (double)station.Latitude };
-            return new Station()
+            return new BO.Station()
             {
                 Id = (int)station.Id,
                 NameStation = station.Name,

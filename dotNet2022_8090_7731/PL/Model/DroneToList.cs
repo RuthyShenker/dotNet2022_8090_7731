@@ -19,19 +19,6 @@ namespace PO
     /// </summary>
     public class DroneToList
     {
-
-        public DroneToList(BO.DroneToList drone)
-        {
-            Id = drone.Id;
-            Model = drone.Model;
-            Weight =(PO.WeightCategories)drone.Weight;
-            BatteryStatus = drone.BatteryStatus;
-            DStatus = (PO.DroneStatus)drone.DStatus;
-            CurrLocation =new() { Longitude = drone.CurrLocation.Longitude, Latitude = drone.CurrLocation.Latitude };
-            DeliveredParcelId = drone.DeliveredParcelId;
-
-        }
-
         /// <summary>
         /// this field is init.
         /// </summary>

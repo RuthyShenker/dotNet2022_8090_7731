@@ -51,14 +51,14 @@
             Text="{Binding Customer.Latitude,
                 ValidatesOnDataErrors=true,
                 NotifyOnValidationError=true,
-                UpdateSourceTrigger=PropertyChanged}"
+                UpdateSourceTrigger=LostFocus}"
             materialDesign:HintAssist.Hint="Latitude" />
 
         <TextBox 
             Text="{Binding Customer.Longitude,
                 ValidatesOnDataErrors=true,
                 NotifyOnValidationError=true,
-                UpdateSourceTrigger=PropertyChanged}"
+                UpdateSourceTrigger=LostFocus}"
             materialDesign:HintAssist.Hint="Longitude" />
 
         <Button Content="ADD"

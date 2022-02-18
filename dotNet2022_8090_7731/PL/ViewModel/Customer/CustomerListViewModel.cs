@@ -12,6 +12,9 @@ using PO;
 
 namespace PL.ViewModels
 {
+    /// <summary>
+    ///   public class CustomerListViewModel : INotify
+    /// </summary>
     public class CustomerListViewModel : INotify
     {
         readonly BlApi.IBL bl;
@@ -21,6 +24,10 @@ namespace PL.ViewModels
         public RelayCommand<object> MouseDoubleCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
 
+        /// <summary>
+        /// A constructor of CustomerListViewModel that gets bl.
+        /// </summary>
+        /// <param name="bl"></param>
         public CustomerListViewModel(BlApi.IBL bl)
         {
             Refresh.CustomersList += RefreshCustomersList;
@@ -42,6 +49,10 @@ namespace PL.ViewModels
             }
         }
 
+        /// <summary>
+        /// A function that opens specific customer.
+        /// </summary>
+        /// <param name="sender"></param>
         private void MouseDoubleClick(object sender)
         {
             var selectedCustomer = sender as CustomerToList;
@@ -49,11 +60,18 @@ namespace PL.ViewModels
             new CustomerView(bl, blCustomer)
                 .Show();
         }
+        /// <summary>
+        /// A function that adds new customer.
+        /// </summary>
+        /// <param name="sender"></param>
         private void AddingCustomer(object sender)
         {
             new CustomerView(bl).Show();
         }
 
+        /// <summary>
+        /// A function that refreshs Customers List.
+        /// </summary>
         private void RefreshCustomersList()
         {
             CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers().MapListFromBLToPL());
