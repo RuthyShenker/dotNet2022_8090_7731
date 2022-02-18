@@ -11,7 +11,7 @@ namespace BL
     /// <summary>
     /// An internal sealed partial class BL inherits from Singleton<BL>,and impliments BlApi.IBL,
     /// </summary>
-    partial class BL:BlApi.IBL
+    partial class BL : BlApi.IBL
     {
 
         /// <summary>
@@ -22,22 +22,34 @@ namespace BL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public int AddCustomer(Customer bLCustomer)
         {
-            lock (dal)
+            try
             {
-                if (dal.IsIdExistInList<DO.Customer>(bLCustomer.Id))
+                lock (dal)
                 {
-                    throw new IdAlreadyExistsException(typeof(Customer), bLCustomer.Id);
-                }
 
-                var newCustomer = new DO.Customer()
-                {
-                    Id = bLCustomer.Id,
-                    Name = bLCustomer.Name,
-                    Phone = bLCustomer.Phone,
-                    Longitude = bLCustomer.Location.Longitude,
-                    Latitude = bLCustomer.Location.Latitude
-                };
-                dal.Add(newCustomer);
+                    if (dal.IsIdExistInList<DO.Customer>(bLCustomer.Id))
+                    {
+                        throw new BO.IdAlreadyExistsException(typeof(Customer), bLCustomer.Id);
+                    }
+
+                    var newCustomer = new DO.Customer()
+                    {
+                        Id = bLCustomer.Id,
+                        Name = bLCustomer.Name,
+                        Phone = bLCustomer.Phone,
+                        Longitude = bLCustomer.Location.Longitude,
+                        Latitude = bLCustomer.Location.Latitude
+                    };
+                    dal.Add(newCustomer);
+                }
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new BO.ListIsEmptyException(ex.Message);
             }
             return bLCustomer.Id;
         }
@@ -74,6 +86,10 @@ namespace BL
             {
                 throw new IdIsNotExistException(typeof(Customer), customerId);
             }
+            catch (ArgumentNullException)
+            {
+                throw new ListIsEmptyException(typeof(Customer));
+            }
         }
 
         /// <summary>
@@ -83,11 +99,18 @@ namespace BL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<CustomerToList> GetCustomers()
         {
-            //lock (dal) 
-            //{
-            return dal.GetListFromDal<DO.Customer>()
-                   .Select(c => ConvertToList(c));
-            //}
+            try
+            {
+                lock (dal)
+                {
+                    return dal.GetListFromDal<DO.Customer>()
+                       .Select(c => ConvertToList(c));
+                }
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
         }
 
         /// <summary>
@@ -111,6 +134,10 @@ namespace BL
             {
                 throw new IdIsNotExistException(typeof(Customer), customerId);
             }
+            catch (ArgumentNullException)
+            {
+                throw new BO.ThereIsNoMatchObjectInListException();
+            }
         }
         /// <summary>
         /// A function that gets id of customer and deletes the instance with this id from the db,
@@ -132,6 +159,15 @@ namespace BL
             {
                 throw new IdIsNotExistException(typeof(Customer), customerId);
             }
+            catch (ArgumentNullException)
+            {
+                throw new IdIsNotExistException(typeof(Customer), customerId);
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+
             return $"The Customer with Id: {customerId} was successfully removed from the system";
         }
 
@@ -182,12 +218,12 @@ namespace BL
                     Name = name
                 };
             }
-            catch (DO.IdDoesNotExistException)
+            catch (DO.IdDoesNotExistException ex)
             {
-                throw new IdIsNotExistException();
+                throw new IdIsNotExistException(typeof(Customer), Id);
                 //throw new IdDoesNotExistException(typeof(Customer), Id);
             }
-            catch (ArgumentNullException )
+            catch (ArgumentNullException)
             {
                 throw;
             }
@@ -202,18 +238,25 @@ namespace BL
         {
             DO.Customer customer;
             var reqiredCustomersList = Enumerable.Empty<Customer>();
-            lock (dal)
+            try
             {
-                var customersDalList = dal.GetListFromDal<DO.Customer>();
-                var parcelsDalList = dal.GetListFromDal<DO.Parcel>();
-                foreach (var parcel in parcelsDalList)
+                lock (dal)
                 {
-                    if (parcel.Arrival.HasValue)
+                    var customersDalList = dal.GetListFromDal<DO.Customer>();
+                    var parcelsDalList = dal.GetListFromDal<DO.Parcel>();
+                    foreach (var parcel in parcelsDalList)
                     {
-                        customer = customersDalList.First(customer => customer.Id == parcel.GetterId);
-                        reqiredCustomersList = reqiredCustomersList.Append(ConvertToBL(customer));
+                        if (parcel.Arrival.HasValue)
+                        {
+                            customer = customersDalList.First(customer => customer.Id == parcel.GetterId);
+                            reqiredCustomersList = reqiredCustomersList.Append(ConvertToBL(customer));
+                        }
                     }
                 }
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
             return reqiredCustomersList;
         }
@@ -226,12 +269,14 @@ namespace BL
         /// <returns>returns CustomerToList instance </returns>
         private CustomerToList ConvertToList(DO.Customer customer)
         {
+
             CustomerToList nCustomer = new()
             {
                 Id = customer.Id,
                 Name = customer.Name,
                 Phone = customer.Phone
             };
+
             lock (dal)
             {
                 #region
@@ -271,6 +316,8 @@ namespace BL
                 nCustomer.InWayToCustomer = dal.GetDalListByCondition<DO.Parcel>(p => p.GetterId == customer.Id && p.PickingUp != null).Count();
 
             }
+
+
             return nCustomer;
         }
 
@@ -297,23 +344,29 @@ namespace BL
             ParcelInCustomer parcelInCustomer;
             var lFromCustomer = new List<ParcelInCustomer>();
             var lForCustomer = new List<ParcelInCustomer>();
-
-            lock (dal)
+            try
             {
-                var dParcelslist = dal.GetListFromDal<DO.Parcel>();
-                foreach (var parcel in dParcelslist)
+                lock (dal)
                 {
-                    if (parcel.SenderId == nCustomer.Id)
+                    var dParcelslist = dal.GetListFromDal<DO.Parcel>();
+                    foreach (var parcel in dParcelslist)
                     {
-                        parcelInCustomer = CopyCommon(parcel, parcel.GetterId);
-                        lFromCustomer.Add(parcelInCustomer);
-                    }
-                    else if (parcel.GetterId == nCustomer.Id)
-                    {
-                        parcelInCustomer = CopyCommon(parcel, parcel.SenderId);
-                        lForCustomer.Add(parcelInCustomer);
+                        if (parcel.SenderId == nCustomer.Id)
+                        {
+                            parcelInCustomer = CopyCommon(parcel, parcel.GetterId);
+                            lFromCustomer.Add(parcelInCustomer);
+                        }
+                        else if (parcel.GetterId == nCustomer.Id)
+                        {
+                            parcelInCustomer = CopyCommon(parcel, parcel.SenderId);
+                            lForCustomer.Add(parcelInCustomer);
+                        }
                     }
                 }
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
             nCustomer.LFromCustomer = lFromCustomer;
             nCustomer.LForCustomer = lForCustomer;

@@ -99,7 +99,7 @@ namespace Dal
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<T> GetDalListByCondition<T>(Predicate<T> predicate) where T : IDalDo
         {
-            return ((List<T>)DataSource.Data[typeof(T)]).FindAll(predicate);
+            return ((List<T>)DataSource.Data[typeof(T)])?.FindAll(predicate);
         }
 
         /// <summary>

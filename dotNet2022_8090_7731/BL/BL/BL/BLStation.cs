@@ -24,9 +24,16 @@ namespace BL
         {
             lock (dal)
             {
-                if (dal.IsIdExistInList<DO.BaseStation>(blStation.Id))
+                try
                 {
-                    throw new IdAlreadyExistsException(typeof(DO.BaseStation), blStation.Id);
+                    if (dal.IsIdExistInList<DO.BaseStation>(blStation.Id))
+                    {
+                        throw new IdAlreadyExistsException(typeof(DO.BaseStation), blStation.Id);
+                    }
+                }
+                catch (DO.XMLFileLoadCreateException ex)
+                {
+                    throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
                 }
 
                 DO.BaseStation dlStation = new()
