@@ -55,6 +55,8 @@ namespace PL
             //XMLTools.SaveListToXmlSerializer<Parcel>(list3, GetXmlFilePath(typeof(Parcel)));
             #endregion
             this.DataContext = new MainWindowViewModel();
+
+
             //mDroneView.DataContext = new DisplayViewModel();
 
             //CustomerListViewCommand = new RelayCommand<object>(ShowCustomerListView);

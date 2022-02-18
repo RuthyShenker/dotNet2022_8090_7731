@@ -59,7 +59,13 @@ namespace PO
             }
         }
 
-        public WeightCategories Weight { get; set; }
+       
+        private WeightCategories weight;
+        public WeightCategories Weight
+        {
+            get => weight;
+            set => Set(ref weight, value);
+        }
 
         private double batteryStatus;
         public double BatteryStatus

@@ -126,7 +126,7 @@ namespace Dal
             {
                 DroneList.Add(new Drone()
                 {
-                    Id = Rand.Next(100000000, 1000000000),
+                    Id = Rand.Next(1000, 10000),
                     Model = Rand.Next(1000, 10000).ToString(),
                     MaxWeight = (WeightCategories)Rand.Next(0, Enum.GetNames(typeof(WeightCategories)).Length),
                 });
@@ -160,7 +160,7 @@ namespace Dal
         /// </summary>
         private static void InitializeBaseStations()
         {
-            string[] initNameStation = { "Tel-Tzion", "Tel-Aviv", "Rahanana", "Eilat", "Jerusalem" };
+            string[] initNameStation = { "TelTzion", "TelAviv", "Rahanana", "Eilat", "Jerusalem" };
             for (int i = 0; i < INITIALIZE_BASE_STATION; ++i)
             {
                 BaseStationList.Add(new BaseStation()
