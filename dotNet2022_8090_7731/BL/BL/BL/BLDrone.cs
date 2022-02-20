@@ -457,24 +457,37 @@ namespace BL
                         var station = dal.GetFromDalByCondition<DO.BaseStation>(s => s.Id == stationId);
                         nDrone.CurrLocation = new() { Longitude = station.Longitude, Latitude = station.Latitude };
 
+                    }
+                    else //customersList.Count() == 0
+                    {
+                        var idStation = GetStations().ElementAt(rand.Next(GetStations().Count())).Id;
+                        var longitude = dal.GetFromDalById<DO.BaseStation>(idStation).Longitude;
+                        var latitude = dal.GetFromDalById<DO.BaseStation>(idStation).Latitude;
+                        nDrone.CurrLocation = new() { Longitude = longitude, Latitude = latitude };
+                    }
+                    nDrone.BatteryStatus = rand.NextDouble() * 20;
                 }
-                else //customersList.Count() == 0
+                else //free + customersList.Count() != 0
                 {
-                    var idStation = GetStations().ElementAt(rand.Next(GetStations().Count())).Id;
-                    var longitude = dal.GetFromDalById<DO.BaseStation>(idStation).Longitude;
-                    var latitude = dal.GetFromDalById<DO.BaseStation>(idStation).Latitude;
-                    nDrone.CurrLocation = new() { Longitude = longitude, Latitude = latitude };
+                    nDrone.CurrLocation = customersList.ElementAt(rand.Next(customersList.Count())).Location;
+                    var closetStation = ClosestStation(nDrone.CurrLocation);
+                    double minBattery = MinBattery(CalculateDistance(nDrone.CurrLocation, closetStation.Location));
+                    nDrone.BatteryStatus = RandBetweenRange(minBattery, 100);
                 }
-                nDrone.BatteryStatus = rand.NextDouble() * 20;
+                return nDrone;
             }
-            else //free + customersList.Count() != 0
+            catch (ArgumentNullException)
             {
-                nDrone.CurrLocation = customersList.ElementAt(rand.Next(customersList.Count())).Location;
-                var closetStation = ClosestStation(nDrone.CurrLocation);
-                double minBattery = MinBattery(CalculateDistance(nDrone.CurrLocation, closetStation.Location), false);
-                nDrone.BatteryStatus = RandBetweenRange(minBattery, 100);
+
             }
-            return nDrone;
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+            catch (DO.IdDoesNotExistException)
+            {
+                throw new BO.IdDoesNotExistException();
+            }
         }
 
         /// <summary>
