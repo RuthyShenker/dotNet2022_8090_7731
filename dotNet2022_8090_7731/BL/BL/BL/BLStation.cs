@@ -35,6 +35,10 @@ namespace BL
                 {
                     throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
                 }
+                catch (ArgumentNullException)
+                {
+                    throw;
+                }
 
                 DO.BaseStation dlStation = new()
                 {
@@ -80,7 +84,15 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new IdIsNotExistException(typeof(DO.BaseStation), stationId);
+                throw new IdDoesNotExistException(typeof(DO.BaseStation), stationId);
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
             }
         }
 
@@ -101,7 +113,15 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new IdIsNotExistException(typeof(DO.BaseStation), stationId);
+                throw new IdDoesNotExistException(typeof(DO.BaseStation), stationId);
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
             }
             return $"Station with Id: {stationId} was successfully removed from the system";
         }
@@ -114,8 +134,16 @@ namespace BL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationToList> GetStations()
         {
-            return dal.GetListFromDal<DO.BaseStation>()
-                .Select(station => ConvertToList(station));
+            try
+            {
+                return dal.GetListFromDal<DO.BaseStation>()
+                    .Select(station => ConvertToList(station));
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+            
         }
         
         /// <summary>
@@ -128,14 +156,25 @@ namespace BL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationToList> AvailableSlots(int numPositions = 0)
         {
-            lock (dal)
+            try
             {
-                return numPositions == 0
-                    ? dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) > 0)
-                     .Select(station => ConvertToList(station))
+                lock (dal)
+                {
+                    return numPositions == 0
+                        ? dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) > 0)
+                         .Select(station => ConvertToList(station))
 
-                    : dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) == numPositions)
-                         .Select(station => ConvertToList(station));
+                        : dal.GetDalListByCondition<DO.BaseStation>(baseStation => GetNumOfAvailablePositionsInStation(baseStation.Id) == numPositions)
+                             .Select(station => ConvertToList(station));
+                }
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
             }
         }
        
@@ -158,7 +197,15 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new IdIsNotExistException(typeof(Station), stationId);
+                throw new IdDoesNotExistException(typeof(Station), stationId);
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
             }
         }
 
@@ -202,6 +249,11 @@ namespace BL
             {
                 throw new ListIsEmptyException();
             }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+         
             #region canDelete
             //var cCoord = new GeoCoordinate(location.Latitude, location.Longitude);
             //var stationDalList = dal.GetListFromDal<DO.BaseStation>();
@@ -293,6 +345,14 @@ namespace BL
             {
                 throw new ListIsEmptyException(typeof(BO.Station));
             }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+            catch (DO.IdDoesNotExistException)
+            {
+                throw new IdDoesNotExistException(typeof(Station), stationId);
+            }
         }
 
         /// <summary>
@@ -328,6 +388,14 @@ namespace BL
             catch (ArgumentNullException)
             {
                 throw new ListIsEmptyException();
+            }
+            catch (DO.IdDoesNotExistException)
+            {
+                throw new IdDoesNotExistException(typeof(ChargingDrone), sId);
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
             return chargingDroneBLList;
 

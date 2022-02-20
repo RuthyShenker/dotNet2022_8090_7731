@@ -53,9 +53,13 @@ namespace PL.ViewModels
             {
                 MessageBox.Show(exception.Message);
             }
-            catch (BO.IdIsNotExistException exception)
+            catch (BO.XMLFileLoadCreateException ex)
             {
-                MessageBox.Show(exception.Message);
+                MessageBox.Show( $"fail to load xml file: {ex.xmlFilePath}", "Error  to load xml file ");
+            }
+            catch (BO.ListIsEmptyException ex)
+            {
+                MessageBox.Show();
             }
         }
 

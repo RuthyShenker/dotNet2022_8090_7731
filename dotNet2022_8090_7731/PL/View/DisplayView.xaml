@@ -43,6 +43,7 @@
             </MenuItem>
         </Menu>
         <Image Source="C:\Users\user\source\repos\dotNet2022_8090_7731\dotNet2022_8090_7731\4.png" />
+        
     </StackPanel>
 </UserControl>
     

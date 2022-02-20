@@ -40,9 +40,15 @@ namespace PL.ViewModels
                 MessageBox.Show("The Parcel Added Succeesfully!");
                 switchView(parcel);
             }
-            catch (BO.IdIsNotExistException exception)
+            catch (BO.IdDoesNotExistException exception)
             {
                 MessageBox.Show(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+
+                MessageBox.Show();
+
             }
         }
 

@@ -45,6 +45,10 @@ namespace BL
                         throw new BO.IdAlreadyExistsException(typeof(Drone), bLDrone.Id);
                     }
                 }
+                catch (ArgumentNullException)
+                {
+                    throw;
+                }
                 catch (DO.XMLFileLoadCreateException ex)
                 {
                     throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
@@ -84,7 +88,7 @@ namespace BL
                 }
                 catch (DO.IdDoesNotExistException)
                 {
-                    throw new BO.IdIsNotExistException(typeof(DO.BaseStation), StationId);
+                    throw new BO.IdDoesNotExistException(typeof(DO.BaseStation), StationId);
                 }
                 catch (ArgumentNullException)
                 {
@@ -117,16 +121,17 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new BO.IdIsNotExistException(typeof(Drone), droneId);
+                throw new BO.IdDoesNotExistException(typeof(Drone), droneId);
             }
             catch (ArgumentNullException ex)
             {
                 throw;
             }
-            catch (NotSupportedException ex)
+            catch (DO.XMLFileLoadCreateException ex)
             {
-                throw;
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
+
         }
 
         /// <summary>
@@ -180,13 +185,13 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new BO.IdIsNotExistException(typeof(Drone), droneId);
+                throw new BO.IdDoesNotExistException(typeof(Drone), droneId);
             }
             catch (DO.XMLFileLoadCreateException ex)
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
-            catch (ArgumentNullException ex)
+            catch (ArgumentNullException)
             {
                 throw;
             }
@@ -209,7 +214,7 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new IdIsNotExistException(typeof(Drone), droneId);
+                throw new IdDoesNotExistException(typeof(Drone), droneId);
             }
             catch (ArgumentNullException)
             {
@@ -259,7 +264,7 @@ namespace BL
             {
                 throw;
             }
-            catch (BO.XMLFileLoadCreateException ex)
+            catch (DO.XMLFileLoadCreateException ex)
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
@@ -288,7 +293,7 @@ namespace BL
                     {
                         throw;
                     }
-                    catch (BO.XMLFileLoadCreateException ex)
+                    catch (DO.XMLFileLoadCreateException ex)
                     {
                         throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
                     }
@@ -315,7 +320,7 @@ namespace BL
             {
                 throw;
             }
-            catch (BO.XMLFileLoadCreateException ex)
+            catch (DO.XMLFileLoadCreateException ex)
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
@@ -379,13 +384,17 @@ namespace BL
                     nDrone.DeliveredParcelId = parcel.Id;
                 }
             }
-            catch (DO.IdDoesNotExistException)
+            catch (DO.IdDoesNotExistException ex)
             {
-                throw new IdIsNotExistException();
+                throw new IdDoesNotExistException();
             }
             catch (ArgumentNullException)
             {
-                throw new BO.ThereIsNoMatchObjectInListException();
+                throw;
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
             return nDrone;
         }
@@ -409,43 +418,44 @@ namespace BL
         /// <returns></returns>
         private DroneToList CalculateUnDeliveryingDrone(DroneToList nDrone)
         {
-            //if the list of charging drone empty or this drone is not on charging so it is free.
-            if (!dal.GetListFromDal<DO.ChargingDrone>().Any() ||
-                dal.GetListFromDal<DO.ChargingDrone>().FirstOrDefault(chargingDrone => chargingDrone.DroneId == nDrone.Id).Equals(default(DO.ChargingDrone)))
-                nDrone.DStatus = DroneStatus.Free;
-            else
-                nDrone.DStatus = DroneStatus.Maintenance;
+            try
+            { //if the list of charging drone empty or this drone is not on charging so it is free.
+                if (!dal.GetListFromDal<DO.ChargingDrone>().Any() ||
+                    dal.GetListFromDal<DO.ChargingDrone>().FirstOrDefault(chargingDrone => chargingDrone.DroneId == nDrone.Id).Equals(default(DO.ChargingDrone)))
+                    nDrone.DStatus = DroneStatus.Free;
+                else
+                    nDrone.DStatus = DroneStatus.Maintenance;
 
-            var customersList = CustomersWithProvidedParcels();
+                var customersList = CustomersWithProvidedParcels();
 
 
-            if (nDrone.DStatus == DroneStatus.Maintenance || !customersList.Any())
-            {
-                #region
-                //var availableSlotsList = AvailableSlots();
-                //if (availableSlotsList.Any())
-                //{
-                //    var station = availableSlotsList.ElementAt(rand.Next(availableSlotsList.Count()));
-                //    //maybe to rand to closet station?.
-                //    nDrone.CurrLocation = GetStation(station.Id).Location;
-                //    nDrone.BatteryStatus = rand.NextDouble() * 20;
-
-                //    if (nDrone.DStatus == DroneStatus.Maintenance)
-                //    {
-                //        dal.Add(new DO.ChargingDrone(nDrone.Id, station.Id, DateTime.Now));
-                //    }
-                //}
-                //else
-                //{
-
-                //}
-                #endregion
-
-                if (nDrone.DStatus == DroneStatus.Maintenance)
+                if (nDrone.DStatus == DroneStatus.Maintenance || !customersList.Any())
                 {
-                    int stationId = dal.GetDalListByCondition<DO.ChargingDrone>(c => c.DroneId == nDrone.Id).First().StationId;
-                    var station = dal.GetFromDalByCondition<DO.BaseStation>(s => s.Id == stationId);
-                    nDrone.CurrLocation = new() { Longitude = station.Longitude, Latitude = station.Latitude };
+                    #region
+                    //var availableSlotsList = AvailableSlots();
+                    //if (availableSlotsList.Any())
+                    //{
+                    //    var station = availableSlotsList.ElementAt(rand.Next(availableSlotsList.Count()));
+                    //    //maybe to rand to closet station?.
+                    //    nDrone.CurrLocation = GetStation(station.Id).Location;
+                    //    nDrone.BatteryStatus = rand.NextDouble() * 20;
+
+                    //    if (nDrone.DStatus == DroneStatus.Maintenance)
+                    //    {
+                    //        dal.Add(new DO.ChargingDrone(nDrone.Id, station.Id, DateTime.Now));
+                    //    }
+                    //}
+                    //else
+                    //{
+
+                    //}
+                    #endregion
+
+                    if (nDrone.DStatus == DroneStatus.Maintenance)
+                    {
+                        int stationId = dal.GetDalListByCondition<DO.ChargingDrone>(c => c.DroneId == nDrone.Id).First().StationId;
+                        var station = dal.GetFromDalByCondition<DO.BaseStation>(s => s.Id == stationId);
+                        nDrone.CurrLocation = new() { Longitude = station.Longitude, Latitude = station.Latitude };
 
                 }
                 else //customersList.Count() == 0
@@ -537,7 +547,19 @@ namespace BL
             //    //&& parcel.PickingUp.HasValue 
             //    //&& !parcel.Arrival.HasValue
             //    );
-            IEnumerable<DO.Parcel> belongedParcels = dal.GetDalListByCondition<DO.Parcel>(p => p.DroneId == droneId);
+            IEnumerable<DO.Parcel> belongedParcels = default;
+            try
+            {
+                belongedParcels = dal.GetDalListByCondition<DO.Parcel>(p => p.DroneId == droneId);
+            }
+            catch (ArgumentNullException)
+            {
+
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
 
             if (belongedParcels.Count() == 0)
             {
@@ -630,18 +652,7 @@ namespace BL
         /// <returns>returns the drone with this id from the lDroneToList</returns>
         private DroneToList FindDroneInList(int dId)
         {
-            try
-            {
-                return lDroneToList.First(drone => drone.Id == dId);
-            }
-            catch (ArgumentNullException)
-            {
-                throw new BO.ListIsEmptyException(typeof(Drone));
-            }
-            catch (InvalidOperationException)
-            {
-                throw new BO.IdIsNotExistException(typeof(Drone), dId);
-            }
+            return lDroneToList.First(drone => drone.Id == dId);
         }
 
         /// <summary>
@@ -665,13 +676,21 @@ namespace BL
         private void InitializeDroneList()
         {
             lDroneToList = new List<DroneToList>();
-            lock (dal)
+            try
             {
-                foreach (var drone in dal.GetListFromDal<DO.Drone>())
+                lock (dal)
                 {
-                    lDroneToList.Add(ConvertToList(drone));
+                    foreach (var drone in dal.GetListFromDal<DO.Drone>())
+                    {
+                        lDroneToList.Add(ConvertToList(drone));
+                    }
                 }
             }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+
         }
     }
 }

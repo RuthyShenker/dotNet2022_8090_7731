@@ -14,4 +14,11 @@
     <Longitude>0</Longitude>
     <Latitude>0</Latitude>
   </BaseStation>
+  <BaseStation>
+    <Id>6553</Id>
+    <NameStation>gtf</NameStation>
+    <NumberOfChargingPositions>5</NumberOfChargingPositions>
+    <Longitude>9</Longitude>
+    <Latitude>-8.6</Latitude>
+  </BaseStation>
 </ArrayOfBaseStation>

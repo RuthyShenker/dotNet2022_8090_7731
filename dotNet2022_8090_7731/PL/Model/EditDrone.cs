@@ -26,11 +26,8 @@ namespace PO
     /// 
     public class EditDrone : ObservableBase, IDataErrorInfo
     {
-       
-
         public int Id { get; init; }
         
-
         private string _model;
         public string Model
         {
@@ -44,7 +41,6 @@ namespace PO
             }
         }
 
-       
         private WeightCategories weight;
         public WeightCategories Weight
         {

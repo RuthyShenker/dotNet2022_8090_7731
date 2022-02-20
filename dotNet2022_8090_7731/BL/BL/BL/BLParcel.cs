@@ -33,7 +33,15 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new IdIsNotExistException(typeof(DO.Customer), parcel.Sender.Id);
+                throw new IdDoesNotExistException(typeof(DO.Customer), parcel.Sender.Id);
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
             }
 
             try
@@ -45,14 +53,23 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new IdIsNotExistException(typeof(DO.Customer), parcel.Getter.Id);
+                throw new IdDoesNotExistException(typeof(DO.Customer), parcel.Sender.Id);
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
             }
 
             lock (dal)
             {
-                parcelId = dal.GetIndexParcel();
                 try
                 {
+                    parcelId = dal.GetIndexParcel();
+
                     if (!dal.IsIdExistInList<DO.Parcel>(parcelId))
                     {
                         dal.Add(new DO.Parcel()
@@ -73,6 +90,10 @@ namespace BL
                 catch (DO.XMLFileLoadCreateException ex)
                 {
                     throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+                }
+                catch (ArgumentNullException)
+                {
+                    throw;
                 }
             }
 
@@ -95,7 +116,16 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new IdIsNotExistException(typeof(Drone), parcelId);
+                //TODO:
+                throw new IdDoesNotExistException(typeof(DO.Customer), parcelId);
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
             }
             return $"The Parcel with Id: {parcelId} was successfully removed from the system";
         }
@@ -118,7 +148,15 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new IdIsNotExistException(typeof(Parcel), parcelId);
+                throw new IdDoesNotExistException(typeof(Parcel), parcelId);
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
         }
 
@@ -129,7 +167,14 @@ namespace BL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<ParcelToList> GetParcels()
         {
-            return dal.GetListFromDal<DO.Parcel>().Select(s => ConvertToList(s));
+            try
+            {
+                return dal.GetListFromDal<DO.Parcel>().Select(s => ConvertToList(s));
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
         }
 
         /// <summary>
@@ -144,10 +189,17 @@ namespace BL
                 return dal.GetDalListByCondition<DO.Parcel>(parcel => parcel.DroneId == 0)
                     .Select(parcel => ConvertToList(parcel));
             }
-
             catch (DO.InValidActionException)
             {
                 throw new InValidActionException("There is no match object in the list ");
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
         }
 
@@ -168,10 +220,16 @@ namespace BL
             lock (dal)
             {
                 List<DO.Parcel> optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation).ToList();
-
-                if (!dal.GetListFromDal<DO.Parcel>().Any())
+                try
                 {
-                    throw new BO.ListIsEmptyException(typeof(DO.Parcel));
+                    if (!dal.GetListFromDal<DO.Parcel>().Any())
+                    {
+                        throw new BO.ListIsEmptyException(typeof(DO.Parcel));
+                    }
+                }
+                catch (DO.XMLFileLoadCreateException ex)
+                {
+                    throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
                 }
 
                 //var optionParcels = OptionalParcelsForSpecificDrone(droneToList.BatteryStatus, droneToList.Weight, droneToList.CurrLocation).ToList();
@@ -184,9 +242,23 @@ namespace BL
 
                 droneToList.DStatus = DroneStatus.Delivery;
                 droneToList.DeliveredParcelId = parcel.Id;
-               
-                dal.Update<DO.Parcel>(parcel.Id, dId, nameof(parcel.DroneId));
-                dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.BelongParcel));
+                try
+                {
+                    dal.Update<DO.Parcel>(parcel.Id, dId, nameof(parcel.DroneId));
+                    dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.BelongParcel));
+                }
+                catch (ArgumentNullException)
+                {
+                    throw;
+                }
+                catch (DO.XMLFileLoadCreateException ex)
+                {
+                    throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+                }
+                catch (DO.IdDoesNotExistException)
+                {
+                    throw new IdDoesNotExistException(typeof(Parcel), parcel.Id);
+                }
             }
         }
 
@@ -200,22 +272,17 @@ namespace BL
         /// <returns>returns optional parcels to specific data of drone</returns>
         internal IOrderedEnumerable<DO.Parcel> OptionalParcelsForSpecificDrone(double batteryStatus, WeightCategories weight, Location currLocation)
         {
-            lock (dal)
+            try
             {
+                lock (dal)
+                {
 
             var a = dal.GetDalListByCondition<DO.Parcel>(parcel =>
                     !parcel.BelongParcel.HasValue
                     && parcel.Weight <= (DO.WeightCategories)weight 
                     && batteryStatus >= CalculateBatteryToWay(currLocation, parcel)
-                ).ToList();
+                );
 
-
-
-                //CalculateBatteryToWay(currLocation, dal.GetFromDalById<DO.Parcel>(1045)); 
-                //CalculateBatteryToWay(currLocation, dal.GetFromDalById<DO.Parcel>(1039)); 
-                //CalculateBatteryToWay(currLocation, dal.GetFromDalById<DO.Parcel>(1041)); 
-                //CalculateBatteryToWay(currLocation, dal.GetFromDalById<DO.Parcel>(1042)); 
-                //CalculateBatteryToWay(currLocation, dal.GetFromDalById<DO.Parcel>(1043));
 
                 return a?.OrderByDescending(parcel => parcel.MPriority)
                 .ThenByDescending(parcel => parcel.Weight)
@@ -242,7 +309,7 @@ namespace BL
                       + MinBattery(CalculateDistance(GetCustomer(parcel.GetterId).Location, ClosestStation(GetCustomer(parcel.GetterId).Location).Location), false);
 
         }
-        
+
         /// <summary>
         /// A function that gets an id of drone and
         /// causes the drone to pick up the parcel that 
@@ -262,23 +329,19 @@ namespace BL
             {
                 throw new InValidActionException(typeof(DO.Drone), dId, $"there is no assined parcel ");
             }
-
-            lock (dal)
+            try
             {
-                DO.Parcel parcel;
-                try
+                lock (dal)
                 {
-                    parcel = dal.GetFromDalById<DO.Parcel>(drone.DeliveredParcelId.Value);
-                }
-                catch (DO.IdDoesNotExistException)
-                {
-                    throw new IdIsNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
-                }
+                    DO.Parcel parcel;
 
-                if (parcel.PickingUp != null)
-                {
-                    throw new InValidActionException("Parcel assigned to drone was already picked up");
-                }
+                    parcel = dal.GetFromDalById<DO.Parcel>(drone.DeliveredParcelId.Value);
+
+
+                    if (parcel.PickingUp != null)
+                    {
+                        throw new InValidActionException("Parcel assigned to drone was already picked up");
+                    }
 
                 Location senderLocation = GetCustomer(parcel.SenderId).Location;
                 drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, senderLocation), false);
@@ -287,6 +350,8 @@ namespace BL
                 //drone.DStatus = DroneStatus.Delivery;
                 dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.PickingUp));
             }
+        }
+
         }
 
         /// <summary>
@@ -316,22 +381,30 @@ namespace BL
                 try
                 {
                     parcel = dal.GetFromDalById<DO.Parcel>(drone.DeliveredParcelId.Value);
+
+                    if (parcel.PickingUp == null)
+                    {
+                        throw new InValidActionException("Parcel assigned to drone had not been picked up yet");
+                    }
+                    if (parcel.Arrival != null)
+                    {
+                        throw new InValidActionException("Parcel assigned has already supplied to destination");
+                    }
+
+                    dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
                 }
                 catch (DO.IdDoesNotExistException)
                 {
-                    throw new IdIsNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
+                    throw new IdDoesNotExistException();
                 }
-
-                if (parcel.PickingUp == null)
+                catch (ArgumentNullException)
                 {
-                    throw new InValidActionException("Parcel assigned to drone had not been picked up yet");
+                    throw;
                 }
-                if (parcel.Arrival != null)
+                catch (DO.XMLFileLoadCreateException ex)
                 {
-                    throw new InValidActionException("Parcel assigned has already supplied to destination");
+                    throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
                 }
-
-                dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.Arrival));
                 //???
                 // dal.Update<DO.Parcel>(parcel.Id, null, nameof(parcel.DroneId));
             }
@@ -345,7 +418,7 @@ namespace BL
 
         }
 
-        
+
 
         /// <summary>
         /// A function that gets IDAL.DO.Parcel instance and returns its status
@@ -371,7 +444,7 @@ namespace BL
                 return ParcelStatus.made;
             }
         }
-       
+
         /// <summary>
         /// A function that gets an instance of IDAL.DO.Parcel
         /// and converts it to a new instance of 
@@ -382,10 +455,25 @@ namespace BL
         private ParcelToList ConvertToList(DO.Parcel parcel)
         {
             string senderName, getterName;
-            lock (dal)
+            try
             {
-                senderName = dal.GetFromDalById<DO.Customer>(parcel.SenderId).Name;
-                getterName = dal.GetFromDalById<DO.Customer>(parcel.GetterId).Name;
+                lock (dal)
+                {
+                    senderName = dal.GetFromDalById<DO.Customer>(parcel.SenderId).Name;
+                    getterName = dal.GetFromDalById<DO.Customer>(parcel.GetterId).Name;
+                }
+            }
+            catch (DO.IdDoesNotExistException)
+            {
+                throw new IdDoesNotExistException();
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
 
             ParcelToList nParcel = new()

@@ -129,13 +129,20 @@ namespace PL.ViewModels
         /// <param name="sender"></param>
         private void AddingDrone(object sender)
         {
-            if (bl.AvailableSlots().Select(slot => slot.Id).Any())
+            try
             {
-                new DroneView(/*bl,*//*RefreshDrones*/).Show();
+                if (bl.AvailableSlots().Select(slot => slot.Id).Any())
+                {
+                    new DroneView(/*bl,*//*RefreshDrones*/).Show();
+                }
+                else
+                {
+                    MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            else
+            catch (BO.XMLFileLoadCreateException)
             {
-                MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show();
             }
         }
 
@@ -144,13 +151,20 @@ namespace PL.ViewModels
         /// </summary>
         private void RefreshDronesList()
         {
-            lock (bl)
+            try
             {
-                DroneList = new(bl.GetDrones().MapListFromBLToPL().ToList());
+                lock (bl)
+                {
+                    DroneList = new(bl.GetDrones().MapListFromBLToPL().ToList());
 
-                // keep group and filter status
-                GroupDrones = currentGroup;
-                DroneList.Filter = FilterDrone;
+                    // keep group and filter status
+                    GroupDrones = currentGroup;
+                    DroneList.Filter = FilterDrone;
+                }
+            }
+            catch(ArgumentNullException)
+            {
+                MessageBox.Show();
             }
         }
 
@@ -163,9 +177,19 @@ namespace PL.ViewModels
             if (sender == null) return;
 
             var selectedDrone = sender as PO.DroneToList;
+            try { 
             var drone = bl.GetDrone(selectedDrone.Id);
             new DroneView(bl, drone)
                 .Show();
+            }
+            catch ( BO.IdDoesNotExistException)
+            { 
+                MessageBox.Show();
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
+            }
         }
     }
 }

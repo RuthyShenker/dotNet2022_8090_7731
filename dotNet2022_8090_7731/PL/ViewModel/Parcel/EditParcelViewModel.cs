@@ -12,7 +12,7 @@ namespace PL.ViewModels
         private EditParcel parcel;
 
         public RelayCommand<object> DeleteParcelCommand { get; set; }
-        public RelayCommand<object> UpdateParcelCommand { get; set; }
+        //public RelayCommand<object> UpdateParcelCommand { get; set; }
         public RelayCommand<object> CloseWindowCommand { get; set; }
         public RelayCommand<object> EditCustomerCommand { get; set; }
         public RelayCommand<object> OpenDroneWindowCommand { get; set; }
@@ -24,7 +24,7 @@ namespace PL.ViewModels
             Refresh.Parcel += RefreshParcel;
             Parcel = Map(parcel);
 
-            UpdateParcelCommand = new RelayCommand<object>(UpdateParcel, param => Parcel.BelongParcel == default);
+            //UpdateParcelCommand = new RelayCommand<object>(UpdateParcel, param => Parcel.BelongParcel == default);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             EditCustomerCommand = new RelayCommand<object>(EditCustomer, param => param != null);
             DeleteParcelCommand = new RelayCommand<object>(DeleteParcel);
@@ -50,6 +50,14 @@ namespace PL.ViewModels
                 {
                     MessageBox.Show(exception.Message, "Error Pick Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                catch (BO.IdDoesNotExistException)
+                {
+                    MessageBox.Show():
+                }
+                catch (BO.XMLFileLoadCreateException)
+                {
+                    MessageBox.Show():
+                }
             }
             else if (Parcel.Arrival == null)
             {
@@ -63,6 +71,14 @@ namespace PL.ViewModels
                 catch (BO.InValidActionException exception)
                 {
                     MessageBox.Show(exception.Message, "Error Delivery Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (BO.IdDoesNotExistException)
+                {
+                    MessageBox.Show();
+                }
+                catch (BO.XMLFileLoadCreateException)
+                {
+                    MessageBox.Show();
                 }
             }
             else
@@ -97,33 +113,68 @@ namespace PL.ViewModels
                 Functions.CloseWindow(obj);
 
             }
-            catch (BO.IdIsNotExistException exception)
+            catch (BO.IdDoesNotExistException exception)
             {
                 MessageBox.Show(exception.Message);
+            }
+            catch (BO.IdDoesNotExistException)
+            {
+                MessageBox.Show();
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
             }
 
         }
 
         private void OpenDroneWindow(object obj)
         {
-            if (Parcel.BelongParcel != null && !Parcel.Arrival.HasValue)
+            try
             {
-                var carringDrone = bl.GetDrone(Parcel.DInParcel.Id);
-                new DroneView(bl, carringDrone).Show();
+                if (Parcel.BelongParcel != null && !Parcel.Arrival.HasValue)
+                {
+                    var carringDrone = bl.GetDrone(Parcel.DInParcel.Id);
+                    new DroneView(bl, carringDrone).Show();
+                }
+                else
+                {
+                    MessageBox.Show("You can't see more because the parcel doesnt meet the conditions", "Error Open Drone", MessageBoxButton.OK, MessageBoxImage.Stop);
+                }
             }
-            else
+            catch (BO.IdDoesNotExistException)
             {
-                MessageBox.Show("You can't see more because the parcel doesnt meet the conditions", "Error Open Drone", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show();
             }
-
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
+            }
         }
 
         private void EditCustomer(object customerId)
         {
+            //we decide to show all the time the customers that ordered the parcel.
+
             //if (Parcel.BelongParcel != default && Parcel.Arrival == default)
             {
-                BO.Customer blCustomer = bl.GetCustomer((int)customerId);
-                new CustomerView(bl, blCustomer).Show();
+                try
+                {
+                    BO.Customer blCustomer = bl.GetCustomer((int)customerId);
+                    new CustomerView(bl, blCustomer).Show();
+                }
+                catch (BO.IdDoesNotExistException)
+                {
+                    MessageBox.Show();
+                }
+                catch (BO.XMLFileLoadCreateException)
+                {
+                    MessageBox.Show();
+                }
+                catch (BO.ThereIsNoMatchObjectInListException)
+                {
+                    MessageBox.Show();
+                }
             }
             //else
             //{
@@ -131,10 +182,10 @@ namespace PL.ViewModels
             //}
         }
 
-        private void UpdateParcel(object obj)
-        {
+        //private void UpdateParcel(object obj)
+        //{
 
-        }
+        //}
 
         private EditParcel Map(BO.Parcel parcel)
         {
@@ -180,10 +231,20 @@ namespace PL.ViewModels
         private void RefreshParcel()
         {
             //refreshParcels();
-
-            if (bl.GetParcels().FirstOrDefault(p => p.Id == Parcel.Id) != default)
+            try
             {
-                Parcel = Map(bl.GetParcel(Parcel.Id));
+                if (bl.GetParcels().FirstOrDefault(p => p.Id == Parcel.Id) != default)
+                {
+                    Parcel = Map(bl.GetParcel(Parcel.Id));
+                }
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show():
+            }
+            catch(BO.IdDoesNotExistException)
+            {
+                MessageBox.Show():
             }
         }
     }

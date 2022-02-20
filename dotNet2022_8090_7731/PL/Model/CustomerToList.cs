@@ -19,8 +19,6 @@ namespace PO
     /// </summary>
     public class CustomerToList
     {
-        
-
         public int Id { get; init; }
         public string Name { get; set; }
         public string Phone { get; set; }

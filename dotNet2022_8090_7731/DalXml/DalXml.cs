@@ -25,7 +25,6 @@ namespace Dal
     ///DoesExistInList
     ///GetIndexParcel
     ///PowerConsumptionRequest
-
     /// </summary>
     internal sealed partial class DalXml : Singleton<DalXml>, DalApi.IDal
     {
@@ -351,7 +350,6 @@ namespace Dal
         /// <returns>returns true if it exists in the list of type of T else false.</returns>
         private bool DoesExistInList<T>(T item) where T : IDalDo
         {
-
             if (typeof(T) == typeof(Drone))
                 return XMLTools.LoadDroneListFromXmlWithXElement(GetXmlFilePath(typeof(DO.Drone)))
                     .ToList().Any(i => i.Equals(item));

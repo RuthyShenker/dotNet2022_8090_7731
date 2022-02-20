@@ -58,9 +58,23 @@ namespace PL.ViewModels
             if (sender == null) return;
 
             var selectedCustomer = sender as CustomerToList;
+            try { 
             var blCustomer = bl.GetCustomer(selectedCustomer.Id);
             new CustomerView(bl, blCustomer)
                 .Show();
+            }
+            catch(BO.IdDoesNotExistException)
+            {
+                MessageBox.Show();
+            }
+            catch (BO.ThereIsNoMatchObjectInListException)
+            {
+                MessageBox.Show();
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
+            }
         }
         /// <summary>
         /// A function that adds new customer.

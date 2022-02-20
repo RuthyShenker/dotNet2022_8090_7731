@@ -13,10 +13,11 @@ namespace PL.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(((PO.EditCustomer)value).LForCustomer.Any())
+            if (((PO.EditCustomer)value).LForCustomer.Any())
             {
                 return Visibility.Visible;
             }
+
             return Visibility.Collapsed;
         }
 

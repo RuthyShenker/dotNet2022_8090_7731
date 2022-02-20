@@ -65,7 +65,7 @@ namespace PL.ViewModels
 
                 Functions.CloseWindow(closeButton);
             }
-            catch (BO.IdIsNotExistException exception)
+            catch (BO.IdDoesNotExistException exception)
             {
                 MessageBox.Show(exception.Message);
             }
