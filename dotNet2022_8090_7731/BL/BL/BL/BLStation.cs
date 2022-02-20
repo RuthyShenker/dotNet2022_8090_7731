@@ -181,7 +181,7 @@ namespace BL
                     var droneCoord = Extensions.geoCoordinate(location); //new GeoCoordinate(location.Latitude, location.Longitude);
 
                     var closetStation = dal.GetListFromDal<DO.BaseStation>()
-                        .OrderBy(station => Extensions.geoCoordinate(new() { Latitude = station.Latitude, Longitude = station.Longitude }).GetDistanceTo(droneCoord)).First();
+                        .OrderBy(station => Extensions.geoCoordinate(new() { Latitude = station.Latitude, Longitude = station.Longitude }).GetDistanceToKM(droneCoord)).First();
 
                     if (!sendingToCharge)
                     {

@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+        <!--<Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="200" />
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
@@ -17,47 +17,42 @@
 
         <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
             <Setter Property="HorizontalAlignment" Value="Center" />
-        </Style>
+        </Style>-->
     </UserControl.Resources>
     <StackPanel>
         
         <TextBlock  Text="Add Station" RenderTransformOrigin="0.503,0.492"></TextBlock>
       
-        <TextBox  
-            Text = "{ Binding Station.Id,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged }"
-            materialDesign:HintAssist.Hint="Id" />
+        <TextBox Text = "{ Binding Station.Id,
+                      ValidatesOnDataErrors=true,
+                      NotifyOnValidationError=true,
+                      UpdateSourceTrigger=PropertyChanged }"
+                 materialDesign:HintAssist.Hint="Id" />
 
-        <TextBox
-            Text="{Binding Station.Name,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
-            materialDesign:HintAssist.Hint="Name" >
+        <TextBox Text="{Binding Station.Name,
+                      ValidatesOnDataErrors=true,
+                      NotifyOnValidationError=true,
+                      UpdateSourceTrigger=PropertyChanged}"
+                 materialDesign:HintAssist.Hint="Name" >
         </TextBox>
         
-        <TextBox
-            Text="{Binding Station.Longitude,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=LostFocus}"
-            materialDesign:HintAssist.Hint="Longitude" />
+        <TextBox Text="{Binding Station.Longitude,
+                      ValidatesOnDataErrors=true,
+                      NotifyOnValidationError=true,
+                      UpdateSourceTrigger=LostFocus}"
+                 materialDesign:HintAssist.Hint="Longitude" />
 
-        <TextBox 
-            Text="{Binding Station.Latitude,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=LostFocus }"
-            materialDesign:HintAssist.Hint="Latitude" />
+        <TextBox Text="{Binding Station.Latitude,
+                      ValidatesOnDataErrors=true,
+                      NotifyOnValidationError=true,
+                      UpdateSourceTrigger=LostFocus }"
+                 materialDesign:HintAssist.Hint="Latitude" />
 
-        <TextBox 
-            Text="{Binding Station.NumPositions,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
-            materialDesign:HintAssist.Hint="Number positions" />
+        <TextBox Text="{Binding Station.NumPositions,
+                      ValidatesOnDataErrors=true,
+                      NotifyOnValidationError=true,
+                      UpdateSourceTrigger=PropertyChanged}"
+                 materialDesign:HintAssist.Hint="Number positions" />
 
         <Button Content="OK" 
                 Command="{Binding AddStationCommand}" >

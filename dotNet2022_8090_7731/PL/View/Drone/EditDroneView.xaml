@@ -15,20 +15,6 @@
         <Converters:BatteryToColorConverter x:Key="batteryToColorConverter"/>
         <Converters:BatteryToProgressBarConverter x:Key="batteryToProgressBarConverter"/>
         <Converters:ContentByStatusOfSimulatorConverter x:Key="ContentByStatusOfSimulatorConverter"/>
-        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="AcceptsReturn" Value="True"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="Margin" Value="0,15" />
-            <Setter Property="Width" Value="200" />
-            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
-        </Style>
-
-        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-        </Style>
 
         <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Width" Value="200" />
@@ -56,19 +42,21 @@
         <Converters:VisibilityByDroneToBelongOrPickOrArrivalParcelConverter x:Key="VisibilityByDroneToBelongOrPickOrArrivalParcelConverter"/>
         <Converters:ParcelInTransferVisibilityConverter x:Key="ParcelInTransferVisibilityConverter"/>
     </UserControl.Resources>
-    
-    <StackPanel   ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+    <StackPanel ScrollViewer.VerticalScrollBarVisibility="Auto">
 
         <TextBox Text="{Binding Drone.Id, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource Edit}"
                  IsEnabled="False"  
                  materialDesign:HintAssist.Hint="Id" />
 
         <TextBox Text="{Binding Drone.BatteryStatus, UpdateSourceTrigger=PropertyChanged}" 
+                 Style="{StaticResource Edit}"
                  materialDesign:HintAssist.Hint="Battery" 
                  IsEnabled="False" />
 
         <TextBlock Text = "MaxWeight:" HorizontalAlignment="Center"/>
-        
+
         <ComboBox ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" 
                   SelectedItem="{Binding Drone.Weight}"  
                   materialDesign:HintAssist.Hint="MaxWeight" 
@@ -78,6 +66,7 @@
                     UpdateSourceTrigger=PropertyChanged, 
                     ValidatesOnDataErrors=true,
                     NotifyOnValidationError=true}"
+                 Style="{StaticResource Edit}"
                  materialDesign:HintAssist.Hint="Model" />
 
         <TextBlock Text = "Status:" HorizontalAlignment="Center" />
@@ -85,15 +74,16 @@
                   SelectedItem="{Binding Drone.Status, UpdateSourceTrigger=PropertyChanged}" 
                   materialDesign:HintAssist.Hint="Status"
                   IsEnabled="False"/>
-        
+
         <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                      Value="0"
                      IsIndeterminate="{Binding Drone.SimulatorStatus}" />
-        
+
         <TextBox Text = "{Binding Drone.Location, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                     materialDesign:HintAssist.Hint="Location"
-                     IsEnabled="False" MinWidth="420"/>
-        
+                 Style="{StaticResource Edit}"
+                 materialDesign:HintAssist.Hint="Location"
+                 IsEnabled="False" MinWidth="420"/>
+
         <Button Style="{StaticResource MaterialDesignFlatButton}"
                 HorizontalAlignment="Center"
                 Content="See delivered parcel"
@@ -101,8 +91,7 @@
                 CommandParameter="{Binding Drone.ParcelInTransfer}" >
         </Button>
 
-        <Button x:Name="Model"
-            Content = "Update Model:" 
+        <Button Content = "Update Model:" 
                 Command="{Binding UpdateModelOfDroneCommand }"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
 
@@ -127,19 +116,17 @@
         <Button Content="{Binding Drone, Converter={StaticResource ContentByStatusOfSimulatorConverter}}"
                 Command="{Binding StartOrStopSimulatorCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
-           
+
         <ProgressBar Name="BatteryProgressBar" 
                      Value="{Binding Drone.BatteryStatus,
                      Converter={StaticResource batteryToProgressBarConverter}}"
                      Width="Auto" Foreground="{Binding Drone.BatteryStatus, 
                      Converter={StaticResource batteryToColorConverter}}"/>
 
-        <TextBlock Text = "{Binding Drone.Info, UpdateSourceTrigger=PropertyChanged}"
-                     materialDesign:HintAssist.Hint="Distance"
-                     IsEnabled="False"/>
-      
-        <StackPanel x:Name="message">
-        </StackPanel>
+        <TextBlock Text="{Binding Drone.Info, UpdateSourceTrigger=PropertyChanged}"
+                   materialDesign:HintAssist.Hint="Distance"
+                   IsEnabled="False"/>
+
     </StackPanel>
 
 </UserControl>

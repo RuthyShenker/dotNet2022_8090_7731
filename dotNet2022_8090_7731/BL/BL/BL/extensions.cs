@@ -29,7 +29,7 @@ namespace BL
             {
                 var location1 = geoCoordinate(locations[i]);
                 var location2 = geoCoordinate(locations[i + 1]);
-                distance += location1.GetDistanceTo(location2);
+                distance += location1.GetDistanceToKM(location2);
             }
             return distance;
         }
@@ -44,6 +44,13 @@ namespace BL
         {
             return new GeoCoordinate(location.Latitude, location.Longitude);
         }
+
+        public static double GetDistanceToKM(this GeoCoordinate coordinate, GeoCoordinate other)
+        {
+            var distance = coordinate.GetDistanceTo(other); // meters
+            return distance / 1000; //km
+        }
+
     }
 }
 #region Erase?

@@ -36,7 +36,7 @@ namespace PL.ViewModels
             CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers().MapListFromBLToPL());
             RefreshCustomersList();
             AddCustomerCommand = new RelayCommand<object>(AddingCustomer);
-            MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);  
+            MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
         }
         public IEnumerable<CustomerToList> CustomerList
@@ -55,6 +55,8 @@ namespace PL.ViewModels
         /// <param name="sender"></param>
         private void MouseDoubleClick(object sender)
         {
+            if (sender == null) return;
+
             var selectedCustomer = sender as CustomerToList;
             var blCustomer = bl.GetCustomer(selectedCustomer.Id);
             new CustomerView(bl, blCustomer)

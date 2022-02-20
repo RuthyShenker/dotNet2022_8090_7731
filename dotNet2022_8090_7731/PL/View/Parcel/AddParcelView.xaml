@@ -27,41 +27,37 @@
             <Setter Property="Margin" Value="0,15" />
         </Style>
 
-        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+        <!--<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
             <Setter Property="HorizontalAlignment" Value="Center" />
-        </Style>
+        </Style>-->
 
     </UserControl.Resources>
     
     <StackPanel>
 
-        <ComboBox 
-            SelectedItem="{Binding Parcel.Sender.Id,
+        <ComboBox SelectedItem="{Binding Parcel.Sender.Id,
                                    ValidatesOnDataErrors=true,
                                    NotifyOnValidationError=true,
                                    UpdateSourceTrigger=PropertyChanged}"
-            ItemsSource="{Binding IdOption}"
-            materialDesign:HintAssist.Hint="Sender Id" />
+                  ItemsSource="{Binding IdOption}"
+                  materialDesign:HintAssist.Hint="Sender Id" />
 
-        <ComboBox 
-            SelectedItem="{Binding Parcel.Getter.Id,
+        <ComboBox SelectedItem="{Binding Parcel.Getter.Id,
                                    ValidatesOnDataErrors=true,
                                    NotifyOnValidationError=true,
                                    UpdateSourceTrigger=PropertyChanged}"
-            ItemsSource="{Binding IdOption}"
-            materialDesign:HintAssist.Hint="Getter Id"/>
+                  ItemsSource="{Binding IdOption}"
+                  materialDesign:HintAssist.Hint="Getter Id"/>
 
-        <ComboBox 
-            SelectedItem="{Binding Parcel.Weight,
+        <ComboBox SelectedItem="{Binding Parcel.Weight,
                                    UpdateSourceTrigger=PropertyChanged}"
-            ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" 
-            materialDesign:HintAssist.Hint="Weight" />
+                  ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}" 
+                  materialDesign:HintAssist.Hint="Weight" />
 
-        <ComboBox 
-            SelectedItem="{Binding Parcel.MPriority,
+        <ComboBox SelectedItem="{Binding Parcel.MPriority,
                                    UpdateSourceTrigger=PropertyChanged}"
-            ItemsSource="{Binding Source={StaticResource MPriorityEnum}}" 
-            materialDesign:HintAssist.Hint="Priority" />
+                  ItemsSource="{Binding Source={StaticResource MPriorityEnum}}" 
+                  materialDesign:HintAssist.Hint="Priority" />
 
         <Button Content="ADD"
                 Command="{Binding AddParcelCommand}">

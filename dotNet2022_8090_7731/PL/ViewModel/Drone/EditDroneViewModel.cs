@@ -18,6 +18,7 @@ namespace PL.ViewModels
     {
         readonly BlApi.IBL bl;
         private EditDrone drone;
+        bool isCharging;
 
         public RelayCommand<object> ChargeDroneCommand { get; set; }
         public RelayCommand<object> AssignParcelToDroneCommand { get; set; }
@@ -37,6 +38,7 @@ namespace PL.ViewModels
             Refresh.Drone += RefreshDrone;
             this.bl = bl;
             Drone = Map(drone);
+            isCharging = Drone.Status == DroneStatus.Maintenance;
 
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
             UpdateModelOfDroneCommand = new RelayCommand<object>(UpdateDroneModel);
@@ -71,6 +73,12 @@ namespace PL.ViewModels
             {
                 if (!Refresh.workers[Drone.Id].IsBusy)
                 {
+                    if (isCharging)
+                    {
+                        MessageBox.Show("Can't turn on simulator when drone is charging, please release it", "Drone in charging", MessageBoxButton.OK);
+                        return;
+                    }
+
                     Refresh.workers[Drone.Id].RunWorkerAsync(Drone.Id);
                 }
                 else
@@ -80,6 +88,12 @@ namespace PL.ViewModels
             }
             else
             {
+                if (isCharging)
+                {
+                    MessageBox.Show("Can't turn on simulator when drone is charging, please release it", "Drone in charging", MessageBoxButton.OK);
+                    return;
+                }
+
                 worker = new()
                 {
                     WorkerReportsProgress = true,
@@ -116,7 +130,6 @@ namespace PL.ViewModels
                 Refresh.Invoke();
             }
         }
-
         /// <summary>
         /// A function that Sends Or Releases Drone From Charging
         /// </summary>
@@ -125,10 +138,16 @@ namespace PL.ViewModels
         {
             if (Extensions.WorkerTurnOn()) return;
 
-            if (Drone.Status == PO.DroneStatus.Free)
+            if (Drone.Status == DroneStatus.Free)
+            {
                 bl.SendingDroneToCharge(Drone.Id);
+                isCharging = true;
+            }
             else
+            {
                 bl.ReleasingDrone(Drone.Id);
+                isCharging = false;
+            }
 
             Refresh.Invoke();
         }
@@ -144,7 +163,7 @@ namespace PL.ViewModels
             {
                 parcel = bl.GetDrone(Drone.Id).PInTransfer;
             }
-            var blParcel = bl.GetParcel(/*Drone.ParcelInTransfer.PId/**/parcel.PId);
+            var blParcel = bl.GetParcel(parcel.PId);
             new ParcelView(bl, blParcel).Show();
         }
 
@@ -169,7 +188,6 @@ namespace PL.ViewModels
                     DeliveryPackage();
             }
         }
-
 
         /// <summary>
         /// A function that Delivery Package to destination.

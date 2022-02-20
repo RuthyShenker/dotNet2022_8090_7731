@@ -10,54 +10,58 @@
              d:DesignHeight="450" d:DesignWidth="800">
    
     <UserControl.Resources>
-        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+        <!--<Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="200" />
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
-        </Style>
+        </Style>-->
         <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Width" Value="200" />
             <Setter Property="Margin" Value="0,15" />
         </Style>
 
-        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+        <!--<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
             <Setter Property="HorizontalAlignment" Value="Center" />
-        </Style>
+        </Style>-->
 
     </UserControl.Resources>
     <StackPanel>
 
         <TextBlock FontSize="25" FontWeight="Bold" Text="Add a Drone" Margin="40,20" Foreground="#505050"/>
 
-        <TextBox  Text="{Binding Drone.Id,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
-                  materialDesign:HintAssist.Hint="Id" />
-        
+        <TextBox Text="{Binding Drone.Id,
+                      ValidatesOnDataErrors=true,
+                      NotifyOnValidationError=true,
+                      UpdateSourceTrigger=PropertyChanged}"
+                 materialDesign:HintAssist.Hint="Id">
+        </TextBox>
+
         <TextBox Text="{Binding Drone.Model,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}" 
-                 materialDesign:HintAssist.Hint="Model" />
-        
+                      ValidatesOnDataErrors=true,
+                      NotifyOnValidationError=true,
+                      UpdateSourceTrigger=PropertyChanged}" 
+                 materialDesign:HintAssist.Hint="Model">
+        </TextBox>
+
         <ComboBox SelectedItem="{Binding Drone.StationId,
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true,
-            UpdateSourceTrigger=PropertyChanged}"
-                ItemsSource="{Binding StationOptions}"
-                materialDesign:HintAssist.Hint="Base station Id" />
-        
+                      ValidatesOnDataErrors=true,
+                      NotifyOnValidationError=true,
+                      UpdateSourceTrigger=PropertyChanged}"
+                  ItemsSource="{Binding StationOptions}"
+                  materialDesign:HintAssist.Hint="Base station Id">
+        </ComboBox>
+
         <ComboBox SelectedItem="{Binding Drone.MaxWeight, 
-            ValidatesOnDataErrors=true,
-            NotifyOnValidationError=true, 
-            UpdateSourceTrigger=PropertyChanged}"
-                ItemsSource="{Binding WeightOptions}" 
-                materialDesign:HintAssist.Hint="Weight Category" />
-        
-        
+                      ValidatesOnDataErrors=true,
+                      NotifyOnValidationError=true, 
+                      UpdateSourceTrigger=PropertyChanged}"
+                  ItemsSource="{Binding WeightOptions}" 
+                  materialDesign:HintAssist.Hint="Weight Category">
+        </ComboBox>
+
         <Button Content="ADD"
-                Command="{Binding AddDroneCommand}"/>
+                Command="{Binding AddDroneCommand}">
+        </Button>
 
         <Button Content="close" 
                 Command="{Binding CloseWindowCommand }"

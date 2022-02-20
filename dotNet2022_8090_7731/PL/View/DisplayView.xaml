@@ -9,7 +9,8 @@
         
         <Menu IsMainMenu="True">
             <MenuItem Header="Base Stations">
-                <MenuItem Header="List" Command="{Binding StationListViewCommand}">
+                <MenuItem Header="List" 
+                          Command="{Binding StationListViewCommand}">
                     <MenuItem.Icon>
                         <materialDesign:PackIcon Kind="ViewList" />
                     </MenuItem.Icon>
@@ -17,27 +18,24 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Drones">
-                <MenuItem
-      Header="List"
-      Command="{Binding DroneListViewCommand}">
+                <MenuItem Header="List"
+                          Command="{Binding DroneListViewCommand}">
                     <MenuItem.Icon>
                         <materialDesign:PackIcon Kind="ViewList" />
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Customers">
-                <MenuItem
-      Header="List"
-      Command="{Binding CustomerListViewCommand}">
+                <MenuItem Header="List"
+                          Command="{Binding CustomerListViewCommand}">
                     <MenuItem.Icon>
                         <materialDesign:PackIcon Kind="ViewList" />
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Parcels">
-                <MenuItem
-      Header="List"
-      Command="{Binding ParcelListViewCommand}">
+                <MenuItem Header="List"
+                          Command="{Binding ParcelListViewCommand}">
                     <MenuItem.Icon>
                         <materialDesign:PackIcon Kind="ViewList" />
                     </MenuItem.Icon>

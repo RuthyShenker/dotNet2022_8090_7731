@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using static BL.Extensions;
 
 namespace BL
 {
@@ -207,7 +208,16 @@ namespace BL
                     && parcel.Weight <= (DO.WeightCategories)weight 
                     && batteryStatus >= CalculateBatteryToWay(currLocation, parcel)
                 ).ToList();
-            return a?.OrderByDescending(parcel => parcel.MPriority)
+
+
+
+                //CalculateBatteryToWay(currLocation, dal.GetFromDalById<DO.Parcel>(1045)); 
+                //CalculateBatteryToWay(currLocation, dal.GetFromDalById<DO.Parcel>(1039)); 
+                //CalculateBatteryToWay(currLocation, dal.GetFromDalById<DO.Parcel>(1041)); 
+                //CalculateBatteryToWay(currLocation, dal.GetFromDalById<DO.Parcel>(1042)); 
+                //CalculateBatteryToWay(currLocation, dal.GetFromDalById<DO.Parcel>(1043));
+
+                return a?.OrderByDescending(parcel => parcel.MPriority)
                 .ThenByDescending(parcel => parcel.Weight)
                                 .ThenBy(parcel => GetDistance(currLocation, parcel));
         
@@ -227,15 +237,9 @@ namespace BL
         /// </summary>
         private double CalculateBatteryToWay(Location currLocation, DO.Parcel parcel)
         {
-            return MinBattery(
-                                                    Extensions.CalculateDistance(currLocation, GetCustomer(parcel.SenderId).Location)
-                                                    )
-                                                + MinBattery(
-                                                    Extensions.CalculateDistance(GetCustomer(parcel.SenderId).Location, GetCustomer(parcel.GetterId).Location), (WeightCategories)parcel.Weight
-                                                    ) +
-                                                MinBattery(
-                                                    Extensions.CalculateDistance(GetCustomer(parcel.GetterId).Location, ClosestStation(GetCustomer(parcel.GetterId).Location).Location)
-                                                    );
+            return MinBattery(CalculateDistance(currLocation, GetCustomer(parcel.SenderId).Location), false)
+                      + MinBattery(CalculateDistance(GetCustomer(parcel.SenderId).Location, GetCustomer(parcel.GetterId).Location), true, (WeightCategories)parcel.Weight)
+                      + MinBattery(CalculateDistance(GetCustomer(parcel.GetterId).Location, ClosestStation(GetCustomer(parcel.GetterId).Location).Location), false);
 
         }
         
@@ -277,7 +281,7 @@ namespace BL
                 }
 
                 Location senderLocation = GetCustomer(parcel.SenderId).Location;
-                drone.BatteryStatus -= MinBattery(Extensions.CalculateDistance(drone.CurrLocation, senderLocation));
+                drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, senderLocation), false);
                 drone.CurrLocation = senderLocation;
                 // לא היה כתוב לשנות status
                 //drone.DStatus = DroneStatus.Delivery;
@@ -333,7 +337,7 @@ namespace BL
             }
 
             Location getterLocation = GetCustomer(parcel.GetterId).Location;
-            drone.BatteryStatus -= MinBattery(Extensions.CalculateDistance(drone.CurrLocation, getterLocation));
+            drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, getterLocation), true, (WeightCategories)parcel.Weight);
             drone.CurrLocation = getterLocation;
             drone.DStatus = DroneStatus.Free;
             drone.DeliveredParcelId = null;

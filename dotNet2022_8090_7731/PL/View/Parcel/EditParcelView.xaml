@@ -11,17 +11,7 @@
              xmlns:Converters="clr-namespace:PL.Converters"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="AcceptsReturn" Value="True"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="Margin" Value="0,15" />
-            <Setter Property="Width" Value="200" />
-            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
-        </Style>
-
+        
         <Style TargetType="TextBlock" BasedOn="{StaticResource  MaterialDesignSubtitle2TextBlock}">
             <Setter Property="Margin" Value="25,0,0,0"/>
         </Style>
@@ -81,11 +71,11 @@
 
             <StackPanel >
                 <TextBlock Text="Sender" 
-                                Style="{StaticResource Header}"/>
+                           Style="{StaticResource Header}"/>
                 <TextBlock Text="{Binding Parcel.Sender.Id}"/>
                 <TextBlock Text="{Binding Parcel.Sender.Name}"/>
                 <TextBlock Text="See more" 
-                                Style="{StaticResource Link}">
+                           Style="{StaticResource Link}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding EditCustomerCommand}"
                                       MouseAction="LeftClick"
@@ -101,7 +91,7 @@
                 <TextBlock Text="{Binding Parcel.Getter.Id}"/>
                 <TextBlock Text="{Binding Parcel.Getter.Name}"/>
                 <TextBlock Text="See more" 
-                            Style="{StaticResource Link}">
+                           Style="{StaticResource Link}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding EditCustomerCommand}"
                                       MouseAction="LeftClick"
@@ -114,12 +104,14 @@
         </DockPanel>
 
         <ComboBox ItemsSource="{Binding Source={StaticResource WeightCategoriesEnum}}"
-                  SelectedItem="{Binding Parcel.Weight}" IsEnabled="False"
+                  SelectedItem="{Binding Parcel.Weight}"
+                  IsEnabled="False"
                   materialDesign:HintAssist.Hint="Weight"/>
 
         <ComboBox ItemsSource="{Binding Source={StaticResource PriorityEnum}}"
                   SelectedItem="{Binding Parcel.MPriority}"
-                  materialDesign:HintAssist.Hint="Priority" IsEnabled="False"/>
+                  IsEnabled="False"
+                  materialDesign:HintAssist.Hint="Priority"/>
 
         <TextBlock Text="See carring drone"
                    Style="{StaticResource Link}">
@@ -131,30 +123,33 @@
         </TextBlock>
 
         <TextBox Text="{Binding Parcel.MakingParcel}" 
-                 materialDesign:HintAssist.Hint="Making Parcel"
-                 IsEnabled="False"/>
+                 Style="{StaticResource Edit}"
+                 IsEnabled="False"
+                 materialDesign:HintAssist.Hint="Making Parcel"/>
 
         <TextBox Text="{Binding Parcel.BelongParcel}" Visibility="{Binding Parcel.BelongParcel ,Converter={StaticResource VisibilityByParcelPickingValueConverter}}" 
-                 materialDesign:HintAssist.Hint="Belong Parcel"
-                 IsEnabled="False"/>
+                 Style="{StaticResource Edit}"
+                 IsEnabled="False"
+                 materialDesign:HintAssist.Hint="Belong Parcel"/>
 
         <TextBox Text="{Binding Parcel.PickingUp}" Visibility="{Binding Parcel.PickingUp ,Converter={StaticResource VisibilityByParcelPickingValueConverter}}" 
-                 materialDesign:HintAssist.Hint="Picking Up Parcel"
-                 IsEnabled="False"/>
+                 Style="{StaticResource Edit}"
+                 IsEnabled="False"
+                 materialDesign:HintAssist.Hint="Picking Up Parcel"/>
 
         <TextBox Text="{Binding Parcel.Arrival}" Visibility="{Binding Parcel.Arrival ,Converter={StaticResource VisibilityByParcelPickingValueConverter}}" 
-                 materialDesign:HintAssist.Hint="Arrival Parcel"
-                 IsEnabled="False"/>
+                 Style="{StaticResource Edit}"
+                 IsEnabled="False"
+                 materialDesign:HintAssist.Hint="Arrival Parcel"/>
 
         <Button Content="Update"
-                 Command="{Binding UpdateParcelCommand}"/>
+                Command="{Binding UpdateParcelCommand}"/>
 
         <Button Content="Delete"
                 Command="{Binding DeleteParcelCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
 
         <Button Content="{Binding Parcel ,Converter={StaticResource ContentByDroneInParcelPickOrDeliveryParcelConverter}}"
-                
                 Visibility="{Binding Parcel ,Converter={StaticResource VisibilityByDroneInParcelPickOrDeliveryParcelConverter}}"
                 Command="{Binding CollectAndDeliverPackageCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>

@@ -48,7 +48,7 @@ namespace PL.ViewModels
 
             AddDroneCommand = new RelayCommand<object>(AddingDrone);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
-            MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick, param => param != null);
+            MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
         }
 
         public ListCollectionView DroneList
@@ -160,6 +160,8 @@ namespace PL.ViewModels
         /// <param name="sender"></param>
         private void MouseDoubleClick(object sender)
         {
+            if (sender == null) return;
+
             var selectedDrone = sender as PO.DroneToList;
             var drone = bl.GetDrone(selectedDrone.Id);
             new DroneView(bl, drone)

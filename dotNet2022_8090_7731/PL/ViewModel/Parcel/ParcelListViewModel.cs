@@ -37,7 +37,7 @@ namespace PL.ViewModels
             ParcelList = new(bl.GetParcels().MapListFromBLToPL().ToList());
             ParcelList.Filter = FilterCondition;
 
-            MouseDoubleCommand = new RelayCommand<object>(EditParcel, param => param != null);
+            MouseDoubleCommand = new RelayCommand<object>(EditParcel);
             AddParcelCommand = new RelayCommand<object>(AddParcel);
             CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
         }
@@ -119,6 +119,8 @@ namespace PL.ViewModels
 
         private void EditParcel(object obj)
         {
+            if (obj == null) return;
+
             var parcel = obj as PO.ParcelToList;
             var blParcel = bl.GetParcel(parcel.Id);
             new ParcelView(bl, blParcel).Show();

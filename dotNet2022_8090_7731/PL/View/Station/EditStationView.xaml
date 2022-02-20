@@ -9,30 +9,22 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="AcceptsReturn" Value="True"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="Margin" Value="0,15" />
-            <Setter Property="Width" Value="200" />
-            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
-        </Style>
 
         <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="200" />
             <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
         </Style>
+
         <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Width" Value="200" />
             <Setter Property="Margin" Value="0,15" />
         </Style>
-
+        
     </UserControl.Resources>
     <StackPanel>
         <TextBox Text="{Binding Station.Id}" 
+                 Style="{StaticResource Edit}"
                  materialDesign:HintAssist.Hint="Id" 
                  IsEnabled="False"/>
 
@@ -40,6 +32,7 @@
                                 ValidatesOnDataErrors=true,
                                 NotifyOnValidationError=true,
                                 UpdateSourceTrigger=PropertyChanged}" 
+                 Style="{StaticResource Edit}"
                  materialDesign:HintAssist.Hint="Name" 
                  materialDesign:TextFieldAssist.HasClearButton="True"/>
 
@@ -47,6 +40,7 @@
                                 ValidatesOnDataErrors=true,
                                 NotifyOnValidationError=true,
                                 UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource Edit}"
                  materialDesign:HintAssist.Hint="Positions"
                  materialDesign:TextFieldAssist.HasClearButton="True" />
 
@@ -58,6 +52,7 @@
                  materialDesign:HintAssist.Hint="Latitude"
                  IsEnabled="False"/>-->
         <TextBox Text="{Binding Station.Location, Mode=OneWay}"
+                 Style="{StaticResource Edit}"
                  materialDesign:HintAssist.Hint="Location"
                  IsEnabled="False"/>
 

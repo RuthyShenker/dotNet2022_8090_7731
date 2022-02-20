@@ -23,7 +23,6 @@ namespace PL.View
         public DisplayView()
         {
             InitializeComponent();
-            //this.DataContext = viewModel;
         }
     }
 }

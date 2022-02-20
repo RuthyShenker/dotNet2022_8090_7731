@@ -104,6 +104,8 @@ namespace PL.ViewModels
 
         private void ShowStation(object sender)
         {
+            if (sender == null) return;
+
             var selectedStation = sender as PO.StationToList;
             var blStation = bl.GetStation(selectedStation.Id);
             new StationView(bl, blStation)

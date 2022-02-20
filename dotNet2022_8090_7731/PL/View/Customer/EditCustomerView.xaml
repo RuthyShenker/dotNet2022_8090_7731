@@ -10,21 +10,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="AcceptsReturn" Value="True"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="Margin" Value="0,15" />
-            <Setter Property="Width" Value="200" />
-            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
-        </Style>
-
-        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-        </Style>
-
+        
         <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
             <Setter Property="Margin" Value="0,15" />
             <Setter Property="Width" Value="200" />
@@ -44,6 +30,7 @@
 
         <TextBox Text="{Binding Customer.Id ,
                                 UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource Edit}"
                  materialDesign:HintAssist.Hint="Id"
                  IsEnabled="False" />
 
@@ -51,6 +38,7 @@
                             ValidatesOnDataErrors=true, 
                             NotifyOnValidationError=true,
                             UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource Edit}"
                  materialDesign:HintAssist.Hint="Name"
                  materialDesign:TextFieldAssist.HasClearButton="True"  />
 
@@ -58,17 +46,20 @@
                             ValidatesOnDataErrors=true,
                             NotifyOnValidationError=true,
                             UpdateSourceTrigger=PropertyChanged}"
-                  materialDesign:HintAssist.Hint="Phone"
-                  materialDesign:TextFieldAssist.HasClearButton="True"  />
+                 Style="{StaticResource Edit}"
+                 materialDesign:HintAssist.Hint="Phone"
+                 materialDesign:TextFieldAssist.HasClearButton="True"  />
 
         <TextBox Text="{Binding Customer.Location,
                                 UpdateSourceTrigger=PropertyChanged,
                                 Mode=OneWay}"
+                 Style="{StaticResource Edit}"
                  materialDesign:HintAssist.Hint="Location"
                  IsEnabled="False"/>
 
         <Label Visibility="{Binding Customer ,Converter={StaticResource CountOfForListToVisibilityOfListConverter}}">For:</Label>
-        <ListView Grid.Row="1"  Visibility="{Binding Customer ,Converter={StaticResource CountOfForListToVisibilityOfListConverter}}"
+        <ListView Grid.Row="1"  
+                  Visibility="{Binding Customer ,Converter={StaticResource CountOfForListToVisibilityOfListConverter}}"
                   ItemsSource="{Binding Customer.LForCustomer}"
                   x:Name="ParcelsForCustomerListView">
 
@@ -107,7 +98,8 @@
         <Label Visibility="{Binding Customer ,Converter={StaticResource CountOfFromListToVisibilityOfListConverter}}">From:</Label>
        
         <ListView Grid.Row="1"   
-                  ItemsSource="{Binding Customer.LFromCustomer}" Visibility="{Binding Customer ,Converter={StaticResource CountOfFromListToVisibilityOfListConverter}}"
+                  ItemsSource="{Binding Customer.LFromCustomer}"
+                  Visibility="{Binding Customer ,Converter={StaticResource CountOfFromListToVisibilityOfListConverter}}"
                   x:Name="ParcelsFromCustomerListView">
             <ListView.View>
                 <GridView>

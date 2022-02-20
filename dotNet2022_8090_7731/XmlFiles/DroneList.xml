@@ -3,6 +3,26 @@
   <Drone>
     <Id>4444</Id>
     <MaxWeight>Light</MaxWeight>
+    <Model>e</Model>
+  </Drone>
+  <Drone>
+    <Id>8888</Id>
+    <MaxWeight>Light</MaxWeight>
     <Model>p</Model>
+  </Drone>
+  <Drone>
+    <Id>7856</Id>
+    <MaxWeight>Light</MaxWeight>
+    <Model>lkm</Model>
+  </Drone>
+  <Drone>
+    <Id>4256</Id>
+    <MaxWeight>Medium</MaxWeight>
+    <Model>yoel21</Model>
+  </Drone>
+  <Drone>
+    <Id>2312</Id>
+    <MaxWeight>Heavy</MaxWeight>
+    <Model>Yoel 21 Bneibrak</Model>
   </Drone>
 </ArrayOfDrones>
