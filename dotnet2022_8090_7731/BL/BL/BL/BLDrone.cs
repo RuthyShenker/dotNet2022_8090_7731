@@ -13,7 +13,7 @@ namespace BL
     /// <summary>
     /// An internal sealed partial class BL inherits from Singleton<BL>,and impliments BlApi.IBL,
     /// </summary>
-    partial class BL:BlApi.IBL
+    partial class BL : BlApi.IBL
     {
         /// <summary>
         /// A function that gets drone-Id ,updateView ,checkStop and open simulator to this drone.
@@ -57,10 +57,10 @@ namespace BL
                         throw new BO.InValidActionException(typeof(DO.BaseStation), StationId, "There aren't free positions ");
                     }
 
-                    dal.Add( new DO.ChargingDrone()
+                    dal.Add(new DO.ChargingDrone()
                     {
                         DroneId = bLDrone.Id,
-                        StationId = StationId, 
+                        StationId = StationId,
                         EnteranceTime = DateTime.Now
                     });
 
@@ -86,11 +86,11 @@ namespace BL
                 {
                     throw new BO.IdIsNotExistException(typeof(DO.BaseStation), StationId);
                 }
-                catch (ArgumentNullException )
+                catch (ArgumentNullException)
                 {
-                    throw ;
+                    throw;
                 }
-                catch (DO.XMLFileLoadCreateException ex )
+                catch (DO.XMLFileLoadCreateException ex)
                 {
                     throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
                 }
@@ -213,7 +213,7 @@ namespace BL
             }
             catch (ArgumentNullException)
             {
-                throw ;
+                throw;
             }
             catch (DO.XMLFileLoadCreateException ex)
             {
@@ -357,9 +357,9 @@ namespace BL
                 Location source = GetCustomer(parcel.SenderId).Location;
                 Location destination = GetCustomer(parcel.GetterId).Location;
                 Location nearestDestinationStation = ClosestStation(destination).Location;
-                double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, source))
-                    + MinBattery(CalculateDistance(source, destination), (WeightCategories)parcel.Weight)
-                    + MinBattery(CalculateDistance(destination, nearestDestinationStation));
+                double minBattry = MinBattery(CalculateDistance(nDrone.CurrLocation, source), false)
+                    + MinBattery(CalculateDistance(source, destination), true, (WeightCategories)parcel.Weight)
+                    + MinBattery(CalculateDistance(destination, nearestDestinationStation), false);
 
                 if (minBattry > 100)
                 {
@@ -379,7 +379,7 @@ namespace BL
                     nDrone.DeliveredParcelId = parcel.Id;
                 }
             }
-            catch (DO.IdDoesNotExistException  )
+            catch (DO.IdDoesNotExistException)
             {
                 throw new IdIsNotExistException();
             }
@@ -461,7 +461,7 @@ namespace BL
             {
                 nDrone.CurrLocation = customersList.ElementAt(rand.Next(customersList.Count())).Location;
                 var closetStation = ClosestStation(nDrone.CurrLocation);
-                double minBattery = MinBattery(CalculateDistance(nDrone.CurrLocation, closetStation.Location));
+                double minBattery = MinBattery(CalculateDistance(nDrone.CurrLocation, closetStation.Location), false);
                 nDrone.BatteryStatus = RandBetweenRange(minBattery, 100);
             }
             return nDrone;
@@ -510,13 +510,18 @@ namespace BL
         /// <param name="distance"></param>
         /// <param name="weight"></param>
         /// <returns>the minimum battery in double</returns>
-        private double MinBattery(double distance, WeightCategories weight = 0) => weight switch
+        private double MinBattery(double distance, bool hasParcel, WeightCategories weight = 0)
         {
-            WeightCategories.Light => powerConsumptionLight * distance,
-            WeightCategories.Heavy => powerConsumptionHeavy * distance,
-            WeightCategories.Medium => powerConsumptionMedium * distance,
-            _ => PowerConsumptionFree * distance,
-        };
+            return !hasParcel
+                ? PowerConsumptionFree * distance
+                : weight switch
+                {
+                    WeightCategories.Light => powerConsumptionLight * distance,
+                    WeightCategories.Medium => powerConsumptionMedium * distance,
+                    WeightCategories.Heavy => powerConsumptionHeavy * distance,
+                    _ => -0, // this case is error
+                };
+        }
 
         /// <summary>
         /// A function that creates ParcelInTransferand
@@ -534,7 +539,7 @@ namespace BL
             //    );
             IEnumerable<DO.Parcel> belongedParcels = dal.GetDalListByCondition<DO.Parcel>(p => p.DroneId == droneId);
 
-            if (belongedParcels.Count() == 0) 
+            if (belongedParcels.Count() == 0)
             {
                 return null;
             }
@@ -547,7 +552,7 @@ namespace BL
                 // שויכה ולא הורמה
                 parcel = belongedParcels.FirstOrDefault(p => p.BelongParcel != null && p.PickingUp == null);
             }
-            if (parcel.SenderId==0)
+            if (parcel.SenderId == 0)
             {
                 var a = 9;
             }
@@ -600,7 +605,7 @@ namespace BL
             }
 
             double distanceFromDroneToStation = CalculateDistance(drone.CurrLocation, closetStation.Location);
-            double minBattery = MinBattery(distanceFromDroneToStation);
+            double minBattery = MinBattery(distanceFromDroneToStation, false);
             if (minBattery > drone.BatteryStatus)
             {
                 throw new BO.InValidActionException("The drone has no enough battery in order to get to the closest charging station");
@@ -609,7 +614,7 @@ namespace BL
             drone.BatteryStatus -= minBattery;
             drone.CurrLocation = closetStation.Location;
             drone.DStatus = DroneStatus.Maintenance;
-           
+
             dal.Add(new DO.ChargingDrone()
             {
                 DroneId = drone.Id,
