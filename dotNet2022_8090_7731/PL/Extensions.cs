@@ -76,5 +76,17 @@ namespace PL
             }
             return false;
         }
+
+        // remove first word of string from exception
+        public static void ShowIdExceptionMessage(string exception)
+        {
+            string messageForUser = exception[(exception.Split()[0].Length + 1)..];
+            MessageBox.Show("messageForUser", "Wrong Id", MessageBoxButton.OK);
+        }
+
+        public static void ShowTheExceptionMessage(string exception, string windowHeader = "Error")
+        {
+            MessageBox.Show(exception, windowHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 }

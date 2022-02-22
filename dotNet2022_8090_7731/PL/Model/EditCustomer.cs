@@ -19,7 +19,6 @@ namespace PO
     /// </summary>
     public class EditCustomer : ObservableBase, IDataErrorInfo
     {
-
         public int Id { get; init; }
 
         private string _name;

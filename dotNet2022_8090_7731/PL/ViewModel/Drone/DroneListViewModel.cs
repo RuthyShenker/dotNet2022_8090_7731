@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-
+using static PL.Extensions;
 
 namespace PL.ViewModels
 {
@@ -129,13 +129,20 @@ namespace PL.ViewModels
         /// <param name="sender"></param>
         private void AddingDrone(object sender)
         {
-            if (bl.AvailableSlots().Select(slot => slot.Id).Any())
+            try
             {
-                new DroneView(/*bl,*//*RefreshDrones*/).Show();
+                if (bl.AvailableSlots().Select(slot => slot.Id).Any())
+                {
+                    new DroneView(/*bl,*//*RefreshDrones*/).Show();
+                }
+                else
+                {
+                    MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            else
+            catch (BO.XMLFileLoadCreateException)
             {
-                MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show();
             }
         }
 
@@ -163,9 +170,20 @@ namespace PL.ViewModels
             if (sender == null) return;
 
             var selectedDrone = sender as PO.DroneToList;
-            var drone = bl.GetDrone(selectedDrone.Id);
-            new DroneView(bl, drone)
-                .Show();
+            try
+            {
+                var drone = bl.GetDrone(selectedDrone.Id);
+                new DroneView(bl, drone)
+                    .Show();
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
+            }
         }
     }
 }

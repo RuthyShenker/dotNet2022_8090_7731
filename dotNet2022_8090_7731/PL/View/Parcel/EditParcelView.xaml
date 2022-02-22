@@ -4,9 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:PO="clr-namespace:PO"
-             xmlns:local="clr-namespace:PL.View"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-               xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:System="clr-namespace:System;assembly=mscorlib" 
              mc:Ignorable="d" 
              xmlns:Converters="clr-namespace:PL.Converters"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -60,7 +59,7 @@
             <TextBlock Text="{Binding Parcel.Id}" Style="{StaticResource Header}"/>
         </DockPanel>
 
-        <DockPanel  >
+        <DockPanel>
             <StackPanel Width="200"/>
 
             <StackPanel >
@@ -136,8 +135,8 @@
                  IsEnabled="False"
                  materialDesign:HintAssist.Hint="Arrival Parcel"/>
 
-        <Button Content="Update"
-                Command="{Binding UpdateParcelCommand}"/>
+        <!--<Button Content="Update"
+                 Command="{Binding UpdateParcelCommand}"/>-->
 
         <Button Content="Delete"
                 Command="{Binding DeleteParcelCommand}"

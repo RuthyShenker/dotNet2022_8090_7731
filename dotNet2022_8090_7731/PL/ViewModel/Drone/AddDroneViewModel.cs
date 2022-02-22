@@ -51,9 +51,21 @@ namespace PL.ViewModels
                 Refresh.Invoke();
                 switchView(blDrone);
             }
-            catch (Exception)
+            catch (BO.IdAlreadyExistsException)
             {
                 MessageBox.Show("id is already exist");
+            }
+            catch (BO.InValidActionException)
+            {
+
+            }
+            catch (BO.IdDoesNotExistException)
+            {
+
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+
             }
         }
 

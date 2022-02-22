@@ -47,9 +47,9 @@ namespace BL
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
-            catch (ArgumentNullException ex)
+            catch (ArgumentNullException)
             {
-                throw new BO.ListIsEmptyException(ex.Message);
+                throw new BO.ListIsEmptyException(typeof(Customer));
             }
             return bLCustomer.Id;
         }
@@ -84,11 +84,15 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new IdIsNotExistException(typeof(Customer), customerId);
+                throw new IdDoesNotExistException(typeof(Customer), customerId);
             }
             catch (ArgumentNullException)
             {
                 throw new ListIsEmptyException(typeof(Customer));
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
         }
 
@@ -132,11 +136,11 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new IdIsNotExistException(typeof(Customer), customerId);
+                throw new IdDoesNotExistException(typeof(Customer), customerId);
             }
-            catch (ArgumentNullException)
+            catch (DO.XMLFileLoadCreateException ex)
             {
-                throw new BO.ThereIsNoMatchObjectInListException();
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
         }
         /// <summary>
@@ -157,11 +161,11 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new IdIsNotExistException(typeof(Customer), customerId);
+                throw new IdDoesNotExistException(typeof(Customer), customerId);
             }
             catch (ArgumentNullException)
             {
-                throw new IdIsNotExistException(typeof(Customer), customerId);
+                throw;
             }
             catch (DO.XMLFileLoadCreateException ex)
             {
@@ -220,12 +224,16 @@ namespace BL
             }
             catch (DO.IdDoesNotExistException ex)
             {
-                throw new IdIsNotExistException(typeof(Customer), Id);
+                throw new IdDoesNotExistException(typeof(Customer), Id);
                 //throw new IdDoesNotExistException(typeof(Customer), Id);
             }
             catch (ArgumentNullException)
             {
                 throw;
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
         }
 
@@ -276,17 +284,25 @@ namespace BL
                 Name = customer.Name,
                 Phone = customer.Phone
             };
-
-            lock (dal)
+            try
             {
-                nCustomer.SentNotSupplied = dal.GetDalListByCondition<DO.Parcel>(p => p.SenderId == customer.Id && p.Arrival == null).Count();
-                nCustomer.SentSupplied = dal.GetDalListByCondition<DO.Parcel>(p => p.SenderId == customer.Id && p.Arrival != null).Count();
-                nCustomer.Got = dal.GetDalListByCondition<DO.Parcel>(p => p.GetterId == customer.Id && p.Arrival != null).Count();
-                nCustomer.InWayToCustomer = dal.GetDalListByCondition<DO.Parcel>(p => p.GetterId == customer.Id && p.Arrival == null).Count();
+                lock (dal)
+                {
+                    nCustomer.SentNotSupplied = dal.GetDalListByCondition<DO.Parcel>(p => p.SenderId == customer.Id && p.Arrival == null).Count();
+                    nCustomer.SentSupplied = dal.GetDalListByCondition<DO.Parcel>(p => p.SenderId == customer.Id && p.Arrival != null).Count();
+                    nCustomer.Got = dal.GetDalListByCondition<DO.Parcel>(p => p.GetterId == customer.Id && p.Arrival != null).Count();
+                    nCustomer.InWayToCustomer = dal.GetDalListByCondition<DO.Parcel>(p => p.GetterId == customer.Id && p.Arrival == null).Count();
 
+                }
             }
-
-
+            catch (ArgumentNullException )
+            {
+                throw;
+            }
+            catch (DO.XMLFileLoadCreateException ex)
+            {
+                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            }
             return nCustomer;
         }
 

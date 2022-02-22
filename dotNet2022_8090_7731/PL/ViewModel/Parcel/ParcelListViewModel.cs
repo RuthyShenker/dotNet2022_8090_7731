@@ -28,7 +28,7 @@ namespace PL.ViewModels
 
         public Array GroupOptions { get; set; } = Enum.GetValues(typeof(GroupBy));
         public IEnumerable FilterParcelOptions { get; } = new List<object>() { "All" }.Union(Enum.GetValues(typeof(BO.ParcelStatus)).Cast<object>());
-       
+
         public ParcelListViewModel(BlApi.IBL bl)
         {
             Refresh.ParcelsList += RefreshParcelsList;
@@ -49,7 +49,14 @@ namespace PL.ViewModels
 
         private void RefreshParcelsList()
         {
-            ParcelList = new(bl.GetParcels().MapListFromBLToPL().ToList());
+            try
+            {
+                ParcelList = new(bl.GetParcels().MapListFromBLToPL().ToList());
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
+            }
 
             // keep group and filter status
             FilterParcels = selectedFilter;
@@ -69,10 +76,10 @@ namespace PL.ViewModels
                     PropertyGroupDescription groupDescription = new(groupBy.ToString());
                     parcelList.GroupDescriptions.Add(groupDescription);
 
-                    SortDescription sortDescription = new (groupBy.ToString(), ListSortDirection.Ascending);
+                    SortDescription sortDescription = new(groupBy.ToString(), ListSortDirection.Ascending);
                     parcelList.SortDescriptions.Add(sortDescription);
                 }
-                parcelList.SortDescriptions.Add(new ("Id", ListSortDirection.Ascending));
+                parcelList.SortDescriptions.Add(new("Id", ListSortDirection.Ascending));
             }
 
         }
@@ -111,10 +118,17 @@ namespace PL.ViewModels
 
         private void AddParcel(object obj)
         {
-            if (!bl.GetCustomers().Any())
-                MessageBox.Show("There are no customers in the system", "Failed Adding Parcel", MessageBoxButton.OK, MessageBoxImage.Stop);
-            else
-                new ParcelView(bl).Show();
+            try
+            {
+                if (!bl.GetCustomers().Any())
+                    MessageBox.Show("There are no customers in the system", "Failed Adding Parcel", MessageBoxButton.OK, MessageBoxImage.Stop);
+                else
+                    new ParcelView(bl).Show();
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
+            }
         }
 
         private void EditParcel(object obj)

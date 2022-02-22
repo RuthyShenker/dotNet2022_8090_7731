@@ -15,13 +15,11 @@ namespace PO
     /// </summary>
     public class StationToList
     {
-
         /// this field is init.
         /// </summary>
         public int Id { get; init; }
         public string Name { get; set; }
         public int AvailablePositions { get; set; }
         public int FullPositions { get; set; }
-
     }
 }

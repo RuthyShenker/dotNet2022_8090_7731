@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-
+using static PL.Extensions;
 using PL.View;
 using PO;
 namespace PL.ViewModels
@@ -123,7 +123,18 @@ namespace PL.ViewModels
                    MessageBoxButton.OKCancel,
                    MessageBoxImage.Question) == MessageBoxResult.OK)
             {
-                bl.UpdatingDroneName(Drone.Id, Drone.Model);
+                try
+                {
+                    bl.UpdatingDroneName(Drone.Id, Drone.Model);
+                }
+                catch (BO.IdDoesNotExistException exception)
+                {
+                    ShowIdExceptionMessage(exception.Message);
+                }
+                catch (BO.XMLFileLoadCreateException)
+                {
+                    MessageBox.Show();
+                }
                 MessageBox.Show($"Drone With Id:{Drone.Id} Updated successfuly!",
                    $" Model Updated Successly {MessageBoxImage.Information}");
 
@@ -137,6 +148,21 @@ namespace PL.ViewModels
         private void SendOrReleaseDroneFromCharging(object sender)
         {
             if (Extensions.WorkerTurnOn()) return;
+            try
+            {
+                if (Drone.Status == PO.DroneStatus.Free)
+                    bl.SendingDroneToCharge(Drone.Id);
+                else
+                    bl.ReleasingDrone(Drone.Id);
+            }
+            catch (BO.InValidActionException exception)
+            {
+                ShowTheExceptionMessage(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
+            }
 
             if (Drone.Status == DroneStatus.Free)
             {
@@ -201,7 +227,15 @@ namespace PL.ViewModels
             }
             catch (BO.InValidActionException exception)
             {
-                MessageBox.Show(exception.Message, "Error Delivery Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowTheExceptionMessage(exception.Message, "Error Delivery Parcel To drone");
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
             }
         }
 
@@ -217,7 +251,15 @@ namespace PL.ViewModels
             }
             catch (BO.InValidActionException exception)
             {
-                MessageBox.Show(exception.Message, "Error Pick Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowTheExceptionMessage(exception.Message, "Error Pick Parcel To drone");
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
             }
         }
 
@@ -234,12 +276,24 @@ namespace PL.ViewModels
             }
             catch (BO.ThereIsNoMatchObjectInListException exception)
             {
-                MessageBox.Show(exception.ExceptionDetails, "Error Belong Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                ShowTheExceptionMessage(exception.Message, "Error Belong Parcel To drone");
             }
             catch (BO.ListIsEmptyException ex)
             {
                 MessageBox.Show(ex.Message, "Error Belong Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (BO.InValidActionException exception)
+            {
+                ShowTheExceptionMessage(exception.Message, "Error Belong Parcel To drone");
+
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
             }
         }
 
@@ -279,9 +333,13 @@ namespace PL.ViewModels
 
                 Functions.CloseWindow(obj);
             }
-            catch (BO.IdIsNotExistException exception)
+            catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show(exception.Message);
+                ShowIdExceptionMessage(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
             }
         }
 
@@ -290,11 +348,22 @@ namespace PL.ViewModels
         /// </summary>
         private void RefreshDrone()
         {
-            if (bl.GetDrones().FirstOrDefault(d => d.Id == Drone.Id) != default)
+            try
             {
-                var keepSimulatorState = drone.Automatic;
-                Drone = Map(bl.GetDrone(Drone.Id));
-                Drone.Automatic = keepSimulatorState;
+                if (bl.GetDrones().FirstOrDefault(d => d.Id == Drone.Id) != default)
+                {
+                    var keepSimulatorState = drone.Automatic;
+                    Drone = Map(bl.GetDrone(Drone.Id));
+                    Drone.Automatic = keepSimulatorState;
+                }
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
             }
         }
 

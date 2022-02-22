@@ -50,8 +50,19 @@ namespace PL.ViewModels
             if (Extensions.WorkerTurnOn()) return;
 
             var parcel = obj as BO.ParcelInCustomer;
-            var blParcel = bl.GetParcel(parcel.Id);
-            new ParcelView(bl, blParcel).Show();
+            try
+            {
+                var blParcel = bl.GetParcel(parcel.Id);
+                new ParcelView(bl, blParcel).Show();
+            }
+            catch (BO.IdDoesNotExistException)
+            {
+
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+
+            }
         }
 
         /// <summary>
@@ -89,9 +100,13 @@ namespace PL.ViewModels
 
                 Functions.CloseWindow(obj);
             }
-            catch (BO.IdIsNotExistException exception)
+            catch (BO.IdDoesNotExistException exception)
             {
                 MessageBox.Show(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+
             }
         }
 
@@ -108,9 +123,17 @@ namespace PL.ViewModels
                 bl.UpdatingCustomerDetails(Customer.Id, Customer.Name, Customer.Phone);
                 Refresh.Invoke();
             }
-            catch (BO.IdIsNotExistException exception)
+            catch (BO.IdDoesNotExistException exception)
             {
                 MessageBox.Show(exception.Message);
+            }
+            catch (BO.ListIsEmptyException)
+            {
+
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+
             }
         }
 
@@ -119,11 +142,17 @@ namespace PL.ViewModels
         /// </summary>
         private void RefreshCustomer()
         {
-            if (bl.GetCustomers().FirstOrDefault(c => c.Id == Customer.Id) != default)
+            try
             {
-                Customer = MapFromBOToPO(bl.GetCustomer(Customer.Id));
+                if (bl.GetCustomers().FirstOrDefault(c => c.Id == Customer.Id) != default)
+                {
+                    Customer = MapFromBOToPO(bl.GetCustomer(Customer.Id));
+                }
             }
-
+            catch (BO.XMLFileLoadCreateException ex)
+            {
+                MessageBox.Show();
+            }
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace ConsoleUI_BL
 
                     }
                 }
-                catch (BO.IdIsNotExistException idIsNotExistException)
+                catch (BO.IdDoesNotExistException idIsNotExistException)
                 {
                     Console.WriteLine(idIsNotExistException);
                 }

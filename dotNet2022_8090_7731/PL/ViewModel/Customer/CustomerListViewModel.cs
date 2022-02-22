@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using static PL.Extensions;
 using PL.View;
 using PO;
 
@@ -58,9 +58,20 @@ namespace PL.ViewModels
             if (sender == null) return;
 
             var selectedCustomer = sender as CustomerToList;
-            var blCustomer = bl.GetCustomer(selectedCustomer.Id);
-            new CustomerView(bl, blCustomer)
-                .Show();
+            try
+            {
+                var blCustomer = bl.GetCustomer(selectedCustomer.Id);
+                new CustomerView(bl, blCustomer)
+                    .Show();
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException)
+            {
+                MessageBox.Show();
+            }
         }
         /// <summary>
         /// A function that adds new customer.
