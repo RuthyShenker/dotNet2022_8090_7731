@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using static PL.Extensions;
 namespace PL.ViewModels
 {
     /// <summary>
@@ -51,15 +51,15 @@ namespace PL.ViewModels
             }
             catch (BO.IdAlreadyExistsException exception)
             {
-                MessageBox.Show(exception.Message);
+               ShowIdExceptionMessage(exception.Message);
             }
             catch (BO.XMLFileLoadCreateException ex)
             {
                 MessageBox.Show( $"fail to load xml file: {ex.xmlFilePath}", "Error  to load xml file ");
             }
-            catch (BO.ListIsEmptyException ex)
+            catch (BO.ListIsEmptyException exception)
             {
-                MessageBox.Show();
+                ShowIdExceptionMessage(exception.Message);
             }
         }
 

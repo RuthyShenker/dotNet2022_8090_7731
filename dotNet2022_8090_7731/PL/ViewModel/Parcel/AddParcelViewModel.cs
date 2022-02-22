@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-
+using static PL.Extensions;
 namespace PL.ViewModels
 {
     public class AddParcelViewModel
@@ -42,7 +42,7 @@ namespace PL.ViewModels
             }
             catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show(exception.Message);
+                ShowIdExceptionMessage(exception.Message);
             }
             catch (BO.XMLFileLoadCreateException)
             {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-
+using static PL.Extensions;
 using PL.View;
 using PO;
 namespace PL.ViewModels
@@ -127,11 +127,9 @@ namespace PL.ViewModels
                 {
                     bl.UpdatingDroneName(Drone.Id, Drone.Model);
                 }
-                catch ( BO.IdDoesNotExistException)
+                catch (BO.IdDoesNotExistException exception)
                 {
-                    MessageBox.Show();
-
-
+                    ShowIdExceptionMessage(exception.Message);
                 }
                 catch (BO.XMLFileLoadCreateException)
                 {
@@ -157,9 +155,9 @@ namespace PL.ViewModels
                 else
                     bl.ReleasingDrone(Drone.Id);
             }
-            catch (BO.InValidActionException)
+            catch (BO.InValidActionException exception)
             {
-                MessageBox.Show();
+                ShowTheExceptionMessage(exception.Message);
             }
             catch (BO.XMLFileLoadCreateException)
             {
@@ -229,11 +227,11 @@ namespace PL.ViewModels
             }
             catch (BO.InValidActionException exception)
             {
-                MessageBox.Show(exception.Message, "Error Delivery Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowTheExceptionMessage(exception.Message, "Error Delivery Parcel To drone");
             }
-            catch (BO.IdDoesNotExistException)
+            catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show();
+                ShowIdExceptionMessage(exception.Message);
             }
             catch (BO.XMLFileLoadCreateException)
             {
@@ -253,11 +251,11 @@ namespace PL.ViewModels
             }
             catch (BO.InValidActionException exception)
             {
-                MessageBox.Show(exception.Message, "Error Pick Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowTheExceptionMessage(exception.Message, "Error Pick Parcel To drone");
             }
-            catch (BO.IdDoesNotExistException)
+            catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show();
+                ShowIdExceptionMessage(exception.Message);
             }
             catch (BO.XMLFileLoadCreateException)
             {
@@ -278,24 +276,24 @@ namespace PL.ViewModels
             }
             catch (BO.ThereIsNoMatchObjectInListException exception)
             {
-                MessageBox.Show(exception.ExceptionDetails, "Error Belong Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                ShowTheExceptionMessage(exception.Message, "Error Belong Parcel To drone");
             }
             catch (BO.ListIsEmptyException ex)
             {
                 MessageBox.Show(ex.Message, "Error Belong Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch (BO.InValidActionException)
+            catch (BO.InValidActionException exception)
             {
-                MessageBox.Show();
+                ShowTheExceptionMessage(exception.Message, "Error Belong Parcel To drone");
+
             }
             catch (BO.XMLFileLoadCreateException)
             {
                 MessageBox.Show();
             }
-            catch (BO.IdDoesNotExistException)
+            catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show();
+                ShowIdExceptionMessage(exception.Message);
             }
         }
 
@@ -337,7 +335,7 @@ namespace PL.ViewModels
             }
             catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show(exception.Message);
+                ShowIdExceptionMessage(exception.Message);
             }
             catch (BO.XMLFileLoadCreateException)
             {
@@ -359,15 +357,11 @@ namespace PL.ViewModels
                     Drone.Automatic = keepSimulatorState;
                 }
             }
-            catch ( BO.IdDoesNotExistException)
+            catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show();
+                ShowIdExceptionMessage(exception.Message);
             }
             catch (BO.XMLFileLoadCreateException)
-            {
-                MessageBox.Show();
-            }
-            catch (ArgumentNullException)
             {
                 MessageBox.Show();
             }

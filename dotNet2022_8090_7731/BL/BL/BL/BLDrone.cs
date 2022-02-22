@@ -191,10 +191,6 @@ namespace BL
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
-            catch (ArgumentNullException)
-            {
-                throw;
-            }
         }
 
         /// <summary>
@@ -260,10 +256,6 @@ namespace BL
                     chargingDrone = dal.GetFromDalByCondition<DO.ChargingDrone>(d => d.DroneId == dId);
                 }
             }
-            catch (ArgumentNullException)
-            {
-                throw;
-            }
             catch (DO.XMLFileLoadCreateException ex)
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
@@ -289,10 +281,6 @@ namespace BL
                             dal.Remove(ChargingDroneToRemove);
                         }
                     }
-                    catch (ArgumentNullException)
-                    {
-                        throw;
-                    }
                     catch (DO.XMLFileLoadCreateException ex)
                     {
                         throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
@@ -315,10 +303,6 @@ namespace BL
             {
                 // return parcel which the drone has to delivery, otherwise- default(IDAL.DO.Parcel)
                 parcel = dal.GetFromDalByCondition<DO.Parcel>(parcel => parcel.DroneId == drone.Id && !parcel.Arrival.HasValue);
-            }
-            catch (ArgumentNullException)
-            {
-                throw;
             }
             catch (DO.XMLFileLoadCreateException ex)
             {
@@ -418,75 +402,75 @@ namespace BL
         /// <returns></returns>
         private DroneToList CalculateUnDeliveryingDrone(DroneToList nDrone)
         {
+            if (GetStations().Count() == 0)
+            {
+                throw new BO.ListIsEmptyException(typeof(Station));
+            }
+
+            //if charging drone list is empty or this drone is not on charging slot- status is free.
+            if (dal.GetListFromDal<DO.ChargingDrone>().Any() &&
+                !dal.GetListFromDal<DO.ChargingDrone>().FirstOrDefault(chargingDrone => chargingDrone.DroneId == nDrone.Id).Equals(default(DO.ChargingDrone)))
+                nDrone.DStatus = DroneStatus.Maintenance;
+            else
+                nDrone.DStatus = DroneStatus.Free;
+
+            var customersList = CustomersWithProvidedParcels();
+
+            #region
+            //var availableSlotsList = AvailableSlots();
+            //if (availableSlotsList.Any())
+            //{
+            //    var station = availableSlotsList.ElementAt(rand.Next(availableSlotsList.Count()));
+            //    //maybe to rand to closet station?.
+            //    nDrone.CurrLocation = GetStation(station.Id).Location;
+            //    nDrone.BatteryStatus = rand.NextDouble() * 20;
+
+            //    if (nDrone.DStatus == DroneStatus.Maintenance)
+            //    {
+            //        dal.Add(new DO.ChargingDrone(nDrone.Id, station.Id, DateTime.Now));
+            //    }
+            //}
+            //else
+            //{
+
+            //}
+            #endregion
+
+            if (nDrone.DStatus == DroneStatus.Maintenance)
+            {
+                int stationId = dal.GetDalListByCondition<DO.ChargingDrone>(c => c.DroneId == nDrone.Id).First().StationId;
+                LocationAndBatteryForDrone(nDrone, stationId);
+            }
+            else if (!customersList.Any())
+            {
+                int stationId = GetStations().ElementAt(rand.Next(GetStations().Count())).Id;
+                LocationAndBatteryForDrone(nDrone, stationId);
+            }
+            else //free + customersList.Count() != 0
+            {
+                nDrone.CurrLocation = customersList.ElementAt(rand.Next(customersList.Count())).Location;
+                var closetStation = ClosestStation(nDrone.CurrLocation);
+                double minBattery = MinBattery(CalculateDistance(nDrone.CurrLocation, closetStation.Location), false);
+                nDrone.BatteryStatus = RandBetweenRange(minBattery, 100);
+            }
+            return nDrone;
+            //catch (DO.XMLFileLoadCreateException ex)
+            //{
+            //    throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+            //}
+        }
+
+        private void LocationAndBatteryForDrone(DroneToList nDrone, int stationId)
+        {
             try
-            { //if the list of charging drone empty or this drone is not on charging so it is free.
-                if (!dal.GetListFromDal<DO.ChargingDrone>().Any() ||
-                    dal.GetListFromDal<DO.ChargingDrone>().FirstOrDefault(chargingDrone => chargingDrone.DroneId == nDrone.Id).Equals(default(DO.ChargingDrone)))
-                    nDrone.DStatus = DroneStatus.Free;
-                else
-                    nDrone.DStatus = DroneStatus.Maintenance;
-
-                var customersList = CustomersWithProvidedParcels();
-
-
-                if (nDrone.DStatus == DroneStatus.Maintenance || !customersList.Any())
-                {
-                    #region
-                    //var availableSlotsList = AvailableSlots();
-                    //if (availableSlotsList.Any())
-                    //{
-                    //    var station = availableSlotsList.ElementAt(rand.Next(availableSlotsList.Count()));
-                    //    //maybe to rand to closet station?.
-                    //    nDrone.CurrLocation = GetStation(station.Id).Location;
-                    //    nDrone.BatteryStatus = rand.NextDouble() * 20;
-
-                    //    if (nDrone.DStatus == DroneStatus.Maintenance)
-                    //    {
-                    //        dal.Add(new DO.ChargingDrone(nDrone.Id, station.Id, DateTime.Now));
-                    //    }
-                    //}
-                    //else
-                    //{
-
-                    //}
-                    #endregion
-
-                    if (nDrone.DStatus == DroneStatus.Maintenance)
-                    {
-                        int stationId = dal.GetDalListByCondition<DO.ChargingDrone>(c => c.DroneId == nDrone.Id).First().StationId;
-                        var station = dal.GetFromDalByCondition<DO.BaseStation>(s => s.Id == stationId);
-                        nDrone.CurrLocation = new() { Longitude = station.Longitude, Latitude = station.Latitude };
-
-                    }
-                    else //customersList.Count() == 0
-                    {
-                        var idStation = GetStations().ElementAt(rand.Next(GetStations().Count())).Id;
-                        var longitude = dal.GetFromDalById<DO.BaseStation>(idStation).Longitude;
-                        var latitude = dal.GetFromDalById<DO.BaseStation>(idStation).Latitude;
-                        nDrone.CurrLocation = new() { Longitude = longitude, Latitude = latitude };
-                    }
-                    nDrone.BatteryStatus = rand.NextDouble() * 20;
-                }
-                else //free + customersList.Count() != 0
-                {
-                    nDrone.CurrLocation = customersList.ElementAt(rand.Next(customersList.Count())).Location;
-                    var closetStation = ClosestStation(nDrone.CurrLocation);
-                    double minBattery = MinBattery(CalculateDistance(nDrone.CurrLocation, closetStation.Location));
-                    nDrone.BatteryStatus = RandBetweenRange(minBattery, 100);
-                }
-                return nDrone;
-            }
-            catch (ArgumentNullException)
             {
-
-            }
-            catch (DO.XMLFileLoadCreateException ex)
-            {
-                throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
+                var station = dal.GetFromDalById<DO.BaseStation>(stationId);
+                nDrone.CurrLocation = new() { Longitude = station.Longitude, Latitude = station.Latitude };
+                nDrone.BatteryStatus = rand.NextDouble() * 20;
             }
             catch (DO.IdDoesNotExistException)
             {
-                throw new BO.IdDoesNotExistException();
+                throw new BO.IdDoesNotExistException(typeof(Station), stationId);
             }
         }
 

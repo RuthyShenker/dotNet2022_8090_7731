@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using static PL.Extensions;
 using PL.View;
 using PO;
 
@@ -58,18 +58,15 @@ namespace PL.ViewModels
             if (sender == null) return;
 
             var selectedCustomer = sender as CustomerToList;
-            try { 
-            var blCustomer = bl.GetCustomer(selectedCustomer.Id);
-            new CustomerView(bl, blCustomer)
-                .Show();
-            }
-            catch(BO.IdDoesNotExistException)
+            try
             {
-                MessageBox.Show();
+                var blCustomer = bl.GetCustomer(selectedCustomer.Id);
+                new CustomerView(bl, blCustomer)
+                    .Show();
             }
-            catch (BO.ThereIsNoMatchObjectInListException)
+            catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show();
+                ShowIdExceptionMessage(exception.Message);
             }
             catch (BO.XMLFileLoadCreateException)
             {

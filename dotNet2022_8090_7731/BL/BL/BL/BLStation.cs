@@ -143,7 +143,6 @@ namespace BL
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
-            
         }
         
         /// <summary>
@@ -245,10 +244,6 @@ namespace BL
                     return ConvertToBL(closetStation);
                 }
             }
-            catch (ArgumentNullException)
-            {
-                throw new ListIsEmptyException();
-            }
             catch (DO.XMLFileLoadCreateException ex)
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
@@ -333,17 +328,10 @@ namespace BL
                 int numOfChargingDroneInStation;
                 lock (dal)
                 {
-
                     station = dal.GetFromDalById<DO.BaseStation>(stationId);
                     numOfChargingDroneInStation = dal.GetDalListByCondition<DO.ChargingDrone>(s => s.StationId == stationId).Count();
-
-
                 }
                 return station.NumberOfChargingPositions - numOfChargingDroneInStation;
-            }
-            catch (ArgumentNullException)
-            {
-                throw new ListIsEmptyException(typeof(BO.Station));
             }
             catch (DO.XMLFileLoadCreateException ex)
             {
@@ -385,10 +373,6 @@ namespace BL
                     chargingDroneBLList.Append(chargingDrone);
                 }
             }
-            catch (ArgumentNullException)
-            {
-                throw new ListIsEmptyException();
-            }
             catch (DO.IdDoesNotExistException)
             {
                 throw new IdDoesNotExistException(typeof(ChargingDrone), sId);
@@ -398,8 +382,7 @@ namespace BL
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
             return chargingDroneBLList;
-
         }
-
+    
     }
 }

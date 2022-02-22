@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-
+using static PL.Extensions;
 
 namespace PL.ViewModels
 {
@@ -151,20 +151,13 @@ namespace PL.ViewModels
         /// </summary>
         private void RefreshDronesList()
         {
-            try
+            lock (bl)
             {
-                lock (bl)
-                {
-                    DroneList = new(bl.GetDrones().MapListFromBLToPL().ToList());
+                DroneList = new(bl.GetDrones().MapListFromBLToPL().ToList());
 
-                    // keep group and filter status
-                    GroupDrones = currentGroup;
-                    DroneList.Filter = FilterDrone;
-                }
-            }
-            catch(ArgumentNullException)
-            {
-                MessageBox.Show();
+                // keep group and filter status
+                GroupDrones = currentGroup;
+                DroneList.Filter = FilterDrone;
             }
         }
 
@@ -177,14 +170,15 @@ namespace PL.ViewModels
             if (sender == null) return;
 
             var selectedDrone = sender as PO.DroneToList;
-            try { 
-            var drone = bl.GetDrone(selectedDrone.Id);
-            new DroneView(bl, drone)
-                .Show();
+            try
+            {
+                var drone = bl.GetDrone(selectedDrone.Id);
+                new DroneView(bl, drone)
+                    .Show();
             }
-            catch ( BO.IdDoesNotExistException)
-            { 
-                MessageBox.Show();
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
             }
             catch (BO.XMLFileLoadCreateException)
             {

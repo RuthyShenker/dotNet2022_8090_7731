@@ -3,7 +3,7 @@ using PO;
 using System;
 using System.Linq;
 using System.Windows;
-
+using static PL.Extensions;
 namespace PL.ViewModels
 {
     public class EditParcelViewModel : INotify
@@ -44,19 +44,18 @@ namespace PL.ViewModels
                 {
                     bl.PickingUpParcel(Parcel.DInParcel.Id);
                     Refresh.Invoke();
-
                 }
                 catch (BO.InValidActionException exception)
                 {
                     MessageBox.Show(exception.Message, "Error Pick Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                catch (BO.IdDoesNotExistException)
+                catch (BO.IdDoesNotExistException exception)
                 {
-                    MessageBox.Show():
+                    ShowIdExceptionMessage(exception.Message);
                 }
                 catch (BO.XMLFileLoadCreateException)
                 {
-                    MessageBox.Show():
+                    MessageBox.Show();
                 }
             }
             else if (Parcel.Arrival == null)
@@ -72,9 +71,9 @@ namespace PL.ViewModels
                 {
                     MessageBox.Show(exception.Message, "Error Delivery Parcel To drone", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                catch (BO.IdDoesNotExistException)
+                catch (BO.IdDoesNotExistException exception)
                 {
-                    MessageBox.Show();
+                    ShowIdExceptionMessage(exception.Message);
                 }
                 catch (BO.XMLFileLoadCreateException)
                 {
@@ -115,11 +114,7 @@ namespace PL.ViewModels
             }
             catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show(exception.Message);
-            }
-            catch (BO.IdDoesNotExistException)
-            {
-                MessageBox.Show();
+                ShowIdExceptionMessage(exception.Message);
             }
             catch (BO.XMLFileLoadCreateException)
             {
@@ -142,9 +137,9 @@ namespace PL.ViewModels
                     MessageBox.Show("You can't see more because the parcel doesnt meet the conditions", "Error Open Drone", MessageBoxButton.OK, MessageBoxImage.Stop);
                 }
             }
-            catch (BO.IdDoesNotExistException)
+            catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show();
+                ShowIdExceptionMessage(exception.Message);
             }
             catch (BO.XMLFileLoadCreateException)
             {
@@ -154,7 +149,7 @@ namespace PL.ViewModels
 
         private void EditCustomer(object customerId)
         {
-            //we decide to show all the time the customers that ordered the parcel.
+            // Bonus: show always the customers that ordered the parcel.
 
             //if (Parcel.BelongParcel != default && Parcel.Arrival == default)
             {
@@ -163,29 +158,16 @@ namespace PL.ViewModels
                     BO.Customer blCustomer = bl.GetCustomer((int)customerId);
                     new CustomerView(bl, blCustomer).Show();
                 }
-                catch (BO.IdDoesNotExistException)
+                catch (BO.IdDoesNotExistException exception)
                 {
-                    MessageBox.Show();
+                    ShowIdExceptionMessage(exception.Message);
                 }
                 catch (BO.XMLFileLoadCreateException)
                 {
                     MessageBox.Show();
                 }
-                catch (BO.ThereIsNoMatchObjectInListException)
-                {
-                    MessageBox.Show();
-                }
             }
-            //else
-            //{
-            //    MessageBox.Show("You can't see more because the parcel doesnt meet the conditions", "Error Open Customer", MessageBoxButton.OK, MessageBoxImage.Stop);
-            //}
         }
-
-        //private void UpdateParcel(object obj)
-        //{
-
-        //}
 
         private EditParcel Map(BO.Parcel parcel)
         {
@@ -240,11 +222,11 @@ namespace PL.ViewModels
             }
             catch (BO.XMLFileLoadCreateException)
             {
-                MessageBox.Show():
+                MessageBox.Show();
             }
-            catch(BO.IdDoesNotExistException)
+            catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show():
+                ShowIdExceptionMessage(exception.Message);
             }
         }
     }

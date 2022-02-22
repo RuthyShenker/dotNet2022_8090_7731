@@ -247,10 +247,6 @@ namespace BL
                     dal.Update<DO.Parcel>(parcel.Id, dId, nameof(parcel.DroneId));
                     dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.BelongParcel));
                 }
-                catch (ArgumentNullException)
-                {
-                    throw;
-                }
                 catch (DO.XMLFileLoadCreateException ex)
                 {
                     throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
@@ -272,25 +268,22 @@ namespace BL
         /// <returns>returns optional parcels to specific data of drone</returns>
         internal IOrderedEnumerable<DO.Parcel> OptionalParcelsForSpecificDrone(double batteryStatus, WeightCategories weight, Location currLocation)
         {
-            try
+            lock (dal)
             {
-                lock (dal)
-                {
 
-            var a = dal.GetDalListByCondition<DO.Parcel>(parcel =>
-                    !parcel.BelongParcel.HasValue
-                    && parcel.Weight <= (DO.WeightCategories)weight 
-                    && batteryStatus >= CalculateBatteryToWay(currLocation, parcel)
-                );
+                var a = dal.GetDalListByCondition<DO.Parcel>(parcel =>
+                        !parcel.BelongParcel.HasValue
+                        && parcel.Weight <= (DO.WeightCategories)weight
+                        && batteryStatus >= CalculateBatteryToWay(currLocation, parcel)
+                    );
 
 
                 return a?.OrderByDescending(parcel => parcel.MPriority)
                 .ThenByDescending(parcel => parcel.Weight)
                                 .ThenBy(parcel => GetDistance(currLocation, parcel));
-        
+
             }
         }
-
         /// <summary>
         /// A function that gets location and parcel and returns the 
         /// distance of the all way from the location to the parcel includes the way from the getter to the closet station.
@@ -329,29 +322,30 @@ namespace BL
             {
                 throw new InValidActionException(typeof(DO.Drone), dId, $"there is no assined parcel ");
             }
-            try
+
+            lock (dal)
             {
-                lock (dal)
+                DO.Parcel parcel;
+                try
                 {
-                    DO.Parcel parcel;
-
                     parcel = dal.GetFromDalById<DO.Parcel>(drone.DeliveredParcelId.Value);
+                }
+                catch (DO.IdDoesNotExistException)
+                {
+                    throw new IdDoesNotExistException(typeof(Parcel), drone.DeliveredParcelId.Value);
+                }
 
-
-                    if (parcel.PickingUp != null)
-                    {
-                        throw new InValidActionException("Parcel assigned to drone was already picked up");
-                    }
+                if (parcel.PickingUp != null)
+                {
+                    throw new InValidActionException("Parcel assigned to drone was already picked up");
+                }
 
                 Location senderLocation = GetCustomer(parcel.SenderId).Location;
                 drone.BatteryStatus -= MinBattery(CalculateDistance(drone.CurrLocation, senderLocation), false);
                 drone.CurrLocation = senderLocation;
-                // לא היה כתוב לשנות status
-                //drone.DStatus = DroneStatus.Delivery;
+                drone.DStatus = DroneStatus.Delivery; // not needed usually
                 dal.Update<DO.Parcel>(parcel.Id, DateTime.Now, nameof(parcel.PickingUp));
             }
-        }
-
         }
 
         /// <summary>
