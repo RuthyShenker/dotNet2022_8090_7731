@@ -1,52 +1,17 @@
 <?xml version="1.0"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
-    <Id>444444444</Id>
-    <Name>g</Name>
-    <Phone>0505555555</Phone>
-    <Longitude>5</Longitude>
-    <Latitude>4</Latitude>
-  </Customer>
-  <Customer>
     <Id>666666666</Id>
-    <Name>y</Name>
-    <Phone>0504444444</Phone>
-    <Longitude>9</Longitude>
-    <Latitude>8</Latitude>
-  </Customer>
-  <Customer>
-    <Id>111111111</Id>
-    <Name>r</Name>
-    <Phone>0523333333</Phone>
-    <Longitude>87</Longitude>
-    <Latitude>4</Latitude>
-  </Customer>
-  <Customer>
-    <Id>666666697</Id>
-    <Name>s</Name>
-    <Phone>0542222222</Phone>
-    <Longitude>3</Longitude>
-    <Latitude>8</Latitude>
-  </Customer>
-  <Customer>
-    <Id>687758569</Id>
-    <Name>h</Name>
-    <Phone>0543333455</Phone>
-    <Longitude>35</Longitude>
-    <Latitude>90</Latitude>
-  </Customer>
-  <Customer>
-    <Id>999999999</Id>
     <Name>p</Name>
-    <Phone>0508888888</Phone>
-    <Longitude>90</Longitude>
-    <Latitude>90</Latitude>
+    <Phone>0525555555</Phone>
+    <Longitude>66</Longitude>
+    <Latitude>88</Latitude>
   </Customer>
   <Customer>
-    <Id>888888888</Id>
-    <Name>l</Name>
-    <Phone>0528888888</Phone>
-    <Longitude>0</Longitude>
-    <Latitude>0</Latitude>
+    <Id>777777777</Id>
+    <Name>p</Name>
+    <Phone>0527777777</Phone>
+    <Longitude>7</Longitude>
+    <Latitude>7</Latitude>
   </Customer>
 </ArrayOfCustomer>

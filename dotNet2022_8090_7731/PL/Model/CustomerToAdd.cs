@@ -87,7 +87,7 @@ namespace PO
             }
         }
 
-        private double? _longitude;
+        private object _longitude;
         public object Longitude
         {
             get => _longitude == null ? null : _longitude;
@@ -108,10 +108,11 @@ namespace PO
                 {
                     validityMessages[nameof(Longitude)] = LocationMessage("invalid input");
                 }
+                _longitude = value;
             }
         }
 
-        private double? _latitude;
+        private object _latitude;
         public object Latitude
         {
             get => _latitude == null ? null : _latitude;
@@ -132,6 +133,7 @@ namespace PO
                 {
                     validityMessages[nameof(Latitude)] = LocationMessage("invalid input");
                 }
+                _latitude = value;
             }
         }
 

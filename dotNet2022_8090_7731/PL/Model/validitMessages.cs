@@ -93,7 +93,7 @@ namespace PO
         {
             
             return value == null ? "Field is required" :
-            !Regex.IsMatch(value.ToString(), @"^-?(\d*\.)?\d+$") ? "Input must contain digits only" :
+            !Regex.IsMatch(value.ToString(), @"^-?(0*\.0*[1-9]+)|(0*[1-9][0-9]*(\.[0-9]+)?)$") ? "Input must contain digits only" :
                 (double)value > max ? $"Max value is {max}" :
                 (double)value < min ? $"Min value is {min}" :
                 "";

@@ -16,10 +16,10 @@
         <Converters:BatteryToProgressBarConverter x:Key="batteryToProgressBarConverter"/>
         <Converters:ContentByStatusOfSimulatorConverter x:Key="ContentByStatusOfSimulatorConverter"/>
 
-        <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
+        <!--<Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Width" Value="200" />
             <Setter Property="Margin" Value="0,15" />
-        </Style>
+        </Style>-->
 
         <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">

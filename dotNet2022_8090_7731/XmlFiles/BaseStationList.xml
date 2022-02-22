@@ -2,16 +2,9 @@
 <ArrayOfBaseStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <BaseStation>
     <Id>1111</Id>
-    <NameStation>e</NameStation>
-    <NumberOfChargingPositions>22</NumberOfChargingPositions>
-    <Longitude>1</Longitude>
-    <Latitude>2</Latitude>
-  </BaseStation>
-  <BaseStation>
-    <Id>2222</Id>
     <NameStation>a</NameStation>
-    <NumberOfChargingPositions>22</NumberOfChargingPositions>
-    <Longitude>0</Longitude>
-    <Latitude>0</Latitude>
+    <NumberOfChargingPositions>34</NumberOfChargingPositions>
+    <Longitude>13</Longitude>
+    <Latitude>65</Latitude>
   </BaseStation>
 </ArrayOfBaseStation>

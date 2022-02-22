@@ -30,16 +30,10 @@
             <Setter Property="Margin" Value="15,0,0,0"/>
         </Style>
 
-        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton }">
-            <Setter Property="Margin" Value="0,15" />
-            <Setter Property="Width" Value="500" />
-            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
-        </Style>
-
-        <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
+        <!--<Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Width" Value="200" />
             <Setter Property="Margin" Value="0,15" />
-        </Style>
+        </Style>-->
 
         <ObjectDataProvider x:Key="WeightCategoriesEnum" MethodName="GetValues"
                         ObjectType="{x:Type System:Enum}">
