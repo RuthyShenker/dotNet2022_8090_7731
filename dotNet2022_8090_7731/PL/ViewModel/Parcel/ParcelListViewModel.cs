@@ -53,9 +53,9 @@ namespace PL.ViewModels
             {
                 ParcelList = new(bl.GetParcels().MapListFromBLToPL().ToList());
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+               Extensions.ShowXMLExceptionMessage(exception.Message);
             }
 
             // keep group and filter status
@@ -125,9 +125,9 @@ namespace PL.ViewModels
                 else
                     new ParcelView(bl).Show();
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+               Extensions.ShowXMLExceptionMessage(exception.Message);
             }
         }
 

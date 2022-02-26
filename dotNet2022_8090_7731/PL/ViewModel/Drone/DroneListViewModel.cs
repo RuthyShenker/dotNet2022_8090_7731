@@ -140,9 +140,9 @@ namespace PL.ViewModels
                     MessageBox.Show("There is no available slots to charge in", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
 
@@ -180,9 +180,9 @@ namespace PL.ViewModels
             {
                 ShowIdExceptionMessage(exception.Message);
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
     }

@@ -53,9 +53,9 @@ namespace PL.ViewModels
                 {
                     ShowIdExceptionMessage(exception.Message);
                 }
-                catch (BO.XMLFileLoadCreateException)
+                catch (BO.XMLFileLoadCreateException exception)
                 {
-                    MessageBox.Show();
+                    ShowXMLExceptionMessage(exception.Message);
                 }
             }
             else if (Parcel.Arrival == null)
@@ -75,9 +75,9 @@ namespace PL.ViewModels
                 {
                     ShowIdExceptionMessage(exception.Message);
                 }
-                catch (BO.XMLFileLoadCreateException)
+                catch (BO.XMLFileLoadCreateException exception)
                 {
-                    MessageBox.Show();
+                    ShowXMLExceptionMessage(exception.Message);
                 }
             }
             else
@@ -116,9 +116,9 @@ namespace PL.ViewModels
             {
                 ShowIdExceptionMessage(exception.Message);
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                ShowXMLExceptionMessage(exception.Message);
             }
 
         }
@@ -141,9 +141,9 @@ namespace PL.ViewModels
             {
                 ShowIdExceptionMessage(exception.Message);
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
 
@@ -162,9 +162,9 @@ namespace PL.ViewModels
                 {
                     ShowIdExceptionMessage(exception.Message);
                 }
-                catch (BO.XMLFileLoadCreateException)
+                catch (BO.XMLFileLoadCreateException exception)
                 {
-                    MessageBox.Show();
+                    ShowXMLExceptionMessage(exception.Message);
                 }
             }
         }
@@ -220,9 +220,9 @@ namespace PL.ViewModels
                     Parcel = Map(bl.GetParcel(Parcel.Id));
                 }
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                ShowXMLExceptionMessage(exception.Message);
             }
             catch (BO.IdDoesNotExistException exception)
             {

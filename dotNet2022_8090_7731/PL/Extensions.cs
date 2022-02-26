@@ -88,5 +88,10 @@ namespace PL
         {
             MessageBox.Show(exception, windowHeader, MessageBoxButton.OK, MessageBoxImage.Error);
         }
+
+        public static void ShowXMLExceptionMessage(string exception)
+        {
+            MessageBox.Show(exception, "Wrong Load Profram", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 }

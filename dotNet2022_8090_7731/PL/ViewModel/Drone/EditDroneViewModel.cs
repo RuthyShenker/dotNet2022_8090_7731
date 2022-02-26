@@ -131,9 +131,9 @@ namespace PL.ViewModels
                 {
                     ShowIdExceptionMessage(exception.Message);
                 }
-                catch (BO.XMLFileLoadCreateException)
+                catch (BO.XMLFileLoadCreateException exception)
                 {
-                    MessageBox.Show();
+                    ShowXMLExceptionMessage(exception.Message);
                 }
                 MessageBox.Show($"Drone With Id:{Drone.Id} Updated successfuly!",
                    $" Model Updated Successly {MessageBoxImage.Information}");
@@ -159,9 +159,9 @@ namespace PL.ViewModels
             {
                 ShowTheExceptionMessage(exception.Message);
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                ShowXMLExceptionMessage(exception.Message);
             }
 
             if (Drone.Status == DroneStatus.Free)
@@ -233,9 +233,9 @@ namespace PL.ViewModels
             {
                 ShowIdExceptionMessage(exception.Message);
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
 
@@ -257,9 +257,9 @@ namespace PL.ViewModels
             {
                 ShowIdExceptionMessage(exception.Message);
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
 
@@ -287,9 +287,9 @@ namespace PL.ViewModels
                 ShowTheExceptionMessage(exception.Message, "Error Belong Parcel To drone");
 
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                ShowXMLExceptionMessage(exception.Message);
             }
             catch (BO.IdDoesNotExistException exception)
             {
@@ -337,9 +337,9 @@ namespace PL.ViewModels
             {
                 ShowIdExceptionMessage(exception.Message);
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
 
@@ -361,9 +361,9 @@ namespace PL.ViewModels
             {
                 ShowIdExceptionMessage(exception.Message);
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
 

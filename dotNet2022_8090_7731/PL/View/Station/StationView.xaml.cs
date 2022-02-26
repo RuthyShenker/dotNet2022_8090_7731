@@ -23,22 +23,21 @@ namespace PL.View
         public StationView(BlApi.IBL bl)
         {
             InitializeComponent();
-            //TODO:???
-            //var viewModel = new AddStationViewModel(bl, refreshStationList);
-            var viewModel = new AddStationViewModel(SwitchView);
+
+            var viewModel = new AddStationViewModel(bl, SwitchView);
             this.DataContext = new AddStationView(viewModel);
         }
 
-        public StationView(BlApi.IBL bl, /*Action refreshStationList,*/ BO.Station selectedStation)
+        public StationView(BlApi.IBL bl, BO.Station selectedStation)
         {
             InitializeComponent();
-            var viewModel = new EditStationViewModel(bl, selectedStation/*, refreshStationList*/);
+            var viewModel = new EditStationViewModel(bl, selectedStation);
             this.DataContext = new EditStationView(viewModel);
 
         }
+
         private void SwitchView(BO.Station selectedStation)
         {
-            //refreshCustomerList();
             var viewModel = new EditStationViewModel(BlApi.BlFactory.GetBl(), selectedStation);
             this.DataContext = new EditStationView(viewModel);
         }

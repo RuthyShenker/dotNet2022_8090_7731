@@ -163,10 +163,6 @@ namespace BL
             {
                 throw new IdDoesNotExistException(typeof(Customer), customerId);
             }
-            catch (ArgumentNullException)
-            {
-                throw;
-            }
             catch (DO.XMLFileLoadCreateException ex)
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
@@ -226,10 +222,6 @@ namespace BL
             {
                 throw new IdDoesNotExistException(typeof(Customer), Id);
                 //throw new IdDoesNotExistException(typeof(Customer), Id);
-            }
-            catch (ArgumentNullException)
-            {
-                throw;
             }
             catch (DO.XMLFileLoadCreateException ex)
             {

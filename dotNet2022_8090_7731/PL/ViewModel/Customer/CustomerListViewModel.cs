@@ -68,11 +68,12 @@ namespace PL.ViewModels
             {
                 ShowIdExceptionMessage(exception.Message);
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
+
         /// <summary>
         /// A function that adds new customer.
         /// </summary>

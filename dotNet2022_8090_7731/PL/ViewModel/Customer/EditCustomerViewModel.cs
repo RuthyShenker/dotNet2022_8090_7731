@@ -149,9 +149,9 @@ namespace PL.ViewModels
                     Customer = MapFromBOToPO(bl.GetCustomer(Customer.Id));
                 }
             }
-            catch (BO.XMLFileLoadCreateException ex)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-                MessageBox.Show();
+                Extensions.ShowXMLExceptionMessage(exception.Message);
             }
         }
 
