@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using static PL.Extensions;
 
 namespace PL.ViewModels
 {
@@ -27,14 +28,22 @@ namespace PL.ViewModels
         /// A constructor that gets action.
         /// </summary>
         /// <param name="switchView"></param>
-        public AddDroneViewModel(Action<BO.Drone> switchView )
+        public AddDroneViewModel(Action<BO.Drone> switchView)
         {
-            Drone = new();
-            this.switchView = switchView;
-            //this.bl = bl;
-            StationOptions = BlApi.BlFactory.GetBl().AvailableSlots().Select(station => station.Id).ToList();
-            AddDroneCommand = new RelayCommand<object>(AddDrone, param => Drone.Error == "");
-            CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
+            try
+            {
+                Drone = new();
+                this.switchView = switchView;
+                //this.bl = bl;
+                StationOptions = BlApi.BlFactory.GetBl().AvailableSlots().Select(station => station.Id).ToList();
+                AddDroneCommand = new RelayCommand<object>(AddDrone, param => Drone.Error == "");
+                CloseWindowCommand = new RelayCommand<object>(Functions.CloseWindow);
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+                ShowXMLExceptionMessage(exception.Message);
+
+            }
         }
 
         /// <summary>
@@ -55,17 +64,19 @@ namespace PL.ViewModels
             {
                 MessageBox.Show("id is already exist");
             }
-            catch (BO.InValidActionException)
+            catch (BO.InValidActionException exception)
             {
+                MessageBox.Show(exception.Message);
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
+
 
             }
-            catch (BO.IdDoesNotExistException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-
-            }
-            catch (BO.XMLFileLoadCreateException)
-            {
-
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
 
@@ -76,16 +87,30 @@ namespace PL.ViewModels
         /// <returns></returns>
         private BO.Drone Map(DroneToAdd drone)
         {
-            return new()
+            try
             {
-                Id = (int)drone.Id,
-                Model = drone.Model,
-                Weight = (BO.WeightCategories)drone.MaxWeight,
-                BatteryStatus = 0,
-                DroneStatus = (BO.DroneStatus)PO.DroneStatus.Maintenance,
-                PInTransfer = null,
-                CurrLocation = BlApi.BlFactory.GetBl().GetStation(Drone.StationId).Location
-            };
+                return new()
+                {
+                    Id = (int)drone.Id,
+                    Model = drone.Model,
+                    Weight = (BO.WeightCategories)drone.MaxWeight,
+                    BatteryStatus = 0,
+                    DroneStatus = (BO.DroneStatus)PO.DroneStatus.Maintenance,
+                    PInTransfer = null,
+                    CurrLocation = BlApi.BlFactory.GetBl().GetStation(Drone.StationId).Location
+                };
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
+
+
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+                ShowXMLExceptionMessage(exception.Message);
+            }
+            return null;
         }
     }
 }

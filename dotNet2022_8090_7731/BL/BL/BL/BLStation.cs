@@ -35,10 +35,7 @@ namespace BL
                 {
                     throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
                 }
-                catch (ArgumentNullException)
-                {
-                    throw;
-                }
+                
 
                 DO.BaseStation dlStation = new()
                 {
@@ -90,10 +87,7 @@ namespace BL
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
-            catch (ArgumentNullException)
-            {
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -119,10 +113,7 @@ namespace BL
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
-            catch (ArgumentNullException)
-            {
-                throw;
-            }
+           
             return $"Station with Id: {stationId} was successfully removed from the system";
         }
 
@@ -171,10 +162,7 @@ namespace BL
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
             }
-            catch (ArgumentNullException)
-            {
-                throw;
-            }
+          
         }
        
         /// <summary>
@@ -201,10 +189,6 @@ namespace BL
             catch (DO.XMLFileLoadCreateException ex)
             {
                 throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
-            }
-            catch (ArgumentNullException)
-            {
-                throw;
             }
         }
 

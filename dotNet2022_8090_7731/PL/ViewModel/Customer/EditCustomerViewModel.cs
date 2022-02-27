@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using static PL.Extensions;
 
 namespace PL.ViewModels
 {
@@ -55,13 +56,15 @@ namespace PL.ViewModels
                 var blParcel = bl.GetParcel(parcel.Id);
                 new ParcelView(bl, blParcel).Show();
             }
-            catch (BO.IdDoesNotExistException)
+            catch (BO.IdDoesNotExistException exception)
             {
+                ShowIdExceptionMessage(exception.Message);
+
 
             }
-            catch (BO.XMLFileLoadCreateException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
 
@@ -72,7 +75,7 @@ namespace PL.ViewModels
         private void DeleteCustomer(object obj)
         {
             if (Extensions.WorkerTurnOn()) return;
-           
+
             if (Customer.LForCustomer.Any() || Customer.LFromCustomer.Any())
             {
                 if (Customer.LForCustomer.Any() && Customer.LFromCustomer.Any())
@@ -102,11 +105,13 @@ namespace PL.ViewModels
             }
             catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show(exception.Message);
-            }
-            catch (BO.XMLFileLoadCreateException)
-            {
+                ShowIdExceptionMessage(exception.Message);
 
+
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
 
@@ -125,15 +130,16 @@ namespace PL.ViewModels
             }
             catch (BO.IdDoesNotExistException exception)
             {
+          
+                ShowIdExceptionMessage(exception.Message);
+            }
+            catch (BO.ListIsEmptyException exception)
+            {
                 MessageBox.Show(exception.Message);
             }
-            catch (BO.ListIsEmptyException)
+            catch (BO.XMLFileLoadCreateException exception)
             {
-
-            }
-            catch (BO.XMLFileLoadCreateException)
-            {
-
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
 
@@ -151,7 +157,7 @@ namespace PL.ViewModels
             }
             catch (BO.XMLFileLoadCreateException exception)
             {
-                Extensions.ShowXMLExceptionMessage(exception.Message);
+                ShowXMLExceptionMessage(exception.Message);
             }
         }
 

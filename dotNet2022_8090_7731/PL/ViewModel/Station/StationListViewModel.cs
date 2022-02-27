@@ -14,7 +14,7 @@ using static PL.Extensions;
 
 namespace PL.ViewModels
 {
-    public class StationListViewModel : INotify 
+    public class StationListViewModel : INotify
     {
         private object choosenNumPositions = "All";
         readonly BlApi.IBL bl;
@@ -33,7 +33,16 @@ namespace PL.ViewModels
             Refresh.StationsList += RefreshStationList;
 
             this.bl = bl;
-            StationList = new(bl.GetStations().MapListFromBLToPL().ToList());
+            try
+            {
+                StationList = new(bl.GetStations().MapListFromBLToPL().ToList());
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+
+                ShowXMLExceptionMessage(exception.Message);
+
+            }
             StationList.Filter = FilterCondition;
             AvailablePositions();
 
@@ -44,12 +53,21 @@ namespace PL.ViewModels
 
         private void AvailablePositions()
         {
-            AvailablePositionsList = new List<object>() { "All" }
-            .Union(
-                bl.AvailableSlots()
-                .Select(station => station.AvailablePositions)
-                .Distinct()
-                .Cast<object>());
+            try
+            {
+                AvailablePositionsList = new List<object>() { "All" }
+                .Union(
+                    bl.AvailableSlots()
+                    .Select(station => station.AvailablePositions)
+                    .Distinct()
+                    .Cast<object>());
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+
+                ShowXMLExceptionMessage(exception.Message);
+
+            }
         }
 
         public ListCollectionView StationList
@@ -77,7 +95,7 @@ namespace PL.ViewModels
             get => groupBy;
             set
             {
-               
+
                 groupBy = value;
                 StationList.GroupDescriptions.Clear();
                 StationList.SortDescriptions.Clear();
@@ -86,7 +104,7 @@ namespace PL.ViewModels
                     PropertyGroupDescription groupDescription = new(groupBy.ToString());
                     StationList.GroupDescriptions.Add(groupDescription);
 
-                    SortDescription sortDescription = new (groupBy.ToString(), ListSortDirection.Ascending);
+                    SortDescription sortDescription = new(groupBy.ToString(), ListSortDirection.Ascending);
                     StationList.SortDescriptions.Add(sortDescription);
                 }
 
@@ -99,7 +117,6 @@ namespace PL.ViewModels
         {
             new StationView(bl)
                       .Show();
-            
         }
 
         private void ShowStation(object sender)
@@ -107,9 +124,24 @@ namespace PL.ViewModels
             if (sender == null) return;
 
             var selectedStation = sender as PO.StationToList;
-            var blStation = bl.GetStation(selectedStation.Id);
-            new StationView(bl, blStation)
+            try
+            {
+                var blStation = bl.GetStation(selectedStation.Id);
+                new StationView(bl, blStation)
                     .Show();
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+
+                ShowIdExceptionMessage(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+
+                ShowXMLExceptionMessage(exception.Message);
+
+            }
+
         }
 
         public object FilterList
@@ -130,7 +162,16 @@ namespace PL.ViewModels
 
         private void RefreshStationList()
         {
-            StationList = new(bl.GetStations().MapListFromBLToPL().ToList());
+            try
+            {
+                StationList = new(bl.GetStations().MapListFromBLToPL().ToList());
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+              
+                ShowXMLExceptionMessage(exception.Message);
+
+            }
             AvailablePositions();
 
             // keep filter and group status
