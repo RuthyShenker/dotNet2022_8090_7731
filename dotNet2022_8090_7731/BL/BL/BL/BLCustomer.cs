@@ -287,10 +287,6 @@ namespace BL
 
                 }
             }
-            catch (ArgumentNullException )
-            {
-                throw;
-            }
             catch (DO.XMLFileLoadCreateException ex)
             {
                 throw new XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);

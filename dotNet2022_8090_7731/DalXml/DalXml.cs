@@ -59,7 +59,7 @@ namespace Dal
         private DalXml()
         {
             xmlFilesLocation = $@"{Directory.GetCurrentDirectory()}\..\..\XmlFiles";
-           
+
         }
 
         /// <summary>
@@ -200,54 +200,37 @@ namespace Dal
         /// <param name="propertyName"></param>
         public void Update<T>(int id, object newValue = null, string propertyName = null) where T : IIdentifiable, IDalDo
         {
-            try
+            if (typeof(T) == typeof(DO.Drone))
             {
-                if (typeof(T) == typeof(DO.Drone))
+                XElement root = XDocument.Load(GetXmlFilePath(typeof(T))).Root;
+                XElement element = root.Elements().Single(obj =>
+                int.Parse(obj.Element("Id").Value) == id);
+                element.Element(propertyName).RemoveAttributes();
+                element.SetElementValue(propertyName, newValue);
+                root.Save(GetXmlFilePath(typeof(T)));
+            }
+            else
+            {
+                List<T> list = XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
+
+                Type type = typeof(T);
+                var oldItem = list.FirstOrDefault(item => item.Id == id);
+                list.Remove(oldItem);
+
+                if (newValue != null)
                 {
-                    XElement root = XDocument.Load(GetXmlFilePath(typeof(T))).Root;
-                    XElement element = root.Elements().Single(obj =>
-                    int.Parse(obj.Element("Id").Value) == id);
-                    element.Element(propertyName).RemoveAttributes();
-                    element.SetElementValue(propertyName, newValue);
-                    root.Save(GetXmlFilePath(typeof(T)));
-                }
-                else
-                {
-                    List<T> list = XMLTools.LoadListFromXmlSerializer<T>(GetXmlFilePath(typeof(T)));
-
-                    Type type = typeof(T);
-                    var oldItem = list.FirstOrDefault(item => item.Id == id);
-                    list.Remove(oldItem);
-
-                    if (newValue != null)
-                    {
-                        //type.GetProperty(propertyName).SetValue(oldItem, newValue);
-                        T obj = oldItem;
-                        PropertyInfo propertyInfo = typeof(T).GetProperty(propertyName);
-                        object boxed = obj;
-                        propertyInfo.SetValue(boxed, newValue, null);
-                        obj = (T)boxed;
-                        oldItem = obj;
-                    }
-
-                    list.Add(oldItem);
-
-                    XMLTools.SaveListToXmlSerializer<T>(list, GetXmlFilePath(typeof(T)));
+                    //type.GetProperty(propertyName).SetValue(oldItem, newValue);
+                    T obj = oldItem;
+                    PropertyInfo propertyInfo = typeof(T).GetProperty(propertyName);
+                    object boxed = obj;
+                    propertyInfo.SetValue(boxed, newValue, null);
+                    obj = (T)boxed;
+                    oldItem = obj;
                 }
 
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw;
-            }
-            catch (ArgumentException ex)
-            {
-               
-                throw;
-            }
-            catch (AmbiguousMatchException ex )
-            {
-                throw;
+                list.Add(oldItem);
+
+                XMLTools.SaveListToXmlSerializer<T>(list, GetXmlFilePath(typeof(T)));
             }
         }
 
