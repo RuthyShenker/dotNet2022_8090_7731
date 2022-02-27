@@ -45,10 +45,6 @@ namespace BL
                         throw new BO.IdAlreadyExistsException(typeof(Drone), bLDrone.Id);
                     }
                 }
-                catch (ArgumentNullException)
-                {
-                    throw;
-                }
                 catch (DO.XMLFileLoadCreateException ex)
                 {
                     throw new BO.XMLFileLoadCreateException(ex.xmlFilePath, $"fail to load xml file: {ex.xmlFilePath}", ex);
@@ -89,10 +85,6 @@ namespace BL
                 catch (DO.IdDoesNotExistException)
                 {
                     throw new BO.IdDoesNotExistException(typeof(DO.BaseStation), StationId);
-                }
-                catch (ArgumentNullException)
-                {
-                    throw;
                 }
                 catch (DO.XMLFileLoadCreateException ex)
                 {
@@ -211,10 +203,6 @@ namespace BL
             catch (DO.IdDoesNotExistException)
             {
                 throw new IdDoesNotExistException(typeof(Drone), droneId);
-            }
-            catch (ArgumentNullException)
-            {
-                throw;
             }
             catch (DO.XMLFileLoadCreateException ex)
             {
