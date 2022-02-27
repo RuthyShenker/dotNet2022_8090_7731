@@ -45,10 +45,10 @@ namespace PL.ViewModels
         {
             try
             {
-                MessageBox.Show("AddCustomer Drone");
                 var blDrone = Map(Drone);
                 BlApi.BlFactory.GetBl().AddingDrone(blDrone, Drone.StationId);
                 Refresh.Invoke();
+                MessageBox.Show("The Drone Added Succeesfully!");
                 switchView(blDrone);
             }
             catch (BO.IdAlreadyExistsException)

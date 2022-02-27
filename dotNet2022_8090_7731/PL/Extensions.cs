@@ -69,7 +69,7 @@ namespace PL
 
         public static bool WorkerTurnOn()
         {
-            if (Refresh.workers.Any(w => w.Value.IsBusy))
+            if (Refresh.Workers.Any(w => w.Value.IsBusy))
             {
                 MessageBox.Show("Action inValid when auto state is turn on", "Auto State IsTurn On", MessageBoxButton.OK);
                 return true;

@@ -69,26 +69,26 @@ namespace PL.ViewModels
         /// <param name="obj"></param>
         private void StartOrStopSimulator(object obj)
         {
-            if (Refresh.workers.ContainsKey(Drone.Id))
+            if (Refresh.Workers.ContainsKey(Drone.Id))
             {
-                if (!Refresh.workers[Drone.Id].IsBusy)
+                if (!Refresh.Workers[Drone.Id].IsBusy)
                 {
-                    if (isCharging)
+                    if (Drone.Status == DroneStatus.Maintenance) 
                     {
                         MessageBox.Show("Can't turn on simulator when drone is charging, please release it", "Drone in charging", MessageBoxButton.OK);
                         return;
                     }
 
-                    Refresh.workers[Drone.Id].RunWorkerAsync(Drone.Id);
+                    Refresh.Workers[Drone.Id].RunWorkerAsync(Drone.Id);
                 }
                 else
                 {
-                    Refresh.workers[Drone.Id]?.CancelAsync();
+                    Refresh.Workers[Drone.Id]?.CancelAsync();
                 }
             }
             else
             {
-                if (isCharging)
+                if (Drone.Status == DroneStatus.Maintenance)
                 {
                     MessageBox.Show("Can't turn on simulator when drone is charging, please release it", "Drone in charging", MessageBoxButton.OK);
                     return;
@@ -103,8 +103,8 @@ namespace PL.ViewModels
                 worker.RunWorkerCompleted += (sender, args) => Drone.Automatic = false;
                 worker.ProgressChanged += (sender, args) => updateDroneView(sender, args);
 
-                Refresh.workers.Add(Drone.Id, worker);
-                Refresh.workers[Drone.Id].RunWorkerAsync(Drone.Id);
+                Refresh.Workers.Add(Drone.Id, worker);
+                Refresh.Workers[Drone.Id].RunWorkerAsync(Drone.Id);
             }
         }
 
@@ -150,10 +150,18 @@ namespace PL.ViewModels
             if (Extensions.WorkerTurnOn()) return;
             try
             {
-                if (Drone.Status == PO.DroneStatus.Free)
+                if (Drone.Status == DroneStatus.Free)
+                {
                     bl.SendingDroneToCharge(Drone.Id);
+                    isCharging = true;
+                }
                 else
+                {
                     bl.ReleasingDrone(Drone.Id);
+                    isCharging = false;
+                }
+
+                Refresh.Invoke();
             }
             catch (BO.InValidActionException exception)
             {
@@ -163,19 +171,6 @@ namespace PL.ViewModels
             {
                 ShowXMLExceptionMessage(exception.Message);
             }
-
-            if (Drone.Status == DroneStatus.Free)
-            {
-                bl.SendingDroneToCharge(Drone.Id);
-                isCharging = true;
-            }
-            else
-            {
-                bl.ReleasingDrone(Drone.Id);
-                isCharging = false;
-            }
-
-            Refresh.Invoke();
         }
 
         /// <summary>
@@ -329,6 +324,10 @@ namespace PL.ViewModels
             try
             {
                 MessageBox.Show(bl.DeleteDrone(Drone.Id));
+                if (Refresh.Workers.ContainsKey(Drone.Id))
+                {
+                    Refresh.Workers.Remove(Drone.Id);
+                }
                 Refresh.Invoke();
 
                 Functions.CloseWindow(obj);
@@ -352,7 +351,7 @@ namespace PL.ViewModels
             {
                 if (bl.GetDrones().FirstOrDefault(d => d.Id == Drone.Id) != default)
                 {
-                    var keepSimulatorState = drone.Automatic;
+                    var keepSimulatorState = Drone.Automatic;
                     Drone = Map(bl.GetDrone(Drone.Id));
                     Drone.Automatic = keepSimulatorState;
                 }

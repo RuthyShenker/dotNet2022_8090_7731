@@ -51,7 +51,7 @@ namespace PL
 
         private void Closeddd(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            foreach (var item in Refresh.workers)
+            foreach (var item in Refresh.Workers)
             {
                 item.Value.CancelAsync();
             }

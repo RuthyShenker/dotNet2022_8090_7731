@@ -46,7 +46,8 @@ namespace PL.ViewModels
             {
                 var blCustomer = MapCustomerFromPOToBO(Customer);
                 bl.AddCustomer(blCustomer);
-                Refresh.Invoke(); 
+                Refresh.Invoke();
+                MessageBox.Show("The Customer Added Succeesfully!");
                 switchView(blCustomer);
             }
             catch (BO.IdAlreadyExistsException exception)

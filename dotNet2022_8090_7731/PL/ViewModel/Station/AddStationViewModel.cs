@@ -33,11 +33,12 @@ namespace PL.ViewModels
                 {
                     Id = (int)station.Id,
                     NameStation = station.Name,
-                    Location = new() { Longitude = (double)station.Longitude, Latitude = (double)station.Latitude },
+                    Location = new() { Longitude =Double.Parse((string)station.Longitude), Latitude = double.Parse((string)station.Latitude) },
                     NumAvailablePositions = (int)station.NumPositions
                 });
 
                 Refresh.Invoke();
+                MessageBox.Show("The Station Added Succeesfully!");
                 switchView(Map(station));
             }
             catch (BO.IdAlreadyExistsException)
@@ -52,7 +53,7 @@ namespace PL.ViewModels
 
         private BO.Station Map(StationToAdd station)
         {
-            BO.Location location = new() { Longitude = (double)station.Longitude, Latitude = (double)station.Latitude };
+            BO.Location location = new() { Longitude = double.Parse((string)station.Longitude), Latitude = double.Parse((string)station.Latitude) };
             return new BO.Station()
             {
                 Id = (int)station.Id,

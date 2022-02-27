@@ -26,9 +26,9 @@ namespace PL.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var droneId = ((PO.EditDrone)value).Id;
-            return !Refresh.workers.ContainsKey(droneId)
+            return !Refresh.Workers.ContainsKey(droneId)
                 ? "Auto"
-                : Refresh.workers[droneId].CancellationPending
+                : Refresh.Workers[droneId].CancellationPending
                 ? "Auto"
                 : "Manual";
         }

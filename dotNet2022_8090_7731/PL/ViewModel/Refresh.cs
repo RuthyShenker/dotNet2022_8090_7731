@@ -28,7 +28,7 @@ namespace PL.ViewModels
         /// <summary>
         /// Dictionary of all the workers:
         /// </summary>
-        public static Dictionary<int, BackgroundWorker> workers = new();
+        public static Dictionary<int, BackgroundWorker> Workers = new();
 
 
         public static void Invoke()
