@@ -179,13 +179,24 @@ namespace PL.ViewModels
         /// <param name="MyParcel"></param>
         private void OpenParcelWindow(object MyParcel)
         {
-            var parcel = MyParcel as BO.ParcelInTransfer;
-            if (parcel == null)
+            try
             {
-                parcel = bl.GetDrone(Drone.Id).PInTransfer;
+                var parcel = MyParcel as BO.ParcelInTransfer;
+                if (parcel == null)
+                {
+                    parcel = bl.GetDrone(Drone.Id).PInTransfer;
+                }
+                var blParcel = bl.GetParcel(parcel.PId);
+                new ParcelView(bl, blParcel).Show();
             }
-            var blParcel = bl.GetParcel(parcel.PId);
-            new ParcelView(bl, blParcel).Show();
+            catch (BO.InValidActionException exception)
+            {
+                ShowTheExceptionMessage(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+                ShowXMLExceptionMessage(exception.Message);
+            }
         }
 
 

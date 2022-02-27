@@ -4,6 +4,7 @@ using PO;
 using System;
 using System.Linq;
 using System.Windows;
+using static PL.Extensions;
 
 namespace PL.ViewModels
 {
@@ -48,9 +49,23 @@ namespace PL.ViewModels
 
         private void RefreshStation()
         {
-            if (bl.GetStations().FirstOrDefault(s => s.Id == Station.Id) != default)
+            try
             {
-                Station = Map(bl.GetStation(station.Id));
+                if (bl.GetStations().FirstOrDefault(s => s.Id == Station.Id) != default)
+                {
+                    Station = Map(bl.GetStation(station.Id));
+                }
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+
+                ShowXMLExceptionMessage(exception.Message);
+
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
+
             }
         }
 
@@ -67,16 +82,34 @@ namespace PL.ViewModels
             }
             catch (BO.IdDoesNotExistException exception)
             {
-                MessageBox.Show(exception.Message);
+                ShowIdExceptionMessage(exception.Message);
+
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+                ShowXMLExceptionMessage(exception.Message);
+
             }
         }
 
         private void OpenSelectedDroneWindow(object obj)
         {
-            var chargingDrone = obj as PO.ChargingDrone;
-            var drone = bl.GetDrone(chargingDrone.DroneId);
 
-            new DroneView(bl, drone).Show();
+            var chargingDrone = obj as PO.ChargingDrone;
+            try
+            {
+                var drone = bl.GetDrone(chargingDrone.DroneId);
+                new DroneView(bl, drone).Show();
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+                ShowXMLExceptionMessage(exception.Message);
+            }
+
         }
 
         private void UpdateStation(object obj)
@@ -86,7 +119,21 @@ namespace PL.ViewModels
             var station = obj as EditStation;
 
             //TODO: two feilds has to be full?
-            bl.UpdatingStationDetails(station.Id, station.Name, (int)station.NumPositions);
+            try
+            {
+                bl.UpdatingStationDetails(station.Id, station.Name, (int)station.NumPositions);
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
+
+
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+                ShowXMLExceptionMessage(exception.Message);
+
+            }
             Refresh.Invoke();
             MessageBox.Show("Succseful Updating ");
         }

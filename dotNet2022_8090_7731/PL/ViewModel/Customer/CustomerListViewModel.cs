@@ -33,7 +33,16 @@ namespace PL.ViewModels
             Refresh.CustomersList += RefreshCustomersList;
 
             this.bl = bl;
-            CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers().MapListFromBLToPL());
+            try
+            {
+                CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers().MapListFromBLToPL());
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+
+                ShowXMLExceptionMessage(exception.Message);
+
+            }
             RefreshCustomersList();
             AddCustomerCommand = new RelayCommand<object>(AddingCustomer);
             MouseDoubleCommand = new RelayCommand<object>(MouseDoubleClick);
@@ -88,7 +97,16 @@ namespace PL.ViewModels
         /// </summary>
         private void RefreshCustomersList()
         {
-            CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers().MapListFromBLToPL());
+            try
+            {
+                CustomerList = new ObservableCollection<CustomerToList>(bl.GetCustomers().MapListFromBLToPL());
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+             
+                ShowXMLExceptionMessage(exception.Message);
+
+            }
         }
     }
 }

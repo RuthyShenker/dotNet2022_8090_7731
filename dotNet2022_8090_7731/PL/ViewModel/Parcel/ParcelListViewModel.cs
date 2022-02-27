@@ -10,7 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-
+using static PL.Extensions;
 
 namespace PL.ViewModels
 {
@@ -34,7 +34,14 @@ namespace PL.ViewModels
             Refresh.ParcelsList += RefreshParcelsList;
 
             this.bl = bl;
-            ParcelList = new(bl.GetParcels().MapListFromBLToPL().ToList());
+            try
+            {
+                ParcelList = new(bl.GetParcels().MapListFromBLToPL().ToList());
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+                ShowXMLExceptionMessage(exception.Message);
+            }
             ParcelList.Filter = FilterCondition;
 
             MouseDoubleCommand = new RelayCommand<object>(EditParcel);
@@ -55,7 +62,7 @@ namespace PL.ViewModels
             }
             catch (BO.XMLFileLoadCreateException exception)
             {
-               Extensions.ShowXMLExceptionMessage(exception.Message);
+                Extensions.ShowXMLExceptionMessage(exception.Message);
             }
 
             // keep group and filter status
@@ -127,7 +134,7 @@ namespace PL.ViewModels
             }
             catch (BO.XMLFileLoadCreateException exception)
             {
-               Extensions.ShowXMLExceptionMessage(exception.Message);
+                Extensions.ShowXMLExceptionMessage(exception.Message);
             }
         }
 
@@ -136,8 +143,19 @@ namespace PL.ViewModels
             if (obj == null) return;
 
             var parcel = obj as PO.ParcelToList;
-            var blParcel = bl.GetParcel(parcel.Id);
-            new ParcelView(bl, blParcel).Show();
+            try
+            {
+                var blParcel = bl.GetParcel(parcel.Id);
+                new ParcelView(bl, blParcel).Show();
+            }
+            catch (BO.IdDoesNotExistException exception)
+            {
+                ShowIdExceptionMessage(exception.Message);
+            }
+            catch (BO.XMLFileLoadCreateException exception)
+            {
+                ShowXMLExceptionMessage(exception.Message);
+            }
         }
 
         public ListCollectionView ParcelList
