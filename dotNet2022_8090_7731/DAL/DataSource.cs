@@ -32,10 +32,10 @@ namespace Dal
         /// </summary>
         internal class Config
         {
-            static public double Available = RandBetweenRange(0, 0.0000001);
-            static public double LightWeight = RandBetweenRange(Available, 0.0000002);
-            static public double MediumWeight = RandBetweenRange(LightWeight, 0.0000003);
-            static public double HeavyWeight = RandBetweenRange(MediumWeight, 0.0000004);
+            static public double Available = RandBetweenRange(0, 0.0001);
+            static public double LightWeight = RandBetweenRange(Available, 0.0002);
+            static public double MediumWeight = RandBetweenRange(LightWeight, 0.0003);
+            static public double HeavyWeight = RandBetweenRange(MediumWeight, 0.0004);
             static public double ChargingRate = 20;//TODO לאתחל
             internal static int IndexParcel = 1000;
 
